@@ -61,6 +61,20 @@ Create an always-available AI agent that acts as a personal chief of staff, mana
    - Automatic journaling and reflection prompts
    - Life area categorization (health, finance, career, relationships, etc.)
 
+6. **Security & Infrastructure**
+   - Local encryption for sensitive data (notes, contacts, financial info)
+   - Secure key management and storage
+   - Automated backup and restore capabilities
+   - Data export/import for portability
+   - Audit trail and version history
+   - Undo/redo for critical operations
+
+7. **Notification & Interface Layer**
+   - Desktop notifications for tasks and reminders
+   - Minimal web/mobile interface for quick capture
+   - Quiet hours and notification priority rules
+   - Always-on background service for proactive assistance
+
 ### Tier 1 (Enhanced Capabilities)
 1. **Goal Tracking & OKRs**
    - Quarterly and annual goal setting
@@ -132,16 +146,29 @@ Create an always-available AI agent that acts as a personal chief of staff, mana
 ```
 ┌─────────────────────────────────────────────────────────────┐
 │                     User Interface Layer                     │
-│  (Claude Code CLI + Future Web/Mobile Interface)            │
+│  - Claude Code CLI (primary interface)                      │
+│  - Desktop Notifications (system tray/menu bar)             │
+│  - Web Interface (quick capture, dashboard)                 │
+│  - Mobile Interface (future: iOS/Android)                   │
 └─────────────────────────────────────────────────────────────┘
                               │
 ┌─────────────────────────────────────────────────────────────┐
 │                   Conversational Agent Core                  │
-│  - Natural Language Processing                              │
-│  - Intent Recognition & Task Routing                        │
-│  - Context Management (200K+ token window)                  │
+│  - Natural Language Processing & Intent Recognition         │
+│  - Master Agent (routing and orchestration)                 │
 │  - Multi-turn Dialogue Management                           │
 └─────────────────────────────────────────────────────────────┘
+                              │
+        ┌─────────────────────┴─────────────────────┐
+        │                                           │
+┌───────▼────────────────────────────────────────────────────┐
+│                  Context Management System                  │
+│  - Conversation History (last N turns, ~10K tokens)        │
+│  - Relevant Memory Retrieval (semantic search)             │
+│  - Agent Context Scoping (per-agent working memory)        │
+│  - Summarization Pipeline (older context → summaries)      │
+│  - TTL & Eviction Policies (LRU for context pruning)       │
+└────────────────────────────────────────────────────────────┘
                               │
         ┌─────────────────────┼─────────────────────┐
         │                     │                     │
@@ -151,25 +178,37 @@ Create an always-available AI agent that acts as a personal chief of staff, mana
 └────────────────┘   └─────────────────┘   └────────────────┘
         │                     │                     │
 ┌───────▼────────┐   ┌────────▼────────┐   ┌───────▼────────┐
-│  Goal Tracker  │   │  Memory System  │   │  Email Handler │
+│  Goal Tracker  │   │  Memory System  │   │  Review Agent  │
 │   Sub-Agent    │   │    Sub-Agent    │   │   Sub-Agent    │
 └────────────────┘   └─────────────────┘   └────────────────┘
                               │
 ┌─────────────────────────────────────────────────────────────┐
+│                    Shared Services Layer                     │
+│  - Event Bus (inter-agent communication)                    │
+│  - Encryption Service (AES-256 for sensitive data)          │
+│  - Backup/Restore Service (scheduled & on-demand)           │
+│  - Conflict Resolution (calendar/task sync conflicts)       │
+│  - Audit Logger (action history for undo/debugging)         │
+│  - Notification Manager (desktop/mobile push)               │
+│  - Undo/Redo Stack (versioned state management)             │
+└─────────────────────────────────────────────────────────────┘
+                              │
+┌─────────────────────────────────────────────────────────────┐
 │                      Data Storage Layer                      │
-│  - Local SQLite Database (structured data)                  │
-│  - Markdown Files (notes, journals, plans)                  │
-│  - JSON Configuration (preferences, settings)               │
-│  - File System Integration (documents, attachments)         │
+│  - SQLite Database (tasks, events, contacts, encrypted)     │
+│  - Markdown Files (notes, journals, version-controlled)     │
+│  - JSON Configuration (preferences, encrypted keys)         │
+│  - File System (documents, backups, exports)                │
+│  - Encryption Keystore (OS keychain integration)            │
 └─────────────────────────────────────────────────────────────┘
                               │
 ┌─────────────────────────────────────────────────────────────┐
 │                    Integration Layer (MCP)                   │
-│  - Calendar APIs (Google Calendar, iCal)                    │
-│  - Email (Gmail, Outlook)                                   │
-│  - Cloud Storage (Dropbox, Google Drive)                    │
-│  - Communication (Slack, Teams)                             │
-│  - External Services (GitHub, Notion, etc.)                 │
+│  - Calendar Sync (Google Calendar, iCal, bidirectional)     │
+│  - Email Integration (Gmail, Outlook, optional)             │
+│  - Cloud Storage (Dropbox, Drive, for backup)               │
+│  - Communication (Slack, Teams, optional)                   │
+│  - Import/Export (Todoist, Notion, Apple Reminders)         │
 └─────────────────────────────────────────────────────────────┘
 ```
 
@@ -286,46 +325,66 @@ Create an always-available AI agent that acts as a personal chief of staff, mana
 
 **Database Schema:**
 ```sql
-CREATE TABLE tasks (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    title TEXT NOT NULL,
-    description TEXT,
-    status TEXT CHECK(status IN ('todo', 'in_progress', 'waiting', 'done', 'cancelled')),
-    priority INTEGER CHECK(priority BETWEEN 1 AND 5),
-    life_area TEXT,
-    project_id INTEGER,
-    parent_task_id INTEGER,
-    estimated_minutes INTEGER,
-    actual_minutes INTEGER,
-    due_date DATETIME,
-    scheduled_start DATETIME,
-    scheduled_end DATETIME,
-    completed_at DATETIME,
-    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-    tags TEXT, -- JSON array
-    context TEXT, -- JSON metadata
-    FOREIGN KEY (project_id) REFERENCES projects(id),
-    FOREIGN KEY (parent_task_id) REFERENCES tasks(id)
-);
-
 CREATE TABLE projects (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     name TEXT NOT NULL,
     description TEXT,
-    status TEXT,
+    status TEXT CHECK(status IN ('active', 'on_hold', 'completed', 'cancelled')),
     life_area TEXT,
     start_date DATE,
     target_end_date DATE,
     actual_end_date DATE,
     archived BOOLEAN DEFAULT 0,
-    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    created_at DATETIME DEFAULT (strftime('%Y-%m-%d %H:%M:%f', 'now', 'utc')),
+    updated_at DATETIME DEFAULT (strftime('%Y-%m-%d %H:%M:%f', 'now', 'utc')),
     metadata TEXT -- JSON
 );
 
-CREATE INDEX idx_tasks_status ON tasks(status);
-CREATE INDEX idx_tasks_due_date ON tasks(due_date);
+CREATE TABLE tasks (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    title TEXT NOT NULL,
+    description TEXT,
+    status TEXT NOT NULL DEFAULT 'todo' CHECK(status IN ('todo', 'in_progress', 'waiting', 'done', 'cancelled')),
+    priority INTEGER NOT NULL DEFAULT 3 CHECK(priority BETWEEN 1 AND 5),
+    life_area TEXT,
+    project_id INTEGER,
+    parent_task_id INTEGER,
+    estimated_minutes INTEGER CHECK(estimated_minutes > 0),
+    actual_minutes INTEGER CHECK(actual_minutes >= 0),
+    due_date DATETIME,
+    scheduled_start DATETIME,
+    scheduled_end DATETIME,
+    completed_at DATETIME,
+    created_at DATETIME DEFAULT (strftime('%Y-%m-%d %H:%M:%f', 'now', 'utc')),
+    updated_at DATETIME DEFAULT (strftime('%Y-%m-%d %H:%M:%f', 'now', 'utc')),
+    tags TEXT, -- JSON array
+    context TEXT, -- JSON metadata
+    FOREIGN KEY (project_id) REFERENCES projects(id) ON DELETE SET NULL,
+    FOREIGN KEY (parent_task_id) REFERENCES tasks(id) ON DELETE CASCADE,
+    CHECK (scheduled_start IS NULL OR scheduled_end IS NULL OR scheduled_start < scheduled_end)
+);
+
+-- Indexes for tasks
+CREATE INDEX idx_tasks_status ON tasks(status) WHERE status != 'done';
+CREATE INDEX idx_tasks_due_date ON tasks(due_date) WHERE due_date IS NOT NULL;
 CREATE INDEX idx_tasks_priority ON tasks(priority);
+CREATE INDEX idx_tasks_project_id ON tasks(project_id);
+CREATE INDEX idx_tasks_parent_id ON tasks(parent_task_id);
+CREATE INDEX idx_tasks_scheduled ON tasks(scheduled_start, scheduled_end);
+CREATE INDEX idx_tasks_life_area ON tasks(life_area);
+
+-- Triggers for updated_at
+CREATE TRIGGER tasks_updated_at AFTER UPDATE ON tasks
+BEGIN
+    UPDATE tasks SET updated_at = strftime('%Y-%m-%d %H:%M:%f', 'now', 'utc')
+    WHERE id = NEW.id;
+END;
+
+CREATE TRIGGER projects_updated_at AFTER UPDATE ON projects
+BEGIN
+    UPDATE projects SET updated_at = strftime('%Y-%m-%d %H:%M:%f', 'now', 'utc')
+    WHERE id = NEW.id;
+END;
 ```
 
 #### Sprint 1.3: Calendar & Scheduling Engine
@@ -360,14 +419,16 @@ CREATE TABLE calendar_events (
     start_time DATETIME NOT NULL,
     end_time DATETIME NOT NULL,
     all_day BOOLEAN DEFAULT 0,
-    calendar_source TEXT, -- 'internal', 'google', 'outlook', etc.
-    external_id TEXT, -- ID from external calendar system
+    calendar_source TEXT NOT NULL DEFAULT 'internal',
+    external_id TEXT,
     recurrence_rule TEXT, -- iCal RRULE
     attendees TEXT, -- JSON array
-    status TEXT CHECK(status IN ('confirmed', 'tentative', 'cancelled')),
-    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-    metadata TEXT -- JSON
+    status TEXT NOT NULL DEFAULT 'confirmed' CHECK(status IN ('confirmed', 'tentative', 'cancelled')),
+    created_at DATETIME DEFAULT (strftime('%Y-%m-%d %H:%M:%f', 'now', 'utc')),
+    updated_at DATETIME DEFAULT (strftime('%Y-%m-%d %H:%M:%f', 'now', 'utc')),
+    metadata TEXT, -- JSON
+    CHECK (start_time < end_time),
+    UNIQUE(calendar_source, external_id) -- Prevent duplicate syncs
 );
 
 CREATE TABLE time_blocks (
@@ -375,14 +436,38 @@ CREATE TABLE time_blocks (
     task_id INTEGER,
     start_time DATETIME NOT NULL,
     end_time DATETIME NOT NULL,
-    block_type TEXT, -- 'task', 'deep_work', 'buffer', 'routine'
+    block_type TEXT NOT NULL DEFAULT 'task' CHECK(block_type IN ('task', 'deep_work', 'buffer', 'routine')),
     auto_scheduled BOOLEAN DEFAULT 1,
-    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (task_id) REFERENCES tasks(id)
+    created_at DATETIME DEFAULT (strftime('%Y-%m-%d %H:%M:%f', 'now', 'utc')),
+    updated_at DATETIME DEFAULT (strftime('%Y-%m-%d %H:%M:%f', 'now', 'utc')),
+    FOREIGN KEY (task_id) REFERENCES tasks(id) ON DELETE CASCADE,
+    CHECK (start_time < end_time)
 );
 
+-- Indexes for calendar_events
 CREATE INDEX idx_events_start_time ON calendar_events(start_time);
+CREATE INDEX idx_events_end_time ON calendar_events(end_time);
+CREATE INDEX idx_events_source ON calendar_events(calendar_source);
+CREATE INDEX idx_events_external_id ON calendar_events(external_id);
+CREATE INDEX idx_events_status ON calendar_events(status) WHERE status != 'cancelled';
+
+-- Indexes for time_blocks
 CREATE INDEX idx_blocks_start_time ON time_blocks(start_time);
+CREATE INDEX idx_blocks_task_id ON time_blocks(task_id);
+CREATE INDEX idx_blocks_type ON time_blocks(block_type);
+
+-- Triggers for updated_at
+CREATE TRIGGER calendar_events_updated_at AFTER UPDATE ON calendar_events
+BEGIN
+    UPDATE calendar_events SET updated_at = strftime('%Y-%m-%d %H:%M:%f', 'now', 'utc')
+    WHERE id = NEW.id;
+END;
+
+CREATE TRIGGER time_blocks_updated_at AFTER UPDATE ON time_blocks
+BEGIN
+    UPDATE time_blocks SET updated_at = strftime('%Y-%m-%d %H:%M:%f', 'now', 'utc')
+    WHERE id = NEW.id;
+END;
 ```
 
 ### Phase 2: Knowledge & Memory (Weeks 4-6)
@@ -415,26 +500,49 @@ CREATE TABLE notes (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     title TEXT NOT NULL,
     file_path TEXT UNIQUE NOT NULL, -- Path to markdown file
-    note_type TEXT, -- 'note', 'journal', 'meeting', 'reference'
+    note_type TEXT NOT NULL DEFAULT 'note' CHECK(note_type IN ('note', 'journal', 'meeting', 'reference')),
     life_area TEXT,
     tags TEXT, -- JSON array
-    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-    word_count INTEGER,
+    created_at DATETIME DEFAULT (strftime('%Y-%m-%d %H:%M:%f', 'now', 'utc')),
+    updated_at DATETIME DEFAULT (strftime('%Y-%m-%d %H:%M:%f', 'now', 'utc')),
+    word_count INTEGER DEFAULT 0 CHECK(word_count >= 0),
     metadata TEXT -- JSON
 );
 
 CREATE TABLE note_links (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    source_note_id INTEGER,
-    target_note_id INTEGER,
-    link_type TEXT, -- 'reference', 'related', 'parent', 'child'
-    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (source_note_id) REFERENCES notes(id),
-    FOREIGN KEY (target_note_id) REFERENCES notes(id)
+    source_note_id INTEGER NOT NULL,
+    target_note_id INTEGER NOT NULL,
+    link_type TEXT NOT NULL DEFAULT 'reference' CHECK(link_type IN ('reference', 'related', 'parent', 'child')),
+    created_at DATETIME DEFAULT (strftime('%Y-%m-%d %H:%M:%f', 'now', 'utc')),
+    FOREIGN KEY (source_note_id) REFERENCES notes(id) ON DELETE CASCADE,
+    FOREIGN KEY (target_note_id) REFERENCES notes(id) ON DELETE CASCADE,
+    UNIQUE(source_note_id, target_note_id, link_type) -- Prevent duplicate links
 );
 
-CREATE VIRTUAL TABLE notes_fts USING fts5(title, content, tags);
+-- Full-text search with external content
+CREATE VIRTUAL TABLE notes_fts USING fts5(
+    title,
+    content,
+    tags,
+    content=''  -- External content managed by triggers
+);
+
+-- Indexes
+CREATE INDEX idx_notes_type ON notes(note_type);
+CREATE INDEX idx_notes_life_area ON notes(life_area);
+CREATE INDEX idx_notes_created ON notes(created_at);
+CREATE INDEX idx_note_links_source ON note_links(source_note_id);
+CREATE INDEX idx_note_links_target ON note_links(target_note_id);
+
+-- Triggers for updated_at and FTS sync
+CREATE TRIGGER notes_updated_at AFTER UPDATE ON notes
+BEGIN
+    UPDATE notes SET updated_at = strftime('%Y-%m-%d %H:%M:%f', 'now', 'utc')
+    WHERE id = NEW.id;
+END;
+
+-- Note: FTS sync triggers will read file content from file_path and update notes_fts
 ```
 
 #### Sprint 2.2: Memory & Context System
@@ -463,31 +571,44 @@ CREATE VIRTUAL TABLE notes_fts USING fts5(title, content, tags);
 ```sql
 CREATE TABLE memories (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    memory_type TEXT, -- 'preference', 'fact', 'pattern', 'relationship'
+    memory_type TEXT NOT NULL CHECK(memory_type IN ('preference', 'fact', 'pattern', 'relationship')),
     content TEXT NOT NULL,
-    importance REAL DEFAULT 0.5, -- 0-1 score
+    importance REAL DEFAULT 0.5 CHECK(importance BETWEEN 0.0 AND 1.0),
     life_area TEXT,
     related_entity_type TEXT, -- 'person', 'project', 'place', etc.
     related_entity_id INTEGER,
-    first_learned DATETIME DEFAULT CURRENT_TIMESTAMP,
-    last_reinforced DATETIME DEFAULT CURRENT_TIMESTAMP,
-    reinforcement_count INTEGER DEFAULT 1,
+    first_learned DATETIME DEFAULT (strftime('%Y-%m-%d %H:%M:%f', 'now', 'utc')),
+    last_reinforced DATETIME DEFAULT (strftime('%Y-%m-%d %H:%M:%f', 'now', 'utc')),
+    reinforcement_count INTEGER DEFAULT 1 CHECK(reinforcement_count > 0),
     metadata TEXT -- JSON
 );
 
 CREATE TABLE journal_entries (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    entry_date DATE NOT NULL,
-    entry_type TEXT, -- 'daily', 'weekly', 'monthly', 'gratitude', 'reflection'
-    file_path TEXT, -- Path to markdown file
-    mood_rating INTEGER, -- 1-10
-    energy_rating INTEGER, -- 1-10
-    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    entry_date DATE NOT NULL UNIQUE, -- One journal per day
+    entry_type TEXT NOT NULL DEFAULT 'daily' CHECK(entry_type IN ('daily', 'weekly', 'monthly', 'gratitude', 'reflection')),
+    file_path TEXT UNIQUE, -- Path to markdown file
+    mood_rating INTEGER CHECK(mood_rating BETWEEN 1 AND 10),
+    energy_rating INTEGER CHECK(energy_rating BETWEEN 1 AND 10),
+    created_at DATETIME DEFAULT (strftime('%Y-%m-%d %H:%M:%f', 'now', 'utc')),
+    updated_at DATETIME DEFAULT (strftime('%Y-%m-%d %H:%M:%f', 'now', 'utc')),
     metadata TEXT -- JSON
 );
 
+-- Indexes
 CREATE INDEX idx_memories_type ON memories(memory_type);
-CREATE INDEX idx_memories_importance ON memories(importance);
+CREATE INDEX idx_memories_importance ON memories(importance DESC); -- High importance first
+CREATE INDEX idx_memories_life_area ON memories(life_area);
+CREATE INDEX idx_memories_entity ON memories(related_entity_type, related_entity_id);
+CREATE INDEX idx_journal_date ON journal_entries(entry_date DESC);
+CREATE INDEX idx_journal_type ON journal_entries(entry_type);
+
+-- Triggers
+CREATE TRIGGER journal_updated_at AFTER UPDATE ON journal_entries
+BEGIN
+    UPDATE journal_entries SET updated_at = strftime('%Y-%m-%d %H:%M:%f', 'now', 'utc')
+    WHERE id = NEW.id;
+END;
 ```
 
 #### Sprint 2.3: Goal & Progress Tracking
@@ -518,19 +639,21 @@ CREATE TABLE goals (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     title TEXT NOT NULL,
     description TEXT,
-    goal_type TEXT, -- 'outcome', 'habit', 'learning', 'relationship'
+    goal_type TEXT NOT NULL CHECK(goal_type IN ('outcome', 'habit', 'learning', 'relationship')),
     life_area TEXT,
-    timeframe TEXT, -- 'daily', 'weekly', 'monthly', 'quarterly', 'yearly'
-    status TEXT CHECK(status IN ('active', 'completed', 'paused', 'abandoned')),
+    timeframe TEXT NOT NULL CHECK(timeframe IN ('daily', 'weekly', 'monthly', 'quarterly', 'yearly')),
+    status TEXT NOT NULL DEFAULT 'active' CHECK(status IN ('active', 'completed', 'paused', 'abandoned')),
     target_value REAL,
     target_unit TEXT,
-    start_date DATE,
+    start_date DATE DEFAULT (date('now', 'utc')),
     target_date DATE,
     completed_date DATE,
     parent_goal_id INTEGER,
-    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    created_at DATETIME DEFAULT (strftime('%Y-%m-%d %H:%M:%f', 'now', 'utc')),
+    updated_at DATETIME DEFAULT (strftime('%Y-%m-%d %H:%M:%f', 'now', 'utc')),
     metadata TEXT, -- JSON
-    FOREIGN KEY (parent_goal_id) REFERENCES goals(id)
+    FOREIGN KEY (parent_goal_id) REFERENCES goals(id) ON DELETE CASCADE,
+    CHECK (start_date IS NULL OR target_date IS NULL OR start_date <= target_date)
 );
 
 CREATE TABLE goal_progress (
@@ -539,8 +662,9 @@ CREATE TABLE goal_progress (
     recorded_date DATE NOT NULL,
     current_value REAL,
     notes TEXT,
-    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (goal_id) REFERENCES goals(id)
+    created_at DATETIME DEFAULT (strftime('%Y-%m-%d %H:%M:%f', 'now', 'utc')),
+    FOREIGN KEY (goal_id) REFERENCES goals(id) ON DELETE CASCADE,
+    UNIQUE(goal_id, recorded_date) -- One progress entry per goal per day
 );
 
 CREATE TABLE milestones (
@@ -550,8 +674,26 @@ CREATE TABLE milestones (
     target_date DATE,
     completed_date DATE,
     completed BOOLEAN DEFAULT 0,
-    FOREIGN KEY (goal_id) REFERENCES goals(id)
+    created_at DATETIME DEFAULT (strftime('%Y-%m-%d %H:%M:%f', 'now', 'utc')),
+    FOREIGN KEY (goal_id) REFERENCES goals(id) ON DELETE CASCADE
 );
+
+-- Indexes
+CREATE INDEX idx_goals_status ON goals(status) WHERE status = 'active';
+CREATE INDEX idx_goals_type ON goals(goal_type);
+CREATE INDEX idx_goals_timeframe ON goals(timeframe);
+CREATE INDEX idx_goals_target_date ON goals(target_date);
+CREATE INDEX idx_goals_parent ON goals(parent_goal_id);
+CREATE INDEX idx_goal_progress_goal ON goal_progress(goal_id);
+CREATE INDEX idx_goal_progress_date ON goal_progress(recorded_date DESC);
+CREATE INDEX idx_milestones_goal ON milestones(goal_id);
+
+-- Triggers
+CREATE TRIGGER goals_updated_at AFTER UPDATE ON goals
+BEGIN
+    UPDATE goals SET updated_at = strftime('%Y-%m-%d %H:%M:%f', 'now', 'utc')
+    WHERE id = NEW.id;
+END;
 ```
 
 ### Phase 3: Intelligence & Automation (Weeks 7-9)
@@ -694,16 +836,17 @@ src/
 CREATE TABLE contacts (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     name TEXT NOT NULL,
-    email TEXT,
+    email TEXT UNIQUE,
     phone TEXT,
-    relationship_type TEXT, -- 'family', 'friend', 'colleague', 'professional'
-    importance INTEGER, -- 1-5
+    relationship_type TEXT NOT NULL CHECK(relationship_type IN ('family', 'friend', 'colleague', 'professional', 'other')),
+    importance INTEGER NOT NULL DEFAULT 3 CHECK(importance BETWEEN 1 AND 5),
     company TEXT,
     role TEXT,
     how_we_met TEXT,
     birthday DATE,
     anniversary DATE,
-    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    created_at DATETIME DEFAULT (strftime('%Y-%m-%d %H:%M:%f', 'now', 'utc')),
+    updated_at DATETIME DEFAULT (strftime('%Y-%m-%d %H:%M:%f', 'now', 'utc')),
     metadata TEXT -- JSON
 );
 
@@ -711,10 +854,10 @@ CREATE TABLE interactions (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     contact_id INTEGER NOT NULL,
     interaction_date DATE NOT NULL,
-    interaction_type TEXT, -- 'email', 'call', 'meeting', 'message', 'other'
+    interaction_type TEXT NOT NULL CHECK(interaction_type IN ('email', 'call', 'meeting', 'message', 'other')),
     notes TEXT,
-    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (contact_id) REFERENCES contacts(id)
+    created_at DATETIME DEFAULT (strftime('%Y-%m-%d %H:%M:%f', 'now', 'utc')),
+    FOREIGN KEY (contact_id) REFERENCES contacts(id) ON DELETE CASCADE
 );
 
 CREATE TABLE follow_ups (
@@ -724,8 +867,25 @@ CREATE TABLE follow_ups (
     reason TEXT,
     completed BOOLEAN DEFAULT 0,
     completed_date DATE,
-    FOREIGN KEY (contact_id) REFERENCES contacts(id)
+    created_at DATETIME DEFAULT (strftime('%Y-%m-%d %H:%M:%f', 'now', 'utc')),
+    FOREIGN KEY (contact_id) REFERENCES contacts(id) ON DELETE CASCADE
 );
+
+-- Indexes
+CREATE INDEX idx_contacts_relationship ON contacts(relationship_type);
+CREATE INDEX idx_contacts_importance ON contacts(importance DESC);
+CREATE INDEX idx_contacts_email ON contacts(email);
+CREATE INDEX idx_interactions_contact ON interactions(contact_id);
+CREATE INDEX idx_interactions_date ON interactions(interaction_date DESC);
+CREATE INDEX idx_follow_ups_contact ON follow_ups(contact_id);
+CREATE INDEX idx_follow_ups_due ON follow_ups(due_date) WHERE completed = 0;
+
+-- Triggers
+CREATE TRIGGER contacts_updated_at AFTER UPDATE ON contacts
+BEGIN
+    UPDATE contacts SET updated_at = strftime('%Y-%m-%d %H:%M:%f', 'now', 'utc')
+    WHERE id = NEW.id;
+END;
 ```
 
 #### Sprint 4.2: Habits & Routines
@@ -750,15 +910,16 @@ CREATE TABLE habits (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     name TEXT NOT NULL,
     description TEXT,
-    frequency TEXT, -- 'daily', 'weekly', 'custom'
+    frequency TEXT NOT NULL DEFAULT 'daily' CHECK(frequency IN ('daily', 'weekly', 'custom')),
     frequency_config TEXT, -- JSON (e.g., specific days for weekly)
-    target_streak INTEGER,
-    current_streak INTEGER DEFAULT 0,
-    longest_streak INTEGER DEFAULT 0,
+    target_streak INTEGER CHECK(target_streak > 0),
+    current_streak INTEGER DEFAULT 0 CHECK(current_streak >= 0),
+    longest_streak INTEGER DEFAULT 0 CHECK(longest_streak >= 0),
     life_area TEXT,
-    started_date DATE,
+    started_date DATE DEFAULT (date('now', 'utc')),
     archived BOOLEAN DEFAULT 0,
-    created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+    created_at DATETIME DEFAULT (strftime('%Y-%m-%d %H:%M:%f', 'now', 'utc')),
+    updated_at DATETIME DEFAULT (strftime('%Y-%m-%d %H:%M:%f', 'now', 'utc'))
 );
 
 CREATE TABLE habit_logs (
@@ -767,20 +928,43 @@ CREATE TABLE habit_logs (
     log_date DATE NOT NULL,
     completed BOOLEAN DEFAULT 1,
     notes TEXT,
-    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (habit_id) REFERENCES habits(id)
+    created_at DATETIME DEFAULT (strftime('%Y-%m-%d %H:%M:%f', 'now', 'utc')),
+    FOREIGN KEY (habit_id) REFERENCES habits(id) ON DELETE CASCADE,
+    UNIQUE(habit_id, log_date) -- One log entry per habit per day
 );
 
 CREATE TABLE routines (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     name TEXT NOT NULL,
-    routine_type TEXT, -- 'morning', 'evening', 'weekly_review', 'custom'
-    checklist_items TEXT, -- JSON array
+    routine_type TEXT NOT NULL CHECK(routine_type IN ('morning', 'evening', 'weekly_review', 'custom')),
+    checklist_items TEXT NOT NULL, -- JSON array
     trigger_time TIME,
-    estimated_minutes INTEGER,
+    estimated_minutes INTEGER CHECK(estimated_minutes > 0),
     enabled BOOLEAN DEFAULT 1,
-    created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+    created_at DATETIME DEFAULT (strftime('%Y-%m-%d %H:%M:%f', 'now', 'utc')),
+    updated_at DATETIME DEFAULT (strftime('%Y-%m-%d %H:%M:%f', 'now', 'utc'))
 );
+
+-- Indexes
+CREATE INDEX idx_habits_archived ON habits(archived);
+CREATE INDEX idx_habits_life_area ON habits(life_area);
+CREATE INDEX idx_habit_logs_habit ON habit_logs(habit_id);
+CREATE INDEX idx_habit_logs_date ON habit_logs(log_date DESC);
+CREATE INDEX idx_routines_type ON routines(routine_type);
+CREATE INDEX idx_routines_enabled ON routines(enabled) WHERE enabled = 1;
+
+-- Triggers
+CREATE TRIGGER habits_updated_at AFTER UPDATE ON habits
+BEGIN
+    UPDATE habits SET updated_at = strftime('%Y-%m-%d %H:%M:%f', 'now', 'utc')
+    WHERE id = NEW.id;
+END;
+
+CREATE TRIGGER routines_updated_at AFTER UPDATE ON routines
+BEGIN
+    UPDATE routines SET updated_at = strftime('%Y-%m-%d %H:%M:%f', 'now', 'utc')
+    WHERE id = NEW.id;
+END;
 ```
 
 #### Sprint 4.3: Analytics & Insights
@@ -1129,7 +1313,8 @@ Based on research of leading 2025 AI systems and best practices:
 
 | Date | Phase | Changes |
 |------|-------|---------|
-| 2025-12-06 | Planning | Initial comprehensive plan created |
+| 2025-12-06 10:37 AM | Planning | Initial comprehensive plan created |
+| 2025-12-06 10:51 AM | Planning Review | Codex review completed; plan updated with critical improvements:<br>- Added Security & Infrastructure and Notification Layer to T0<br>- Enhanced architecture with Shared Services Layer and detailed Context Management<br>- Updated all database schemas with proper FK cascades, indexes, triggers, and constraints<br>- Added uniqueness constraints to prevent duplicates<br>- Added UTC timestamp handling and updated_at triggers<br>- Improved data integrity with CHECK constraints and defaults |
 |  |  |  |
 
 ---
