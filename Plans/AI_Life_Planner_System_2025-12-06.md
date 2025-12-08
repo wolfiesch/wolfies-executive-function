@@ -59,7 +59,14 @@ Create an always-available AI agent that acts as a personal chief of staff, mana
    - Long-term memory of preferences, patterns, and relationships
    - Project-specific context maintenance
    - Automatic journaling and reflection prompts
-   - Life area categorization (health, finance, career, relationships, etc.)
+   - PARA organization (Projects, Areas, Resources, Archives)
+
+5b. **Vision & Clarity Dashboard**
+   - Operating principles and values definition
+   - Strategic direction and long-term vision
+   - Guided reflection prompts (patterns, obstacles, desires)
+   - Quarterly vision reviews and alignment checks
+   - AI-powered self-diagnosis and insight generation
 
 6. **Security & Infrastructure**
    - Local encryption for sensitive data (notes, contacts, financial info)
@@ -77,10 +84,12 @@ Create an always-available AI agent that acts as a personal chief of staff, mana
 
 ### Tier 1 (Enhanced Capabilities)
 1. **Goal Tracking & OKRs**
-   - Quarterly and annual goal setting
+   - 12-Week Year framework (quarterly execution cycles)
+   - Annual and quarterly goal setting
    - Progress tracking with automated check-ins
    - Goal decomposition into actionable tasks
    - Visualization of progress over time
+   - Weekly scorecard and accountability
 
 2. **Habit & Routine Management**
    - Daily/weekly routine templates
@@ -273,7 +282,7 @@ Create an always-available AI agent that acts as a personal chief of staff, mana
 ├── README.md
 ├── config/
 │   ├── settings.json
-│   ├── life_areas.json
+│   ├── para_categories.json  # Projects, Areas, Resources, Archives
 │   └── preferences.json
 ├── data/
 │   ├── database/
@@ -325,20 +334,44 @@ Create an always-available AI agent that acts as a personal chief of staff, mana
 
 **Database Schema:**
 ```sql
+-- PARA Framework: Projects, Areas, Resources, Archives
+CREATE TABLE para_categories (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name TEXT NOT NULL,
+    para_type TEXT NOT NULL CHECK(para_type IN ('project', 'area', 'resource', 'archive')),
+    description TEXT,
+    parent_id INTEGER,
+    created_at DATETIME DEFAULT (strftime('%Y-%m-%d %H:%M:%f', 'now', 'utc')),
+    updated_at DATETIME DEFAULT (strftime('%Y-%m-%d %H:%M:%f', 'now', 'utc')),
+    FOREIGN KEY (parent_id) REFERENCES para_categories(id) ON DELETE CASCADE
+);
+
+CREATE INDEX idx_para_type ON para_categories(para_type);
+CREATE INDEX idx_para_parent ON para_categories(parent_id);
+
+CREATE TRIGGER para_categories_updated_at AFTER UPDATE ON para_categories
+BEGIN
+    UPDATE para_categories SET updated_at = strftime('%Y-%m-%d %H:%M:%f', 'now', 'utc')
+    WHERE id = NEW.id;
+END;
+
 CREATE TABLE projects (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     name TEXT NOT NULL,
     description TEXT,
     status TEXT CHECK(status IN ('active', 'on_hold', 'completed', 'cancelled')),
-    life_area TEXT,
+    para_category_id INTEGER,  -- Links to PARA framework
     start_date DATE,
     target_end_date DATE,
     actual_end_date DATE,
     archived BOOLEAN DEFAULT 0,
     created_at DATETIME DEFAULT (strftime('%Y-%m-%d %H:%M:%f', 'now', 'utc')),
     updated_at DATETIME DEFAULT (strftime('%Y-%m-%d %H:%M:%f', 'now', 'utc')),
-    metadata TEXT -- JSON
+    metadata TEXT, -- JSON
+    FOREIGN KEY (para_category_id) REFERENCES para_categories(id) ON DELETE SET NULL
 );
+
+CREATE INDEX idx_projects_para ON projects(para_category_id);
 
 CREATE TABLE tasks (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -346,7 +379,7 @@ CREATE TABLE tasks (
     description TEXT,
     status TEXT NOT NULL DEFAULT 'todo' CHECK(status IN ('todo', 'in_progress', 'waiting', 'done', 'cancelled')),
     priority INTEGER NOT NULL DEFAULT 3 CHECK(priority BETWEEN 1 AND 5),
-    life_area TEXT,
+    para_category_id INTEGER,  -- Links to PARA framework
     project_id INTEGER,
     parent_task_id INTEGER,
     estimated_minutes INTEGER CHECK(estimated_minutes > 0),
@@ -361,6 +394,7 @@ CREATE TABLE tasks (
     context TEXT, -- JSON metadata
     FOREIGN KEY (project_id) REFERENCES projects(id) ON DELETE SET NULL,
     FOREIGN KEY (parent_task_id) REFERENCES tasks(id) ON DELETE CASCADE,
+    FOREIGN KEY (para_category_id) REFERENCES para_categories(id) ON DELETE SET NULL,
     CHECK (scheduled_start IS NULL OR scheduled_end IS NULL OR scheduled_start < scheduled_end)
 );
 
@@ -371,7 +405,7 @@ CREATE INDEX idx_tasks_priority ON tasks(priority);
 CREATE INDEX idx_tasks_project_id ON tasks(project_id);
 CREATE INDEX idx_tasks_parent_id ON tasks(parent_task_id);
 CREATE INDEX idx_tasks_scheduled ON tasks(scheduled_start, scheduled_end);
-CREATE INDEX idx_tasks_life_area ON tasks(life_area);
+CREATE INDEX idx_tasks_para ON tasks(para_category_id);
 
 -- Triggers for updated_at
 CREATE TRIGGER tasks_updated_at AFTER UPDATE ON tasks
@@ -468,6 +502,47 @@ BEGIN
     UPDATE time_blocks SET updated_at = strftime('%Y-%m-%d %H:%M:%f', 'now', 'utc')
     WHERE id = NEW.id;
 END;
+```
+
+#### Sprint 1.4: "Today" Unified Dashboard
+**Goal:** Single view to start each day with clarity
+
+**Tasks:**
+1. Dashboard Aggregation Logic
+   - Query today's tasks (scheduled, due, overdue)
+   - Fetch today's calendar events
+   - Retrieve active habits for today
+   - Pull morning/evening routine checklists
+   - Show top 3 priorities (AI-suggested based on deadlines, importance)
+
+2. Dashboard UI Components
+   - CLI-based dashboard view (primary)
+   - Web dashboard (minimal, responsive)
+   - Desktop notification summary
+   - Mobile quick-view (future)
+
+3. Smart Prioritization
+   - Deadline proximity scoring
+   - Energy level matching (morning tasks vs afternoon)
+   - Time-block awareness (suggest scheduling for unscheduled tasks)
+   - Context switching minimization
+
+4. Daily Briefing
+   - Morning: "Here's your day" summary
+   - Evening: "Here's what you accomplished" + tomorrow preview
+   - Weather/commute integration (optional)
+
+**Files to Create:**
+```
+src/
+├── dashboard/
+│   ├── __init__.py
+│   ├── aggregator.py      # Data aggregation logic
+│   ├── prioritizer.py     # Smart priority calculation
+│   └── formatter.py       # Output formatting (CLI/web)
+├── ui/
+│   ├── cli_dashboard.py   # CLI interface
+│   └── web_dashboard.py   # Minimal web interface
 ```
 
 ### Phase 2: Knowledge & Memory (Weeks 4-6)
@@ -695,6 +770,99 @@ BEGIN
     WHERE id = NEW.id;
 END;
 ```
+
+#### Sprint 2.4: Content Ingestion & RAG System
+**Goal:** Auto-ingest and intelligently retrieve content from multiple sources
+
+**Tasks:**
+1. Content Ingestion Pipeline
+   - PDF document processing and text extraction
+   - YouTube video transcription (via API)
+   - Web page content extraction
+   - Document chunking for optimal retrieval
+   - Metadata extraction (title, author, date, source)
+
+2. Vector Store & Embeddings
+   - ChromaDB or FAISS integration
+   - Text embedding generation (OpenAI/local models)
+   - Semantic similarity search
+   - Hybrid search (keyword + semantic)
+   - Index optimization and management
+
+3. RAG (Retrieval-Augmented Generation)
+   - Context retrieval for conversational queries
+   - Source attribution and citation
+   - Relevance scoring and ranking
+   - Multi-document synthesis
+   - Configurable context window management
+
+4. Integration with Knowledge Base
+   - Link ingested content to notes
+   - Auto-tagging based on content
+   - Duplicate detection and deduplication
+   - Content summarization on ingest
+   - Update FTS index with ingested content
+
+**Database Schema:**
+```sql
+CREATE TABLE ingested_content (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    source_url TEXT,
+    source_type TEXT NOT NULL CHECK(source_type IN ('pdf', 'youtube', 'webpage', 'document', 'other')),
+    title TEXT NOT NULL,
+    author TEXT,
+    content_hash TEXT UNIQUE NOT NULL,  -- Prevent duplicates
+    file_path TEXT,  -- Local storage path
+    ingested_at DATETIME DEFAULT (strftime('%Y-%m-%d %H:%M:%f', 'now', 'utc')),
+    word_count INTEGER,
+    summary TEXT,  -- AI-generated summary
+    para_category_id INTEGER,
+    tags TEXT,  -- JSON array
+    metadata TEXT,  -- JSON
+    FOREIGN KEY (para_category_id) REFERENCES para_categories(id) ON DELETE SET NULL
+);
+
+CREATE TABLE content_chunks (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    content_id INTEGER NOT NULL,
+    chunk_index INTEGER NOT NULL,
+    chunk_text TEXT NOT NULL,
+    embedding_id TEXT,  -- Reference to vector store
+    created_at DATETIME DEFAULT (strftime('%Y-%m-%d %H:%M:%f', 'now', 'utc')),
+    FOREIGN KEY (content_id) REFERENCES ingested_content(id) ON DELETE CASCADE,
+    UNIQUE(content_id, chunk_index)
+);
+
+CREATE INDEX idx_ingested_type ON ingested_content(source_type);
+CREATE INDEX idx_ingested_hash ON ingested_content(content_hash);
+CREATE INDEX idx_ingested_para ON ingested_content(para_category_id);
+CREATE INDEX idx_chunks_content ON content_chunks(content_id);
+```
+
+**Files to Create:**
+```
+src/
+├── ingestion/
+│   ├── __init__.py
+│   ├── pdf_processor.py       # PDF extraction
+│   ├── youtube_processor.py   # YouTube transcription
+│   ├── web_processor.py       # Web scraping
+│   ├── chunker.py             # Document chunking
+│   └── embedder.py            # Embedding generation
+├── rag/
+│   ├── __init__.py
+│   ├── vector_store.py        # ChromaDB/FAISS interface
+│   ├── retriever.py           # Semantic search
+│   └── synthesizer.py         # Multi-doc synthesis
+```
+
+**Python Libraries to Add:**
+- `chromadb` or `faiss-cpu` - Vector store
+- `sentence-transformers` - Local embeddings (or OpenAI API)
+- `pypdf` or `pdfplumber` - PDF processing
+- `youtube-transcript-api` - YouTube transcripts
+- `beautifulsoup4` + `requests` - Web scraping
+- `langchain` (optional) - RAG orchestration
 
 ### Phase 3: Intelligence & Automation (Weeks 7-9)
 
@@ -1315,6 +1483,7 @@ Based on research of leading 2025 AI systems and best practices:
 |------|-------|---------|
 | 2025-12-06 10:37 AM | Planning | Initial comprehensive plan created |
 | 2025-12-06 10:51 AM | Planning Review | Codex review completed; plan updated with critical improvements:<br>- Added Security & Infrastructure and Notification Layer to T0<br>- Enhanced architecture with Shared Services Layer and detailed Context Management<br>- Updated all database schemas with proper FK cascades, indexes, triggers, and constraints<br>- Added uniqueness constraints to prevent duplicates<br>- Added UTC timestamp handling and updated_at triggers<br>- Improved data integrity with CHECK constraints and defaults |
+| 12/08/2025 05:20 AM PST (via pst-timestamp) | Feature Additions | Added research-backed features from existing AI life planners:<br>- **PARA Method** (Projects/Areas/Resources/Archives) replacing generic life_areas<br>- **Vision & Clarity Dashboard** for strategic direction and operating principles<br>- **"Today" Unified Dashboard** (Sprint 1.4) - single view to start each day<br>- **12-Week Year Framework** for quarterly execution cycles<br>- **Content Ingestion & RAG System** (Sprint 2.4) - PDF/YouTube/web ingestion with vector search<br>- Added para_categories table and updated all schemas to reference PARA<br>- Added ingested_content and content_chunks tables for RAG |
 |  |  |  |
 
 ---
