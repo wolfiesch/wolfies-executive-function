@@ -1,0 +1,70 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+.venv/
+ENV/
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Database
+data/database/*.db
+data/database/*.db-journal
+data/database/*.db-wal
+data/database/*.db-shm
+
+# Notes and attachments (optional - uncomment if you want to keep these private)
+# data/notes/
+# data/attachments/
+
+# Configuration (may contain sensitive data)
+config/settings.json
+config/preferences.json
+# Keep PARA categories in git as it's structural, not personal
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Claude Code
+.claude/
+
+# Testing
+.pytest_cache/
+.coverage
+htmlcov/
+.tox/
+
+# Logs
+logs/
+*.log
+
+# Environment variables
+.env
+.env.local
+
+# Temporary files
+*.tmp
+tmp/
+temp/

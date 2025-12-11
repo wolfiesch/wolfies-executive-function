@@ -1,0 +1,30 @@
+{
+  "areas": [
+    {
+      "name": "Personal",
+      "description": "Personal life and self-development"
+    },
+    {
+      "name": "Professional",
+      "description": "Work and career"
+    },
+    {
+      "name": "Health",
+      "description": "Physical and mental health"
+    },
+    {
+      "name": "Relationships",
+      "description": "Family, friends, and social connections"
+    },
+    {
+      "name": "Finance",
+      "description": "Money management and investments"
+    },
+    {
+      "name": "Learning",
+      "description": "Education and skill development"
+    }
+  ],
+  "auto_archive_completed_projects": true,
+  "archive_after_days": 30
+}
