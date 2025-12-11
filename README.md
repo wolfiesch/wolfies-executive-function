@@ -21,7 +21,31 @@ This creates the SQLite database with all necessary tables and default PARA cate
 ### 3. Verify Installation
 
 ```bash
-python -c "from src.core import Database, Config; print('✓ Core modules loaded successfully')"
+python3 -c "from src.core import Database, Config; print('✓ Core modules loaded successfully')"
+```
+
+### 4. Start Using the CLI
+
+```bash
+# Add a task
+python3 planner.py add "Call John about project" --due tomorrow --priority 4
+
+# View today's tasks
+python3 planner.py today
+
+# List all active tasks
+python3 planner.py list
+
+# Mark task as done
+python3 planner.py done 5
+
+# View statistics
+python3 planner.py stats
+```
+
+**Tip**: Create an alias for easier usage:
+```bash
+alias planner="python3 /path/to/LIFE-PLANNER/planner.py"
 ```
 
 ## Project Structure
@@ -68,27 +92,72 @@ Core tables:
 
 ## Development Status
 
-**Current Phase**: Core Infrastructure (MVP)
+**Current Phase**: MVP - Minimal Working System ✨
 
 Completed:
 - ✅ Project structure
 - ✅ Database schema and initialization
 - ✅ Configuration management
 - ✅ Core data models
+- ✅ Basic CRUD operations
+- ✅ **CLI interface with 5 commands**
 
-In Progress:
-- 🔨 Basic CRUD operations
-- 🔨 Simple CLI interface
+**Ready to use!** The system is now functional for daily task management.
 
 Planned:
-- Natural language task creation
-- Daily dashboard view
+- Enhanced natural language parsing for dates/times
+- Project management commands
 - Note capture and search
+- Daily dashboard improvements
 - Calendar integration
 
-## Usage
+## CLI Usage
 
-(Coming soon - CLI interface under development)
+The planner supports the following commands:
+
+### `add` - Create a new task
+```bash
+python3 planner.py add "Task title" [--due DATE] [--priority 1-5] [--project NAME]
+
+# Examples
+python3 planner.py add "Review proposal"
+python3 planner.py add "Call client" --due tomorrow --priority 5
+python3 planner.py add "Write tests" -d monday -p 4
+```
+
+**Supported date formats**: `today`, `tomorrow`, `monday`, `tuesday`, etc.
+
+### `today` - View today's schedule
+```bash
+python3 planner.py today
+```
+
+Shows tasks due today, overdue tasks, and high-priority items.
+
+### `list` - List all tasks
+```bash
+python3 planner.py list [--status STATUS] [--project NAME] [--all]
+
+# Examples
+python3 planner.py list                    # Active tasks only
+python3 planner.py list --status todo      # Only todo tasks
+python3 planner.py list --all              # Including completed
+```
+
+### `done` - Mark task as complete
+```bash
+python3 planner.py done TASK_ID
+
+# Example
+python3 planner.py done 5
+```
+
+### `stats` - View statistics
+```bash
+python3 planner.py stats
+```
+
+Shows total, completed, and in-progress task counts with completion rate.
 
 ## Configuration
 
