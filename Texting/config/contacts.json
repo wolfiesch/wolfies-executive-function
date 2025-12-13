@@ -1,0 +1,19 @@
+{
+  "_comment": "Manual contact configuration for Sprint 1. Will be auto-synced in Sprint 2.",
+  "_instructions": "Add your contacts here with name and phone number. Format: +1XXXXXXXXXX or just XXXXXXXXXX",
+
+  "contacts": [
+    {
+      "name": "Wolfgang Schoenberger",
+      "phone": "+14083480244",
+      "relationship_type": "personal",
+      "notes": "Primary user - for testing"
+    },
+    {
+      "name": "Test Contact",
+      "phone": "+11234567890",
+      "relationship_type": "other",
+      "notes": "Test contact for development"
+    }
+  ]
+}
