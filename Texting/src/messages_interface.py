@@ -370,6 +370,253 @@ class MessagesInterface:
 
         return permissions
 
+    def get_all_recent_conversations(self, limit: int = 20) -> List[Dict]:
+        """
+        Get recent messages from ALL conversations (not filtered by contact).
+
+        Sprint 2.5: Returns recent messages across all contacts, including
+        unknown numbers and people not in your contacts.
+
+        Args:
+            limit: Number of recent messages to retrieve
+
+        Returns:
+            List[Dict]: List of message dicts with keys:
+                - text: Message content
+                - date: Timestamp
+                - is_from_me: Boolean (sent vs received)
+                - phone: Phone number or handle of sender/recipient
+                - contact_name: Contact name if available, otherwise phone/handle
+
+        Example:
+            messages = interface.get_all_recent_conversations(limit=50)
+        """
+        logger.info(f"Retrieving {limit} most recent messages from all conversations")
+
+        if not self.messages_db_path.exists():
+            logger.error(f"Messages database not found: {self.messages_db_path}")
+            return []
+
+        try:
+            conn = sqlite3.connect(f"file:{self.messages_db_path}?mode=ro", uri=True)
+            cursor = conn.cursor()
+
+            # Query recent messages across all conversations
+            query = """
+                SELECT
+                    message.text,
+                    message.attributedBody,
+                    message.date,
+                    message.is_from_me,
+                    handle.id
+                FROM message
+                LEFT JOIN handle ON message.handle_id = handle.ROWID
+                ORDER BY message.date DESC
+                LIMIT ?
+            """
+
+            cursor.execute(query, (limit,))
+            rows = cursor.fetchall()
+
+            messages = []
+            for row in rows:
+                text, attributed_body, date_cocoa, is_from_me, handle_id = row
+
+                # Extract message text
+                message_text = text
+                if not message_text and attributed_body:
+                    message_text = extract_text_from_blob(attributed_body)
+
+                # Convert timestamp
+                if date_cocoa:
+                    cocoa_epoch = datetime(2001, 1, 1)
+                    date = cocoa_epoch + timedelta(seconds=date_cocoa / 1_000_000_000)
+                else:
+                    date = None
+
+                messages.append({
+                    "text": message_text or "[message content not available]",
+                    "date": date.isoformat() if date else None,
+                    "is_from_me": bool(is_from_me),
+                    "phone": handle_id or "unknown",
+                    "contact_name": None  # Will be populated by MCP tool if contact exists
+                })
+
+            conn.close()
+            logger.info(f"Retrieved {len(messages)} messages from all conversations")
+            return messages
+
+        except sqlite3.Error as e:
+            logger.error(f"Database error: {e}")
+            return []
+        except Exception as e:
+            logger.error(f"Error retrieving messages: {e}")
+            return []
+
+    def search_messages(
+        self,
+        query: str,
+        phone: Optional[str] = None,
+        limit: int = 50
+    ) -> List[Dict]:
+        """
+        Search messages by content/keyword.
+
+        Sprint 2.5: Full-text search across all messages or filtered by contact.
+
+        Args:
+            query: Search query (keyword or phrase)
+            phone: Optional phone number to filter by specific contact
+            limit: Maximum number of results
+
+        Returns:
+            List[Dict]: List of matching message dicts with keys:
+                - text: Message content
+                - date: Timestamp
+                - is_from_me: Boolean
+                - phone: Phone number or handle
+                - match_snippet: Text snippet showing the match
+
+        Example:
+            # Search all messages
+            results = interface.search_messages("dinner plans")
+
+            # Search messages with specific contact
+            results = interface.search_messages("dinner", phone="+14155551234")
+        """
+        logger.info(f"Searching messages for query: '{query}'" +
+                   (f" (contact: {phone})" if phone else " (all contacts)"))
+
+        if not self.messages_db_path.exists():
+            logger.error(f"Messages database not found: {self.messages_db_path}")
+            return []
+
+        try:
+            conn = sqlite3.connect(f"file:{self.messages_db_path}?mode=ro", uri=True)
+            cursor = conn.cursor()
+
+            # Build query based on whether we're filtering by phone
+            if phone:
+                sql_query = """
+                    SELECT
+                        message.text,
+                        message.attributedBody,
+                        message.date,
+                        message.is_from_me,
+                        handle.id
+                    FROM message
+                    JOIN handle ON message.handle_id = handle.ROWID
+                    WHERE (message.text LIKE ? OR message.attributedBody IS NOT NULL)
+                        AND handle.id LIKE ?
+                    ORDER BY message.date DESC
+                    LIMIT ?
+                """
+                cursor.execute(sql_query, (f"%{query}%", f"%{phone}%", limit))
+            else:
+                sql_query = """
+                    SELECT
+                        message.text,
+                        message.attributedBody,
+                        message.date,
+                        message.is_from_me,
+                        handle.id
+                    FROM message
+                    LEFT JOIN handle ON message.handle_id = handle.ROWID
+                    WHERE message.text LIKE ? OR message.attributedBody IS NOT NULL
+                    ORDER BY message.date DESC
+                    LIMIT ?
+                """
+                cursor.execute(sql_query, (f"%{query}%", limit))
+
+            rows = cursor.fetchall()
+
+            messages = []
+            for row in rows:
+                text, attributed_body, date_cocoa, is_from_me, handle_id = row
+
+                # Extract message text
+                message_text = text
+                if not message_text and attributed_body:
+                    message_text = extract_text_from_blob(attributed_body)
+
+                # Skip if no text content (attachments only, etc.)
+                if not message_text:
+                    continue
+
+                # Check if query matches (for attributedBody messages)
+                if query.lower() not in message_text.lower():
+                    continue
+
+                # Convert timestamp
+                if date_cocoa:
+                    cocoa_epoch = datetime(2001, 1, 1)
+                    date = cocoa_epoch + timedelta(seconds=date_cocoa / 1_000_000_000)
+                else:
+                    date = None
+
+                # Create match snippet (show context around match)
+                match_snippet = self._create_snippet(message_text, query)
+
+                messages.append({
+                    "text": message_text,
+                    "date": date.isoformat() if date else None,
+                    "is_from_me": bool(is_from_me),
+                    "phone": handle_id or "unknown",
+                    "match_snippet": match_snippet
+                })
+
+            conn.close()
+            logger.info(f"Found {len(messages)} messages matching '{query}'")
+            return messages
+
+        except sqlite3.Error as e:
+            logger.error(f"Database error: {e}")
+            return []
+        except Exception as e:
+            logger.error(f"Error searching messages: {e}")
+            return []
+
+    def _create_snippet(self, text: str, query: str, context_chars: int = 50) -> str:
+        """
+        Create a text snippet showing the search query in context.
+
+        Args:
+            text: Full message text
+            query: Search query
+            context_chars: Characters to show before/after match
+
+        Returns:
+            Snippet with query highlighted
+        """
+        try:
+            # Find query in text (case-insensitive)
+            text_lower = text.lower()
+            query_lower = query.lower()
+            match_pos = text_lower.find(query_lower)
+
+            if match_pos == -1:
+                # No match (shouldn't happen), return start of text
+                return text[:100] + "..." if len(text) > 100 else text
+
+            # Calculate snippet bounds
+            start = max(0, match_pos - context_chars)
+            end = min(len(text), match_pos + len(query) + context_chars)
+
+            # Extract snippet
+            snippet = text[start:end]
+
+            # Add ellipsis if truncated
+            if start > 0:
+                snippet = "..." + snippet
+            if end < len(text):
+                snippet = snippet + "..."
+
+            return snippet
+
+        except Exception as e:
+            logger.debug(f"Error creating snippet: {e}")
+            return text[:100]
+
 
 # Add missing import for Sprint 1 basic implementation
 from datetime import timedelta

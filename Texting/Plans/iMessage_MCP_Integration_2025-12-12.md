@@ -123,17 +123,17 @@ This plan outlines the development of a custom iMessage MCP (Model Context Proto
 
 ---
 
-### Sprint 2: Contact Intelligence & Sync (Week 2)
-**Goal:** Auto-sync contacts from macOS Contacts and life planner DB
+### Sprint 2: Contact Intelligence & Sync (Week 2) ✅ COMPLETE
+**Goal:** Auto-sync contacts from macOS Contacts ~~and life planner DB~~ (DB integration deferred)
 
 **Tasks:**
-- [ ] Build macOS Contacts reader
-- [ ] Implement fuzzy name matching algorithm
-- [ ] Create contacts sync script (macOS Contacts → Life Planner DB)
-- [ ] Add phone number normalization (handle +1, country codes, etc.)
-- [ ] Extend life planner contacts table with messaging metadata
-- [ ] Implement interaction auto-logging
-- [ ] Create contact enrichment workflow
+- [x] Build macOS Contacts reader ✅
+- [x] Implement fuzzy name matching algorithm ✅
+- [x] Create contacts sync script (macOS Contacts → ~~Life Planner DB~~ JSON config) ✅
+- [x] Add phone number normalization (handle +1, country codes, etc.) ✅
+- [ ] Extend life planner contacts table with messaging metadata (deferred - Life Planner WIP)
+- [ ] Implement interaction auto-logging (deferred - Life Planner WIP)
+- [ ] Create contact enrichment workflow (deferred - Life Planner WIP)
 
 **Database Schema Extensions:**
 ```sql
@@ -949,6 +949,105 @@ async def schedule_via_message(
   - Covers proper `claude mcp add` usage, path requirements, verification
   - Future MCP servers will be configured correctly from the start
 - **Status:** 🎉 Sprint 1 + 1.5 COMPLETE - Ready for Sprint 2
+
+**[12/12/2025 04:32 PM PST (via pst-timestamp)]** - Sprint 2: Contact Intelligence & Sync COMPLETE ✅
+- ✅ **Built macOS Contacts reader** (`src/contacts_sync.py`)
+  - `MacOSContactsReader` class uses PyObjC Contacts framework
+  - Fetches all contacts from macOS Contacts.app with full metadata
+  - `fetch_all_contacts()` - retrieve all contacts
+  - `search_contacts(name)` - search by name
+  - Extracts phone numbers, emails, names, organization data
+  - Handles macOS permission requests gracefully
+- ✅ **Implemented fuzzy name matching algorithm**
+  - `FuzzyNameMatcher` class with configurable threshold (default 0.85)
+  - Uses multiple fuzzywuzzy strategies for best accuracy:
+    - Token sort ratio (handles word order: "John Doe" ↔ "Doe John")
+    - Token set ratio (handles partial: "John Michael Doe" ↔ "John Doe")
+    - Partial ratio (handles substrings: "John" ↔ "John Doe")
+    - Levenshtein distance (handles typos: "Jon Doe" ↔ "John Doe")
+  - `find_best_match()` - returns best candidate above threshold with confidence score
+  - `find_all_matches()` - returns top N matches sorted by score
+- ✅ **Enhanced phone number normalization** (`normalize_phone_number()`)
+  - Handles international formats: +44, +49, etc.
+  - Detects "+" prefix to preserve existing country codes
+  - Adds default country code (1) only for domestic US/CA numbers
+  - Supports all separators: dots, dashes, spaces, parentheses
+  - `compare_phone_numbers()` - intelligent matching handles format differences
+- ✅ **Created contacts sync script** (`scripts/sync_contacts.py`)
+  - Syncs macOS Contacts → JSON config file
+  - Filters to contacts with phone numbers
+  - Merge strategy: preserves manual edits to relationship_type and notes
+  - Stores all phone numbers + primary phone (prefers mobile)
+  - Includes email addresses and macOS contact ID for future sync
+  - CLI with options: --output, --include-no-phone, --no-merge, --verbose
+- ✅ **Comprehensive test suite** (`tests/test_contacts_sync.py`)
+  - 32 unit tests covering all Sprint 2 functionality
+  - All tests passing ✅
+  - Test coverage: fuzzy matching (10 tests), phone normalization (10 tests), contact models (7 tests)
+  - Integration tests for macOS Contacts (marked as skip - requires manual run with permissions)
+- ✅ **Installed dependencies**
+  - fuzzywuzzy==0.18.0
+  - python-Levenshtein==0.27.3
+  - pyobjc-framework-Contacts (already in requirements.txt)
+- **Note:** Life Planner DB integration deferred (parent project still WIP)
+  - Contacts sync to JSON instead of SQLite for now
+  - Interaction logging to be added in future sprint
+  - Contact enrichment workflow pending Life Planner readiness
+- **Next Steps:**
+  - Run contact sync: `python3 scripts/sync_contacts.py`
+  - Grant Contacts permission when prompted
+  - Review synced contacts in config/contacts.json
+  - Update ContactsManager to use fuzzy matching (Sprint 2.5 follow-up)
+- **Sprint 2 Duration:** ~45 minutes (all tasks completed)
+- **Status:** 🎉 SPRINT 2 COMPLETE (without Life Planner integration) - Ready for Sprint 3
+
+**[12/12/2025 04:51 PM PST (via pst-timestamp)]** - Sprint 2.5: Enhanced Message Search & Discovery ✅
+- ✅ **Extended MessagesInterface** with 3 new methods (`src/messages_interface.py`)
+  - `get_all_recent_conversations(limit)` - Get recent messages from ALL conversations
+    - Returns messages across all contacts (known and unknown)
+    - Shows phone number/handle for each message
+    - MCP tool enriches with contact names where available
+  - `search_messages(query, phone=None, limit)` - Full-text search across messages
+    - Search all messages or filter by specific contact
+    - Returns matches with context snippets (50 chars before/after)
+    - Case-insensitive matching
+    - Handles both text and attributedBody messages
+  - `_create_snippet(text, query)` - Helper to create match context snippets
+- ✅ **Added 3 new MCP tools** (`mcp_server/server.py`)
+  - `get_all_recent_conversations` - Browse recent activity across all conversations
+    - Solves the "unknown number" problem - no contact needed
+    - Shows most recent messages regardless of contact status
+    - Automatically resolves phone numbers to contact names when available
+  - `search_messages` - Find messages by content/keyword
+    - Search all messages: "find messages about dinner"
+    - Search with specific contact: "find messages about project with Sarah"
+    - Returns date, sender, and context snippet
+  - `get_messages_by_phone` - Direct phone number lookup
+    - No contact configuration required
+    - Works with any format: +14155551234, (415) 555-1234, email handles
+    - Useful for unknown numbers or testing
+- ✅ **Verified MCP server compatibility**
+  - Server imports successfully with all 6 tools (3 Sprint 1 + 3 Sprint 2.5)
+  - No breaking changes to existing tools
+  - Backward compatible with Sprint 1 functionality
+- **Why Sprint 2.5?**
+  - User identified critical UX gap: "Can't search messages from unknown contacts"
+  - This was blocking real-world usage
+  - Tools originally planned for Sprint 3 but needed immediately
+  - Quick implementation (~20 minutes) using existing infrastructure
+- **Impact:**
+  - **Before:** Could only get messages if contact was pre-configured
+  - **After:** Can discover conversations, search content, handle unknown numbers
+  - **Example Use Cases:**
+    - "Show me my recent messages" → sees all conversations
+    - "What did that (415) number say?" → gets messages by phone directly
+    - "Find messages about project deadline" → searches all messages
+- **Next Steps:**
+  - Restart Claude Code to reload MCP server with new tools
+  - Test new tools with real message data
+  - Sprint 3: Style learning and personalization
+- **Sprint 2.5 Duration:** ~20 minutes (all core functionality)
+- **Status:** 🎉 SPRINT 2.5 COMPLETE - Major UX improvement, MCP server much more useful
 
 ---
 

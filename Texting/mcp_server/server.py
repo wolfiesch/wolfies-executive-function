@@ -78,6 +78,11 @@ async def handle_list_tools() -> list[types.Tool]:
     - send_message: Send iMessage to a contact
     - get_recent_messages: Retrieve recent message history
     - list_contacts: Show all configured contacts
+
+    Sprint 2.5 tools:
+    - get_all_recent_conversations: Get recent messages from ALL conversations
+    - search_messages: Search messages by content/keyword
+    - get_messages_by_phone: Get messages by phone number (no contact needed)
     """
     return [
         types.Tool(
@@ -132,6 +137,75 @@ async def handle_list_tools() -> list[types.Tool]:
                 "properties": {},
                 "required": []
             }
+        ),
+        types.Tool(
+            name="get_all_recent_conversations",
+            description=(
+                "Get recent messages from ALL conversations, including people not in your contacts. "
+                "Shows phone numbers/handles for unknown senders. "
+                "Sprint 2.5 enhancement for discovering conversations."
+            ),
+            inputSchema={
+                "type": "object",
+                "properties": {
+                    "limit": {
+                        "type": "number",
+                        "description": "Number of recent messages to retrieve (default: 20)",
+                        "default": 20
+                    }
+                },
+                "required": []
+            }
+        ),
+        types.Tool(
+            name="search_messages",
+            description=(
+                "Search messages by content/keyword across all conversations or filtered by contact. "
+                "Returns matching messages with context snippets. "
+                "Sprint 2.5 enhancement for finding specific conversations."
+            ),
+            inputSchema={
+                "type": "object",
+                "properties": {
+                    "query": {
+                        "type": "string",
+                        "description": "Search query (keyword or phrase)"
+                    },
+                    "contact_name": {
+                        "type": "string",
+                        "description": "Optional: Filter search to specific contact"
+                    },
+                    "limit": {
+                        "type": "number",
+                        "description": "Maximum number of results (default: 50)",
+                        "default": 50
+                    }
+                },
+                "required": ["query"]
+            }
+        ),
+        types.Tool(
+            name="get_messages_by_phone",
+            description=(
+                "Get messages by phone number directly, without needing contact to be configured. "
+                "Useful for unknown numbers or people not in your contacts. "
+                "Sprint 2.5 enhancement."
+            ),
+            inputSchema={
+                "type": "object",
+                "properties": {
+                    "phone_number": {
+                        "type": "string",
+                        "description": "Phone number or iMessage handle (e.g., +14155551234 or email)"
+                    },
+                    "limit": {
+                        "type": "number",
+                        "description": "Number of recent messages to retrieve (default: 20)",
+                        "default": 20
+                    }
+                },
+                "required": ["phone_number"]
+            }
         )
     ]
 
@@ -157,6 +231,12 @@ async def call_tool(name: str, arguments: dict) -> list[types.TextContent]:
             return await handle_get_recent_messages(arguments)
         elif name == "list_contacts":
             return await handle_list_contacts(arguments)
+        elif name == "get_all_recent_conversations":
+            return await handle_get_all_recent_conversations(arguments)
+        elif name == "search_messages":
+            return await handle_search_messages(arguments)
+        elif name == "get_messages_by_phone":
+            return await handle_get_messages_by_phone(arguments)
         else:
             raise ValueError(f"Unknown tool: {name}")
 
@@ -314,6 +394,183 @@ async def handle_list_contacts(arguments: dict) -> list[types.TextContent]:
         )
         if contact.notes:
             response_lines.append(f"  Note: {contact.notes}")
+
+    return [
+        types.TextContent(
+            type="text",
+            text="\n".join(response_lines)
+        )
+    ]
+
+
+async def handle_get_all_recent_conversations(arguments: dict) -> list[types.TextContent]:
+    """
+    Handle get_all_recent_conversations tool call (Sprint 2.5).
+
+    Args:
+        arguments: {"limit": Optional[int]}
+
+    Returns:
+        Recent messages from all conversations
+    """
+    limit = arguments.get("limit", 20)
+
+    # Get all recent messages
+    message_list = messages.get_all_recent_conversations(limit)
+
+    if not message_list:
+        return [
+            types.TextContent(
+                type="text",
+                text=(
+                    "No messages found.\n\n"
+                    "Note: Requires Full Disk Access permission.\n"
+                    "Grant in: System Settings → Privacy & Security → Full Disk Access"
+                )
+            )
+        ]
+
+    # Format response
+    response_lines = [
+        f"Recent Messages (All Conversations):",
+        f"(Showing {len(message_list)} most recent)",
+        ""
+    ]
+
+    for msg in message_list:
+        # Try to find contact name
+        phone = msg["phone"]
+        contact = contacts.get_contact_by_phone(phone)
+        contact_name = contact.name if contact else phone
+
+        direction = "You" if msg["is_from_me"] else contact_name
+        date = msg["date"][:19] if msg["date"] else "Unknown date"
+        text = msg["text"][:80] + "..." if len(msg["text"]) > 80 else msg["text"]
+
+        response_lines.append(f"[{date}] {direction}: {text}")
+
+    return [
+        types.TextContent(
+            type="text",
+            text="\n".join(response_lines)
+        )
+    ]
+
+
+async def handle_search_messages(arguments: dict) -> list[types.TextContent]:
+    """
+    Handle search_messages tool call (Sprint 2.5).
+
+    Args:
+        arguments: {"query": str, "contact_name": Optional[str], "limit": Optional[int]}
+
+    Returns:
+        Messages matching search query
+    """
+    query = arguments["query"]
+    contact_name = arguments.get("contact_name")
+    limit = arguments.get("limit", 50)
+
+    # If contact_name provided, look up phone
+    phone_filter = None
+    if contact_name:
+        contact = contacts.get_contact_by_name(contact_name)
+        if not contact:
+            return [
+                types.TextContent(
+                    type="text",
+                    text=f"Contact '{contact_name}' not found"
+                )
+            ]
+        phone_filter = contact.phone
+
+    # Search messages
+    message_list = messages.search_messages(query, phone=phone_filter, limit=limit)
+
+    if not message_list:
+        filter_text = f" with {contact_name}" if contact_name else ""
+        return [
+            types.TextContent(
+                type="text",
+                text=f"No messages found matching '{query}'{filter_text}"
+            )
+        ]
+
+    # Format response
+    filter_text = f" with {contact_name}" if contact_name else " (all conversations)"
+    response_lines = [
+        f"Search Results for '{query}'{filter_text}:",
+        f"(Found {len(message_list)} matches)",
+        ""
+    ]
+
+    for msg in message_list:
+        # Try to find contact name
+        phone = msg["phone"]
+        contact = contacts.get_contact_by_phone(phone)
+        contact_name_display = contact.name if contact else phone
+
+        direction = "You" if msg["is_from_me"] else contact_name_display
+        date = msg["date"][:10] if msg["date"] else "Unknown"
+        snippet = msg.get("match_snippet", msg["text"][:100])
+
+        response_lines.append(f"[{date}] {direction}: {snippet}")
+        response_lines.append("")  # Blank line between results
+
+    return [
+        types.TextContent(
+            type="text",
+            text="\n".join(response_lines)
+        )
+    ]
+
+
+async def handle_get_messages_by_phone(arguments: dict) -> list[types.TextContent]:
+    """
+    Handle get_messages_by_phone tool call (Sprint 2.5).
+
+    Args:
+        arguments: {"phone_number": str, "limit": Optional[int]}
+
+    Returns:
+        Recent messages with this phone number
+    """
+    phone_number = arguments["phone_number"]
+    limit = arguments.get("limit", 20)
+
+    # Get messages
+    message_list = messages.get_recent_messages(phone_number, limit)
+
+    if not message_list:
+        return [
+            types.TextContent(
+                type="text",
+                text=(
+                    f"No messages found for {phone_number}.\n\n"
+                    "Note: Requires Full Disk Access permission.\n"
+                    "Grant in: System Settings → Privacy & Security → Full Disk Access"
+                )
+            )
+        ]
+
+    # Try to find contact name
+    contact = contacts.get_contact_by_phone(phone_number)
+    contact_name = contact.name if contact else "Unknown Contact"
+
+    # Format response
+    response_lines = [
+        f"Recent messages with {phone_number}",
+        f"({contact_name})" if contact else "(Not in contacts)",
+        f"(Showing {len(message_list)} most recent)",
+        ""
+    ]
+
+    for msg in message_list:
+        direction = "You" if msg["is_from_me"] else contact_name
+        date = msg["date"][:19] if msg["date"] else "Unknown date"
+        text = msg["text"][:100] + "..." if len(msg["text"]) > 100 else msg["text"]
+
+        response_lines.append(f"[{date}] {direction}: {text}")
 
     return [
         types.TextContent(
