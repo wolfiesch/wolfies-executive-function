@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
 AI Life Planner - Command Line Interface
-Simple CLI for managing tasks, projects, and notes
+Simple CLI for managing tasks, projects, calendar events, and notes
 """
 
 import sys
@@ -17,11 +17,16 @@ from rich.panel import Panel
 from datetime import datetime, timedelta
 from typing import Optional
 import json
+import re
 
-from src.core import Database, Config, Task
+from src.core import Database, Config, Task, CalendarEvent
+from src.dashboard import DashboardAggregator, DashboardFormatter
 
 # Initialize CLI app and console
 app = typer.Typer(help="AI Life Planner - Your personal task and project manager")
+event_app = typer.Typer(help="Calendar event management")
+app.add_typer(event_app, name="event")
+
 console = Console()
 db = Database()
 config = Config()
@@ -57,6 +62,93 @@ def parse_relative_date(date_str: str) -> Optional[datetime]:
         return now + timedelta(days=days_ahead)
 
     return None
+
+
+def parse_time_expression(time_str: str) -> Optional[datetime]:
+    """
+    Parse various time formats for event creation.
+
+    Supports:
+        - "2pm", "2:30pm", "14:00" - Today at specified time
+        - "tomorrow 3pm" - Tomorrow at 3pm
+        - "monday 10am" - Next Monday at 10am
+        - "12/20 2pm" - Specific date at 2pm
+
+    Returns:
+        datetime or None if parsing fails
+    """
+    time_str = time_str.lower().strip()
+    now = datetime.now()
+
+    # Pattern for time: "2pm", "2:30pm", "14:00", "2:30 pm"
+    time_pattern = r'(\d{1,2})(?::(\d{2}))?\s*(am|pm)?'
+
+    def extract_time(s: str) -> Optional[tuple]:
+        """Extract hour and minute from time string."""
+        match = re.search(time_pattern, s, re.IGNORECASE)
+        if not match:
+            return None
+
+        hour = int(match.group(1))
+        minute = int(match.group(2)) if match.group(2) else 0
+        meridiem = match.group(3)
+
+        # Handle 12-hour format
+        if meridiem:
+            if meridiem.lower() == 'pm' and hour < 12:
+                hour += 12
+            elif meridiem.lower() == 'am' and hour == 12:
+                hour = 0
+
+        # Validate
+        if hour > 23 or minute > 59:
+            return None
+
+        return (hour, minute)
+
+    # Try to extract date component
+    date_part = now.date()
+
+    # Check for "tomorrow"
+    if 'tomorrow' in time_str:
+        date_part = (now + timedelta(days=1)).date()
+        time_str = time_str.replace('tomorrow', '').strip()
+
+    # Check for day of week
+    days = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday']
+    for day in days:
+        if day in time_str:
+            target_day = days.index(day)
+            current_day = now.weekday()
+            days_ahead = target_day - current_day
+            if days_ahead <= 0:
+                days_ahead += 7
+            date_part = (now + timedelta(days=days_ahead)).date()
+            time_str = time_str.replace(day, '').strip()
+            break
+
+    # Check for date like "12/20" or "12-20"
+    date_match = re.search(r'(\d{1,2})[/-](\d{1,2})', time_str)
+    if date_match:
+        month = int(date_match.group(1))
+        day = int(date_match.group(2))
+        try:
+            date_part = now.replace(month=month, day=day).date()
+            # If date is in past, assume next year
+            if date_part < now.date():
+                date_part = date_part.replace(year=date_part.year + 1)
+        except ValueError:
+            pass
+        time_str = re.sub(r'\d{1,2}[/-]\d{1,2}', '', time_str).strip()
+
+    # Extract time component
+    time_tuple = extract_time(time_str)
+    if not time_tuple:
+        return None
+
+    hour, minute = time_tuple
+
+    return datetime.combine(date_part, datetime.min.time().replace(hour=hour, minute=minute))
 
 
 def format_task(task: Task, include_id: bool = True) -> str:
@@ -101,6 +193,7 @@ def add(
     due: Optional[str] = typer.Option(None, "--due", "-d", help="Due date (today, tomorrow, monday, etc.)"),
     priority: int = typer.Option(3, "--priority", "-p", help="Priority (1-5, 5 is highest)"),
     project: Optional[str] = typer.Option(None, "--project", help="Project name"),
+    estimate: Optional[int] = typer.Option(None, "--estimate", "-e", help="Estimated minutes"),
 ):
     """
     Add a new task
@@ -108,7 +201,7 @@ def add(
     Examples:
       planner add "Call John about project"
       planner add "Review proposal" --due tomorrow --priority 5
-      planner add "Write report" -d friday -p 4
+      planner add "Write report" -d friday -p 4 --estimate 120
     """
     try:
         # Parse due date
@@ -134,14 +227,15 @@ def add(
         # Insert task
         task_id = db.execute_write(
             """
-            INSERT INTO tasks (title, priority, due_date, project_id, tags)
-            VALUES (?, ?, ?, ?, ?)
+            INSERT INTO tasks (title, priority, due_date, project_id, estimated_minutes, tags)
+            VALUES (?, ?, ?, ?, ?, ?)
             """,
             (
                 title,
                 priority,
                 due_date.isoformat() if due_date else None,
                 project_id,
+                estimate,
                 json.dumps([])
             )
         )
@@ -152,6 +246,8 @@ def add(
             console.print(f"  Due: {due_date.strftime('%A, %B %d')}")
         if priority != 3:
             console.print(f"  Priority: {priority}")
+        if estimate:
+            console.print(f"  Estimate: {estimate} minutes")
 
     except Exception as e:
         console.print(f"[red]Error adding task: {e}[/red]")
@@ -159,84 +255,31 @@ def add(
 
 
 @app.command()
-def today():
+def today(
+    verbose: bool = typer.Option(False, "--verbose", "-v", help="Show detailed task breakdowns"),
+):
     """
-    Show today's tasks and schedule
+    Show today's unified dashboard
 
-    Displays:
-    - Tasks due today or overdue
-    - Tasks scheduled for today
-    - High priority tasks without a due date
+    Displays your day at a glance:
+    - Top priorities (smart-ranked)
+    - Calendar events timeline
+    - Overdue tasks warning
+    - Available time analysis
+    - Progress stats
     """
     try:
-        now = datetime.now()
-        today_start = now.replace(hour=0, minute=0, second=0, microsecond=0)
-        today_end = today_start + timedelta(days=1)
+        # Use the new dashboard
+        aggregator = DashboardAggregator(db, config)
+        data = aggregator.aggregate()
 
-        # Query tasks
-        tasks = db.execute(
-            """
-            SELECT * FROM tasks
-            WHERE status NOT IN ('done', 'cancelled')
-              AND (
-                  (due_date >= ? AND due_date < ?)
-                  OR (due_date < ? AND status != 'done')
-                  OR (scheduled_start >= ? AND scheduled_start < ?)
-                  OR (priority >= 4 AND due_date IS NULL)
-              )
-            ORDER BY
-                CASE WHEN due_date < ? THEN 0 ELSE 1 END,
-                priority DESC,
-                due_date ASC
-            """,
-            (
-                today_start.isoformat(),
-                today_end.isoformat(),
-                today_start.isoformat(),
-                today_start.isoformat(),
-                today_end.isoformat(),
-                today_start.isoformat()
-            )
-        )
-
-        if not tasks:
-            console.print(Panel(
-                "[green]No tasks for today! 🎉[/green]",
-                title="Today",
-                border_style="green"
-            ))
-            return
-
-        # Display tasks
-        task_objects = [Task.from_dict(dict(row)) for row in tasks]
-
-        console.print(Panel(
-            f"[bold]{now.strftime('%A, %B %d, %Y')}[/bold]",
-            title="Today",
-            border_style="cyan"
-        ))
-        console.print()
-
-        # Separate overdue and regular tasks
-        overdue = [t for t in task_objects if t.is_overdue()]
-        current = [t for t in task_objects if not t.is_overdue()]
-
-        if overdue:
-            console.print("[bold red]Overdue:[/bold red]")
-            for task in overdue:
-                console.print(f"  {format_task(task)}")
-            console.print()
-
-        if current:
-            console.print("[bold]Today's Tasks:[/bold]")
-            for task in current:
-                console.print(f"  {format_task(task)}")
-
-        console.print()
-        console.print(f"[dim]Total: {len(task_objects)} tasks[/dim]")
+        formatter = DashboardFormatter(console)
+        formatter.render_dashboard(data, verbose=verbose)
 
     except Exception as e:
-        console.print(f"[red]Error fetching tasks: {e}[/red]")
+        console.print(f"[red]Error loading dashboard: {e}[/red]")
+        import traceback
+        traceback.print_exc()
         raise typer.Exit(1)
 
 
@@ -274,8 +317,8 @@ def done(task_id: int = typer.Argument(..., help="Task ID to mark as done")):
         raise typer.Exit(1)
 
 
-@app.command()
-def list(
+@app.command("list")
+def list_tasks(
     status: Optional[str] = typer.Option(None, "--status", "-s", help="Filter by status (todo, in_progress, done)"),
     project: Optional[str] = typer.Option(None, "--project", "-p", help="Filter by project name"),
     all: bool = typer.Option(False, "--all", "-a", help="Show all tasks including done"),
@@ -358,6 +401,162 @@ def stats():
 
     except Exception as e:
         console.print(f"[red]Error fetching statistics: {e}[/red]")
+        raise typer.Exit(1)
+
+
+# ============================================================================
+# Event Subcommands
+# ============================================================================
+
+@event_app.command("add")
+def event_add(
+    title: str = typer.Argument(..., help="Event title"),
+    start: str = typer.Option(..., "--start", "-s", help="Start time (e.g., '2pm', 'tomorrow 3pm', 'monday 10am')"),
+    duration: int = typer.Option(60, "--duration", "-d", help="Duration in minutes (default: 60)"),
+    location: Optional[str] = typer.Option(None, "--location", "-l", help="Event location"),
+    description: Optional[str] = typer.Option(None, "--desc", help="Event description"),
+    all_day: bool = typer.Option(False, "--all-day", help="All-day event"),
+):
+    """
+    Add a new calendar event
+
+    Examples:
+      planner event add "Team Meeting" --start "2pm" --duration 60
+      planner event add "Lunch with John" -s "tomorrow 12:30pm" -d 90 -l "Cafe Roma"
+      planner event add "Conference" --start "monday 9am" --all-day
+    """
+    try:
+        # Parse start time
+        start_time = parse_time_expression(start)
+        if not start_time:
+            console.print(f"[red]Could not parse time: {start}[/red]")
+            console.print("[dim]Try formats like: 2pm, 2:30pm, tomorrow 3pm, monday 10am[/dim]")
+            raise typer.Exit(1)
+
+        # Calculate end time
+        if all_day:
+            end_time = start_time.replace(hour=23, minute=59)
+        else:
+            end_time = start_time + timedelta(minutes=duration)
+
+        # Insert event
+        event_id = db.execute_write(
+            """
+            INSERT INTO calendar_events (title, description, location, start_time, end_time, all_day, calendar_source, status)
+            VALUES (?, ?, ?, ?, ?, ?, 'internal', 'confirmed')
+            """,
+            (
+                title,
+                description,
+                location,
+                start_time.isoformat(),
+                end_time.isoformat(),
+                1 if all_day else 0,
+            )
+        )
+
+        # Display success
+        console.print(f"[green]✓[/green] Added event #{event_id}: {title}")
+        if all_day:
+            console.print(f"  Date: {start_time.strftime('%A, %B %d')} (all day)")
+        else:
+            console.print(f"  Time: {start_time.strftime('%A, %B %d at %I:%M %p')} - {end_time.strftime('%I:%M %p')}")
+        if location:
+            console.print(f"  Location: {location}")
+
+    except Exception as e:
+        console.print(f"[red]Error adding event: {e}[/red]")
+        raise typer.Exit(1)
+
+
+@event_app.command("list")
+def event_list(
+    days: int = typer.Option(7, "--days", "-d", help="Number of days to show (default: 7)"),
+):
+    """
+    List upcoming calendar events
+
+    Examples:
+      planner event list
+      planner event list --days 14
+    """
+    try:
+        now = datetime.now()
+        today_start = now.replace(hour=0, minute=0, second=0, microsecond=0)
+        end_date = now + timedelta(days=days)
+
+        # Query events (include all of today's events, even past ones)
+        events = db.execute(
+            """
+            SELECT * FROM calendar_events
+            WHERE status != 'cancelled'
+            AND start_time >= ? AND start_time <= ?
+            ORDER BY start_time ASC
+            """,
+            (today_start.isoformat(), end_date.isoformat())
+        )
+
+        if not events:
+            console.print(f"[yellow]No events in the next {days} days[/yellow]")
+            return
+
+        # Display events
+        console.print(f"\n[bold]Upcoming Events (next {days} days):[/bold]\n")
+
+        current_date = None
+        for row in events:
+            event = CalendarEvent.from_dict(dict(row))
+
+            # Group by date
+            event_date = event.start_time.date() if event.start_time else None
+            if event_date != current_date:
+                current_date = event_date
+                console.print(f"\n  [bold cyan]{event.start_time.strftime('%A, %B %d')}[/bold cyan]")
+
+            # Format time
+            if event.all_day:
+                time_str = "[dim]All day[/dim]"
+            elif event.start_time and event.end_time:
+                time_str = f"{event.start_time.strftime('%I:%M %p').lstrip('0')} - {event.end_time.strftime('%I:%M %p').lstrip('0')}"
+            else:
+                time_str = "[dim]---[/dim]"
+
+            location_str = f" [dim]@ {event.location}[/dim]" if event.location else ""
+            console.print(f"    [dim]#{event.id}[/dim] {time_str}  {event.title}{location_str}")
+
+        console.print()
+
+    except Exception as e:
+        console.print(f"[red]Error listing events: {e}[/red]")
+        raise typer.Exit(1)
+
+
+@event_app.command("delete")
+def event_delete(
+    event_id: int = typer.Argument(..., help="Event ID to delete"),
+):
+    """
+    Delete a calendar event
+
+    Example:
+      planner event delete 5
+    """
+    try:
+        # Get event
+        event_row = db.execute_one("SELECT * FROM calendar_events WHERE id = ?", (event_id,))
+        if not event_row:
+            console.print(f"[red]Event #{event_id} not found[/red]")
+            raise typer.Exit(1)
+
+        event = CalendarEvent.from_dict(dict(event_row))
+
+        # Delete event
+        db.execute_write("DELETE FROM calendar_events WHERE id = ?", (event_id,))
+
+        console.print(f"[green]✓[/green] Deleted event: {event.title}")
+
+    except Exception as e:
+        console.print(f"[red]Error deleting event: {e}[/red]")
         raise typer.Exit(1)
 
 
