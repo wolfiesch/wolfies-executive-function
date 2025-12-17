@@ -37,6 +37,7 @@ data/database/*.db-shm
 # Configuration (may contain sensitive data)
 config/settings.json
 config/preferences.json
+config/google_credentials/
 # Keep PARA categories in git as it's structural, not personal
 
 # IDE
