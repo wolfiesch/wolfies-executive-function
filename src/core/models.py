@@ -9,6 +9,36 @@ from typing import Optional, List, Dict, Any
 import json
 
 
+def parse_datetime_utc(dt_str: Optional[str]) -> Optional[datetime]:
+    """
+    Parse datetime string from database, ensuring UTC timezone.
+
+    Handles:
+        - ISO format with timezone: "2025-12-30T10:00:00+00:00" -> uses as-is
+        - ISO format without timezone: "2025-12-30T10:00:00" -> assumes UTC
+        - Date only: "2025-12-30" -> assumes UTC midnight
+
+    This prevents the "can't subtract offset-naive and offset-aware datetimes"
+    error by ensuring all parsed datetimes are timezone-aware.
+
+    Args:
+        dt_str: ISO format datetime string from database
+
+    Returns:
+        Timezone-aware datetime (UTC) or None if parsing fails
+    """
+    if not dt_str:
+        return None
+    try:
+        dt = datetime.fromisoformat(dt_str)
+        # If naive (no timezone), assume UTC
+        if dt.tzinfo is None:
+            dt = dt.replace(tzinfo=timezone.utc)
+        return dt
+    except (ValueError, TypeError):
+        return None
+
+
 @dataclass
 class ParaCategory:
     """PARA category (Project, Area, Resource, Archive)"""
@@ -35,13 +65,8 @@ class ParaCategory:
 
     @staticmethod
     def _parse_datetime(dt_str: Optional[str]) -> Optional[datetime]:
-        """Parse datetime string from database"""
-        if dt_str:
-            try:
-                return datetime.fromisoformat(dt_str)
-            except (ValueError, TypeError):
-                return None
-        return None
+        """Parse datetime string from database (UTC-aware)."""
+        return parse_datetime_utc(dt_str)
 
 
 @dataclass
@@ -80,23 +105,13 @@ class Project:
 
     @staticmethod
     def _parse_datetime(dt_str: Optional[str]) -> Optional[datetime]:
-        """Parse datetime string from database"""
-        if dt_str:
-            try:
-                return datetime.fromisoformat(dt_str)
-            except (ValueError, TypeError):
-                return None
-        return None
+        """Parse datetime string from database (UTC-aware)."""
+        return parse_datetime_utc(dt_str)
 
     @staticmethod
     def _parse_date(date_str: Optional[str]) -> Optional[datetime]:
-        """Parse date string from database"""
-        if date_str:
-            try:
-                return datetime.fromisoformat(date_str)
-            except (ValueError, TypeError):
-                return None
-        return None
+        """Parse date string from database (UTC-aware)."""
+        return parse_datetime_utc(date_str)
 
     @staticmethod
     def _parse_json(json_str: Optional[str]) -> Optional[Dict[str, Any]]:
@@ -167,13 +182,8 @@ class Task:
 
     @staticmethod
     def _parse_datetime(dt_str: Optional[str]) -> Optional[datetime]:
-        """Parse datetime string from database"""
-        if dt_str:
-            try:
-                return datetime.fromisoformat(dt_str)
-            except (ValueError, TypeError):
-                return None
-        return None
+        """Parse datetime string from database (UTC-aware)."""
+        return parse_datetime_utc(dt_str)
 
     @staticmethod
     def _parse_json(json_str: Optional[str]) -> Optional[Dict[str, Any]]:
@@ -229,13 +239,8 @@ class Note:
 
     @staticmethod
     def _parse_datetime(dt_str: Optional[str]) -> Optional[datetime]:
-        """Parse datetime string from database"""
-        if dt_str:
-            try:
-                return datetime.fromisoformat(dt_str)
-            except (ValueError, TypeError):
-                return None
-        return None
+        """Parse datetime string from database (UTC-aware)."""
+        return parse_datetime_utc(dt_str)
 
     @staticmethod
     def _parse_json(json_str: Optional[str]) -> Optional[Dict[str, Any]]:
@@ -297,13 +302,8 @@ class CalendarEvent:
 
     @staticmethod
     def _parse_datetime(dt_str: Optional[str]) -> Optional[datetime]:
-        """Parse datetime string from database"""
-        if dt_str:
-            try:
-                return datetime.fromisoformat(dt_str)
-            except (ValueError, TypeError):
-                return None
-        return None
+        """Parse datetime string from database (UTC-aware)."""
+        return parse_datetime_utc(dt_str)
 
     @staticmethod
     def _parse_json(json_str: Optional[str]) -> Optional[Dict[str, Any]]:

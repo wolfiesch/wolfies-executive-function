@@ -5,8 +5,22 @@ import {
   Calendar,
   Plus,
   ChevronRight,
+  AlertCircle,
 } from 'lucide-react'
 import { AppShell } from '@/components/layout'
+import { useDashboardData } from '@/api/hooks'
+import { TaskCard } from '@/components/tasks/TaskCard'
+import { format, parseISO } from 'date-fns'
+
+// Local type for calendar event (matches API response)
+interface DashboardEvent {
+  id: number
+  title: string
+  start_time: string
+  end_time?: string
+  all_day?: boolean
+  location?: string
+}
 
 /**
  * Dashboard - Today view (landing page)
@@ -19,12 +33,30 @@ import { AppShell } from '@/components/layout'
  *
  * Design pattern: **Dashboard Pattern** - aggregates key metrics and
  * actionable items from multiple domains into a single view.
+ *
+ * CS concept: **React Query** - handles caching, background refetching,
+ * and loading states automatically. Data stays fresh without manual refresh.
  */
 export function Dashboard() {
+  // Fetch dashboard data from API
+  const { data: dashboardData, isLoading, error } = useDashboardData()
+
   // Get current hour to personalize greeting
   const hour = new Date().getHours()
   const greeting =
     hour < 12 ? 'Good morning' : hour < 18 ? 'Good afternoon' : 'Good evening'
+
+  // Extract stats from API response or use defaults
+  const stats = dashboardData?.stats ?? {
+    tasks_today: 0,
+    tasks_overdue: 0,
+    completion_rate: 0,
+    streak_days: 0,
+  }
+
+  // Calculate tasks done from completion rate
+  const tasksDone = Math.round((stats.completion_rate / 100) * stats.tasks_today)
+  const tasksTotal = stats.tasks_today
 
   return (
     <AppShell>
@@ -47,35 +79,45 @@ export function Dashboard() {
           </button>
         </div>
 
+        {/* Error state */}
+        {error && (
+          <div className="flex items-center gap-3 rounded-lg border border-[var(--color-accent-red)]/30 bg-[var(--color-accent-red)]/10 p-4">
+            <AlertCircle className="h-5 w-5 text-[var(--color-accent-red)]" />
+            <p className="text-sm text-[var(--color-accent-red)]">
+              Failed to load dashboard data. Please try refreshing.
+            </p>
+          </div>
+        )}
+
         {/* Stats cards */}
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
           <StatCard
             icon={CheckCircle2}
             label="Tasks Done"
-            value="0/5"
+            value={isLoading ? '...' : `${tasksDone}/${tasksTotal}`}
             subtext="today"
             color="green"
           />
           <StatCard
             icon={Clock}
-            label="Upcoming"
-            value="3"
-            subtext="events"
-            color="blue"
+            label="Overdue"
+            value={isLoading ? '...' : String(stats.tasks_overdue)}
+            subtext="tasks"
+            color={stats.tasks_overdue > 0 ? 'orange' : 'blue'}
           />
           <StatCard
             icon={Target}
             label="Goals"
-            value="2"
+            value={isLoading ? '...' : String(dashboardData?.goal_summaries?.length ?? 0)}
             subtext="in progress"
             color="purple"
           />
           <StatCard
             icon={Calendar}
-            label="Focus Time"
-            value="2h"
-            subtext="blocked"
-            color="orange"
+            label="Events"
+            value={isLoading ? '...' : String(dashboardData?.upcoming_events?.length ?? 0)}
+            subtext="upcoming"
+            color="blue"
           />
         </div>
 
@@ -92,11 +134,23 @@ export function Dashboard() {
               </button>
             </div>
 
-            {/* Task list placeholder */}
+            {/* Task list - real data or loading state */}
             <div className="space-y-3">
-              <TaskPlaceholder />
-              <TaskPlaceholder />
-              <TaskPlaceholder />
+              {isLoading ? (
+                <>
+                  <TaskPlaceholder />
+                  <TaskPlaceholder />
+                  <TaskPlaceholder />
+                </>
+              ) : dashboardData?.priority_tasks?.length ? (
+                dashboardData.priority_tasks.slice(0, 5).map((task) => (
+                  <TaskCard key={task.id} task={task} />
+                ))
+              ) : (
+                <p className="py-4 text-center text-sm text-[var(--color-text-tertiary)]">
+                  No priority tasks for today. Great job! 🎉
+                </p>
+              )}
             </div>
           </section>
 
@@ -111,10 +165,22 @@ export function Dashboard() {
               </button>
             </div>
 
-            {/* Events placeholder */}
+            {/* Events list - real data or loading state */}
             <div className="space-y-3">
-              <EventPlaceholder />
-              <EventPlaceholder />
+              {isLoading ? (
+                <>
+                  <EventPlaceholder />
+                  <EventPlaceholder />
+                </>
+              ) : dashboardData?.upcoming_events?.length ? (
+                dashboardData.upcoming_events.slice(0, 5).map((event) => (
+                  <EventItem key={event.id} event={event} />
+                ))
+              ) : (
+                <p className="py-4 text-center text-sm text-[var(--color-text-tertiary)]">
+                  No upcoming events. Enjoy your free time!
+                </p>
+              )}
             </div>
           </section>
         </div>
@@ -203,6 +269,33 @@ function EventPlaceholder() {
       <div className="flex-1">
         <div className="h-4 w-1/2 rounded bg-[var(--color-bg-hover)]" />
         <div className="mt-1 h-3 w-1/4 rounded bg-[var(--color-bg-hover)]" />
+      </div>
+    </div>
+  )
+}
+
+// Event item component for displaying calendar events
+function EventItem({ event }: { event: DashboardEvent }) {
+  // Parse the event start time
+  const startDate = event.start_time ? parseISO(event.start_time) : new Date()
+  const dayName = format(startDate, 'EEE')
+  const dayNum = format(startDate, 'd')
+  const timeStr = event.all_day ? 'All day' : format(startDate, 'h:mm a')
+
+  return (
+    <div className="flex gap-3 rounded-lg border border-[var(--color-border-subtle)] bg-[var(--color-bg-tertiary)] p-3">
+      <div className="flex flex-col items-center rounded bg-[var(--color-accent-blue)]/10 px-3 py-2">
+        <span className="text-xs text-[var(--color-accent-blue)]">{dayName}</span>
+        <span className="font-semibold text-[var(--color-text-primary)]">{dayNum}</span>
+      </div>
+      <div className="flex-1 min-w-0">
+        <p className="truncate font-medium text-[var(--color-text-primary)]">
+          {event.title}
+        </p>
+        <p className="text-sm text-[var(--color-text-secondary)]">
+          {timeStr}
+          {event.location && ` · ${event.location}`}
+        </p>
       </div>
     </div>
   )
