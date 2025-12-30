@@ -1,5 +1,9 @@
-import { Search, Filter, Plus, MoreHorizontal, ChevronDown } from 'lucide-react'
+import { useState } from 'react'
+import { Search, Filter, Plus, ChevronDown, AlertCircle, Loader2 } from 'lucide-react'
 import { AppShell } from '@/components/layout'
+import { useTasks, useToggleTaskComplete } from '@/api/hooks'
+import { TaskCard } from '@/components/tasks/TaskCard'
+import type { Task } from '@/types/models'
 
 /**
  * Tasks - Task management page
@@ -14,6 +18,30 @@ import { AppShell } from '@/components/layout'
  * allows quick browsing while maintaining access to full information.
  */
 export function Tasks() {
+  const [selectedTask, setSelectedTask] = useState<Task | null>(null)
+  const [searchQuery, setSearchQuery] = useState('')
+
+  // Fetch tasks from API
+  const { data: tasks, isLoading, error } = useTasks()
+  const toggleComplete = useToggleTaskComplete()
+
+  // Filter tasks by search query
+  const filteredTasks = tasks?.filter((task) => {
+    if (!searchQuery) return true
+    const search = searchQuery.toLowerCase()
+    return (
+      task.title.toLowerCase().includes(search) ||
+      task.description?.toLowerCase().includes(search) ||
+      task.tags.some((tag) => tag.toLowerCase().includes(search))
+    )
+  })
+
+  const handleStatusChange = (task: Task, newStatus: Task['status']) => {
+    if (newStatus === 'done') {
+      toggleComplete.mutate({ ...task, status: task.status === 'done' ? 'todo' : task.status })
+    }
+  }
+
   return (
     <AppShell>
       <div className="flex h-[calc(100vh-theme(spacing.20))] flex-col">
@@ -26,6 +54,16 @@ export function Tasks() {
           </button>
         </div>
 
+        {/* Error state */}
+        {error && (
+          <div className="mb-4 flex items-center gap-3 rounded-lg border border-[var(--color-accent-red)]/30 bg-[var(--color-accent-red)]/10 p-4">
+            <AlertCircle className="h-5 w-5 text-[var(--color-accent-red)]" />
+            <p className="text-sm text-[var(--color-accent-red)]">
+              Failed to load tasks. Please try refreshing.
+            </p>
+          </div>
+        )}
+
         {/* Search and filters */}
         <div className="mb-4 flex flex-wrap items-center gap-3">
           {/* Search input */}
@@ -34,6 +72,8 @@ export function Tasks() {
             <input
               type="text"
               placeholder="Search tasks..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
               className="w-full rounded-lg border border-[var(--color-border-default)] bg-[var(--color-bg-tertiary)] py-2 pl-10 pr-4 text-[var(--color-text-primary)] placeholder:text-[var(--color-text-tertiary)] focus:border-[var(--color-accent-blue)] focus:outline-none"
             />
           </div>
@@ -60,41 +100,115 @@ export function Tasks() {
                 All Tasks
               </span>
               <span className="ml-2 rounded-full bg-[var(--color-bg-tertiary)] px-2 py-0.5 text-xs text-[var(--color-text-tertiary)]">
-                0
+                {filteredTasks?.length ?? 0}
               </span>
             </div>
 
-            {/* Task items placeholder */}
-            <div className="divide-y divide-[var(--color-border-subtle)]">
-              {[1, 2, 3, 4, 5].map((i) => (
-                <TaskRowPlaceholder key={i} />
-              ))}
-            </div>
+            {/* Loading state */}
+            {isLoading && (
+              <div className="flex items-center justify-center py-16">
+                <Loader2 className="h-6 w-6 animate-spin text-[var(--color-accent-blue)]" />
+              </div>
+            )}
 
-            {/* Empty state (would show when no tasks) */}
-            {false && (
+            {/* Task items */}
+            {!isLoading && filteredTasks && filteredTasks.length > 0 && (
+              <div className="space-y-2 p-3">
+                {filteredTasks.map((task) => (
+                  <TaskCard
+                    key={task.id}
+                    task={task}
+                    selected={selectedTask?.id === task.id}
+                    onClick={() => setSelectedTask(task)}
+                    onStatusChange={(status) => handleStatusChange(task, status)}
+                  />
+                ))}
+              </div>
+            )}
+
+            {/* Empty state */}
+            {!isLoading && (!filteredTasks || filteredTasks.length === 0) && (
               <div className="flex flex-col items-center justify-center py-16 text-center">
                 <p className="text-lg font-medium text-[var(--color-text-primary)]">
-                  No tasks found
+                  {searchQuery ? 'No tasks match your search' : 'No tasks yet'}
                 </p>
                 <p className="mt-1 text-sm text-[var(--color-text-secondary)]">
-                  Create a new task or adjust your filters
+                  {searchQuery ? 'Try a different search term' : 'Create a new task to get started'}
                 </p>
               </div>
             )}
           </div>
 
-          {/* Detail panel placeholder */}
+          {/* Detail panel */}
           <div className="hidden w-96 overflow-y-auto rounded-xl border border-[var(--color-border-subtle)] bg-[var(--color-bg-secondary)] lg:block">
-            <div className="flex h-full flex-col items-center justify-center p-6 text-center">
-              <p className="text-sm text-[var(--color-text-secondary)]">
-                Select a task to view details
-              </p>
-            </div>
+            {selectedTask ? (
+              <TaskDetailPanel task={selectedTask} />
+            ) : (
+              <div className="flex h-full flex-col items-center justify-center p-6 text-center">
+                <p className="text-sm text-[var(--color-text-secondary)]">
+                  Select a task to view details
+                </p>
+              </div>
+            )}
           </div>
         </div>
       </div>
     </AppShell>
+  )
+}
+
+// Task detail panel component
+function TaskDetailPanel({ task }: { task: Task }) {
+  return (
+    <div className="p-5">
+      <h2 className="text-lg font-semibold text-[var(--color-text-primary)]">
+        {task.title}
+      </h2>
+      {task.description && (
+        <p className="mt-2 text-sm text-[var(--color-text-secondary)]">
+          {task.description}
+        </p>
+      )}
+      <div className="mt-4 space-y-3 text-sm">
+        <div className="flex justify-between">
+          <span className="text-[var(--color-text-tertiary)]">Status</span>
+          <span className="capitalize text-[var(--color-text-primary)]">{task.status}</span>
+        </div>
+        <div className="flex justify-between">
+          <span className="text-[var(--color-text-tertiary)]">Priority</span>
+          <span className="text-[var(--color-text-primary)]">P{task.priority}</span>
+        </div>
+        {task.due_date && (
+          <div className="flex justify-between">
+            <span className="text-[var(--color-text-tertiary)]">Due Date</span>
+            <span className="text-[var(--color-text-primary)]">
+              {new Date(task.due_date).toLocaleDateString()}
+            </span>
+          </div>
+        )}
+        {task.estimated_minutes && (
+          <div className="flex justify-between">
+            <span className="text-[var(--color-text-tertiary)]">Estimate</span>
+            <span className="text-[var(--color-text-primary)]">{task.estimated_minutes} min</span>
+          </div>
+        )}
+        {task.tags.length > 0 && (
+          <div>
+            <span className="text-[var(--color-text-tertiary)]">Tags</span>
+            <div className="mt-1 flex flex-wrap gap-1">
+              {task.tags.map((tag) => (
+                <span
+                  key={tag}
+                  className="rounded bg-[var(--color-bg-tertiary)] px-2 py-0.5 text-xs text-[var(--color-text-secondary)]"
+                >
+                  #{tag}
+                </span>
+              ))}
+            </div>
+          </div>
+        )}
+      </div>
+    </div>
   )
 }
 
@@ -105,33 +219,6 @@ function FilterButton({ label }: { label: string }) {
       {label}
       <ChevronDown className="h-4 w-4" />
     </button>
-  )
-}
-
-// Task row placeholder
-function TaskRowPlaceholder() {
-  return (
-    <div className="flex items-center gap-3 px-4 py-3 hover:bg-[var(--color-bg-hover)]">
-      {/* Checkbox placeholder */}
-      <div className="h-5 w-5 rounded border-2 border-[var(--color-border-default)]" />
-
-      {/* Task content */}
-      <div className="flex-1">
-        <div className="h-4 w-2/3 rounded bg-[var(--color-bg-tertiary)]" />
-        <div className="mt-1 flex items-center gap-2">
-          <div className="h-3 w-16 rounded bg-[var(--color-bg-tertiary)]" />
-          <div className="h-3 w-20 rounded bg-[var(--color-bg-tertiary)]" />
-        </div>
-      </div>
-
-      {/* Priority indicator */}
-      <div className="h-2 w-2 rounded-full bg-[var(--color-priority-3)]" />
-
-      {/* More actions */}
-      <button className="rounded p-1 text-[var(--color-text-tertiary)] hover:bg-[var(--color-bg-active)] hover:text-[var(--color-text-secondary)]">
-        <MoreHorizontal className="h-4 w-4" />
-      </button>
-    </div>
   )
 }
 
