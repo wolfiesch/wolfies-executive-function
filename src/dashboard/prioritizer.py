@@ -9,7 +9,7 @@ Score formula:
 """
 
 from dataclasses import dataclass, field
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from typing import List, Optional, Dict, Any
 
 from src.core.models import Task
@@ -53,7 +53,7 @@ def calculate_urgency_score(task: Task, now: Optional[datetime] = None) -> float
         Urgency score between 0.0 and 1.0
     """
     if now is None:
-        now = datetime.utcnow()
+        now = datetime.now(timezone.utc)
 
     # No due date = low urgency
     if task.due_date is None:
@@ -244,7 +244,7 @@ class Prioritizer:
             ScoredTask with computed scores
         """
         if now is None:
-            now = datetime.utcnow()
+            now = datetime.now(timezone.utc)
 
         urgency = calculate_urgency_score(task, now)
         importance = calculate_importance_score(task)
@@ -319,7 +319,7 @@ class Prioritizer:
             List of ScoredTask sorted by score (highest first)
         """
         if now is None:
-            now = datetime.utcnow()
+            now = datetime.now(timezone.utc)
 
         # Score all tasks
         scored = [

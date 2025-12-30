@@ -204,7 +204,8 @@ Categorize all tasks, goals, and notes by life area:
 ### Timestamp Format
 All timestamps stored as ISO 8601 in UTC:
 ```python
-datetime.utcnow().isoformat()  # "2025-12-06T15:37:00.123456"
+from datetime import datetime, timezone
+datetime.now(timezone.utc).isoformat()  # "2025-12-06T15:37:00.123456+00:00"
 ```
 
 ## Proactive Features

@@ -6,7 +6,7 @@ Demonstrates basic CRUD operations for tasks, projects, and notes
 
 import sys
 from pathlib import Path
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 import json
 
 # Add parent directory to path
@@ -62,8 +62,8 @@ def main():
             "Create a comprehensive life planning system with AI assistance",
             "active",
             prof_cat_id,
-            datetime.utcnow().date().isoformat(),
-            (datetime.utcnow() + timedelta(days=90)).date().isoformat()
+            datetime.now(timezone.utc).date().isoformat(),
+            (datetime.now(timezone.utc) + timedelta(days=90)).date().isoformat()
         )
     )
 
@@ -110,7 +110,7 @@ def main():
                 project_id,
                 prof_cat_id,
                 60,  # 1 hour estimate
-                (datetime.utcnow() + timedelta(days=7)).isoformat(),
+                (datetime.now(timezone.utc) + timedelta(days=7)).isoformat(),
                 json.dumps(["development", "ai", "productivity"])
             )
         )
@@ -166,8 +166,8 @@ def main():
             """,
             (
                 "in_progress",
-                datetime.utcnow().isoformat(),
-                (datetime.utcnow() + timedelta(hours=1)).isoformat(),
+                datetime.now(timezone.utc).isoformat(),
+                (datetime.now(timezone.utc) + timedelta(hours=1)).isoformat(),
                 first_todo['id']
             )
         )

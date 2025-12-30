@@ -17,7 +17,7 @@ import json
 import logging
 from pathlib import Path
 from typing import Optional, List
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from dateutil import parser as date_parser
 
 # Add project root to path for imports
@@ -403,7 +403,7 @@ async def handle_list_events(arguments: dict) -> list[types.TextContent]:
     calendar_id = arguments.get("calendar_id", "primary")
 
     # Calculate time range
-    time_min = datetime.utcnow()
+    time_min = datetime.now(timezone.utc)
     time_max = time_min + timedelta(days=days_ahead)
 
     # Get events
@@ -637,7 +637,7 @@ async def handle_find_free_time(arguments: dict) -> list[types.TextContent]:
         ]
 
     # Calculate time range
-    time_min = datetime.utcnow()
+    time_min = datetime.now(timezone.utc)
     time_max = time_min + timedelta(days=days_ahead)
 
     # Find free slots

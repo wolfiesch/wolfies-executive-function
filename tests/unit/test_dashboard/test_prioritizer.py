@@ -4,7 +4,7 @@ Tests the priority scoring algorithm.
 """
 
 import pytest
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 
 import sys
 from pathlib import Path
@@ -26,7 +26,7 @@ class TestUrgencyScore:
 
     def test_overdue_task_has_max_urgency(self):
         """Overdue tasks should have urgency score of 1.0."""
-        now = datetime.utcnow()
+        now = datetime.now(timezone.utc)
         task = Task(
             id=1,
             title="Overdue task",
@@ -38,7 +38,7 @@ class TestUrgencyScore:
 
     def test_due_today_has_high_urgency(self):
         """Tasks due today should have urgency score of 0.9."""
-        now = datetime.utcnow()
+        now = datetime.now(timezone.utc)
         task = Task(
             id=1,
             title="Due today",
@@ -50,7 +50,7 @@ class TestUrgencyScore:
 
     def test_due_tomorrow_has_moderate_urgency(self):
         """Tasks due tomorrow should have urgency score of 0.7."""
-        now = datetime.utcnow()
+        now = datetime.now(timezone.utc)
         task = Task(
             id=1,
             title="Due tomorrow",
@@ -62,7 +62,7 @@ class TestUrgencyScore:
 
     def test_due_this_week_has_medium_urgency(self):
         """Tasks due within a week should have urgency score of 0.5."""
-        now = datetime.utcnow()
+        now = datetime.now(timezone.utc)
         task = Task(
             id=1,
             title="Due this week",
@@ -74,7 +74,7 @@ class TestUrgencyScore:
 
     def test_no_due_date_has_low_urgency(self):
         """Tasks without due date should have urgency score of 0.1."""
-        now = datetime.utcnow()
+        now = datetime.now(timezone.utc)
         task = Task(
             id=1,
             title="No due date",
@@ -86,7 +86,7 @@ class TestUrgencyScore:
 
     def test_far_future_due_date_has_low_urgency(self):
         """Tasks due far in the future should have urgency score of 0.1."""
-        now = datetime.utcnow()
+        now = datetime.now(timezone.utc)
         task = Task(
             id=1,
             title="Due next month",
@@ -164,7 +164,7 @@ class TestContextScore:
 
     def test_scheduled_task_gets_bonus(self):
         """Scheduled tasks should get a context bonus."""
-        now = datetime.utcnow()
+        now = datetime.now(timezone.utc)
         task = Task(
             id=1,
             title="Scheduled",
@@ -186,7 +186,7 @@ class TestPrioritizer:
 
     def test_score_tasks_returns_sorted_list(self):
         """score_tasks should return tasks sorted by score (descending)."""
-        now = datetime.utcnow()
+        now = datetime.now(timezone.utc)
 
         tasks = [
             Task(id=1, title="Low priority", priority=1),
@@ -216,7 +216,7 @@ class TestPrioritizer:
 
     def test_scored_task_contains_breakdown(self):
         """ScoredTask should contain score breakdown for transparency."""
-        task = Task(id=1, title="Test task", priority=4, due_date=datetime.utcnow())
+        task = Task(id=1, title="Test task", priority=4, due_date=datetime.now(timezone.utc))
 
         prioritizer = Prioritizer()
         scored = prioritizer.score_task(task)
@@ -229,7 +229,7 @@ class TestPrioritizer:
     def test_combined_scoring_weights_correctly(self):
         """Combined score should weight components correctly."""
         # Create a task with known scores
-        now = datetime.utcnow()
+        now = datetime.now(timezone.utc)
         task = Task(
             id=1,
             title="Known scores",

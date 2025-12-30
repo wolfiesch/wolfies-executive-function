@@ -10,7 +10,7 @@ import os
 import json
 import logging
 from pathlib import Path
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from typing import Optional, List, Dict, Any
 from dateutil import parser as date_parser
 
@@ -139,7 +139,7 @@ class GoogleCalendarClient:
 
         # Default to now if no time_min specified
         if time_min is None:
-            time_min = datetime.utcnow()
+            time_min = datetime.now(timezone.utc)
 
         try:
             # Build query parameters
@@ -297,7 +297,7 @@ class GoogleCalendarClient:
 
         # Defaults
         if time_min is None:
-            time_min = datetime.utcnow()
+            time_min = datetime.now(timezone.utc)
         if time_max is None:
             time_max = time_min + timedelta(days=7)
 
