@@ -4,6 +4,9 @@
 
 import type { TaskStatus, Priority, LifeArea, GoalStatus, NoteType, EventType } from '@/lib/constants'
 
+// Re-export types for convenience
+export type { TaskStatus, Priority, LifeArea, GoalStatus, NoteType, EventType } from '@/lib/constants'
+
 // Base model with common fields
 export interface BaseModel {
   id: string

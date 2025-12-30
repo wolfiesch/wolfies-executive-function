@@ -17,6 +17,11 @@ from backend.schemas import (
     AgentResponseSchema,
 )
 from src.agents import NoteAgent
+from backend.websocket import (
+    notify_note_created,
+    notify_note_updated,
+    notify_note_deleted,
+)
 
 router = APIRouter(prefix="/notes", tags=["notes"])
 
@@ -126,6 +131,10 @@ async def create_note(
     if not response.success:
         raise HTTPException(status_code=400, detail=response.message)
 
+    # Notify WebSocket subscribers
+    if response.data and response.data.get("note"):
+        await notify_note_created(response.data["note"])
+
     return AgentResponseSchema(
         success=response.success,
         message=response.message,
@@ -150,6 +159,10 @@ async def update_note(
     if not response.success:
         raise HTTPException(status_code=400, detail=response.message)
 
+    # Notify WebSocket subscribers
+    if response.data and response.data.get("note"):
+        await notify_note_updated(response.data["note"])
+
     return AgentResponseSchema(
         success=response.success,
         message=response.message,
@@ -168,6 +181,9 @@ async def delete_note(
 
     if not response.success:
         raise HTTPException(status_code=400, detail=response.message)
+
+    # Notify WebSocket subscribers
+    await notify_note_deleted(str(note_id))
 
     return AgentResponseSchema(
         success=response.success,
