@@ -378,3 +378,6 @@ function CommandItem({ action, onSelect }: CommandItemProps) {
     </Command.Item>
   )
 }
+
+// Default export for lazy loading
+export default CommandPalette

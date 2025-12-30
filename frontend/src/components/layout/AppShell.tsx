@@ -1,10 +1,20 @@
-import type { ReactNode } from 'react'
+import { lazy, Suspense, useEffect, useState, type ReactNode } from 'react'
 import { cn } from '@/lib/utils'
 import { Sidebar } from './Sidebar'
 import { Header } from './Header'
 import { RightPanel } from './RightPanel'
-import { CommandPalette } from './CommandPalette'
 import { useUIStore, type RightPanelContent } from '@/stores/uiStore'
+
+// ============================================================
+// LAZY-LOADED COMMAND PALETTE
+// ============================================================
+// CommandPalette imports cmdk and framer-motion (together ~95KB).
+// By lazy loading, we defer this chunk until the user presses ⌘K.
+//
+// CS Concept: **Deferred Loading** - Load expensive components only
+// when needed, reducing initial page load time.
+// ============================================================
+const CommandPalette = lazy(() => import('./CommandPalette'))
 
 interface AppShellProps {
   /** Main page content */
@@ -35,11 +45,14 @@ interface AppShellProps {
  * - Collapsible sidebar (state persisted to localStorage)
  * - Fixed header with command palette trigger
  * - Slide-out right panel for detail views
- * - Global command palette (Cmd+K)
+ * - Global command palette (Cmd+K) - lazy loaded
  * - Responsive layout adjustments
  *
  * Design pattern: **Layout Component** - acts as a container that manages
  * the overall page structure and coordinates between layout regions.
+ *
+ * Performance: CommandPalette is lazy-loaded to reduce initial bundle size.
+ * The chunk is only downloaded when the user first opens the palette (⌘K).
  */
 export function AppShell({
   children,
@@ -47,7 +60,24 @@ export function AppShell({
   breadcrumbs,
   renderPanelContent,
 }: AppShellProps) {
-  const { sidebarCollapsed } = useUIStore()
+  const { sidebarCollapsed, commandPaletteOpen } = useUIStore()
+
+  // ============================================================
+  // LAZY COMMAND PALETTE MOUNTING
+  // ============================================================
+  // Only mount CommandPalette after it's been opened once.
+  // This prevents loading the chunk (~95KB) until actually needed.
+  //
+  // Pattern: **Mount on First Use** - component stays mounted after
+  // first open for instant subsequent opens (no re-load delay).
+  // ============================================================
+  const [hasOpenedPalette, setHasOpenedPalette] = useState(false)
+
+  useEffect(() => {
+    if (commandPaletteOpen && !hasOpenedPalette) {
+      setHasOpenedPalette(true)
+    }
+  }, [commandPaletteOpen, hasOpenedPalette])
 
   return (
     <div className="min-h-screen bg-bg-primary">
@@ -71,8 +101,18 @@ export function AppShell({
       {/* Right Panel Overlay - for task/event/note details */}
       <RightPanel renderContent={renderPanelContent} />
 
-      {/* Global Command Palette */}
-      <CommandPalette />
+      {/*
+        Global Command Palette - Lazy Loaded
+
+        Only loads the CommandPalette chunk after the first ⌘K press.
+        Suspense fallback is null since the palette has its own animations.
+        After first load, stays mounted for instant subsequent opens.
+      */}
+      {hasOpenedPalette && (
+        <Suspense fallback={null}>
+          <CommandPalette />
+        </Suspense>
+      )}
     </div>
   )
 }
