@@ -30,6 +30,25 @@ from src.contacts_manager import ContactsManager
 # Project root directory (for resolving relative paths)
 PROJECT_ROOT = Path(__file__).parent.parent
 
+# RAG imports (lazy loaded to avoid startup cost if not using RAG)
+_retriever = None
+
+def get_retriever():
+    """Lazy-load the MessageRetriever to avoid startup cost."""
+    global _retriever
+    if _retriever is None:
+        try:
+            from src.rag.retriever import MessageRetriever
+            _retriever = MessageRetriever(
+                persist_directory=str(PROJECT_ROOT / "data" / "chroma"),
+                contacts_config=str(PROJECT_ROOT / "config" / "contacts.json"),
+            )
+            logger.info("RAG retriever initialized")
+        except ImportError as e:
+            logger.warning(f"RAG dependencies not installed: {e}")
+            raise
+    return _retriever
+
 # Configure logging with absolute path
 LOG_DIR = PROJECT_ROOT / "logs"
 LOG_DIR.mkdir(exist_ok=True)  # Ensure log directory exists
@@ -313,6 +332,71 @@ async def handle_list_tools() -> list[types.Tool]:
                 },
                 "required": []
             }
+        ),
+        # RAG Tools (Sprint 4)
+        types.Tool(
+            name="index_messages",
+            description=(
+                "Index messages for semantic search (RAG). "
+                "Creates embeddings of conversation chunks for fast semantic retrieval. "
+                "Run this before using ask_messages. Can index a specific contact or recent messages from all contacts. "
+                "Requires OpenAI API key (OPENAI_API_KEY env var) or local embeddings."
+            ),
+            inputSchema={
+                "type": "object",
+                "properties": {
+                    "contact_name": {
+                        "type": "string",
+                        "description": "Optional: Index messages with this specific contact only"
+                    },
+                    "days": {
+                        "type": "number",
+                        "description": "Number of days of history to index (default: 30)",
+                        "default": 30
+                    }
+                },
+                "required": []
+            }
+        ),
+        types.Tool(
+            name="ask_messages",
+            description=(
+                "Semantic search across indexed iMessage conversations. "
+                "Uses AI embeddings to find relevant conversations based on meaning, not just keywords. "
+                "Example: 'What restaurant did Sarah recommend?' finds discussions about restaurants with Sarah. "
+                "Run index_messages first to build the search index."
+            ),
+            inputSchema={
+                "type": "object",
+                "properties": {
+                    "question": {
+                        "type": "string",
+                        "description": "Natural language question or search query"
+                    },
+                    "contact_name": {
+                        "type": "string",
+                        "description": "Optional: Only search conversations with this contact"
+                    },
+                    "limit": {
+                        "type": "number",
+                        "description": "Maximum number of relevant conversations to return (default: 5)",
+                        "default": 5
+                    }
+                },
+                "required": ["question"]
+            }
+        ),
+        types.Tool(
+            name="rag_stats",
+            description=(
+                "Get statistics about the indexed message database. "
+                "Shows how many conversations are indexed, which contacts, date range, etc."
+            ),
+            inputSchema={
+                "type": "object",
+                "properties": {},
+                "required": []
+            }
         )
     ]
 
@@ -348,6 +432,13 @@ async def call_tool(name: str, arguments: dict) -> list[types.TextContent]:
             return await handle_list_group_chats(arguments)
         elif name == "get_group_messages":
             return await handle_get_group_messages(arguments)
+        # RAG tools
+        elif name == "index_messages":
+            return await handle_index_messages(arguments)
+        elif name == "ask_messages":
+            return await handle_ask_messages(arguments)
+        elif name == "rag_stats":
+            return await handle_rag_stats(arguments)
         else:
             raise ValueError(f"Unknown tool: {name}")
 
@@ -835,6 +926,269 @@ async def handle_list_group_chats(arguments: dict) -> list[types.TextContent]:
             text="\n".join(response_lines)
         )
     ]
+
+
+async def handle_index_messages(arguments: dict) -> list[types.TextContent]:
+    """
+    Handle index_messages tool call (RAG Sprint 4).
+
+    Indexes messages for semantic search.
+
+    Args:
+        arguments: {"contact_name": Optional[str], "days": Optional[int]}
+
+    Returns:
+        Status message about indexing
+    """
+    contact_name = arguments.get("contact_name")
+
+    # Validate days
+    days_raw = arguments.get("days", 30)
+    days, error = validate_positive_int(days_raw, "days", min_val=1, max_val=365)
+    if error:
+        return [types.TextContent(type="text", text=f"Validation error: {error}")]
+    if days is None:
+        days = 30
+
+    try:
+        retriever = get_retriever()
+
+        if contact_name:
+            # Index specific contact
+            contact = contacts.get_contact_by_name(contact_name)
+            if not contact:
+                return [
+                    types.TextContent(
+                        type="text",
+                        text=(
+                            f"Contact '{contact_name}' not found. "
+                            f"Available contacts: {', '.join(c.name for c in contacts.list_contacts()[:5])}..."
+                        )
+                    )
+                ]
+
+            chunks_added = retriever.index_contact(contact.name, days=days)
+
+            return [
+                types.TextContent(
+                    type="text",
+                    text=(
+                        f"✓ Indexed messages with {contact.name}\n\n"
+                        f"• {chunks_added} conversation chunks created\n"
+                        f"• Date range: last {days} days\n\n"
+                        f"You can now use ask_messages to search these conversations."
+                    )
+                )
+            ]
+        else:
+            # Index all recent messages
+            chunks_added = retriever.index_recent_messages(days=days)
+
+            stats = retriever.get_stats()
+            contacts_indexed = stats.get("contacts", [])
+
+            return [
+                types.TextContent(
+                    type="text",
+                    text=(
+                        f"✓ Indexed recent messages\n\n"
+                        f"• {chunks_added} new conversation chunks created\n"
+                        f"• Total chunks: {stats.get('chunk_count', 0)}\n"
+                        f"• Contacts indexed: {len(contacts_indexed)}\n"
+                        f"• Date range: last {days} days\n\n"
+                        f"You can now use ask_messages to search these conversations."
+                    )
+                )
+            ]
+
+    except ImportError as e:
+        return [
+            types.TextContent(
+                type="text",
+                text=(
+                    f"RAG dependencies not installed.\n\n"
+                    f"Run: pip install chromadb openai\n\n"
+                    f"Error: {e}"
+                )
+            )
+        ]
+    except ValueError as e:
+        return [
+            types.TextContent(
+                type="text",
+                text=(
+                    f"Configuration error: {e}\n\n"
+                    f"Make sure OPENAI_API_KEY environment variable is set, "
+                    f"or configure local embeddings."
+                )
+            )
+        ]
+    except Exception as e:
+        logger.error(f"Error indexing messages: {e}", exc_info=True)
+        return [
+            types.TextContent(
+                type="text",
+                text=f"Error indexing messages: {e}"
+            )
+        ]
+
+
+async def handle_ask_messages(arguments: dict) -> list[types.TextContent]:
+    """
+    Handle ask_messages tool call (RAG Sprint 4).
+
+    Semantic search across indexed conversations.
+
+    Args:
+        arguments: {"question": str, "contact_name": Optional[str], "limit": Optional[int]}
+
+    Returns:
+        Relevant conversation context
+    """
+    # Validate question
+    question, error = validate_non_empty_string(arguments.get("question"), "question")
+    if error:
+        return [types.TextContent(type="text", text=f"Validation error: {error}")]
+
+    contact_name = arguments.get("contact_name")
+
+    # Validate limit
+    limit_raw = arguments.get("limit", 5)
+    limit, error = validate_positive_int(limit_raw, "limit", min_val=1, max_val=20)
+    if error:
+        return [types.TextContent(type="text", text=f"Validation error: {error}")]
+    if limit is None:
+        limit = 5
+
+    try:
+        retriever = get_retriever()
+
+        # Check if index is empty
+        stats = retriever.get_stats()
+        if stats.get("chunk_count", 0) == 0:
+            return [
+                types.TextContent(
+                    type="text",
+                    text=(
+                        "No messages have been indexed yet.\n\n"
+                        "Run index_messages first to create the search index:\n"
+                        "• index_messages with days=30 (indexes all recent messages)\n"
+                        "• index_messages with contact_name=\"John\" (indexes specific contact)"
+                    )
+                )
+            ]
+
+        # Perform semantic search
+        context, results = retriever.ask(
+            question=question,
+            limit=limit,
+            contact=contact_name,
+        )
+
+        if not results:
+            filter_text = f" with {contact_name}" if contact_name else ""
+            return [
+                types.TextContent(
+                    type="text",
+                    text=f"No relevant conversations found{filter_text} for: \"{question}\""
+                )
+            ]
+
+        return [
+            types.TextContent(
+                type="text",
+                text=context
+            )
+        ]
+
+    except ImportError as e:
+        return [
+            types.TextContent(
+                type="text",
+                text=(
+                    f"RAG dependencies not installed.\n\n"
+                    f"Run: pip install chromadb openai\n\n"
+                    f"Error: {e}"
+                )
+            )
+        ]
+    except Exception as e:
+        logger.error(f"Error searching messages: {e}", exc_info=True)
+        return [
+            types.TextContent(
+                type="text",
+                text=f"Error searching messages: {e}"
+            )
+        ]
+
+
+async def handle_rag_stats(arguments: dict) -> list[types.TextContent]:
+    """
+    Handle rag_stats tool call (RAG Sprint 4).
+
+    Returns statistics about the indexed message database.
+
+    Args:
+        arguments: {} (no arguments needed)
+
+    Returns:
+        Statistics about indexed data
+    """
+    try:
+        retriever = get_retriever()
+        stats = retriever.get_stats()
+
+        if stats.get("chunk_count", 0) == 0:
+            return [
+                types.TextContent(
+                    type="text",
+                    text=(
+                        "📊 iMessage RAG Statistics\n\n"
+                        "No messages indexed yet.\n\n"
+                        "Run index_messages to start building the search index."
+                    )
+                )
+            ]
+
+        contacts_list = stats.get("contacts", [])
+        contacts_display = ", ".join(contacts_list[:10])
+        if len(contacts_list) > 10:
+            contacts_display += f" +{len(contacts_list) - 10} more"
+
+        return [
+            types.TextContent(
+                type="text",
+                text=(
+                    f"📊 iMessage RAG Statistics\n\n"
+                    f"• Indexed chunks: {stats.get('chunk_count', 0)}\n"
+                    f"• Contacts: {stats.get('contact_count', 0)}\n"
+                    f"• Oldest message: {stats.get('oldest_chunk', 'N/A')[:10] if stats.get('oldest_chunk') else 'N/A'}\n"
+                    f"• Newest message: {stats.get('newest_chunk', 'N/A')[:10] if stats.get('newest_chunk') else 'N/A'}\n"
+                    f"• Storage: {stats.get('persist_directory', 'N/A')}\n\n"
+                    f"Contacts indexed:\n{contacts_display}"
+                )
+            )
+        ]
+
+    except ImportError as e:
+        return [
+            types.TextContent(
+                type="text",
+                text=(
+                    f"RAG dependencies not installed.\n\n"
+                    f"Run: pip install chromadb openai\n\n"
+                    f"Error: {e}"
+                )
+            )
+        ]
+    except Exception as e:
+        logger.error(f"Error getting RAG stats: {e}", exc_info=True)
+        return [
+            types.TextContent(
+                type="text",
+                text=f"Error getting RAG stats: {e}"
+            )
+        ]
 
 
 async def handle_get_group_messages(arguments: dict) -> list[types.TextContent]:
