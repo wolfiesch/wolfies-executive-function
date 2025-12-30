@@ -1,5 +1,8 @@
-import { ChevronLeft, ChevronRight, Plus } from 'lucide-react'
+import { ChevronLeft, ChevronRight, Plus, Loader2 } from 'lucide-react'
 import { AppShell } from '@/components/layout'
+import { useTodayEvents } from '@/api/hooks'
+import { format, parseISO, startOfWeek, addDays } from 'date-fns'
+import type { CalendarEvent } from '@/types/models'
 
 /**
  * Calendar - Calendar view page
@@ -14,12 +17,39 @@ import { AppShell } from '@/components/layout'
  * of events on a time axis enables quick comprehension of schedule.
  */
 export function Calendar() {
+  // Fetch events from API
+  const { data: events, isLoading } = useTodayEvents()
+
   // Get current date info for header
   const today = new Date()
+  const weekStart = startOfWeek(today, { weekStartsOn: 0 })
   const monthYear = today.toLocaleDateString('en-US', {
     month: 'long',
     year: 'numeric',
   })
+
+  // Get events for each day of the week
+  const getEventsForDay = (dayIndex: number): CalendarEvent[] => {
+    if (!events) return []
+    const dayDate = addDays(weekStart, dayIndex)
+    return events.filter((event) => {
+      const eventDate = parseISO(event.start_time)
+      return format(eventDate, 'yyyy-MM-dd') === format(dayDate, 'yyyy-MM-dd')
+    })
+  }
+
+  // Calculate top position and height for an event on the grid
+  const getEventPosition = (event: CalendarEvent) => {
+    const startDate = parseISO(event.start_time)
+    const endDate = parseISO(event.end_time)
+    const startHour = startDate.getHours() + startDate.getMinutes() / 60
+    const endHour = endDate.getHours() + endDate.getMinutes() / 60
+    const duration = endHour - startHour
+    return {
+      top: `${startHour * 3}rem`,
+      height: `${Math.max(duration, 0.5) * 3}rem`,
+    }
+  }
 
   return (
     <AppShell>
@@ -113,35 +143,52 @@ export function Calendar() {
             </div>
 
             {/* Day columns */}
-            {Array.from({ length: 7 }, (_, dayIndex) => (
-              <div
-                key={dayIndex}
-                className="relative border-r border-[var(--color-border-subtle)] last:border-r-0"
-              >
-                {/* Hour grid lines */}
-                {Array.from({ length: 24 }, (_, hourIndex) => (
-                  <div
-                    key={hourIndex}
-                    className="h-12 border-b border-[var(--color-border-subtle)]"
-                  />
-                ))}
+            {Array.from({ length: 7 }, (_, dayIndex) => {
+              const dayEvents = getEventsForDay(dayIndex)
+              return (
+                <div
+                  key={dayIndex}
+                  className="relative border-r border-[var(--color-border-subtle)] last:border-r-0"
+                >
+                  {/* Hour grid lines */}
+                  {Array.from({ length: 24 }, (_, hourIndex) => (
+                    <div
+                      key={hourIndex}
+                      className="h-12 border-b border-[var(--color-border-subtle)]"
+                    />
+                  ))}
 
-                {/* Event placeholder (example) */}
-                {dayIndex === 1 && (
-                  <div
-                    className="absolute left-1 right-1 rounded bg-[var(--color-accent-blue)]/20 border-l-2 border-[var(--color-accent-blue)] p-1"
-                    style={{ top: '9rem', height: '4rem' }}
-                  >
-                    <p className="truncate text-xs font-medium text-[var(--color-accent-blue)]">
-                      Team Standup
-                    </p>
-                    <p className="text-xs text-[var(--color-text-secondary)]">
-                      9:00 - 10:00
-                    </p>
-                  </div>
-                )}
-              </div>
-            ))}
+                  {/* Loading indicator for today's column */}
+                  {isLoading && dayIndex === today.getDay() && (
+                    <div className="absolute inset-0 flex items-center justify-center bg-[var(--color-bg-secondary)]/50">
+                      <Loader2 className="h-5 w-5 animate-spin text-[var(--color-accent-blue)]" />
+                    </div>
+                  )}
+
+                  {/* Real events from API */}
+                  {dayEvents.map((event) => {
+                    const pos = getEventPosition(event)
+                    return (
+                      <div
+                        key={event.id}
+                        className="absolute left-1 right-1 cursor-pointer rounded border-l-2 border-[var(--color-accent-blue)] bg-[var(--color-accent-blue)]/20 p-1 transition-colors hover:bg-[var(--color-accent-blue)]/30"
+                        style={{ top: pos.top, height: pos.height }}
+                        title={event.title}
+                      >
+                        <p className="truncate text-xs font-medium text-[var(--color-accent-blue)]">
+                          {event.title}
+                        </p>
+                        <p className="text-xs text-[var(--color-text-secondary)]">
+                          {event.all_day
+                            ? 'All day'
+                            : `${format(parseISO(event.start_time), 'h:mm a')} - ${format(parseISO(event.end_time), 'h:mm a')}`}
+                        </p>
+                      </div>
+                    )
+                  })}
+                </div>
+              )
+            })}
           </div>
         </div>
       </div>

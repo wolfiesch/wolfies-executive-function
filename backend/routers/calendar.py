@@ -16,6 +16,11 @@ from backend.schemas import (
     EventListResponse,
     AgentResponseSchema,
 )
+from backend.websocket import (
+    notify_event_created,
+    notify_event_updated,
+    notify_event_deleted,
+)
 from src.agents import CalendarAgent
 
 router = APIRouter(prefix="/events", tags=["calendar"])
@@ -111,6 +116,10 @@ async def create_event(
     if not response.success:
         raise HTTPException(status_code=400, detail=response.message)
 
+    # Broadcast WebSocket notification for real-time updates
+    if response.data and response.data.get("event"):
+        await notify_event_created(response.data["event"])
+
     return AgentResponseSchema(
         success=response.success,
         message=response.message,
@@ -135,6 +144,10 @@ async def update_event(
     if not response.success:
         raise HTTPException(status_code=400, detail=response.message)
 
+    # Broadcast WebSocket notification for real-time updates
+    if response.data and response.data.get("event"):
+        await notify_event_updated(response.data["event"])
+
     return AgentResponseSchema(
         success=response.success,
         message=response.message,
@@ -153,6 +166,9 @@ async def delete_event(
 
     if not response.success:
         raise HTTPException(status_code=400, detail=response.message)
+
+    # Broadcast WebSocket notification for real-time updates
+    await notify_event_deleted(str(event_id))
 
     return AgentResponseSchema(
         success=response.success,

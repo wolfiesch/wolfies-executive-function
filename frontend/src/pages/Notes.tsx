@@ -1,5 +1,9 @@
-import { Search, Plus, FileText, Hash, Clock, MoreHorizontal } from 'lucide-react'
+import { useState } from 'react'
+import { Search, Plus, FileText, Hash, Clock, AlertCircle, Loader2 } from 'lucide-react'
 import { AppShell } from '@/components/layout'
+import { useNotes } from '@/api/hooks'
+import type { Note } from '@/types/models'
+import { formatRelativeTime } from '@/lib/utils'
 
 /**
  * Notes - Notes list and editor page
@@ -13,6 +17,13 @@ import { AppShell } from '@/components/layout'
  * for efficient browsing of hierarchical content.
  */
 export function Notes() {
+  const [selectedNote, setSelectedNote] = useState<Note | null>(null)
+  const [searchQuery, setSearchQuery] = useState('')
+
+  // Fetch notes from API
+  const { data: notes, isLoading, error } = useNotes(
+    searchQuery ? { search: searchQuery } : undefined
+  )
   return (
     <AppShell>
       <div className="flex h-[calc(100vh-theme(spacing.20))]">
@@ -67,50 +78,97 @@ export function Notes() {
               <input
                 type="text"
                 placeholder="Search notes..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
                 className="w-full rounded-lg border border-[var(--color-border-default)] bg-[var(--color-bg-tertiary)] py-2 pl-10 pr-4 text-sm text-[var(--color-text-primary)] placeholder:text-[var(--color-text-tertiary)] focus:border-[var(--color-accent-blue)] focus:outline-none"
               />
             </div>
           </div>
 
+          {/* Error state */}
+          {error && (
+            <div className="mb-4 flex items-center gap-2 rounded-lg border border-[var(--color-accent-red)]/30 bg-[var(--color-accent-red)]/10 p-3">
+              <AlertCircle className="h-4 w-4 text-[var(--color-accent-red)]" />
+              <p className="text-xs text-[var(--color-accent-red)]">Failed to load notes</p>
+            </div>
+          )}
+
+          {/* Loading state */}
+          {isLoading && (
+            <div className="flex items-center justify-center py-8">
+              <Loader2 className="h-6 w-6 animate-spin text-[var(--color-accent-blue)]" />
+            </div>
+          )}
+
           {/* Note items */}
-          <div className="space-y-2">
-            {[1, 2, 3, 4, 5, 6].map((i) => (
-              <NoteListItem key={i} selected={i === 1} />
-            ))}
-          </div>
+          {!isLoading && notes && notes.length > 0 && (
+            <div className="space-y-2">
+              {notes.map((note) => (
+                <NoteListItemReal
+                  key={note.id}
+                  note={note}
+                  selected={selectedNote?.id === note.id}
+                  onClick={() => setSelectedNote(note)}
+                />
+              ))}
+            </div>
+          )}
+
+          {/* Empty state */}
+          {!isLoading && (!notes || notes.length === 0) && (
+            <div className="py-8 text-center">
+              <p className="text-sm text-[var(--color-text-secondary)]">
+                {searchQuery ? 'No notes match your search' : 'No notes yet'}
+              </p>
+            </div>
+          )}
         </div>
 
         {/* Note editor/viewer */}
         <div className="flex-1 overflow-y-auto px-6 py-4">
           <div className="mx-auto max-w-3xl">
-            {/* Note header placeholder */}
-            <div className="mb-6">
-              <div className="h-8 w-2/3 rounded bg-[var(--color-bg-tertiary)]" />
-              <div className="mt-2 flex items-center gap-4">
-                <div className="h-4 w-24 rounded bg-[var(--color-bg-tertiary)]" />
-                <div className="h-4 w-32 rounded bg-[var(--color-bg-tertiary)]" />
+            {selectedNote ? (
+              <>
+                {/* Note header */}
+                <div className="mb-6">
+                  <h1 className="text-2xl font-bold text-[var(--color-text-primary)]">
+                    {selectedNote.title}
+                  </h1>
+                  <div className="mt-2 flex items-center gap-4 text-sm text-[var(--color-text-secondary)]">
+                    <span className="capitalize">{selectedNote.note_type}</span>
+                    <span>·</span>
+                    <span>{formatRelativeTime(selectedNote.updated_at)}</span>
+                    <span>·</span>
+                    <span>{selectedNote.word_count} words</span>
+                  </div>
+                </div>
+
+                {/* Note tags */}
+                {selectedNote.tags.length > 0 && (
+                  <div className="mb-4 flex flex-wrap gap-2">
+                    {selectedNote.tags.map((tag) => (
+                      <span
+                        key={tag}
+                        className="rounded-full bg-[var(--color-bg-tertiary)] px-3 py-1 text-sm text-[var(--color-text-secondary)]"
+                      >
+                        #{tag}
+                      </span>
+                    ))}
+                  </div>
+                )}
+
+                {/* Note content */}
+                <div className="prose prose-sm max-w-none text-[var(--color-text-primary)]">
+                  <p className="whitespace-pre-wrap">{selectedNote.content}</p>
+                </div>
+              </>
+            ) : (
+              <div className="flex h-full items-center justify-center">
+                <p className="text-[var(--color-text-secondary)]">
+                  Select a note to view its contents
+                </p>
               </div>
-            </div>
-
-            {/* Note content placeholder */}
-            <div className="space-y-4">
-              <div className="h-4 w-full rounded bg-[var(--color-bg-tertiary)]" />
-              <div className="h-4 w-5/6 rounded bg-[var(--color-bg-tertiary)]" />
-              <div className="h-4 w-4/5 rounded bg-[var(--color-bg-tertiary)]" />
-              <div className="h-4 w-3/4 rounded bg-[var(--color-bg-tertiary)]" />
-              <div className="h-4 w-full rounded bg-[var(--color-bg-tertiary)]" />
-              <div className="h-4 w-2/3 rounded bg-[var(--color-bg-tertiary)]" />
-            </div>
-
-            {/* Placeholder message */}
-            <div className="mt-12 text-center">
-              <p className="text-[var(--color-text-secondary)]">
-                Note editor will be implemented here
-              </p>
-              <p className="mt-1 text-sm text-[var(--color-text-tertiary)]">
-                Markdown support with bi-directional linking
-              </p>
-            </div>
+            )}
           </div>
         </div>
       </div>
@@ -144,10 +202,22 @@ function SidebarItem({ icon: Icon, label, count, active }: SidebarItemProps) {
   )
 }
 
-// Note list item placeholder
-function NoteListItem({ selected }: { selected?: boolean }) {
+// Real note list item component
+function NoteListItemReal({
+  note,
+  selected,
+  onClick,
+}: {
+  note: Note
+  selected?: boolean
+  onClick?: () => void
+}) {
+  // Truncate content for preview
+  const preview = note.content?.slice(0, 100) || ''
+
   return (
     <button
+      onClick={onClick}
       className={`w-full rounded-lg border p-3 text-left transition-colors ${
         selected
           ? 'border-[var(--color-accent-blue)] bg-[var(--color-bg-tertiary)]'
@@ -155,16 +225,22 @@ function NoteListItem({ selected }: { selected?: boolean }) {
       }`}
     >
       <div className="flex items-start justify-between">
-        <div className="h-4 w-3/4 rounded bg-[var(--color-bg-hover)]" />
-        <MoreHorizontal className="h-4 w-4 text-[var(--color-text-tertiary)]" />
+        <h3 className="font-medium text-[var(--color-text-primary)] line-clamp-1">
+          {note.title}
+        </h3>
+        {note.is_pinned && (
+          <span className="text-xs text-[var(--color-accent-orange)]">📌</span>
+        )}
       </div>
-      <div className="mt-2 space-y-1">
-        <div className="h-3 w-full rounded bg-[var(--color-bg-hover)]" />
-        <div className="h-3 w-2/3 rounded bg-[var(--color-bg-hover)]" />
-      </div>
-      <div className="mt-2 flex items-center gap-2">
-        <div className="h-2 w-12 rounded bg-[var(--color-bg-hover)]" />
-        <div className="h-2 w-16 rounded bg-[var(--color-bg-hover)]" />
+      {preview && (
+        <p className="mt-1 text-sm text-[var(--color-text-secondary)] line-clamp-2">
+          {preview}
+        </p>
+      )}
+      <div className="mt-2 flex items-center gap-2 text-xs text-[var(--color-text-tertiary)]">
+        <span className="capitalize">{note.note_type}</span>
+        <span>·</span>
+        <span>{formatRelativeTime(note.updated_at)}</span>
       </div>
     </button>
   )

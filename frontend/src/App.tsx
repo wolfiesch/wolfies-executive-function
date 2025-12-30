@@ -2,6 +2,7 @@ import { RouterProvider } from 'react-router-dom'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { Toaster } from 'react-hot-toast'
 import { router } from '@/routes'
+import { WebSocketProvider } from '@/providers/WebSocketProvider'
 
 /**
  * QueryClient configuration for React Query.
@@ -40,7 +41,15 @@ const queryClient = new QueryClient({
 function App() {
   return (
     <QueryClientProvider client={queryClient}>
-      <RouterProvider router={router} />
+      {/* WebSocketProvider enables real-time updates across the app.
+          When data changes on the server, all connected clients are notified
+          and React Query cache is automatically invalidated.
+
+          CS Concept: **Pub/Sub Pattern** - The server publishes events to topics,
+          and clients subscribe to receive updates in real-time. */}
+      <WebSocketProvider topics={['tasks', 'calendar', 'notes', 'goals', 'dashboard']}>
+        <RouterProvider router={router} />
+      </WebSocketProvider>
       <Toaster
         position="bottom-right"
         toastOptions={{

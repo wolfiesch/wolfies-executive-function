@@ -3,6 +3,7 @@ import { Search, Command, Bell, ChevronRight } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { NAV_ITEMS } from '@/lib/constants'
 import { useUIStore } from '@/stores/uiStore'
+import { ConnectionStatus } from '@/components/common'
 
 /**
  * Get page title and breadcrumb info from current path.
@@ -132,7 +133,10 @@ export function Header({ title: titleProp, breadcrumbs: breadcrumbsProp }: Heade
       </button>
 
       {/* Right side actions */}
-      <div className="flex items-center gap-1">
+      <div className="flex items-center gap-2">
+        {/* Connection Status - shows WebSocket sync state */}
+        <ConnectionStatus />
+
         {/* Notifications */}
         <button
           className={cn(

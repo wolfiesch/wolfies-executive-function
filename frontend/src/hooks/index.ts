@@ -16,3 +16,4 @@ export {
   useListNavigationShortcuts,
   useGlobalShortcuts,
 } from './useKeyboardShortcuts'
+export { useWebSocket, type UseWebSocketReturn } from './useWebSocket'
