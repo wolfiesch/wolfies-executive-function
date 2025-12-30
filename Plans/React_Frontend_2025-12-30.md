@@ -1125,13 +1125,14 @@ npm install -D prettier prettier-plugin-tailwindcss
 | 12/30/2025 05:29 AM PST (via pst-timestamp) | Plan reviewed, deps fixed | Added missing deps (axios, nuqs, react-hotkeys-hook), added more Radix primitives. Starting parallel implementation. |
 | 12/30/2025 05:46 AM PST (via pst-timestamp) | **Phase 1 Complete** | Built 60+ components: UI primitives (Button, Input, Card, Badge, Dialog, Dropdown, Tooltip, Avatar, Skeleton), layout (AppShell, Sidebar, Header, RightPanel, CommandPalette), task components (TaskCard, PriorityBadge, StatusBadge), dashboard (StatsCard, QuickCapture), API layer with mock data, React Query hooks, Zustand stores, all pages (Dashboard, Tasks, Calendar, Notes, Goals, Projects, Settings). App builds and runs successfully. |
 | 12/30/2025 06:08 AM PST (via pst-timestamp) | **Backend API Complete** | Created FastAPI backend wrapping agent layer: `/backend/` with main.py, schemas.py, dependencies.py, routers for tasks, calendar, notes, goals, dashboard, NLP. Updated frontend to use real API (USE_REAL_API=true). Vite proxy configured. All endpoints tested: tasks (7), notes (3), NLP working. Dashboard has minor timezone bug (TODO). |
+| 12/30/2025 06:10 AM PST (via pst-timestamp) | **Code-Splitting Implemented** | Route-based lazy loading with React.lazy(). Manual vendor chunks in Vite config. Lazy-loaded CommandPalette on ⌘K. Bundle analyzer (rollup-plugin-visualizer) installed. **Results:** Main bundle 220KB (was 559KB) = **60% reduction**. 7 page chunks (2-6KB each). 6 vendor chunks for optimal caching. Total initial gzipped: ~130KB (was 176KB) = **26% reduction**. Build now generates 18 optimized chunks. |
 
 ---
 
 ## Next Steps
 
 1. **Fix dashboard timezone bug** - DashboardAggregator datetime offset issue
-2. **Implement command palette** - Complete the cmdk integration for ⌘K navigation
+2. **Implement WebSocket real-time updates** - See `Plans/Frontend_Optimizations_2025-12-30.md` Part 2
 3. **Add keyboard shortcuts** - Wire up navigation and task shortcuts
 4. **Build out Tasks page** - TaskList, TaskFilters, TaskForm components
 5. **Calendar integration** - Week/Month views with event creation

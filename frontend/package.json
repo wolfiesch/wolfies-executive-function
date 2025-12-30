@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
+    "build:analyze": "tsc -b && vite build && echo '\n📊 Bundle analysis saved to dist/stats.html'",
     "lint": "eslint .",
     "preview": "vite preview"
   },
@@ -54,6 +55,7 @@
     "postcss": "^8.5.6",
     "prettier": "^3.7.4",
     "prettier-plugin-tailwindcss": "^0.7.2",
+    "rollup-plugin-visualizer": "^6.0.5",
     "tailwindcss": "^4.1.18",
     "typescript": "~5.9.3",
     "typescript-eslint": "^8.46.4",
