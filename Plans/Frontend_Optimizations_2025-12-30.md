@@ -1876,6 +1876,8 @@ const queryClient = new QueryClient({
 | Timestamp | Change | Details |
 |-----------|--------|---------|
 | 12/30/2025 06:00 AM PST | Plan created | Comprehensive code-splitting and real-time updates plan |
+| 12/30/2025 06:40 AM PST | Code-splitting implemented | React.lazy() for routes, manualChunks in Vite, lazy CommandPalette. Build: 220KB main bundle (was 559KB) |
+| 12/30/2025 07:09 AM PST | WebSocket implemented | Frontend: types, useWebSocket hook, WebSocketProvider, ConnectionStatus. Backend: WebSocketManager, notify_* helpers, router integration |
 
 ---
 

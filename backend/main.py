@@ -21,7 +21,7 @@ import sys
 from pathlib import Path
 from contextlib import asynccontextmanager
 
-from fastapi import FastAPI
+from fastapi import FastAPI, WebSocket
 from fastapi.middleware.cors import CORSMiddleware
 
 # Add project root to path for imports
@@ -38,6 +38,7 @@ from backend.routers import (
     nlp_router,
 )
 from backend.dependencies import get_database, get_config
+from backend.websocket import websocket_endpoint, ws_manager
 
 
 @asynccontextmanager
@@ -117,6 +118,32 @@ app.include_router(notes_router)
 app.include_router(goals_router)
 app.include_router(dashboard_router)
 app.include_router(nlp_router)
+
+
+# ============================================================
+# WEBSOCKET ENDPOINT
+# ============================================================
+# Real-time updates for connected clients.
+# Clients subscribe to topics and receive notifications when data changes.
+# ============================================================
+
+@app.websocket("/ws")
+async def websocket_route(websocket: WebSocket):
+    """
+    WebSocket endpoint for real-time updates.
+
+    Protocol:
+    - Client sends: { "type": "subscribe", "topics": ["tasks", "calendar"] }
+    - Server sends: { "type": "task_created", "data": {...}, "timestamp": "..." }
+
+    Topics available:
+    - tasks: Task create/update/delete/complete events
+    - calendar: Event create/update/delete events
+    - notes: Note create/update events
+    - goals: Goal progress updates
+    - dashboard: Dashboard data refresh triggers
+    """
+    await websocket_endpoint(websocket)
 
 
 @app.get("/")

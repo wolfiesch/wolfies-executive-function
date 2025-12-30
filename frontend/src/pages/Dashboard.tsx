@@ -14,7 +14,7 @@ import { format, parseISO } from 'date-fns'
 
 // Local type for calendar event (matches API response)
 interface DashboardEvent {
-  id: number
+  id: number | string
   title: string
   start_time: string
   end_time?: string

@@ -16,6 +16,12 @@ from backend.schemas import (
     TaskListResponse,
     AgentResponseSchema,
 )
+from backend.websocket import (
+    notify_task_created,
+    notify_task_updated,
+    notify_task_completed,
+    notify_task_deleted,
+)
 from src.agents import TaskAgent
 
 router = APIRouter(prefix="/tasks", tags=["tasks"])
@@ -149,6 +155,10 @@ async def create_task(
     if not response.success:
         raise HTTPException(status_code=400, detail=response.message)
 
+    # Broadcast WebSocket notification for real-time updates
+    if response.data and response.data.get("task"):
+        await notify_task_created(response.data["task"])
+
     return AgentResponseSchema(
         success=response.success,
         message=response.message,
@@ -175,6 +185,10 @@ async def update_task(
     if not response.success:
         raise HTTPException(status_code=400, detail=response.message)
 
+    # Broadcast WebSocket notification for real-time updates
+    if response.data and response.data.get("task"):
+        await notify_task_updated(response.data["task"])
+
     return AgentResponseSchema(
         success=response.success,
         message=response.message,
@@ -194,6 +208,10 @@ async def complete_task(
     if not response.success:
         raise HTTPException(status_code=400, detail=response.message)
 
+    # Broadcast WebSocket notification for real-time updates
+    if response.data and response.data.get("task"):
+        await notify_task_completed(response.data["task"])
+
     return AgentResponseSchema(
         success=response.success,
         message=response.message,
@@ -212,6 +230,9 @@ async def delete_task(
 
     if not response.success:
         raise HTTPException(status_code=400, detail=response.message)
+
+    # Broadcast WebSocket notification for real-time updates
+    await notify_task_deleted(str(task_id))
 
     return AgentResponseSchema(
         success=response.success,
