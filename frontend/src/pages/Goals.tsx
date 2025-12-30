@@ -1,6 +1,8 @@
+import { useState } from 'react'
 import { Target, Plus, ChevronRight, TrendingUp, Calendar, MoreHorizontal, AlertCircle, Loader2 } from 'lucide-react'
 import { AppShell } from '@/components/layout'
 import { useGoals } from '@/api/hooks'
+import { GoalCreateDialog } from '@/components/goals/GoalCreateDialog'
 import type { Goal } from '@/types/models'
 
 /**
@@ -16,6 +18,8 @@ import type { Goal } from '@/types/models'
  * metrics make abstract progress concrete and motivating.
  */
 export function Goals() {
+  const [createDialogOpen, setCreateDialogOpen] = useState(false)
+
   // Fetch goals from API
   const { data: goals, isLoading, error } = useGoals()
 
@@ -42,7 +46,10 @@ export function Goals() {
               Track your objectives and key results
             </p>
           </div>
-          <button className="flex items-center gap-2 rounded-lg bg-[var(--color-accent-blue)] px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-[var(--color-accent-blue)]/90">
+          <button
+            onClick={() => setCreateDialogOpen(true)}
+            className="flex items-center gap-2 rounded-lg bg-[var(--color-accent-blue)] px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-[var(--color-accent-blue)]/90"
+          >
             <Plus className="h-4 w-4" />
             New Goal
           </button>
