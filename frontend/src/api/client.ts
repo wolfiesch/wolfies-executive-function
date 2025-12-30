@@ -11,8 +11,10 @@ import axios, { AxiosError, type AxiosInstance, type AxiosResponse } from 'axios
 import type { ApiResponse } from '@/types/models'
 
 // API configuration
+// In development: Uses Vite proxy (/api -> localhost:8000)
+// In production: Uses VITE_API_URL environment variable
 const API_CONFIG = {
-  baseURL: '/api',
+  baseURL: import.meta.env.VITE_API_URL || '/api',
   timeout: 30000,
   headers: {
     'Content-Type': 'application/json',

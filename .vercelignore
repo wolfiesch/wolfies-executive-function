@@ -1,0 +1,39 @@
+# Dependencies
+node_modules/
+.venv/
+venv/
+__pycache__/
+*.pyc
+
+# Frontend (deployed separately)
+frontend/
+*.log
+
+# Development
+.git/
+.github/
+.pytest_cache/
+.benchmarks/
+logs/
+*.log
+
+# Data files (not needed in serverless)
+data/
+Texting/
+
+# IDE
+.vscode/
+.idea/
+
+# Test files
+tests/
+*.test.py
+*.spec.py
+
+# Documentation
+*.md
+Plans/
+
+# Config
+.env*
+*.local

@@ -1,0 +1,51 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "version": 2,
+  "builds": [
+    {
+      "src": "api/index.py",
+      "use": "@vercel/python",
+      "config": {
+        "maxLambdaSize": "50mb"
+      }
+    }
+  ],
+  "routes": [
+    {
+      "src": "/api/(.*)",
+      "dest": "/api/index.py"
+    },
+    {
+      "src": "/tasks(.*)",
+      "dest": "/api/index.py"
+    },
+    {
+      "src": "/events(.*)",
+      "dest": "/api/index.py"
+    },
+    {
+      "src": "/notes(.*)",
+      "dest": "/api/index.py"
+    },
+    {
+      "src": "/goals(.*)",
+      "dest": "/api/index.py"
+    },
+    {
+      "src": "/dashboard(.*)",
+      "dest": "/api/index.py"
+    },
+    {
+      "src": "/nlp(.*)",
+      "dest": "/api/index.py"
+    },
+    {
+      "src": "/health",
+      "dest": "/api/index.py"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/api/index.py"
+    }
+  ]
+}
