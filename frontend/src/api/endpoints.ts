@@ -47,7 +47,7 @@ import type {
 
 // Flag to toggle between mock and real API
 // Set to true when backend is ready
-const USE_REAL_API = false
+const USE_REAL_API = true
 
 // ============================================================================
 // Tasks API
@@ -59,7 +59,8 @@ export const taskApi = {
    */
   async list(filters?: TaskFilters): Promise<Task[]> {
     if (USE_REAL_API) {
-      return api.get<Task[]>('/tasks', filters as Record<string, unknown>)
+      const response = await api.get<{ tasks: Task[]; total: number }>('/tasks', filters as Record<string, unknown>)
+      return response.tasks
     }
 
     await simulateDelay()
@@ -176,7 +177,13 @@ export const taskApi = {
    */
   async complete(id: string): Promise<Task> {
     if (USE_REAL_API) {
-      return api.post<Task>(`/tasks/${id}/complete`)
+      // Backend returns AgentResponse, extract the task from data
+      const response = await api.patch<{ success: boolean; message: string; data?: { task?: Task } }>(`/tasks/${id}/complete`)
+      if (response.data?.task) {
+        return response.data.task
+      }
+      // If no task in response, fetch it
+      return this.get(id)
     }
 
     await simulateDelay()
@@ -240,7 +247,8 @@ export const calendarApi = {
    */
   async list(startDate: string, endDate: string): Promise<CalendarEvent[]> {
     if (USE_REAL_API) {
-      return api.get<CalendarEvent[]>('/events', { start_date: startDate, end_date: endDate })
+      const response = await api.get<{ events: CalendarEvent[]; total: number }>('/events', { days_ahead: 7 })
+      return response.events
     }
 
     await simulateDelay()
@@ -348,7 +356,8 @@ export const noteApi = {
    */
   async list(filters?: NoteFilters): Promise<Note[]> {
     if (USE_REAL_API) {
-      return api.get<Note[]>('/notes', filters as Record<string, unknown>)
+      const response = await api.get<{ notes: Note[]; total: number }>('/notes', filters as Record<string, unknown>)
+      return response.notes
     }
 
     await simulateDelay()
@@ -508,7 +517,8 @@ export const goalApi = {
    */
   async list(filters?: GoalFilters): Promise<Goal[]> {
     if (USE_REAL_API) {
-      return api.get<Goal[]>('/goals', filters as Record<string, unknown>)
+      const response = await api.get<{ goals: Goal[]; total: number }>('/goals', filters as Record<string, unknown>)
+      return response.goals
     }
 
     await simulateDelay()
@@ -728,7 +738,7 @@ export const dashboardApi = {
    */
   async getData(): Promise<DashboardData> {
     if (USE_REAL_API) {
-      return api.get<DashboardData>('/dashboard')
+      return api.get<DashboardData>('/dashboard/today')
     }
 
     await simulateDelay(300) // Slightly longer for dashboard
