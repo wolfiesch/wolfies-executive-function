@@ -1,0 +1,8 @@
+export { Dashboard } from './Dashboard'
+export { Tasks } from './Tasks'
+export { Calendar } from './Calendar'
+export { Notes } from './Notes'
+export { Goals } from './Goals'
+export { Projects } from './Projects'
+export { Settings } from './Settings'
+export { NotFound } from './NotFound'
