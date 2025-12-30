@@ -8,7 +8,7 @@ import { Calendar, Clock, Folder, AlertTriangle } from 'lucide-react'
 interface TaskCardProps {
   task: Task
   onClick?: () => void
-  onStatusChange?: (status: Task['status']) => void
+  onStatusChange?: () => void
   selected?: boolean
   className?: string
 }
@@ -31,10 +31,7 @@ export function TaskCard({
 
   const handleStatusClick = (e: React.MouseEvent) => {
     e.stopPropagation()
-    if (onStatusChange) {
-      const nextStatus = task.status === 'done' ? 'todo' : 'done'
-      onStatusChange(nextStatus)
-    }
+    onStatusChange?.()
   }
 
   return (

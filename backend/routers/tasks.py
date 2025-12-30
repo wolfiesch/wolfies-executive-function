@@ -173,7 +173,37 @@ async def update_task(
     task: TaskUpdate,
     agent: TaskAgent = Depends(get_task_agent),
 ):
-    """Update an existing task."""
+    """Update an existing task (PUT - full replacement)."""
+    context = {"task_id": task_id}
+
+    # Only include fields that were explicitly set
+    update_data = task.model_dump(exclude_unset=True)
+    context.update(update_data)
+
+    response = agent.process("update_task", context)
+
+    if not response.success:
+        raise HTTPException(status_code=400, detail=response.message)
+
+    # Broadcast WebSocket notification for real-time updates
+    if response.data and response.data.get("task"):
+        await notify_task_updated(response.data["task"])
+
+    return AgentResponseSchema(
+        success=response.success,
+        message=response.message,
+        data=response.data,
+        suggestions=response.suggestions,
+    )
+
+
+@router.patch("/{task_id}", response_model=AgentResponseSchema)
+async def patch_task(
+    task_id: int,
+    task: TaskUpdate,
+    agent: TaskAgent = Depends(get_task_agent),
+):
+    """Partially update an existing task (PATCH - partial update)."""
     context = {"task_id": task_id}
 
     # Only include fields that were explicitly set
@@ -211,6 +241,39 @@ async def complete_task(
     # Broadcast WebSocket notification for real-time updates
     if response.data and response.data.get("task"):
         await notify_task_completed(response.data["task"])
+
+    return AgentResponseSchema(
+        success=response.success,
+        message=response.message,
+        data=response.data,
+        suggestions=response.suggestions,
+    )
+
+
+@router.post("/{task_id}/reopen", response_model=AgentResponseSchema)
+async def reopen_task(
+    task_id: int,
+    agent: TaskAgent = Depends(get_task_agent),
+):
+    """
+    Reopen a completed task (mark as todo).
+
+    Used when unchecking a completed task checkbox.
+    """
+    # Reopen by updating status to 'todo' and clearing completed_at
+    context = {
+        "task_id": task_id,
+        "status": "todo",
+        "completed_at": None,
+    }
+    response = agent.process("update_task", context)
+
+    if not response.success:
+        raise HTTPException(status_code=400, detail=response.message)
+
+    # Broadcast WebSocket notification for real-time updates
+    if response.data and response.data.get("task"):
+        await notify_task_updated(response.data["task"])
 
     return AgentResponseSchema(
         success=response.success,

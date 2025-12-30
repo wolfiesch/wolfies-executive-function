@@ -3,6 +3,7 @@ import { Search, Filter, Plus, ChevronDown, AlertCircle, Loader2 } from 'lucide-
 import { AppShell } from '@/components/layout'
 import { useTasks, useToggleTaskComplete } from '@/api/hooks'
 import { TaskCard } from '@/components/tasks/TaskCard'
+import { TaskCreateDialog } from '@/components/tasks/TaskCreateDialog'
 import type { Task } from '@/types/models'
 
 /**
@@ -20,6 +21,7 @@ import type { Task } from '@/types/models'
 export function Tasks() {
   const [selectedTask, setSelectedTask] = useState<Task | null>(null)
   const [searchQuery, setSearchQuery] = useState('')
+  const [createDialogOpen, setCreateDialogOpen] = useState(false)
 
   // Fetch tasks from API
   const { data: tasks, isLoading, error } = useTasks()
@@ -36,10 +38,10 @@ export function Tasks() {
     )
   })
 
-  const handleStatusChange = (task: Task, newStatus: Task['status']) => {
-    if (newStatus === 'done') {
-      toggleComplete.mutate({ ...task, status: task.status === 'done' ? 'todo' : task.status })
-    }
+  // Toggle task completion - passes current task to mutation hook
+  // which determines whether to call complete or reopen based on current status
+  const handleToggleComplete = (task: Task) => {
+    toggleComplete.mutate(task)
   }
 
   return (
@@ -48,7 +50,10 @@ export function Tasks() {
         {/* Header */}
         <div className="mb-6 flex items-center justify-between">
           <h1 className="text-2xl font-bold text-[var(--color-text-primary)]">Tasks</h1>
-          <button className="flex items-center gap-2 rounded-lg bg-[var(--color-accent-blue)] px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-[var(--color-accent-blue)]/90">
+          <button
+            onClick={() => setCreateDialogOpen(true)}
+            className="flex items-center gap-2 rounded-lg bg-[var(--color-accent-blue)] px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-[var(--color-accent-blue)]/90"
+          >
             <Plus className="h-4 w-4" />
             New Task
           </button>
@@ -120,7 +125,7 @@ export function Tasks() {
                     task={task}
                     selected={selectedTask?.id === task.id}
                     onClick={() => setSelectedTask(task)}
-                    onStatusChange={(status) => handleStatusChange(task, status)}
+                    onStatusChange={() => handleToggleComplete(task)}
                   />
                 ))}
               </div>
@@ -153,6 +158,9 @@ export function Tasks() {
           </div>
         </div>
       </div>
+
+      {/* Create task dialog */}
+      <TaskCreateDialog open={createDialogOpen} onOpenChange={setCreateDialogOpen} />
     </AppShell>
   )
 }
