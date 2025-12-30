@@ -2,7 +2,7 @@
 Vercel Serverless Function Entry Point
 
 Exposes the FastAPI application as a Vercel serverless function.
-All API routes are handled by this single entry point.
+Vercel's Python runtime handles ASGI apps directly - no adapter needed.
 """
 
 import os
@@ -20,7 +20,6 @@ if 'DATABASE_URL' in os.environ and 'USE_SQLITE' not in os.environ:
 
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from mangum import Mangum
 
 # Import routers
 from backend.routers import (
@@ -32,7 +31,7 @@ from backend.routers import (
     nlp_router,
 )
 
-# Create a lightweight app for serverless
+# Create FastAPI app
 app = FastAPI(
     title="Life Planner API",
     description="AI-powered life planning API",
@@ -44,6 +43,7 @@ app.add_middleware(
     CORSMiddleware,
     allow_origins=[
         "https://wolfie-life-planner.vercel.app",
+        "https://frontend-*.vercel.app",
         "https://*.vercel.app",
         "http://localhost:5173",
         "http://localhost:3000",
@@ -74,5 +74,5 @@ async def health():
     return {"status": "healthy"}
 
 
-# Mangum adapter for AWS Lambda/Vercel
-handler = Mangum(app, lifespan="off")
+# Vercel expects 'app' to be the ASGI application
+# No Mangum wrapper needed - Vercel handles ASGI natively
