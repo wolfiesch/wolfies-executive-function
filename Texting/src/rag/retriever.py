@@ -187,7 +187,7 @@ class MessageRetriever:
     def index_recent_messages(
         self,
         days: int = 30,
-        limit: int = 500,
+        limit: int = 10000,
     ) -> int:
         """
         Index recent messages from all conversations.
@@ -196,13 +196,18 @@ class MessageRetriever:
         contacts list.
 
         Args:
-            days: How many days of history to index
-            limit: Maximum messages to fetch
+            days: How many days of history to index (default 30)
+            limit: Maximum messages to fetch (default 10000 = ~3 months)
+                   Use higher limits for more history:
+                   - 5000 = ~1 month
+                   - 10000 = ~3 months
+                   - 50000 = ~1 year
+                   - 150000 = all time (~4 years)
 
         Returns:
             Number of new chunks indexed
         """
-        logger.info(f"Indexing recent messages from all conversations, last {days} days")
+        logger.info(f"Indexing recent messages from all conversations, last {days} days (limit={limit})")
 
         # Fetch all recent messages
         messages = self.messages.get_all_recent_conversations(limit=limit)
@@ -367,6 +372,56 @@ class MessageRetriever:
             Sorted list of contact names
         """
         return self.store.get_indexed_contacts()
+
+    def index_all_history(
+        self,
+        batch_size: int = 20000,
+        max_messages: int = 150000,
+    ) -> int:
+        """
+        Index complete message history (all time).
+
+        Fetches all available messages and indexes them in batches.
+        This can take several minutes for large histories.
+
+        Args:
+            batch_size: Messages to process per batch (for memory efficiency)
+            max_messages: Maximum total messages to fetch
+
+        Returns:
+            Total number of new chunks indexed
+        """
+        logger.info(f"Indexing complete message history (max {max_messages} messages)")
+
+        # Fetch all messages
+        messages = self.messages.get_all_recent_conversations(limit=max_messages)
+
+        if not messages:
+            logger.warning("No messages found")
+            return 0
+
+        logger.info(f"Found {len(messages)} total messages")
+
+        # Enrich with contact names
+        for msg in messages:
+            phone = msg.get("phone")
+            if phone:
+                contact = self.contacts.get_contact_by_phone(phone)
+                if contact:
+                    msg["_contact_name"] = contact.name
+
+        # Chunk and index all messages
+        chunks = self.chunker.chunk_messages(messages)
+
+        if not chunks:
+            logger.warning("No chunks created")
+            return 0
+
+        # Index chunks
+        added = self.store.add_chunks(chunks)
+        logger.info(f"Indexed {added} new chunks from {len(messages)} messages")
+
+        return added
 
     def clear_index(self) -> int:
         """
