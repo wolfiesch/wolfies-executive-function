@@ -11,7 +11,7 @@ import {
 import { Button } from '@/components/ui/Button'
 import { Input } from '@/components/ui/Input'
 import { useCreateTask } from '@/api/hooks'
-import type { TaskCreateInput } from '@/types/models'
+import type { TaskCreateInput, Priority } from '@/types/models'
 
 interface TaskCreateDialogProps {
   open: boolean
@@ -37,7 +37,7 @@ export function TaskCreateDialog({ open, onOpenChange }: TaskCreateDialogProps) 
   // Form state
   const [title, setTitle] = useState('')
   const [description, setDescription] = useState('')
-  const [priority, setPriority] = useState<number>(3)
+  const [priority, setPriority] = useState<Priority>(3)
   const [dueDate, setDueDate] = useState('')
   const [estimatedMinutes, setEstimatedMinutes] = useState('')
   const [tags, setTags] = useState('')
@@ -147,7 +147,7 @@ export function TaskCreateDialog({ open, onOpenChange }: TaskCreateDialogProps) 
               <select
                 id="priority"
                 value={priority}
-                onChange={(e) => setPriority(parseInt(e.target.value, 10))}
+                onChange={(e) => setPriority(parseInt(e.target.value, 10) as Priority)}
                 className="w-full rounded-lg border border-[var(--color-border-default)] bg-[var(--color-bg-tertiary)] px-3 py-2 text-sm text-[var(--color-text-primary)] focus:border-[var(--color-accent-blue)] focus:outline-none"
               >
                 <option value={5}>P5 - Critical</option>
