@@ -46,6 +46,12 @@ async def get_today_dashboard(
         priority_tasks = []
         for task in dashboard_data.top_priorities[:5]:
             t = task.task  # ScoredTask wraps Task
+            # Extract time from due_date if present
+            due_time_str = None
+            if t.due_date and t.due_date.hour != 0:
+                due_time_str = t.due_date.strftime("%H:%M")
+            # Get optional fields from context dict if available
+            ctx = t.context or {}
             priority_tasks.append(TaskResponse(
                 id=t.id,
                 title=t.title,
@@ -53,15 +59,15 @@ async def get_today_dashboard(
                 status=t.status,
                 priority=t.priority,
                 due_date=t.due_date.isoformat() if t.due_date else None,
-                due_time=t.due_time.strftime("%H:%M") if t.due_time else None,
+                due_time=due_time_str,
                 estimated_minutes=t.estimated_minutes,
                 actual_minutes=t.actual_minutes,
-                life_area=t.life_area,
+                life_area=ctx.get("life_area"),
                 project_id=t.project_id,
                 parent_id=t.parent_task_id,
                 tags=t.tags or [],
-                waiting_for=t.waiting_for,
-                waiting_since=t.waiting_since.isoformat() if t.waiting_since else None,
+                waiting_for=ctx.get("waiting_for"),
+                waiting_since=ctx.get("waiting_since"),
                 completed_at=t.completed_at.isoformat() if t.completed_at else None,
                 created_at=t.created_at.isoformat() if t.created_at else "",
                 updated_at=t.updated_at.isoformat() if t.updated_at else "",
