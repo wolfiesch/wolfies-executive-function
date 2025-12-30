@@ -116,13 +116,19 @@ export function Goals() {
             <p className="mt-1 text-sm text-[var(--color-text-secondary)]">
               Create your first goal to start tracking progress
             </p>
-            <button className="mt-4 flex items-center gap-2 rounded-lg bg-[var(--color-accent-blue)] px-4 py-2 text-sm font-medium text-white">
+            <button
+              onClick={() => setCreateDialogOpen(true)}
+              className="mt-4 flex items-center gap-2 rounded-lg bg-[var(--color-accent-blue)] px-4 py-2 text-sm font-medium text-white"
+            >
               <Plus className="h-4 w-4" />
               Create Goal
             </button>
           </div>
         )}
       </div>
+
+      {/* Create goal dialog */}
+      <GoalCreateDialog open={createDialogOpen} onOpenChange={setCreateDialogOpen} />
     </AppShell>
   )
 }

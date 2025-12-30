@@ -43,14 +43,16 @@ def _row_to_goal_response(row: dict) -> GoalResponse:
         for m in milestones
     ]
 
+    # GoalAgent stores as 'name' in projects table, API returns as 'title'
+    # Also maps target_end_date -> target_date, overall_progress -> progress
     return GoalResponse(
         id=row["id"],
-        title=row["title"],
+        title=row.get("name") or row.get("title", ""),
         description=row.get("description"),
         status=row.get("status", "active"),
-        life_area=row.get("life_area"),
-        target_date=row.get("target_date"),
-        progress=row.get("progress", 0),
+        life_area=row.get("life_area") or row.get("para_category_id"),
+        target_date=row.get("target_end_date") or row.get("target_date"),
+        progress=row.get("overall_progress") or row.get("progress", 0),
         milestones=milestone_schemas,
         created_at=row.get("created_at", ""),
         updated_at=row.get("updated_at", ""),
@@ -111,11 +113,12 @@ async def create_goal(
     agent: GoalAgent = Depends(get_goal_agent),
 ):
     """Create a new goal with optional milestones."""
+    # GoalAgent expects 'name' instead of 'title', and 'target_end_date' instead of 'target_date'
     context = {
-        "title": goal.title,
+        "name": goal.title,  # Agent uses 'name' internally
         "description": goal.description,
         "life_area": goal.life_area,
-        "target_date": goal.target_date,
+        "target_end_date": goal.target_date,  # Agent uses 'target_end_date' internally
     }
     if goal.milestones:
         context["milestones"] = [m.model_dump() for m in goal.milestones]
@@ -212,6 +215,24 @@ async def add_milestone(
         message=response.message,
         data=response.data,
         suggestions=response.suggestions,
+    )
+
+
+@router.delete("/{goal_id}", response_model=AgentResponseSchema)
+async def delete_goal(
+    goal_id: int,
+    agent: GoalAgent = Depends(get_goal_agent),
+):
+    """Delete a goal."""
+    response = agent.process("delete_goal", {"goal_id": goal_id})
+
+    if not response.success:
+        raise HTTPException(status_code=400, detail=response.message)
+
+    return AgentResponseSchema(
+        success=response.success,
+        message=response.message,
+        data=response.data,
     )
 
 

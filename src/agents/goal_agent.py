@@ -65,6 +65,7 @@ class GoalAgent(BaseAgent):
         "get_goal",
         "list_goals",
         "update_goal",
+        "delete_goal",
         "log_progress",
         "add_milestone",
         "complete_milestone",
@@ -126,6 +127,7 @@ class GoalAgent(BaseAgent):
             "get_goal": self._handle_get_goal,
             "list_goals": self._handle_list_goals,
             "update_goal": self._handle_update_goal,
+            "delete_goal": self._handle_delete_goal,
             "log_progress": self._handle_log_progress,
             "add_milestone": self._handle_add_milestone,
             "complete_milestone": self._handle_complete_milestone,
@@ -371,6 +373,39 @@ class GoalAgent(BaseAgent):
                 return AgentResponse.error(f"Goal {goal_id} not found")
         except Exception as e:
             return AgentResponse.error(f"Failed to update goal: {str(e)}")
+
+    def _handle_delete_goal(self, context: Dict[str, Any]) -> AgentResponse:
+        """
+        Delete a goal.
+
+        Context params:
+            goal_id (int): Goal to delete
+        """
+        validation = self.validate_required_params(context, ["goal_id"])
+        if validation:
+            return validation
+
+        goal_id = context["goal_id"]
+
+        # Get existing goal to confirm it exists
+        goal = self._get_goal_by_id(goal_id)
+        if not goal:
+            return AgentResponse.error(f"Goal {goal_id} not found")
+
+        goal_name = goal.get("name", f"Goal {goal_id}")
+
+        try:
+            success = self._delete_goal(goal_id)
+            if success:
+                return AgentResponse.ok(
+                    message=f"Goal deleted: '{goal_name}'",
+                    data={"goal_id": goal_id},
+                    suggestions=["View remaining goals: 'show my goals'"]
+                )
+            else:
+                return AgentResponse.error(f"Failed to delete goal {goal_id}")
+        except Exception as e:
+            return AgentResponse.error(f"Failed to delete goal: {str(e)}")
 
     def _handle_log_progress(self, context: Dict[str, Any]) -> AgentResponse:
         """
@@ -1092,6 +1127,12 @@ class GoalAgent(BaseAgent):
         params = tuple(fields.values()) + (goal_id,)
 
         result = self.db.execute_write(query, params)
+        return result > 0
+
+    def _delete_goal(self, goal_id: int) -> bool:
+        """Delete a goal (project) by ID."""
+        query = "DELETE FROM projects WHERE id = ?"
+        result = self.db.execute_write(query, (goal_id,))
         return result > 0
 
     def _fetch_goals(self, filters: Dict[str, Any], limit: int = 20,
