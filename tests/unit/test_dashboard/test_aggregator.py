@@ -817,7 +817,7 @@ class TestAggregate:
         assert result.top_priorities is not None
 
     def test_uses_current_time_if_now_not_provided(self, db, aggregator):
-        """aggregate() uses utcnow() if now is not provided."""
+        """aggregate() uses datetime.now(timezone.utc) if now is not provided."""
         # Just verify it doesn't crash when no time is provided
         result = aggregator.aggregate()
 

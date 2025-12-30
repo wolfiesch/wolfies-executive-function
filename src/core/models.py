@@ -4,7 +4,7 @@ Defines core data structures for tasks, projects, notes, etc.
 """
 
 from dataclasses import dataclass, field
-from datetime import datetime
+from datetime import datetime, timezone
 from typing import Optional, List, Dict, Any
 import json
 
@@ -158,7 +158,7 @@ class Task:
     def is_overdue(self) -> bool:
         """Check if task is overdue"""
         if self.due_date and self.status not in ['done', 'cancelled']:
-            return datetime.utcnow() > self.due_date
+            return datetime.now(timezone.utc) > self.due_date
         return False
 
     def is_scheduled(self) -> bool:

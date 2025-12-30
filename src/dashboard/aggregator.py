@@ -6,7 +6,7 @@ into a unified DashboardData structure for display.
 """
 
 from dataclasses import dataclass, field
-from datetime import datetime, timedelta, time
+from datetime import datetime, timedelta, time, timezone
 from typing import List, Optional, Tuple
 
 from src.core.database import Database
@@ -124,7 +124,7 @@ class DashboardAggregator:
             Tuple of (due_today, scheduled_today, overdue, high_priority_unscheduled)
         """
         if now is None:
-            now = datetime.utcnow()
+            now = datetime.now(timezone.utc)
 
         today_start = now.replace(hour=0, minute=0, second=0, microsecond=0)
         today_end = now.replace(hour=23, minute=59, second=59, microsecond=999999)
@@ -193,7 +193,7 @@ class DashboardAggregator:
             List of CalendarEvent objects sorted by start time
         """
         if now is None:
-            now = datetime.utcnow()
+            now = datetime.now(timezone.utc)
 
         today_start = now.replace(hour=0, minute=0, second=0, microsecond=0)
         today_end = now.replace(hour=23, minute=59, second=59, microsecond=999999)
@@ -233,7 +233,7 @@ class DashboardAggregator:
             TimeAnalysis with time budget breakdown
         """
         if now is None:
-            now = datetime.utcnow()
+            now = datetime.now(timezone.utc)
 
         work_start, work_end = self._get_work_hours()
 
@@ -298,7 +298,7 @@ class DashboardAggregator:
             DailyStats with counts and completion rate
         """
         if now is None:
-            now = datetime.utcnow()
+            now = datetime.now(timezone.utc)
 
         today_start = now.replace(hour=0, minute=0, second=0, microsecond=0)
 
@@ -369,7 +369,7 @@ class DashboardAggregator:
             Complete DashboardData structure
         """
         if now is None:
-            now = datetime.utcnow()
+            now = datetime.now(timezone.utc)
 
         # Get tasks
         due_today, scheduled_today, overdue, high_priority = self.get_today_tasks(now)

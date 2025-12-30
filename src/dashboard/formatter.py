@@ -5,7 +5,7 @@ Handles all Rich-based CLI formatting for the dashboard display.
 Creates beautiful, information-dense terminal output.
 """
 
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from typing import List, Optional
 
 from rich.console import Console, Group
@@ -146,7 +146,7 @@ class DashboardFormatter:
 
         for task in overdue[:5]:  # Limit to 5
             icon = STATUS_ICONS.get(task.status, "○")
-            due_str = self._format_due_date(task, datetime.utcnow())
+            due_str = self._format_due_date(task, datetime.now(timezone.utc))
             priority_str = self._format_priority(task.priority)
 
             table.add_row(
@@ -199,7 +199,7 @@ class DashboardFormatter:
         table.add_column("Priority", width=4, justify="right")
         table.add_column("Est", width=5, justify="right")
 
-        now = datetime.utcnow()
+        now = datetime.now(timezone.utc)
         for i, scored in enumerate(priorities[:5], 1):
             task = scored.task
             icon = STATUS_ICONS.get(task.status, "○")
@@ -379,7 +379,7 @@ class DashboardFormatter:
         table.add_column("Due", width=12, justify="right")
         table.add_column("Priority", width=4, justify="right")
 
-        now = datetime.utcnow()
+        now = datetime.now(timezone.utc)
         for task in tasks[:max_items]:
             icon = STATUS_ICONS.get(task.status, "○")
             due_str = self._format_due_date(task, now)
