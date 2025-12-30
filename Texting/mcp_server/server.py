@@ -32,6 +32,7 @@ PROJECT_ROOT = Path(__file__).parent.parent
 
 # RAG imports (lazy loaded to avoid startup cost if not using RAG)
 _retriever = None
+_unified_retriever = None
 
 def get_retriever():
     """Lazy-load the MessageRetriever to avoid startup cost."""
@@ -48,6 +49,22 @@ def get_retriever():
             logger.warning(f"RAG dependencies not installed: {e}")
             raise
     return _retriever
+
+
+def get_unified_retriever():
+    """Lazy-load the UnifiedRetriever for multi-source RAG."""
+    global _unified_retriever
+    if _unified_retriever is None:
+        try:
+            from src.rag.unified import UnifiedRetriever
+            _unified_retriever = UnifiedRetriever(
+                persist_directory=str(PROJECT_ROOT / "data" / "chroma"),
+            )
+            logger.info("Unified RAG retriever initialized")
+        except ImportError as e:
+            logger.warning(f"Unified RAG dependencies not installed: {e}")
+            raise
+    return _unified_retriever
 
 # Configure logging with absolute path
 LOG_DIR = PROJECT_ROOT / "logs"
@@ -403,6 +420,86 @@ async def handle_list_tools() -> list[types.Tool]:
                 "properties": {},
                 "required": []
             }
+        ),
+        # Unified RAG Tools (Multi-Source Knowledge Base)
+        types.Tool(
+            name="index_knowledge",
+            description=(
+                "Index content from multiple sources for unified semantic search. "
+                "Sources: 'superwhisper' (voice transcriptions), 'notes' (markdown documents), "
+                "'gmail' (emails - requires pre-fetched data), 'slack' (messages - requires pre-fetched data), "
+                "'calendar' (events - requires pre-fetched data). "
+                "Use source='local' to index both SuperWhisper and Notes at once."
+            ),
+            inputSchema={
+                "type": "object",
+                "properties": {
+                    "source": {
+                        "type": "string",
+                        "description": "Source to index: 'superwhisper', 'notes', 'local' (both), 'gmail', 'slack', 'calendar'",
+                        "enum": ["superwhisper", "notes", "local", "gmail", "slack", "calendar"]
+                    },
+                    "days": {
+                        "type": "number",
+                        "description": "Number of days of history to index (default: 30)",
+                        "default": 30
+                    },
+                    "limit": {
+                        "type": "number",
+                        "description": "Maximum items to index (default: no limit)"
+                    }
+                },
+                "required": ["source"]
+            }
+        ),
+        types.Tool(
+            name="search_knowledge",
+            description=(
+                "Semantic search across all indexed sources (SuperWhisper, Notes, Gmail, Slack, Calendar). "
+                "Finds relevant content based on meaning, not just keywords. "
+                "Can filter by specific sources. Run index_knowledge first to build the search index."
+            ),
+            inputSchema={
+                "type": "object",
+                "properties": {
+                    "query": {
+                        "type": "string",
+                        "description": "Natural language search query"
+                    },
+                    "sources": {
+                        "type": "array",
+                        "items": {"type": "string"},
+                        "description": "Optional: Filter to specific sources (e.g., ['superwhisper', 'notes'])"
+                    },
+                    "days": {
+                        "type": "number",
+                        "description": "Optional: Only search content from last N days"
+                    },
+                    "limit": {
+                        "type": "number",
+                        "description": "Maximum results to return (default: 10)",
+                        "default": 10
+                    }
+                },
+                "required": ["query"]
+            }
+        ),
+        types.Tool(
+            name="knowledge_stats",
+            description=(
+                "Get statistics about the unified knowledge base. "
+                "Shows indexed content by source, date ranges, and total chunks."
+            ),
+            inputSchema={
+                "type": "object",
+                "properties": {
+                    "source": {
+                        "type": "string",
+                        "description": "Optional: Get stats for specific source only"
+                    }
+                },
+                "required": []
+            }
         )
     ]
 
@@ -445,6 +542,13 @@ async def call_tool(name: str, arguments: dict) -> list[types.TextContent]:
             return await handle_ask_messages(arguments)
         elif name == "rag_stats":
             return await handle_rag_stats(arguments)
+        # Unified RAG tools
+        elif name == "index_knowledge":
+            return await handle_index_knowledge(arguments)
+        elif name == "search_knowledge":
+            return await handle_search_knowledge(arguments)
+        elif name == "knowledge_stats":
+            return await handle_knowledge_stats(arguments)
         else:
             raise ValueError(f"Unknown tool: {name}")
 
@@ -1319,6 +1423,286 @@ async def handle_get_group_messages(arguments: dict) -> list[types.TextContent]:
             text="\n".join(response_lines)
         )
     ]
+
+
+# ============================================================================
+# Unified RAG Handlers (Multi-Source Knowledge Base)
+# ============================================================================
+
+
+async def handle_index_knowledge(arguments: dict) -> list[types.TextContent]:
+    """
+    Handle index_knowledge tool call for unified multi-source RAG.
+    """
+    source = arguments.get("source", "").lower()
+    days = arguments.get("days", 30)
+    limit = arguments.get("limit")
+
+    if not source:
+        return [
+            types.TextContent(
+                type="text",
+                text="Error: 'source' is required. Options: superwhisper, notes, local, gmail, slack, calendar"
+            )
+        ]
+
+    # Validate days
+    if days:
+        validated, error = validate_positive_int(days, "days", min_val=1, max_val=1460)
+        if error:
+            return [types.TextContent(type="text", text=f"Error: {error}")]
+        days = validated
+
+    # Validate limit
+    if limit:
+        validated, error = validate_positive_int(limit, "limit", min_val=1, max_val=10000)
+        if error:
+            return [types.TextContent(type="text", text=f"Error: {error}")]
+        limit = validated
+
+    try:
+        retriever = get_unified_retriever()
+
+        if source == "superwhisper":
+            result = retriever.index_superwhisper(days=days, limit=limit)
+            return [
+                types.TextContent(
+                    type="text",
+                    text=(
+                        f"SuperWhisper indexing complete!\n"
+                        f"- Transcriptions found: {result.get('chunks_found', 0)}\n"
+                        f"- Transcriptions indexed: {result.get('chunks_indexed', 0)}\n"
+                        f"- Duration: {result.get('duration_seconds', 0):.1f}s\n\n"
+                        f"Use search_knowledge to search your voice transcriptions."
+                    )
+                )
+            ]
+
+        elif source == "notes":
+            result = retriever.index_notes(days=days, limit=limit)
+            return [
+                types.TextContent(
+                    type="text",
+                    text=(
+                        f"Notes indexing complete!\n"
+                        f"- Document sections found: {result.get('chunks_found', 0)}\n"
+                        f"- Sections indexed: {result.get('chunks_indexed', 0)}\n"
+                        f"- Duration: {result.get('duration_seconds', 0):.1f}s\n\n"
+                        f"Use search_knowledge to search your notes."
+                    )
+                )
+            ]
+
+        elif source == "local":
+            result = retriever.index_local_sources(days=days)
+            by_source = result.get("by_source", {})
+            return [
+                types.TextContent(
+                    type="text",
+                    text=(
+                        f"Local sources indexing complete!\n\n"
+                        f"SuperWhisper:\n"
+                        f"  - Found: {by_source.get('superwhisper', {}).get('chunks_found', 0)}\n"
+                        f"  - Indexed: {by_source.get('superwhisper', {}).get('chunks_indexed', 0)}\n\n"
+                        f"Notes:\n"
+                        f"  - Found: {by_source.get('notes', {}).get('chunks_found', 0)}\n"
+                        f"  - Indexed: {by_source.get('notes', {}).get('chunks_indexed', 0)}\n\n"
+                        f"Total chunks indexed: {result.get('total_chunks_indexed', 0)}\n\n"
+                        f"Use search_knowledge to search across all sources."
+                    )
+                )
+            ]
+
+        elif source in ("gmail", "slack", "calendar"):
+            return [
+                types.TextContent(
+                    type="text",
+                    text=(
+                        f"Indexing {source} requires pre-fetched data.\n\n"
+                        f"For {source}, first fetch data using the appropriate MCP tools, "
+                        f"then pass the data to the indexer programmatically.\n\n"
+                        f"For local sources (superwhisper, notes), use index_knowledge directly."
+                    )
+                )
+            ]
+
+        else:
+            return [
+                types.TextContent(
+                    type="text",
+                    text=f"Unknown source: {source}. Options: superwhisper, notes, local, gmail, slack, calendar"
+                )
+            ]
+
+    except ImportError as e:
+        return [
+            types.TextContent(
+                type="text",
+                text=f"Error: RAG dependencies not installed. {str(e)}"
+            )
+        ]
+    except Exception as e:
+        logger.error(f"Error in index_knowledge: {e}", exc_info=True)
+        return [
+            types.TextContent(
+                type="text",
+                text=f"Error indexing {source}: {str(e)}"
+            )
+        ]
+
+
+async def handle_search_knowledge(arguments: dict) -> list[types.TextContent]:
+    """
+    Handle search_knowledge tool call for unified semantic search.
+    """
+    query = arguments.get("query", "").strip()
+    sources = arguments.get("sources")
+    days = arguments.get("days")
+    limit = arguments.get("limit", 10)
+
+    if not query:
+        return [
+            types.TextContent(
+                type="text",
+                text="Error: 'query' is required."
+            )
+        ]
+
+    # Validate limit
+    if limit:
+        validated, error = validate_positive_int(limit, "limit", min_val=1, max_val=50)
+        if error:
+            return [types.TextContent(type="text", text=f"Error: {error}")]
+        limit = validated
+
+    # Validate days
+    if days:
+        validated, error = validate_positive_int(days, "days", min_val=1, max_val=1460)
+        if error:
+            return [types.TextContent(type="text", text=f"Error: {error}")]
+        days = validated
+
+    try:
+        retriever = get_unified_retriever()
+
+        # Check if anything is indexed
+        stats = retriever.get_stats()
+        if stats.get("total_chunks", 0) == 0:
+            return [
+                types.TextContent(
+                    type="text",
+                    text=(
+                        "No content has been indexed yet.\n\n"
+                        "Run index_knowledge first to build the search index:\n"
+                        "• index_knowledge with source='superwhisper' (voice transcriptions)\n"
+                        "• index_knowledge with source='notes' (markdown documents)\n"
+                        "• index_knowledge with source='local' (both)"
+                    )
+                )
+            ]
+
+        # Perform search
+        context = retriever.ask(
+            question=query,
+            sources=sources,
+            limit=limit,
+            days=days,
+        )
+
+        return [
+            types.TextContent(
+                type="text",
+                text=context
+            )
+        ]
+
+    except ImportError as e:
+        return [
+            types.TextContent(
+                type="text",
+                text=f"Error: RAG dependencies not installed. {str(e)}"
+            )
+        ]
+    except Exception as e:
+        logger.error(f"Error in search_knowledge: {e}", exc_info=True)
+        return [
+            types.TextContent(
+                type="text",
+                text=f"Error searching: {str(e)}"
+            )
+        ]
+
+
+async def handle_knowledge_stats(arguments: dict) -> list[types.TextContent]:
+    """
+    Handle knowledge_stats tool call.
+    """
+    source = arguments.get("source")
+
+    try:
+        retriever = get_unified_retriever()
+        stats = retriever.get_stats(source=source)
+
+        if stats.get("total_chunks", 0) == 0:
+            return [
+                types.TextContent(
+                    type="text",
+                    text=(
+                        "Knowledge base is empty.\n\n"
+                        "Run index_knowledge to start building the search index:\n"
+                        "• index_knowledge with source='superwhisper'\n"
+                        "• index_knowledge with source='notes'\n"
+                        "• index_knowledge with source='local' (both)"
+                    )
+                )
+            ]
+
+        # Format stats
+        lines = [
+            "Knowledge Base Statistics",
+            "=" * 40,
+            f"Total chunks indexed: {stats.get('total_chunks', 0)}",
+            f"Unique participants: {stats.get('unique_participants', 0)}",
+            f"Unique tags: {stats.get('unique_tags', 0)}",
+            "",
+            "By Source:",
+        ]
+
+        by_source = stats.get("by_source", {})
+        for src, info in sorted(by_source.items()):
+            count = info.get("chunk_count", 0)
+            if count > 0:
+                oldest = info.get("oldest", "N/A")
+                newest = info.get("newest", "N/A")
+                lines.append(f"  {src}: {count} chunks")
+                lines.append(f"    Range: {oldest[:10] if oldest else 'N/A'} to {newest[:10] if newest else 'N/A'}")
+
+        if stats.get("oldest_chunk") and stats.get("newest_chunk"):
+            lines.append("")
+            lines.append(f"Overall date range: {stats['oldest_chunk'][:10]} to {stats['newest_chunk'][:10]}")
+
+        return [
+            types.TextContent(
+                type="text",
+                text="\n".join(lines)
+            )
+        ]
+
+    except ImportError as e:
+        return [
+            types.TextContent(
+                type="text",
+                text=f"Error: RAG dependencies not installed. {str(e)}"
+            )
+        ]
+    except Exception as e:
+        logger.error(f"Error in knowledge_stats: {e}", exc_info=True)
+        return [
+            types.TextContent(
+                type="text",
+                text=f"Error getting stats: {str(e)}"
+            )
+        ]
 
 
 async def main():

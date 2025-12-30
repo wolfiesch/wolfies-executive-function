@@ -12,7 +12,7 @@ This guide will help you set up the iMessage MCP server for use with Claude Code
 ## Step 1: Install Dependencies
 
 ```bash
-cd /Users/wolfgangschoenberger/LIFE-PLANNER/Texting
+cd /path/to/imessage-mcp
 
 # Install Python dependencies
 pip install -r requirements.txt
@@ -75,10 +75,10 @@ Add the following to your Claude Code MCP configuration:
 ```json
 {
   "mcpServers": {
-    "imessage-life-planner": {
-      "command": "python",
+    "imessage-mcp": {
+      "command": "python3",
       "args": [
-        "/Users/wolfgangschoenberger/LIFE-PLANNER/Texting/mcp_server/server.py"
+        "/path/to/imessage-mcp/mcp_server/server.py"
       ],
       "env": {}
     }
@@ -86,23 +86,11 @@ Add the following to your Claude Code MCP configuration:
 }
 ```
 
-If you don't have this file yet, create it:
+**Using Claude Code CLI (recommended):**
 
 ```bash
-mkdir -p ~/.claude
-cat > ~/.claude/mcp_settings.json << 'EOF'
-{
-  "mcpServers": {
-    "imessage-life-planner": {
-      "command": "python",
-      "args": [
-        "/Users/wolfgangschoenberger/LIFE-PLANNER/Texting/mcp_server/server.py"
-      ],
-      "env": {}
-    }
-  }
-}
-EOF
+# Register the MCP server using the CLI
+claude mcp add -t stdio imessage-mcp -- python3 /path/to/imessage-mcp/mcp_server/server.py
 ```
 
 ## Step 5: Test the Server
@@ -112,10 +100,10 @@ EOF
 You can test the server is working:
 
 ```bash
-cd /Users/wolfgangschoenberger/LIFE-PLANNER/Texting
+cd /path/to/imessage-mcp
 
 # This will start the server and wait for input
-python mcp_server/server.py
+python3 mcp_server/server.py
 ```
 
 Look for log output indicating server started successfully.
