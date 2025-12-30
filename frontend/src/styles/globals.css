@@ -1,0 +1,160 @@
+@import "tailwindcss";
+
+/* ============================================
+   Life Planner Design System - "Obsidian Command Center"
+   Twitter-inspired dark aesthetic
+   ============================================ */
+
+@theme {
+  /* Core Backgrounds (layered depth) */
+  --color-bg-primary: #000000;
+  --color-bg-secondary: #0a0a0a;
+  --color-bg-tertiary: #141414;
+  --color-bg-hover: #1a1a1a;
+  --color-bg-active: #222222;
+
+  /* Borders & Dividers */
+  --color-border-subtle: #1e1e1e;
+  --color-border-default: #2e2e2e;
+  --color-border-strong: #3e3e3e;
+
+  /* Text Hierarchy */
+  --color-text-primary: #e7e9ea;
+  --color-text-secondary: #71767b;
+  --color-text-tertiary: #4a4a4a;
+  --color-text-link: #1d9bf0;
+
+  /* Accent Colors (semantic) */
+  --color-accent-blue: #1d9bf0;
+  --color-accent-green: #00ba7c;
+  --color-accent-yellow: #ffd400;
+  --color-accent-red: #f4212e;
+  --color-accent-purple: #7856ff;
+  --color-accent-orange: #ff7a00;
+
+  /* Priority Colors */
+  --color-priority-5: #f4212e;
+  --color-priority-4: #ff7a00;
+  --color-priority-3: #ffd400;
+  --color-priority-2: #71767b;
+  --color-priority-1: #4a4a4a;
+
+  /* Typography */
+  --font-family-ui: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-family-mono: 'JetBrains Mono', 'Fira Code', Consolas, monospace;
+
+  /* Spacing scale */
+  --spacing-xs: 0.25rem;
+  --spacing-sm: 0.5rem;
+  --spacing-md: 1rem;
+  --spacing-lg: 1.5rem;
+  --spacing-xl: 2rem;
+  --spacing-2xl: 3rem;
+
+  /* Border radius */
+  --radius-sm: 0.25rem;
+  --radius-md: 0.5rem;
+  --radius-lg: 0.75rem;
+  --radius-xl: 1rem;
+  --radius-full: 9999px;
+
+  /* Shadows */
+  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.2), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.3), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+
+  /* Transitions */
+  --transition-fast: 150ms;
+  --transition-normal: 200ms;
+  --transition-slow: 300ms;
+}
+
+/* Base styles */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-size: 16px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  font-family: var(--font-family-ui);
+  background-color: var(--color-bg-primary);
+  color: var(--color-text-primary);
+  line-height: 1.5;
+  min-height: 100vh;
+}
+
+/* Custom scrollbar - dark theme */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--color-bg-secondary);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-border-default);
+  border-radius: var(--radius-full);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-border-strong);
+}
+
+/* Focus styles for accessibility */
+:focus-visible {
+  outline: 2px solid var(--color-accent-blue);
+  outline-offset: 2px;
+}
+
+/* Selection styling */
+::selection {
+  background-color: var(--color-accent-blue);
+  color: white;
+}
+
+/* Links */
+a {
+  color: var(--color-text-link);
+  text-decoration: none;
+  transition: color var(--transition-fast);
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+/* Code elements */
+code, pre {
+  font-family: var(--font-family-mono);
+}
+
+/* Utility classes for the design system */
+.text-primary { color: var(--color-text-primary); }
+.text-secondary { color: var(--color-text-secondary); }
+.text-tertiary { color: var(--color-text-tertiary); }
+
+.bg-primary { background-color: var(--color-bg-primary); }
+.bg-secondary { background-color: var(--color-bg-secondary); }
+.bg-tertiary { background-color: var(--color-bg-tertiary); }
+
+/* Priority badge colors */
+.priority-5 { color: var(--color-priority-5); }
+.priority-4 { color: var(--color-priority-4); }
+.priority-3 { color: var(--color-priority-3); }
+.priority-2 { color: var(--color-priority-2); }
+.priority-1 { color: var(--color-priority-1); }
+
+/* Status indicator colors */
+.status-done { color: var(--color-accent-green); }
+.status-overdue { color: var(--color-accent-red); }
+.status-in-progress { color: var(--color-accent-blue); }
+.status-waiting { color: var(--color-accent-yellow); }
