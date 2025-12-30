@@ -27,6 +27,7 @@ from .task_agent import TaskAgent
 from .calendar_agent import CalendarAgent
 from .note_agent import NoteAgent
 from .goal_agent import GoalAgent
+from .review_agent import ReviewAgent
 
 
 class MasterAgent:
@@ -168,6 +169,45 @@ class MasterAgent:
             ],
         },
 
+        # Review intents
+        "review": {
+            "daily_review": [
+                r"\bdaily\s+review\b", r"\btoday(?:'s|s)?\s+review\b",
+                r"\breview\s+(?:my\s+)?day\b", r"\bhow\s+did\s+(?:my\s+)?day\s+go\b",
+                r"\bwhat\s+did\s+i\s+(?:do|accomplish)\s+today\b",
+                r"\bend\s+of\s+day\b", r"\beod\s+review\b",
+                r"\bwrap\s+up\s+(?:my\s+)?day\b",
+            ],
+            "weekly_review": [
+                r"\bweekly\s+review\b", r"\bthis\s+week(?:'s|s)?\s+review\b",
+                r"\breview\s+(?:my\s+)?week\b", r"\bhow\s+(?:was|did)\s+(?:my\s+)?week\b",
+                r"\bwhat\s+did\s+i\s+(?:do|accomplish)\s+this\s+week\b",
+                r"\bweek\s+(?:in\s+)?review\b", r"\bweekend\s+review\b",
+            ],
+            "add_reflection": [
+                r"\breflect\s+on\s+(?:my\s+)?(?:day|today|week|this)\b",
+                r"\badd\s+(?:a\s+)?reflection\b",
+                r"\bthink(?:ing)?\s+about\s+(?:my|how)\b",
+                r"\bhow\s+(?:i\s+)?feel\s+(?:about|today|right\s+now)\b",
+                r"\btoday\s+(?:i\s+)?(?:felt|feel|was)\s+(?:good|bad|happy|stressed|productive)\b",
+                r"\bi(?:'m|\s+am)\s+(?:feeling|grateful|happy|stressed|tired|overwhelmed)\b",
+                r"\bmy\s+thoughts\s+on\b", r"\bprocessing\s+(?:my|the)\b",
+                r"\bgrateful\s+(?:for|that)\b", r"\bthankful\s+(?:for|that)\b",
+            ],
+            "get_insights": [
+                r"\binsights?\b", r"\bpatterns?\b", r"\btrends?\b",
+                r"\bproductivity\s+(?:patterns?|insights?|trends?)\b",
+                r"\banalyze\s+(?:my\s+)?(?:productivity|performance|habits?)\b",
+                r"\bhow\s+(?:am\s+i|have\s+i\s+been)\s+doing\b",
+                r"\bwhat(?:'s|s)?\s+working\b",
+            ],
+            "generate_prompts": [
+                r"\breflection\s+prompts?\b", r"\bprompts?\s+(?:for\s+)?reflect(?:ion)?\b",
+                r"\bquestions?\s+(?:for|to)\s+reflect\b",
+                r"\bwhat\s+should\s+i\s+(?:think|reflect)\s+(?:about|on)\b",
+            ],
+        },
+
         # Query intents (can route to multiple agents based on context)
         "query": {
             "status_query": [
@@ -183,6 +223,7 @@ class MasterAgent:
         "calendar": "list_events",
         "note": "list_notes",
         "goal": "list_goals",
+        "review": "daily_review",
         "query": "status_query",
     }
 
@@ -204,6 +245,7 @@ class MasterAgent:
             "calendar": CalendarAgent(db, config),
             "note": NoteAgent(db, config),
             "goal": GoalAgent(db, config),
+            "review": ReviewAgent(db, config),
         }
 
         # Initialize agents that are available
@@ -308,6 +350,7 @@ class MasterAgent:
             "calendar": ["calendar", "schedule", "meeting", "event", "appointment"],
             "note": ["note", "notes", "write down", "jot"],
             "goal": ["goal", "objective", "milestone", "progress"],
+            "review": ["review", "reflect", "reflection", "insights", "patterns", "daily review", "weekly review"],
         }
 
         for domain, keywords in domain_keywords.items():
