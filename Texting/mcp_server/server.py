@@ -49,6 +49,65 @@ CONFIG_PATH = PROJECT_ROOT / "config" / "mcp_server.json"
 with open(CONFIG_PATH) as f:
     CONFIG = json.load(f)
 
+# Validation constants
+MAX_MESSAGE_LIMIT = 500  # Maximum messages to retrieve
+MAX_SEARCH_RESULTS = 500  # Maximum search results
+MIN_LIMIT = 1  # Minimum limit value
+
+
+def validate_positive_int(value, name: str, min_val: int = MIN_LIMIT, max_val: int = MAX_MESSAGE_LIMIT) -> tuple[int | None, str | None]:
+    """
+    Validate that a value is a positive integer within bounds.
+
+    Args:
+        value: Value to validate
+        name: Parameter name for error messages
+        min_val: Minimum allowed value
+        max_val: Maximum allowed value
+
+    Returns:
+        Tuple of (validated_value, error_message). If valid, error_message is None.
+    """
+    if value is None:
+        return None, None
+
+    try:
+        int_value = int(value)
+    except (TypeError, ValueError):
+        return None, f"Invalid {name}: must be an integer, got {type(value).__name__}"
+
+    if int_value < min_val:
+        return None, f"Invalid {name}: must be at least {min_val}, got {int_value}"
+
+    if int_value > max_val:
+        return None, f"Invalid {name}: must be at most {max_val}, got {int_value}"
+
+    return int_value, None
+
+
+def validate_non_empty_string(value, name: str) -> tuple[str | None, str | None]:
+    """
+    Validate that a value is a non-empty string.
+
+    Args:
+        value: Value to validate
+        name: Parameter name for error messages
+
+    Returns:
+        Tuple of (validated_value, error_message). If valid, error_message is None.
+    """
+    if value is None:
+        return None, f"Missing required parameter: {name}"
+
+    if not isinstance(value, str):
+        return None, f"Invalid {name}: must be a string, got {type(value).__name__}"
+
+    stripped = value.strip()
+    if not stripped:
+        return None, f"Invalid {name}: cannot be empty"
+
+    return stripped, None
+
 
 def resolve_path(path_str: str) -> str:
     """Resolve a config path relative to PROJECT_ROOT or expand ~."""
@@ -206,6 +265,54 @@ async def handle_list_tools() -> list[types.Tool]:
                 },
                 "required": ["phone_number"]
             }
+        ),
+        types.Tool(
+            name="list_group_chats",
+            description=(
+                "List all group chat conversations with participant information. "
+                "Returns group ID, participants list, participant count, and message count. "
+                "Use the group_id from results with get_group_messages to read group messages. "
+                "Sprint 3 enhancement for group chat support."
+            ),
+            inputSchema={
+                "type": "object",
+                "properties": {
+                    "limit": {
+                        "type": "number",
+                        "description": "Maximum number of group chats to return (default: 50)",
+                        "default": 50
+                    }
+                },
+                "required": []
+            }
+        ),
+        types.Tool(
+            name="get_group_messages",
+            description=(
+                "Get messages from a specific group chat. "
+                "Identify groups by group_id (from list_group_chats) or by participant phone/email. "
+                "Returns messages with sender attribution for each message. "
+                "Sprint 3 enhancement for group chat support."
+            ),
+            inputSchema={
+                "type": "object",
+                "properties": {
+                    "group_id": {
+                        "type": "string",
+                        "description": "The group identifier (from list_group_chats results)"
+                    },
+                    "participant": {
+                        "type": "string",
+                        "description": "Phone/email to filter groups containing this participant (alternative to group_id)"
+                    },
+                    "limit": {
+                        "type": "number",
+                        "description": "Maximum number of messages to return (default: 50)",
+                        "default": 50
+                    }
+                },
+                "required": []
+            }
         )
     ]
 
@@ -237,6 +344,10 @@ async def call_tool(name: str, arguments: dict) -> list[types.TextContent]:
             return await handle_search_messages(arguments)
         elif name == "get_messages_by_phone":
             return await handle_get_messages_by_phone(arguments)
+        elif name == "list_group_chats":
+            return await handle_list_group_chats(arguments)
+        elif name == "get_group_messages":
+            return await handle_get_group_messages(arguments)
         else:
             raise ValueError(f"Unknown tool: {name}")
 
@@ -260,8 +371,15 @@ async def handle_send_message(arguments: dict) -> list[types.TextContent]:
     Returns:
         Success or error message
     """
-    contact_name = arguments["contact_name"]
-    message = arguments["message"]
+    # Validate contact_name
+    contact_name, error = validate_non_empty_string(arguments.get("contact_name"), "contact_name")
+    if error:
+        return [types.TextContent(type="text", text=f"Validation error: {error}")]
+
+    # Validate message
+    message, error = validate_non_empty_string(arguments.get("message"), "message")
+    if error:
+        return [types.TextContent(type="text", text=f"Validation error: {error}")]
 
     # Look up contact
     contact = contacts.get_contact_by_name(contact_name)
@@ -312,8 +430,18 @@ async def handle_get_recent_messages(arguments: dict) -> list[types.TextContent]
     Returns:
         Recent message history or error
     """
-    contact_name = arguments["contact_name"]
-    limit = arguments.get("limit", 20)
+    # Validate contact_name
+    contact_name, error = validate_non_empty_string(arguments.get("contact_name"), "contact_name")
+    if error:
+        return [types.TextContent(type="text", text=f"Validation error: {error}")]
+
+    # Validate limit
+    limit_raw = arguments.get("limit", 20)
+    limit, error = validate_positive_int(limit_raw, "limit", max_val=MAX_MESSAGE_LIMIT)
+    if error:
+        return [types.TextContent(type="text", text=f"Validation error: {error}")]
+    if limit is None:
+        limit = 20
 
     # Look up contact
     contact = contacts.get_contact_by_name(contact_name)
@@ -413,7 +541,13 @@ async def handle_get_all_recent_conversations(arguments: dict) -> list[types.Tex
     Returns:
         Recent messages from all conversations
     """
-    limit = arguments.get("limit", 20)
+    # Validate limit
+    limit_raw = arguments.get("limit", 20)
+    limit, error = validate_positive_int(limit_raw, "limit", max_val=MAX_MESSAGE_LIMIT)
+    if error:
+        return [types.TextContent(type="text", text=f"Validation error: {error}")]
+    if limit is None:
+        limit = 20
 
     # Get all recent messages
     message_list = messages.get_all_recent_conversations(limit)
@@ -438,12 +572,26 @@ async def handle_get_all_recent_conversations(arguments: dict) -> list[types.Tex
     ]
 
     for msg in message_list:
-        # Try to find contact name
-        phone = msg["phone"]
-        contact = contacts.get_contact_by_phone(phone)
-        contact_name = contact.name if contact else phone
+        # Check if this is a group chat
+        is_group = msg.get("is_group_chat", False)
 
-        direction = "You" if msg["is_from_me"] else contact_name
+        if is_group:
+            # For group chats, show sender and group indicator
+            sender_handle = msg.get("sender_handle", msg["phone"])
+            if msg["is_from_me"]:
+                sender_name = "You"
+            else:
+                sender_contact = contacts.get_contact_by_phone(sender_handle)
+                sender_name = sender_contact.name if sender_contact else sender_handle[:15]
+
+            direction = f"[GROUP] {sender_name}"
+        else:
+            # For 1:1 chats, use existing logic
+            phone = msg["phone"]
+            contact = contacts.get_contact_by_phone(phone)
+            contact_name = contact.name if contact else phone
+            direction = "You" if msg["is_from_me"] else contact_name
+
         date = msg["date"][:19] if msg["date"] else "Unknown date"
         text = msg["text"][:80] + "..." if len(msg["text"]) > 80 else msg["text"]
 
@@ -467,9 +615,20 @@ async def handle_search_messages(arguments: dict) -> list[types.TextContent]:
     Returns:
         Messages matching search query
     """
-    query = arguments["query"]
+    # Validate query
+    query, error = validate_non_empty_string(arguments.get("query"), "query")
+    if error:
+        return [types.TextContent(type="text", text=f"Validation error: {error}")]
+
     contact_name = arguments.get("contact_name")
-    limit = arguments.get("limit", 50)
+
+    # Validate limit
+    limit_raw = arguments.get("limit", 50)
+    limit, error = validate_positive_int(limit_raw, "limit", max_val=MAX_SEARCH_RESULTS)
+    if error:
+        return [types.TextContent(type="text", text=f"Validation error: {error}")]
+    if limit is None:
+        limit = 50
 
     # If contact_name provided, look up phone
     phone_filter = None
@@ -505,12 +664,25 @@ async def handle_search_messages(arguments: dict) -> list[types.TextContent]:
     ]
 
     for msg in message_list:
-        # Try to find contact name
-        phone = msg["phone"]
-        contact = contacts.get_contact_by_phone(phone)
-        contact_name_display = contact.name if contact else phone
+        # Check if this is a group chat
+        is_group = msg.get("is_group_chat", False)
 
-        direction = "You" if msg["is_from_me"] else contact_name_display
+        if is_group:
+            # For group chats, show sender and group indicator
+            phone = msg["phone"]
+            if msg["is_from_me"]:
+                sender_name = "You"
+            else:
+                sender_contact = contacts.get_contact_by_phone(phone)
+                sender_name = sender_contact.name if sender_contact else phone[:15]
+            direction = f"[GROUP] {sender_name}"
+        else:
+            # For 1:1 chats, use existing logic
+            phone = msg["phone"]
+            contact = contacts.get_contact_by_phone(phone)
+            contact_name_display = contact.name if contact else phone
+            direction = "You" if msg["is_from_me"] else contact_name_display
+
         date = msg["date"][:10] if msg["date"] else "Unknown"
         snippet = msg.get("match_snippet", msg["text"][:100])
 
@@ -535,8 +707,18 @@ async def handle_get_messages_by_phone(arguments: dict) -> list[types.TextConten
     Returns:
         Recent messages with this phone number
     """
-    phone_number = arguments["phone_number"]
-    limit = arguments.get("limit", 20)
+    # Validate phone_number
+    phone_number, error = validate_non_empty_string(arguments.get("phone_number"), "phone_number")
+    if error:
+        return [types.TextContent(type="text", text=f"Validation error: {error}")]
+
+    # Validate limit
+    limit_raw = arguments.get("limit", 20)
+    limit, error = validate_positive_int(limit_raw, "limit", max_val=MAX_MESSAGE_LIMIT)
+    if error:
+        return [types.TextContent(type="text", text=f"Validation error: {error}")]
+    if limit is None:
+        limit = 20
 
     # Get messages
     message_list = messages.get_recent_messages(phone_number, limit)
@@ -571,6 +753,183 @@ async def handle_get_messages_by_phone(arguments: dict) -> list[types.TextConten
         text = msg["text"][:100] + "..." if len(msg["text"]) > 100 else msg["text"]
 
         response_lines.append(f"[{date}] {direction}: {text}")
+
+    return [
+        types.TextContent(
+            type="text",
+            text="\n".join(response_lines)
+        )
+    ]
+
+
+async def handle_list_group_chats(arguments: dict) -> list[types.TextContent]:
+    """
+    Handle list_group_chats tool call (Sprint 3).
+
+    Args:
+        arguments: {"limit": Optional[int]}
+
+    Returns:
+        List of group conversations with participant info
+    """
+    # Validate limit
+    limit_raw = arguments.get("limit", 50)
+    limit, error = validate_positive_int(limit_raw, "limit", max_val=MAX_MESSAGE_LIMIT)
+    if error:
+        return [types.TextContent(type="text", text=f"Validation error: {error}")]
+    if limit is None:
+        limit = 50
+
+    # Get group chats
+    group_list = messages.list_group_chats(limit)
+
+    if not group_list:
+        return [
+            types.TextContent(
+                type="text",
+                text=(
+                    "No group chats found.\n\n"
+                    "Note: Requires Full Disk Access permission.\n"
+                    "Grant in: System Settings → Privacy & Security → Full Disk Access"
+                )
+            )
+        ]
+
+    # Format response
+    response_lines = [
+        f"Group Chats ({len(group_list)} found):",
+        ""
+    ]
+
+    for group in group_list:
+        # Resolve participant names where possible
+        participant_names = []
+        for handle in group["participants"]:
+            contact = contacts.get_contact_by_phone(handle)
+            if contact:
+                participant_names.append(contact.name)
+            else:
+                # Truncate long handles for display
+                display_handle = handle[:20] + "..." if len(handle) > 20 else handle
+                participant_names.append(display_handle)
+
+        participants_str = ", ".join(participant_names[:5])  # Limit to 5 names
+        if len(participant_names) > 5:
+            participants_str += f" +{len(participant_names) - 5} more"
+
+        date = group["last_message_date"][:10] if group["last_message_date"] else "Unknown"
+        msg_count = group["message_count"]
+        display_name = group.get("display_name") or "Unnamed Group"
+
+        response_lines.append(f"📱 {display_name} ({group['participant_count']} people)")
+        response_lines.append(f"   Participants: {participants_str}")
+        response_lines.append(f"   Last active: {date} | {msg_count} messages")
+        response_lines.append(f"   Group ID: {group['group_id']}")
+        response_lines.append("")
+
+    response_lines.append("Use get_group_messages with group_id to read messages from a specific group.")
+
+    return [
+        types.TextContent(
+            type="text",
+            text="\n".join(response_lines)
+        )
+    ]
+
+
+async def handle_get_group_messages(arguments: dict) -> list[types.TextContent]:
+    """
+    Handle get_group_messages tool call (Sprint 3).
+
+    Args:
+        arguments: {"group_id": Optional[str], "participant": Optional[str], "limit": Optional[int]}
+
+    Returns:
+        Messages from the specified group chat
+    """
+    group_id = arguments.get("group_id")
+    participant = arguments.get("participant")
+
+    # Validate limit
+    limit_raw = arguments.get("limit", 50)
+    limit, error = validate_positive_int(limit_raw, "limit", max_val=MAX_MESSAGE_LIMIT)
+    if error:
+        return [types.TextContent(type="text", text=f"Validation error: {error}")]
+    if limit is None:
+        limit = 50
+
+    # Validate that at least one of group_id or participant is provided
+    if not group_id and not participant:
+        return [
+            types.TextContent(
+                type="text",
+                text=(
+                    "Error: Either group_id or participant must be provided.\n\n"
+                    "Use list_group_chats first to find group IDs, or provide a "
+                    "participant phone/email to find groups containing that person."
+                )
+            )
+        ]
+
+    # Get group messages
+    message_list = messages.get_group_messages(
+        group_id=group_id,
+        participant_filter=participant,
+        limit=limit
+    )
+
+    if not message_list:
+        filter_type = f"group_id={group_id}" if group_id else f"participant={participant}"
+        return [
+            types.TextContent(
+                type="text",
+                text=(
+                    f"No group messages found for {filter_type}.\n\n"
+                    "Note: Requires Full Disk Access permission.\n"
+                    "Grant in: System Settings → Privacy & Security → Full Disk Access"
+                )
+            )
+        ]
+
+    # Get participant info from first message
+    first_msg = message_list[0]
+    group_participants = first_msg.get("group_participants", [])
+    display_name = first_msg.get("display_name") or "Unnamed Group"
+
+    # Resolve participant names
+    participant_names = []
+    for handle in group_participants:
+        contact = contacts.get_contact_by_phone(handle)
+        if contact:
+            participant_names.append(contact.name)
+        else:
+            display_handle = handle[:15] + "..." if len(handle) > 15 else handle
+            participant_names.append(display_handle)
+
+    participants_str = ", ".join(participant_names[:5])
+    if len(participant_names) > 5:
+        participants_str += f" +{len(participant_names) - 5} more"
+
+    # Format response
+    response_lines = [
+        f"📱 {display_name} ({len(message_list)} messages)",
+        f"Participants: {participants_str}",
+        ""
+    ]
+
+    for msg in message_list:
+        # Resolve sender name
+        sender_handle = msg.get("sender_handle", "unknown")
+        if msg["is_from_me"]:
+            sender_name = "You"
+        else:
+            sender_contact = contacts.get_contact_by_phone(sender_handle)
+            sender_name = sender_contact.name if sender_contact else sender_handle[:15]
+
+        date = msg["date"][:19] if msg["date"] else "Unknown date"
+        text = msg["text"][:100] + "..." if len(msg["text"]) > 100 else msg["text"]
+
+        response_lines.append(f"[{date}] {sender_name}: {text}")
 
     return [
         types.TextContent(

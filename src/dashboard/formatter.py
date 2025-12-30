@@ -5,7 +5,7 @@ Handles all Rich-based CLI formatting for the dashboard display.
 Creates beautiful, information-dense terminal output.
 """
 
-from datetime import datetime
+from datetime import datetime, timedelta
 from typing import List, Optional
 
 from rich.console import Console, Group
@@ -76,7 +76,7 @@ class DashboardFormatter:
 
         due = task.due_date
         today_start = now.replace(hour=0, minute=0, second=0, microsecond=0)
-        tomorrow_start = today_start + __import__('datetime').timedelta(days=1)
+        tomorrow_start = today_start + timedelta(days=1)
 
         # Calculate days difference
         days_diff = (due.replace(hour=0, minute=0, second=0) - today_start).days

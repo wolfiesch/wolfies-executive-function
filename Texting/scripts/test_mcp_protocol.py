@@ -8,6 +8,11 @@ import asyncio
 import json
 import subprocess
 import sys
+from pathlib import Path
+
+# Get the project root directory
+PROJECT_ROOT = Path(__file__).parent.parent
+SERVER_PATH = PROJECT_ROOT / "mcp_server" / "server.py"
 
 async def test_mcp_protocol():
     """Test MCP initialization handshake."""
@@ -18,7 +23,7 @@ async def test_mcp_protocol():
     print("Starting MCP server...")
     process = await asyncio.create_subprocess_exec(
         "python3",
-        "/Users/wolfgangschoenberger/LIFE-PLANNER/Texting/mcp_server/server.py",
+        str(SERVER_PATH),
         stdin=asyncio.subprocess.PIPE,
         stdout=asyncio.subprocess.PIPE,
         stderr=asyncio.subprocess.PIPE
@@ -141,7 +146,8 @@ async def test_mcp_protocol():
             if stderr:
                 print("\nServer errors:")
                 print(stderr.decode())
-        except:
+        except (asyncio.TimeoutError, Exception) as e:
+            # Ignore errors when trying to read stderr during cleanup
             pass
 
         return False
