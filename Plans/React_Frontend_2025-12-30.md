@@ -1124,12 +1124,13 @@ npm install -D prettier prettier-plugin-tailwindcss
 | 12/30/2025 05:21 AM PST | Initial plan created | Comprehensive frontend architecture document |
 | 12/30/2025 05:29 AM PST (via pst-timestamp) | Plan reviewed, deps fixed | Added missing deps (axios, nuqs, react-hotkeys-hook), added more Radix primitives. Starting parallel implementation. |
 | 12/30/2025 05:46 AM PST (via pst-timestamp) | **Phase 1 Complete** | Built 60+ components: UI primitives (Button, Input, Card, Badge, Dialog, Dropdown, Tooltip, Avatar, Skeleton), layout (AppShell, Sidebar, Header, RightPanel, CommandPalette), task components (TaskCard, PriorityBadge, StatusBadge), dashboard (StatsCard, QuickCapture), API layer with mock data, React Query hooks, Zustand stores, all pages (Dashboard, Tasks, Calendar, Notes, Goals, Projects, Settings). App builds and runs successfully. |
+| 12/30/2025 06:08 AM PST (via pst-timestamp) | **Backend API Complete** | Created FastAPI backend wrapping agent layer: `/backend/` with main.py, schemas.py, dependencies.py, routers for tasks, calendar, notes, goals, dashboard, NLP. Updated frontend to use real API (USE_REAL_API=true). Vite proxy configured. All endpoints tested: tasks (7), notes (3), NLP working. Dashboard has minor timezone bug (TODO). |
 
 ---
 
 ## Next Steps
 
-1. **Connect to backend API** - Replace mock data with real API calls when backend is ready
+1. **Fix dashboard timezone bug** - DashboardAggregator datetime offset issue
 2. **Implement command palette** - Complete the cmdk integration for ⌘K navigation
 3. **Add keyboard shortcuts** - Wire up navigation and task shortcuts
 4. **Build out Tasks page** - TaskList, TaskFilters, TaskForm components

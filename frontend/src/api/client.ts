@@ -144,47 +144,62 @@ export const apiClient = createApiClient()
 
 /**
  * Type-safe API request helpers
- * These wrap axios methods with proper typing for our API response format
+ * These wrap axios methods with proper typing for our API response format.
+ *
+ * Handles both:
+ * - Direct responses (FastAPI style): { tasks: [...] }
+ * - Wrapped responses (legacy): { data: { tasks: [...] } }
  */
 export const api = {
+  /**
+   * Extract data from response, handling both wrapped and direct formats
+   */
+  extractData<T>(data: T | ApiResponse<T>): T {
+    // Check if it's a wrapped response with a 'data' property
+    if (data && typeof data === 'object' && 'data' in data && !('tasks' in data) && !('events' in data) && !('notes' in data) && !('goals' in data)) {
+      return (data as ApiResponse<T>).data
+    }
+    return data as T
+  },
+
   /**
    * GET request
    */
   async get<T>(url: string, params?: Record<string, unknown>): Promise<T> {
-    const response = await apiClient.get<ApiResponse<T>>(url, { params })
-    return response.data.data
+    const response = await apiClient.get<T | ApiResponse<T>>(url, { params })
+    return this.extractData(response.data)
   },
 
   /**
    * POST request
    */
   async post<T>(url: string, data?: unknown): Promise<T> {
-    const response = await apiClient.post<ApiResponse<T>>(url, data)
-    return response.data.data
+    const response = await apiClient.post<T | ApiResponse<T>>(url, data)
+    return this.extractData(response.data)
   },
 
   /**
    * PUT request
    */
   async put<T>(url: string, data?: unknown): Promise<T> {
-    const response = await apiClient.put<ApiResponse<T>>(url, data)
-    return response.data.data
+    const response = await apiClient.put<T | ApiResponse<T>>(url, data)
+    return this.extractData(response.data)
   },
 
   /**
    * PATCH request
    */
   async patch<T>(url: string, data?: unknown): Promise<T> {
-    const response = await apiClient.patch<ApiResponse<T>>(url, data)
-    return response.data.data
+    const response = await apiClient.patch<T | ApiResponse<T>>(url, data)
+    return this.extractData(response.data)
   },
 
   /**
    * DELETE request
    */
   async delete<T = void>(url: string): Promise<T> {
-    const response = await apiClient.delete<ApiResponse<T>>(url)
-    return response.data.data
+    const response = await apiClient.delete<T | ApiResponse<T>>(url)
+    return this.extractData(response.data)
   },
 }
 
