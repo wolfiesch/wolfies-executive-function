@@ -2,14 +2,17 @@
 """
 Reindex RAG with proper contact name resolution.
 
-Clears existing index and reindexes all recent messages with
+Clears existing index and reindexes messages with
 contact names from macOS Contacts.
 
 Usage:
-    python3 scripts/reindex_rag.py
+    python3 scripts/reindex_rag.py           # Last 90 days (default)
+    python3 scripts/reindex_rag.py --all     # Complete 4-year history
+    python3 scripts/reindex_rag.py --days 365  # Custom time range
 """
 
 import sys
+import argparse
 from pathlib import Path
 
 # Add project root to path
@@ -20,6 +23,12 @@ from src.rag.retriever import MessageRetriever
 
 def main():
     """Clear and reindex RAG."""
+    parser = argparse.ArgumentParser(description="Reindex iMessage RAG")
+    parser.add_argument("--all", action="store_true", help="Index complete message history (~4 years)")
+    parser.add_argument("--days", type=int, default=90, help="Days of history to index (default: 90)")
+    parser.add_argument("--no-clear", action="store_true", help="Don't clear existing index (incremental)")
+    args = parser.parse_args()
+
     print("=" * 60)
     print("iMessage RAG Reindex")
     print("=" * 60)
@@ -35,14 +44,23 @@ def main():
     stats = retriever.get_stats()
     print(f"\nCurrent index: {stats.get('chunk_count', 0)} chunks")
 
-    # Clear existing
-    print("\nClearing existing index...")
-    deleted = retriever.clear_index()
-    print(f"Deleted {deleted} chunks")
+    # Clear existing (unless --no-clear)
+    if not args.no_clear:
+        print("\nClearing existing index...")
+        deleted = retriever.clear_index()
+        print(f"Deleted {deleted} chunks")
 
-    # Reindex with 90 days
-    print("\nIndexing messages (last 90 days)...")
-    added = retriever.index_recent_messages(days=90, limit=1000)
+    # Index based on mode
+    if args.all:
+        print("\nIndexing COMPLETE message history (this may take a few minutes)...")
+        added = retriever.index_all_history()
+    else:
+        print(f"\nIndexing messages (last {args.days} days)...")
+        # Calculate appropriate limit based on days
+        # ~500 messages per day is a reasonable estimate for active users
+        limit = max(10000, args.days * 200)
+        added = retriever.index_recent_messages(days=args.days, limit=limit)
+
     print(f"Added {added} new chunks")
 
     # Show new stats

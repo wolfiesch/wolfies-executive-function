@@ -340,6 +340,7 @@ async def handle_list_tools() -> list[types.Tool]:
                 "Index messages for semantic search (RAG). "
                 "Creates embeddings of conversation chunks for fast semantic retrieval. "
                 "Run this before using ask_messages. Can index a specific contact or recent messages from all contacts. "
+                "Use 'all_history=true' to index complete 4-year message history. "
                 "Requires OpenAI API key (OPENAI_API_KEY env var) or local embeddings."
             ),
             inputSchema={
@@ -351,8 +352,13 @@ async def handle_list_tools() -> list[types.Tool]:
                     },
                     "days": {
                         "type": "number",
-                        "description": "Number of days of history to index (default: 30)",
+                        "description": "Number of days of history to index (default: 30, max: 1460 for ~4 years)",
                         "default": 30
+                    },
+                    "all_history": {
+                        "type": "boolean",
+                        "description": "Set to true to index ALL message history (may take several minutes)",
+                        "default": False
                     }
                 },
                 "required": []
@@ -935,16 +941,17 @@ async def handle_index_messages(arguments: dict) -> list[types.TextContent]:
     Indexes messages for semantic search.
 
     Args:
-        arguments: {"contact_name": Optional[str], "days": Optional[int]}
+        arguments: {"contact_name": Optional[str], "days": Optional[int], "all_history": Optional[bool]}
 
     Returns:
         Status message about indexing
     """
     contact_name = arguments.get("contact_name")
+    all_history = arguments.get("all_history", False)
 
-    # Validate days
+    # Validate days (allow up to 1460 = 4 years)
     days_raw = arguments.get("days", 30)
-    days, error = validate_positive_int(days_raw, "days", min_val=1, max_val=365)
+    days, error = validate_positive_int(days_raw, "days", min_val=1, max_val=1460)
     if error:
         return [types.TextContent(type="text", text=f"Validation error: {error}")]
     if days is None:
@@ -952,6 +959,27 @@ async def handle_index_messages(arguments: dict) -> list[types.TextContent]:
 
     try:
         retriever = get_retriever()
+
+        # Full history indexing
+        if all_history and not contact_name:
+            chunks_added = retriever.index_all_history()
+
+            stats = retriever.get_stats()
+            contacts_indexed = stats.get("contacts", [])
+
+            return [
+                types.TextContent(
+                    type="text",
+                    text=(
+                        f"✓ Indexed COMPLETE message history\n\n"
+                        f"• {chunks_added} new conversation chunks created\n"
+                        f"• Total chunks: {stats.get('chunk_count', 0)}\n"
+                        f"• Contacts indexed: {len(contacts_indexed)}\n"
+                        f"• Date range: ALL TIME\n\n"
+                        f"You can now use ask_messages to search these conversations."
+                    )
+                )
+            ]
 
         if contact_name:
             # Index specific contact
