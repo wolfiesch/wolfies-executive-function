@@ -30,7 +30,7 @@ router = APIRouter(prefix="/tasks", tags=["tasks"])
 def _row_to_task_response(row: dict) -> TaskResponse:
     """Convert database row to TaskResponse schema."""
     # Parse tags from comma-separated string if needed
-    tags = row.get("tags", [])
+    tags = row.get("tags") or []
     if isinstance(tags, str):
         tags = [t.strip() for t in tags.split(",") if t.strip()]
 

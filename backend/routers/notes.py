@@ -28,11 +28,11 @@ router = APIRouter(prefix="/notes", tags=["notes"])
 
 def _row_to_note_response(row: dict) -> NoteResponse:
     """Convert database row to NoteResponse schema."""
-    tags = row.get("tags", [])
+    tags = row.get("tags") or []
     if isinstance(tags, str):
         tags = [t.strip() for t in tags.split(",") if t.strip()]
 
-    backlinks = row.get("backlinks", [])
+    backlinks = row.get("backlinks") or []
     if isinstance(backlinks, str):
         backlinks = [b.strip() for b in backlinks.split(",") if b.strip()]
 

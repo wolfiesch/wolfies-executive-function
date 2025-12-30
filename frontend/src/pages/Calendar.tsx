@@ -1,6 +1,8 @@
+import { useState } from 'react'
 import { ChevronLeft, ChevronRight, Plus, Loader2 } from 'lucide-react'
 import { AppShell } from '@/components/layout'
 import { useTodayEvents } from '@/api/hooks'
+import { EventCreateDialog } from '@/components/calendar/EventCreateDialog'
 import { format, parseISO, startOfWeek, addDays } from 'date-fns'
 import type { CalendarEvent } from '@/types/models'
 
@@ -17,6 +19,8 @@ import type { CalendarEvent } from '@/types/models'
  * of events on a time axis enables quick comprehension of schedule.
  */
 export function Calendar() {
+  const [createDialogOpen, setCreateDialogOpen] = useState(false)
+
   // Fetch events from API
   const { data: events, isLoading } = useTodayEvents()
 
@@ -86,7 +90,10 @@ export function Calendar() {
               <ViewButton label="Month" active={false} />
             </div>
 
-            <button className="flex items-center gap-2 rounded-lg bg-[var(--color-accent-blue)] px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-[var(--color-accent-blue)]/90">
+            <button
+              onClick={() => setCreateDialogOpen(true)}
+              className="flex items-center gap-2 rounded-lg bg-[var(--color-accent-blue)] px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-[var(--color-accent-blue)]/90"
+            >
               <Plus className="h-4 w-4" />
               New Event
             </button>
@@ -192,6 +199,9 @@ export function Calendar() {
           </div>
         </div>
       </div>
+
+      {/* Create event dialog */}
+      <EventCreateDialog open={createDialogOpen} onOpenChange={setCreateDialogOpen} />
     </AppShell>
   )
 }
