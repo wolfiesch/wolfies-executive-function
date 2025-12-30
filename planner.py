@@ -15,12 +15,13 @@ from rich.console import Console
 from rich.table import Table
 from rich.panel import Panel
 from datetime import datetime, timedelta
-from typing import Optional
+from typing import Any, Dict, Optional
 import json
 import re
 
 from src.core import Database, Config, Task, CalendarEvent
 from src.dashboard import DashboardAggregator, DashboardFormatter
+from src.agents import MasterAgent, AgentResponse
 
 # Initialize CLI app and console
 app = typer.Typer(help="AI Life Planner - Your personal task and project manager")
@@ -30,6 +31,335 @@ app.add_typer(event_app, name="event")
 console = Console()
 db = Database()
 config = Config()
+
+# Lazy-loaded MasterAgent (initialized on first use)
+_master_agent: Optional[MasterAgent] = None
+
+
+def get_master_agent() -> MasterAgent:
+    """
+    Get or initialize the MasterAgent instance.
+
+    Uses lazy loading to avoid startup overhead when agent commands aren't used.
+    This is the 'Lazy Initialization' pattern - we defer the expensive operation
+    (agent initialization) until it's actually needed.
+    """
+    global _master_agent
+    if _master_agent is None:
+        _master_agent = MasterAgent(db, config)
+    return _master_agent
+
+
+def format_agent_response(response: AgentResponse) -> None:
+    """
+    Format and display an AgentResponse using Rich console.
+
+    Renders:
+    - Success/error status with appropriate colors
+    - Main message
+    - Data in a table or formatted output if present
+    - Suggestions as bullet points
+
+    Args:
+        response: The AgentResponse to display
+    """
+    # Status indicator and message
+    if response.success:
+        console.print(f"[green]✓[/green] {response.message}")
+    else:
+        console.print(f"[red]✗[/red] {response.message}")
+
+    # Display data if present
+    if response.data:
+        _render_response_data(response.data)
+
+    # Display suggestions if present
+    if response.suggestions:
+        console.print()
+        console.print("[dim]Suggestions:[/dim]")
+        for suggestion in response.suggestions:
+            console.print(f"  [dim]•[/dim] {suggestion}")
+
+
+def _render_response_data(data: Dict[str, Any]) -> None:
+    """
+    Render response data in an appropriate format.
+
+    Detects the data type and renders it accordingly:
+    - Single task: Formatted task display
+    - List of tasks: Table view
+    - Single event: Formatted event display
+    - List of events: Table view
+    - Generic data: JSON-like display
+
+    Args:
+        data: The data dictionary from AgentResponse
+    """
+    # Handle task lists
+    if "tasks" in data and isinstance(data["tasks"], list):
+        tasks = data["tasks"]
+        if not tasks:
+            return
+
+        console.print()
+        table = Table(show_header=True, header_style="bold cyan")
+        table.add_column("#", style="dim", width=4)
+        table.add_column("Task", min_width=30)
+        table.add_column("Priority", justify="center", width=8)
+        table.add_column("Due", width=12)
+        table.add_column("Status", width=12)
+
+        for task in tasks:
+            task_id = str(task.get("id", ""))
+            title = task.get("title", "")
+            priority = task.get("priority", 3)
+            priority_str = f"P{priority}" if priority != 3 else "-"
+
+            # Format due date
+            due_date = task.get("due_date")
+            if due_date:
+                try:
+                    dt = datetime.fromisoformat(due_date.replace("Z", "+00:00"))
+                    due_str = dt.strftime("%m/%d")
+                except (ValueError, AttributeError):
+                    due_str = str(due_date)[:10]
+            else:
+                due_str = "-"
+
+            status = task.get("status", "todo")
+            status_icons = {
+                "todo": "[white]○ todo[/white]",
+                "in_progress": "[yellow]◐ in progress[/yellow]",
+                "waiting": "[blue]◎ waiting[/blue]",
+                "done": "[green]✓ done[/green]",
+                "cancelled": "[dim]✗ cancelled[/dim]"
+            }
+            status_str = status_icons.get(status, status)
+
+            table.add_row(task_id, title, priority_str, due_str, status_str)
+
+        console.print(table)
+        return
+
+    # Handle single task
+    if "task" in data and isinstance(data["task"], dict):
+        task = data["task"]
+        console.print()
+        console.print(Panel(
+            _format_single_task(task),
+            title=f"Task #{task.get('id', 'N/A')}",
+            border_style="cyan"
+        ))
+        return
+
+    # Handle event lists
+    if "events" in data and isinstance(data["events"], list):
+        events = data["events"]
+        if not events:
+            return
+
+        console.print()
+        table = Table(show_header=True, header_style="bold cyan")
+        table.add_column("#", style="dim", width=4)
+        table.add_column("Event", min_width=25)
+        table.add_column("When", width=20)
+        table.add_column("Location", width=15)
+
+        for event in events:
+            event_id = str(event.get("id", ""))
+            title = event.get("title", "")
+
+            start_time = event.get("start_time")
+            if start_time:
+                try:
+                    dt = datetime.fromisoformat(start_time.replace("Z", "+00:00"))
+                    when_str = dt.strftime("%m/%d %I:%M %p")
+                except (ValueError, AttributeError):
+                    when_str = str(start_time)[:16]
+            else:
+                when_str = "-"
+
+            location = event.get("location", "-") or "-"
+
+            table.add_row(event_id, title, when_str, location)
+
+        console.print(table)
+        return
+
+    # Handle single event
+    if "event" in data and isinstance(data["event"], dict):
+        event = data["event"]
+        console.print()
+        console.print(Panel(
+            _format_single_event(event),
+            title=f"Event #{event.get('id', 'N/A')}",
+            border_style="cyan"
+        ))
+        return
+
+    # Handle notes list
+    if "notes" in data and isinstance(data["notes"], list):
+        notes = data["notes"]
+        if not notes:
+            return
+
+        console.print()
+        table = Table(show_header=True, header_style="bold cyan")
+        table.add_column("#", style="dim", width=4)
+        table.add_column("Title", min_width=30)
+        table.add_column("Type", width=12)
+        table.add_column("Created", width=12)
+
+        for note in notes:
+            note_id = str(note.get("id", ""))
+            title = note.get("title", "")
+            note_type = note.get("type", "note")
+
+            created = note.get("created_at")
+            if created:
+                try:
+                    dt = datetime.fromisoformat(created.replace("Z", "+00:00"))
+                    created_str = dt.strftime("%m/%d/%y")
+                except (ValueError, AttributeError):
+                    created_str = str(created)[:10]
+            else:
+                created_str = "-"
+
+            table.add_row(note_id, title, note_type, created_str)
+
+        console.print(table)
+        return
+
+    # Handle goals list
+    if "goals" in data and isinstance(data["goals"], list):
+        goals = data["goals"]
+        if not goals:
+            return
+
+        console.print()
+        table = Table(show_header=True, header_style="bold cyan")
+        table.add_column("#", style="dim", width=4)
+        table.add_column("Goal", min_width=30)
+        table.add_column("Progress", width=12)
+        table.add_column("Target", width=12)
+
+        for goal in goals:
+            goal_id = str(goal.get("id", ""))
+            title = goal.get("title", "")
+
+            current = goal.get("current_value", 0)
+            target = goal.get("target_value", 100)
+            if target > 0:
+                pct = int((current / target) * 100)
+                progress_str = f"{pct}%"
+            else:
+                progress_str = "-"
+
+            target_date = goal.get("target_date")
+            if target_date:
+                try:
+                    dt = datetime.fromisoformat(target_date.replace("Z", "+00:00"))
+                    target_str = dt.strftime("%m/%d/%y")
+                except (ValueError, AttributeError):
+                    target_str = str(target_date)[:10]
+            else:
+                target_str = "-"
+
+            table.add_row(goal_id, title, progress_str, target_str)
+
+        console.print(table)
+        return
+
+    # Generic data display for other cases
+    # Only show if there's meaningful data beyond meta fields
+    meaningful_keys = [k for k in data.keys() if k not in ("count", "filters_applied", "query")]
+    if meaningful_keys:
+        # Show count if present
+        if "count" in data:
+            console.print(f"  [dim]Count: {data['count']}[/dim]")
+
+        # Show completed/failed IDs for batch operations
+        if "completed_ids" in data:
+            console.print(f"  [green]Completed:[/green] {', '.join(map(str, data['completed_ids']))}")
+        if "failed_ids" in data and data["failed_ids"]:
+            console.print(f"  [red]Failed:[/red] {', '.join(map(str, data['failed_ids']))}")
+
+        # Show task_id for newly created items
+        if "task_id" in data and "task" not in data:
+            console.print(f"  [dim]Task ID: {data['task_id']}[/dim]")
+        if "event_id" in data and "event" not in data:
+            console.print(f"  [dim]Event ID: {data['event_id']}[/dim]")
+        if "note_id" in data and "note" not in data:
+            console.print(f"  [dim]Note ID: {data['note_id']}[/dim]")
+        if "goal_id" in data and "goal" not in data:
+            console.print(f"  [dim]Goal ID: {data['goal_id']}[/dim]")
+
+
+def _format_single_task(task: Dict[str, Any]) -> str:
+    """Format a single task for detailed display."""
+    lines = []
+    lines.append(f"[bold]{task.get('title', 'Untitled')}[/bold]")
+
+    if task.get("description"):
+        lines.append(f"  {task['description']}")
+
+    lines.append("")
+
+    status = task.get("status", "todo")
+    status_icons = {"todo": "○", "in_progress": "◐", "waiting": "◎", "done": "✓", "cancelled": "✗"}
+    lines.append(f"Status: {status_icons.get(status, '?')} {status}")
+
+    priority = task.get("priority", 3)
+    lines.append(f"Priority: P{priority}")
+
+    if task.get("due_date"):
+        lines.append(f"Due: {task['due_date'][:10]}")
+
+    if task.get("estimated_minutes"):
+        lines.append(f"Estimate: {task['estimated_minutes']} minutes")
+
+    if task.get("tags"):
+        try:
+            tags = json.loads(task["tags"]) if isinstance(task["tags"], str) else task["tags"]
+            if tags:
+                lines.append(f"Tags: {', '.join(tags)}")
+        except (json.JSONDecodeError, TypeError):
+            pass
+
+    return "\n".join(lines)
+
+
+def _format_single_event(event: Dict[str, Any]) -> str:
+    """Format a single event for detailed display."""
+    lines = []
+    lines.append(f"[bold]{event.get('title', 'Untitled')}[/bold]")
+
+    if event.get("description"):
+        lines.append(f"  {event['description']}")
+
+    lines.append("")
+
+    if event.get("start_time"):
+        try:
+            dt = datetime.fromisoformat(event["start_time"].replace("Z", "+00:00"))
+            lines.append(f"Start: {dt.strftime('%A, %B %d at %I:%M %p')}")
+        except (ValueError, AttributeError):
+            lines.append(f"Start: {event['start_time']}")
+
+    if event.get("end_time"):
+        try:
+            dt = datetime.fromisoformat(event["end_time"].replace("Z", "+00:00"))
+            lines.append(f"End: {dt.strftime('%I:%M %p')}")
+        except (ValueError, AttributeError):
+            lines.append(f"End: {event['end_time']}")
+
+    if event.get("location"):
+        lines.append(f"Location: {event['location']}")
+
+    if event.get("all_day"):
+        lines.append("All day event")
+
+    return "\n".join(lines)
 
 
 # ============================================================================
@@ -186,6 +516,150 @@ def format_task(task: Task, include_id: bool = True) -> str:
 # ============================================================================
 # CLI Commands
 # ============================================================================
+
+@app.command()
+def ask(
+    query: str = typer.Argument(..., help="Natural language request"),
+):
+    """
+    Process a natural language request through the AI agent system
+
+    The ask command routes your request to the appropriate specialized agent
+    (task, calendar, note, or goal) based on what you're asking for.
+
+    Examples:
+      planner ask "Add a task to call John tomorrow at 2pm"
+      planner ask "What's on my calendar this week?"
+      planner ask "Create a note about the meeting discussion"
+      planner ask "How am I doing on my fitness goal?"
+      planner ask "Buy groceries"
+      planner ask "Remind me to send the report by Friday"
+    """
+    try:
+        agent = get_master_agent()
+        response = agent.process(query)
+
+        # Format and display the response
+        format_agent_response(response)
+
+        # Add to conversation history for context
+        agent.add_to_conversation_history("user", query)
+        agent.add_to_conversation_history("assistant", response.message)
+
+    except Exception as e:
+        console.print(f"[red]Error processing request: {e}[/red]")
+        raise typer.Exit(1)
+
+
+@app.command()
+def chat():
+    """
+    Start an interactive chat session with the AI life planner
+
+    Enter natural language requests and get responses from the agent system.
+    Type 'exit', 'quit', or 'bye' to end the session.
+    Type 'help' for available commands.
+
+    Example session:
+      > Add a task to review the proposal
+      > What tasks do I have?
+      > Mark task 5 as done
+      > exit
+    """
+    console.print(Panel(
+        "[bold cyan]AI Life Planner Chat[/bold cyan]\n\n"
+        "Enter natural language requests to manage your tasks, calendar, notes, and goals.\n"
+        "Type [bold]'exit'[/bold], [bold]'quit'[/bold], or [bold]'bye'[/bold] to end the session.\n"
+        "Type [bold]'help'[/bold] for tips.",
+        border_style="cyan"
+    ))
+    console.print()
+
+    agent = get_master_agent()
+    exit_commands = {"exit", "quit", "bye", "q", ":q", ":q!"}
+
+    while True:
+        try:
+            # Get user input with styled prompt
+            user_input = console.input("[bold green]>[/bold green] ").strip()
+
+            # Check for empty input
+            if not user_input:
+                continue
+
+            # Check for exit commands
+            if user_input.lower() in exit_commands:
+                console.print("[dim]Goodbye![/dim]")
+                break
+
+            # Check for help command
+            if user_input.lower() == "help":
+                _show_chat_help()
+                continue
+
+            # Check for clear command
+            if user_input.lower() == "clear":
+                console.clear()
+                continue
+
+            # Process through the agent
+            response = agent.process(user_input)
+
+            # Format and display the response
+            console.print()
+            format_agent_response(response)
+            console.print()
+
+            # Add to conversation history
+            agent.add_to_conversation_history("user", user_input)
+            agent.add_to_conversation_history("assistant", response.message)
+
+        except KeyboardInterrupt:
+            console.print("\n[dim]Use 'exit' to quit[/dim]")
+            continue
+        except EOFError:
+            console.print("\n[dim]Goodbye![/dim]")
+            break
+        except Exception as e:
+            console.print(f"[red]Error: {e}[/red]")
+            console.print("[dim]Try rephrasing your request[/dim]")
+            continue
+
+
+def _show_chat_help():
+    """Display help information for chat mode."""
+    help_text = """
+[bold cyan]Chat Commands:[/bold cyan]
+  [bold]exit, quit, bye[/bold]  - End the chat session
+  [bold]help[/bold]             - Show this help message
+  [bold]clear[/bold]            - Clear the screen
+
+[bold cyan]Task Examples:[/bold cyan]
+  "Add a task to buy groceries tomorrow"
+  "Remind me to call John by Friday"
+  "What tasks do I have?"
+  "Show my tasks"
+  "Mark task 5 as done"
+  "Complete the grocery task"
+
+[bold cyan]Calendar Examples:[/bold cyan]
+  "Schedule a meeting tomorrow at 2pm"
+  "What's on my calendar this week?"
+  "Show my schedule"
+  "Block 2 hours for deep work"
+
+[bold cyan]Note Examples:[/bold cyan]
+  "Create a note about the meeting"
+  "Jot down: project ideas for Q1"
+  "Show my notes"
+
+[bold cyan]Goal Examples:[/bold cyan]
+  "Create a goal to exercise 3 times per week"
+  "How am I doing on my fitness goal?"
+  "Log progress: ran 5 miles today"
+"""
+    console.print(help_text)
+
 
 @app.command()
 def add(
