@@ -52,6 +52,89 @@ logger = logging.getLogger(__name__)
 CREDENTIALS_DIR = PROJECT_ROOT / "config" / "google_credentials"
 MAX_EMAIL_BODY_LENGTH = 5000  # Truncate very long emails
 
+# Validation constants
+MAX_LIST_RESULTS = 500  # Maximum results for list operations
+MAX_SEARCH_RESULTS = 500  # Maximum results for search operations
+MIN_RESULTS = 1  # Minimum results
+EMAIL_REGEX = r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$'
+
+import re
+
+
+def validate_positive_int(value, name: str, min_val: int = MIN_RESULTS, max_val: int = MAX_LIST_RESULTS) -> tuple[int | None, str | None]:
+    """
+    Validate that a value is a positive integer within bounds.
+
+    Args:
+        value: Value to validate
+        name: Parameter name for error messages
+        min_val: Minimum allowed value
+        max_val: Maximum allowed value
+
+    Returns:
+        Tuple of (validated_value, error_message). If valid, error_message is None.
+    """
+    if value is None:
+        return None, None
+
+    try:
+        int_value = int(value)
+    except (TypeError, ValueError):
+        return None, f"Invalid {name}: must be an integer, got {type(value).__name__}"
+
+    if int_value < min_val:
+        return None, f"Invalid {name}: must be at least {min_val}, got {int_value}"
+
+    if int_value > max_val:
+        return None, f"Invalid {name}: must be at most {max_val}, got {int_value}"
+
+    return int_value, None
+
+
+def validate_non_empty_string(value, name: str) -> tuple[str | None, str | None]:
+    """
+    Validate that a value is a non-empty string.
+
+    Args:
+        value: Value to validate
+        name: Parameter name for error messages
+
+    Returns:
+        Tuple of (validated_value, error_message). If valid, error_message is None.
+    """
+    if value is None:
+        return None, f"Missing required parameter: {name}"
+
+    if not isinstance(value, str):
+        return None, f"Invalid {name}: must be a string, got {type(value).__name__}"
+
+    stripped = value.strip()
+    if not stripped:
+        return None, f"Invalid {name}: cannot be empty"
+
+    return stripped, None
+
+
+def validate_email_address(value, name: str = "email") -> tuple[str | None, str | None]:
+    """
+    Validate that a value looks like an email address.
+
+    Args:
+        value: Value to validate
+        name: Parameter name for error messages
+
+    Returns:
+        Tuple of (validated_value, error_message). If valid, error_message is None.
+    """
+    str_value, error = validate_non_empty_string(value, name)
+    if error:
+        return None, error
+
+    if not re.match(EMAIL_REGEX, str_value):
+        return None, f"Invalid {name}: '{str_value}' does not appear to be a valid email address"
+
+    return str_value, None
+
 # Initialize Gmail client
 try:
     gmail_client = GmailClient(str(CREDENTIALS_DIR))
@@ -255,7 +338,14 @@ async def handle_list_emails(arguments: dict) -> list[types.TextContent]:
     Returns:
         Formatted list of emails
     """
-    max_results = arguments.get("max_results", 10)
+    # Validate max_results
+    max_results_raw = arguments.get("max_results", 10)
+    max_results, error = validate_positive_int(max_results_raw, "max_results", max_val=100)
+    if error:
+        return [types.TextContent(type="text", text=f"Validation error: {error}")]
+    if max_results is None:
+        max_results = 10
+
     unread_only = arguments.get("unread_only", False)
     label = arguments.get("label")
     sender = arguments.get("sender")
@@ -326,7 +416,10 @@ async def handle_get_email(arguments: dict) -> list[types.TextContent]:
     Returns:
         Full email details
     """
-    message_id = arguments["message_id"]
+    # Validate message_id
+    message_id, error = validate_non_empty_string(arguments.get("message_id"), "message_id")
+    if error:
+        return [types.TextContent(type="text", text=f"Validation error: {error}")]
 
     email = gmail_client.get_email(message_id)
 
@@ -377,8 +470,18 @@ async def handle_search_emails(arguments: dict) -> list[types.TextContent]:
     Returns:
         Search results
     """
-    query = arguments["query"]
-    max_results = arguments.get("max_results", 50)
+    # Validate query
+    query, error = validate_non_empty_string(arguments.get("query"), "query")
+    if error:
+        return [types.TextContent(type="text", text=f"Validation error: {error}")]
+
+    # Validate max_results
+    max_results_raw = arguments.get("max_results", 50)
+    max_results, error = validate_positive_int(max_results_raw, "max_results", max_val=MAX_SEARCH_RESULTS)
+    if error:
+        return [types.TextContent(type="text", text=f"Validation error: {error}")]
+    if max_results is None:
+        max_results = 50
 
     emails = gmail_client.search_emails(query, max_results)
 
@@ -426,9 +529,20 @@ async def handle_send_email(arguments: dict) -> list[types.TextContent]:
     Returns:
         Success or error message
     """
-    to = arguments["to"]
-    subject = arguments["subject"]
-    body = arguments["body"]
+    # Validate 'to' email address
+    to, error = validate_email_address(arguments.get("to"), "to")
+    if error:
+        return [types.TextContent(type="text", text=f"Validation error: {error}")]
+
+    # Validate subject
+    subject, error = validate_non_empty_string(arguments.get("subject"), "subject")
+    if error:
+        return [types.TextContent(type="text", text=f"Validation error: {error}")]
+
+    # Validate body
+    body, error = validate_non_empty_string(arguments.get("body"), "body")
+    if error:
+        return [types.TextContent(type="text", text=f"Validation error: {error}")]
 
     result = gmail_client.send_email(to, subject, body)
 

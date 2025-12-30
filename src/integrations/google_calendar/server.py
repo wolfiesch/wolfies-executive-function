@@ -47,6 +47,90 @@ logger = logging.getLogger(__name__)
 # Configuration paths
 CREDENTIALS_DIR = PROJECT_ROOT / "config" / "google_credentials"
 
+# Validation constants
+MAX_LIST_RESULTS = 500  # Maximum results for list operations
+MAX_DAYS_AHEAD = 365  # Maximum days to look ahead
+MIN_DURATION_MINUTES = 1  # Minimum duration for events
+MAX_DURATION_MINUTES = 1440  # Maximum duration (24 hours)
+
+
+def validate_positive_int(value, name: str, min_val: int = 1, max_val: int = MAX_LIST_RESULTS) -> tuple[int | None, str | None]:
+    """
+    Validate that a value is a positive integer within bounds.
+
+    Args:
+        value: Value to validate
+        name: Parameter name for error messages
+        min_val: Minimum allowed value
+        max_val: Maximum allowed value
+
+    Returns:
+        Tuple of (validated_value, error_message). If valid, error_message is None.
+    """
+    if value is None:
+        return None, None
+
+    try:
+        int_value = int(value)
+    except (TypeError, ValueError):
+        return None, f"Invalid {name}: must be an integer, got {type(value).__name__}"
+
+    if int_value < min_val:
+        return None, f"Invalid {name}: must be at least {min_val}, got {int_value}"
+
+    if int_value > max_val:
+        return None, f"Invalid {name}: must be at most {max_val}, got {int_value}"
+
+    return int_value, None
+
+
+def validate_non_empty_string(value, name: str) -> tuple[str | None, str | None]:
+    """
+    Validate that a value is a non-empty string.
+
+    Args:
+        value: Value to validate
+        name: Parameter name for error messages
+
+    Returns:
+        Tuple of (validated_value, error_message). If valid, error_message is None.
+    """
+    if value is None:
+        return None, f"Missing required parameter: {name}"
+
+    if not isinstance(value, str):
+        return None, f"Invalid {name}: must be a string, got {type(value).__name__}"
+
+    stripped = value.strip()
+    if not stripped:
+        return None, f"Invalid {name}: cannot be empty"
+
+    return stripped, None
+
+
+def validate_datetime_string(value, name: str) -> tuple[str | None, str | None]:
+    """
+    Validate that a value is a parseable datetime string.
+
+    Args:
+        value: Value to validate
+        name: Parameter name for error messages
+
+    Returns:
+        Tuple of (validated_value, error_message). If valid, error_message is None.
+    """
+    str_value, error = validate_non_empty_string(value, name)
+    if error:
+        return None, error
+
+    try:
+        date_parser.parse(str_value)
+    except Exception as e:
+        return None, f"Invalid {name}: cannot parse '{str_value}' as datetime. Use ISO 8601 format (e.g., '2025-12-15T14:00:00')"
+
+    return str_value, None
+
+
 # Initialize server
 app = Server("google-calendar")
 
@@ -300,8 +384,22 @@ async def handle_list_events(arguments: dict) -> list[types.TextContent]:
     Returns:
         List of upcoming events
     """
-    days_ahead = arguments.get("days_ahead", 7)
-    max_results = arguments.get("max_results", 10)
+    # Validate days_ahead
+    days_ahead_raw = arguments.get("days_ahead", 7)
+    days_ahead, error = validate_positive_int(days_ahead_raw, "days_ahead", max_val=MAX_DAYS_AHEAD)
+    if error:
+        return [types.TextContent(type="text", text=f"Validation error: {error}")]
+    if days_ahead is None:
+        days_ahead = 7
+
+    # Validate max_results
+    max_results_raw = arguments.get("max_results", 10)
+    max_results, error = validate_positive_int(max_results_raw, "max_results", max_val=MAX_LIST_RESULTS)
+    if error:
+        return [types.TextContent(type="text", text=f"Validation error: {error}")]
+    if max_results is None:
+        max_results = 10
+
     calendar_id = arguments.get("calendar_id", "primary")
 
     # Calculate time range
@@ -353,7 +451,11 @@ async def handle_get_event(arguments: dict) -> list[types.TextContent]:
     Returns:
         Event details
     """
-    event_id = arguments["event_id"]
+    # Validate event_id
+    event_id, error = validate_non_empty_string(arguments.get("event_id"), "event_id")
+    if error:
+        return [types.TextContent(type="text", text=f"Validation error: {error}")]
+
     calendar_id = arguments.get("calendar_id", "primary")
 
     # Get event
@@ -396,9 +498,21 @@ async def handle_create_event(arguments: dict) -> list[types.TextContent]:
     Returns:
         Created event details
     """
-    summary = arguments["summary"]
-    start_time_str = arguments["start_time"]
-    end_time_str = arguments["end_time"]
+    # Validate summary (title)
+    summary, error = validate_non_empty_string(arguments.get("summary"), "summary")
+    if error:
+        return [types.TextContent(type="text", text=f"Validation error: {error}")]
+
+    # Validate start_time
+    start_time_str, error = validate_datetime_string(arguments.get("start_time"), "start_time")
+    if error:
+        return [types.TextContent(type="text", text=f"Validation error: {error}")]
+
+    # Validate end_time
+    end_time_str, error = validate_datetime_string(arguments.get("end_time"), "end_time")
+    if error:
+        return [types.TextContent(type="text", text=f"Validation error: {error}")]
+
     description = arguments.get("description")
     location = arguments.get("location")
     attendees = arguments.get("attendees")
@@ -475,26 +589,50 @@ async def handle_find_free_time(arguments: dict) -> list[types.TextContent]:
     Returns:
         List of available time slots
     """
-    duration_minutes = arguments["duration_minutes"]
-    days_ahead = arguments.get("days_ahead", 7)
-    working_hours_start = arguments.get("working_hours_start", 9)
-    working_hours_end = arguments.get("working_hours_end", 17)
+    # Validate duration_minutes (required)
+    duration_minutes_raw = arguments.get("duration_minutes")
+    if duration_minutes_raw is None:
+        return [types.TextContent(type="text", text="Validation error: Missing required parameter: duration_minutes")]
+
+    duration_minutes, error = validate_positive_int(
+        duration_minutes_raw, "duration_minutes",
+        min_val=MIN_DURATION_MINUTES, max_val=MAX_DURATION_MINUTES
+    )
+    if error:
+        return [types.TextContent(type="text", text=f"Validation error: {error}")]
+
+    # Validate days_ahead
+    days_ahead_raw = arguments.get("days_ahead", 7)
+    days_ahead, error = validate_positive_int(days_ahead_raw, "days_ahead", max_val=MAX_DAYS_AHEAD)
+    if error:
+        return [types.TextContent(type="text", text=f"Validation error: {error}")]
+    if days_ahead is None:
+        days_ahead = 7
+
+    # Validate working_hours_start
+    working_hours_start_raw = arguments.get("working_hours_start", 9)
+    working_hours_start, error = validate_positive_int(working_hours_start_raw, "working_hours_start", min_val=0, max_val=23)
+    if error:
+        return [types.TextContent(type="text", text=f"Validation error: {error}")]
+    if working_hours_start is None:
+        working_hours_start = 9
+
+    # Validate working_hours_end
+    working_hours_end_raw = arguments.get("working_hours_end", 17)
+    working_hours_end, error = validate_positive_int(working_hours_end_raw, "working_hours_end", min_val=0, max_val=23)
+    if error:
+        return [types.TextContent(type="text", text=f"Validation error: {error}")]
+    if working_hours_end is None:
+        working_hours_end = 17
+
     calendar_id = arguments.get("calendar_id", "primary")
 
-    # Validate inputs
-    if duration_minutes <= 0:
-        return [
-            types.TextContent(
-                type="text",
-                text="Error: Duration must be positive"
-            )
-        ]
-
+    # Validate working hours relationship
     if working_hours_start >= working_hours_end:
         return [
             types.TextContent(
                 type="text",
-                text="Error: working_hours_start must be before working_hours_end"
+                text="Validation error: working_hours_start must be before working_hours_end"
             )
         ]
 
