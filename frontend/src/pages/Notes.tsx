@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { Search, Plus, FileText, Hash, Clock, AlertCircle, Loader2 } from 'lucide-react'
 import { AppShell } from '@/components/layout'
 import { useNotes } from '@/api/hooks'
+import { NoteCreateDialog } from '@/components/notes/NoteCreateDialog'
 import type { Note } from '@/types/models'
 import { formatRelativeTime } from '@/lib/utils'
 
@@ -19,6 +20,7 @@ import { formatRelativeTime } from '@/lib/utils'
 export function Notes() {
   const [selectedNote, setSelectedNote] = useState<Note | null>(null)
   const [searchQuery, setSearchQuery] = useState('')
+  const [createDialogOpen, setCreateDialogOpen] = useState(false)
 
   // Fetch notes from API
   const { data: notes, isLoading, error } = useNotes(
@@ -31,7 +33,10 @@ export function Notes() {
         <div className="w-56 shrink-0 overflow-y-auto border-r border-[var(--color-border-subtle)] pr-4">
           <div className="mb-4 flex items-center justify-between">
             <h1 className="text-2xl font-bold text-[var(--color-text-primary)]">Notes</h1>
-            <button className="rounded-lg p-2 text-[var(--color-text-secondary)] hover:bg-[var(--color-bg-hover)] hover:text-[var(--color-text-primary)]">
+            <button
+              onClick={() => setCreateDialogOpen(true)}
+              className="rounded-lg p-2 text-[var(--color-text-secondary)] hover:bg-[var(--color-bg-hover)] hover:text-[var(--color-text-primary)]"
+            >
               <Plus className="h-5 w-5" />
             </button>
           </div>
@@ -172,6 +177,9 @@ export function Notes() {
           </div>
         </div>
       </div>
+
+      {/* Create note dialog */}
+      <NoteCreateDialog open={createDialogOpen} onOpenChange={setCreateDialogOpen} />
     </AppShell>
   )
 }

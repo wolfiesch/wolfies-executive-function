@@ -9,6 +9,7 @@ where Gmail tools are available. For standalone use, you'll need to
 provide email data directly.
 """
 
+import hashlib
 import logging
 import re
 from datetime import datetime
@@ -181,10 +182,17 @@ class GmailIndexer(BaseSourceIndexer):
         # Build full text
         full_text = f"Subject: {subject}\n\n{body}"
 
-        # Get thread ID or message ID for context
-        context_id = email.get("thread_id") or email.get("threadId") or email.get("id") or email.get("message_id", "")
+        # Get message ID (unique per email) and thread ID
+        message_id = email.get("id") or email.get("message_id") or email.get("messageId", "")
+        thread_id = email.get("thread_id") or email.get("threadId", "")
+        context_id = thread_id or message_id
+
+        # Generate unique chunk_id using message_id (guaranteed unique per email)
+        # This prevents collisions when emails have similar content
+        chunk_id = hashlib.sha256(f"gmail|{message_id}".encode()).hexdigest()[:12]
 
         return UnifiedChunk(
+            chunk_id=chunk_id,
             source="gmail",
             text=full_text,
             title=subject,
@@ -194,9 +202,9 @@ class GmailIndexer(BaseSourceIndexer):
             participants=participants,
             tags=labels,
             metadata={
-                "message_id": email.get("id", ""),
-                "thread_id": email.get("thread_id", ""),
-                "has_attachments": bool(email.get("attachments")),
+                "message_id": message_id,
+                "thread_id": thread_id,
+                "has_attachments": bool(email.get("attachments") or email.get("has_attachments")),
                 "is_unread": email.get("is_unread", False),
                 "snippet": email.get("snippet", "")[:200] if email.get("snippet") else "",
             },
