@@ -24,6 +24,9 @@ import re
 
 from .base_agent import BaseAgent, AgentResponse, AgentContext
 from .task_agent import TaskAgent
+from .calendar_agent import CalendarAgent
+from .note_agent import NoteAgent
+from .goal_agent import GoalAgent
 
 
 class MasterAgent:
@@ -82,42 +85,86 @@ class MasterAgent:
             ],
         },
 
-        # Calendar intents (placeholder - CalendarAgent not yet implemented)
+        # Calendar intents
         "calendar": {
-            "create_event": [
+            "add_event": [
                 r"\bschedule\b", r"\bmeeting\b", r"\bevent\b",
-                r"\bappointment\b", r"\bcalendar\b",
+                r"\bappointment\b",
                 r"\bbook\s+(?:a\s+)?(?:time|slot)\b",
+                r"\badd\s+(?:to\s+)?(?:my\s+)?calendar\b",
+                r"\bcreate\s+(?:a\s+)?(?:meeting|event|appointment)\b",
             ],
             "list_events": [
                 r"\bwhat(?:'s|s)?\s+on\s+(?:my\s+)?calendar\b",
                 r"\bshow\s+(?:my\s+)?(?:calendar|schedule)\b",
                 r"\bmy\s+(?:schedule|agenda)\b",
+                r"\blist\s+(?:my\s+)?(?:events?|meetings?)\b",
+                r"\bupcoming\s+(?:events?|meetings?)\b",
+            ],
+            "find_free_time": [
+                r"\bfree\s+time\b", r"\bavailable\s+(?:time|slots?)\b",
+                r"\bwhen\s+am\s+i\s+free\b", r"\bfind\s+(?:a\s+)?(?:time|slot)\b",
+                r"\bopen\s+(?:time|slots?)\b",
+            ],
+            "block_time": [
+                r"\bblock\s+(?:off\s+)?(?:time|hours?)\b",
+                r"\btime\s+block\b", r"\bdeep\s+work\b", r"\bfocus\s+time\b",
             ],
         },
 
-        # Note intents (placeholder - NoteAgent not yet implemented)
+        # Note intents
         "note": {
             "create_note": [
                 r"\bnote\b", r"\bwrite\s+down\b", r"\bjot\s+down\b",
                 r"\bjot\b", r"\bremember\s+that\b",
-                r"\bnote\s+to\s+self\b",
+                r"\bnote\s+to\s+self\b", r"\bcreate\s+(?:a\s+)?note\b",
+                r"\bnew\s+note\b", r"\badd\s+(?:a\s+)?note\b",
+            ],
+            "add_journal_entry": [
+                r"\bjournal\b", r"\bdiary\b", r"\breflect(?:ion)?\b",
+                r"\btoday\s+(?:i|was|felt)\b", r"\bmy\s+day\b",
+                r"\bdaily\s+(?:entry|log)\b",
             ],
             "search_notes": [
                 r"\bsearch\s+(?:my\s+)?notes?\b", r"\bfind\s+(?:a\s+)?note\b",
                 r"\blook(?:ing)?\s+(?:in|through)\s+(?:my\s+)?notes?\b",
             ],
+            "list_notes": [
+                r"\blist\s+(?:my\s+)?notes?\b", r"\bshow\s+(?:my\s+)?notes?\b",
+                r"\bmy\s+notes?\b", r"\ball\s+notes?\b",
+            ],
+            "link_notes": [
+                r"\blink\s+notes?\b", r"\bconnect\s+notes?\b",
+                r"\brelate\s+(?:to|notes?)\b",
+            ],
         },
 
-        # Goal intents (placeholder - GoalAgent not yet implemented)
+        # Goal intents
         "goal": {
-            "set_goal": [
+            "create_goal": [
                 r"\bgoal\b", r"\bobjective\b", r"\btarget\b",
-                r"\bmilestone\b", r"\bokr\b",
+                r"\bokr\b", r"\bset\s+(?:a\s+)?goal\b",
+                r"\bnew\s+goal\b", r"\bi\s+want\s+to\b",
+                r"\bby\s+(?:the\s+)?end\s+of\b",
             ],
-            "check_progress": [
-                r"\bprogress\b", r"\bhow\s+am\s+i\s+doing\b",
+            "add_milestone": [
+                r"\bmilestone\b", r"\bcheckpoint\b",
+                r"\badd\s+(?:a\s+)?milestone\b",
+            ],
+            "log_progress": [
+                r"\bprogress\b", r"\blog\s+progress\b",
+                r"\bupdate\s+(?:my\s+)?(?:progress|goal)\b",
+                r"\bcompleted\s+\d+\b", r"\bfinished\s+\d+\b",
+            ],
+            "review_goals": [
+                r"\bhow\s+am\s+i\s+doing\b", r"\bgoal\s+review\b",
+                r"\breview\s+(?:my\s+)?goals?\b",
                 r"\bstatus\s+(?:of\s+)?(?:my\s+)?goals?\b",
+                r"\bcheck\s+(?:my\s+)?goals?\b",
+            ],
+            "list_goals": [
+                r"\blist\s+(?:my\s+)?goals?\b", r"\bshow\s+(?:my\s+)?goals?\b",
+                r"\bmy\s+goals?\b", r"\ball\s+goals?\b",
             ],
         },
 
@@ -134,8 +181,8 @@ class MasterAgent:
     DEFAULT_INTENTS = {
         "task": "list_tasks",
         "calendar": "list_events",
-        "note": "search_notes",
-        "goal": "check_progress",
+        "note": "list_notes",
+        "goal": "list_goals",
         "query": "status_query",
     }
 
@@ -154,9 +201,9 @@ class MasterAgent:
         # Initialize agent registry
         self.agents: Dict[str, Optional[BaseAgent]] = {
             "task": TaskAgent(db, config),
-            "calendar": None,  # Not yet implemented
-            "note": None,      # Not yet implemented
-            "goal": None,      # Not yet implemented
+            "calendar": CalendarAgent(db, config),
+            "note": NoteAgent(db, config),
+            "goal": GoalAgent(db, config),
         }
 
         # Initialize agents that are available
