@@ -166,15 +166,14 @@ class PostgreSQLDatabase(DatabaseBase):
         """Convert SQLite-style ? placeholders to PostgreSQL %s"""
         return query.replace('?', '%s')
 
-    def _convert_json_extract(self, query: str) -> str:
-        """Convert SQLite json_extract to PostgreSQL JSONB operators"""
-        # json_extract(metadata, '$.is_goal') = 1 -> (metadata->>'is_goal')::boolean = true
+    def _convert_query_syntax(self, query: str) -> str:
+        """Convert SQLite syntax to PostgreSQL syntax"""
         import re
 
-        # Pattern: json_extract(column, '$.field') = value
+        # Convert json_extract(metadata, '$.is_goal') = 1 -> (metadata->>'is_goal')::boolean = true
         pattern = r"json_extract\((\w+),\s*'\$\.(\w+)'\)\s*=\s*(\d+)"
 
-        def replacer(match):
+        def json_replacer(match):
             column = match.group(1)
             field = match.group(2)
             value = match.group(3)
@@ -185,23 +184,30 @@ class PostgreSQLDatabase(DatabaseBase):
             else:
                 return f"({column}->>'{field}')::int = {value}"
 
-        query = re.sub(pattern, replacer, query)
+        query = re.sub(pattern, json_replacer, query)
 
         # Pattern: json_extract(column, '$.field')
         pattern2 = r"json_extract\((\w+),\s*'\$\.(\w+)'\)"
 
-        def replacer2(match):
+        def json_replacer2(match):
             column = match.group(1)
             field = match.group(2)
             return f"({column}->>'{field}')"
 
-        query = re.sub(pattern2, replacer2, query)
+        query = re.sub(pattern2, json_replacer2, query)
+
+        # Convert boolean comparisons: column = 0/1 -> column = false/true
+        # Only for known boolean columns
+        boolean_columns = ['archived', 'all_day', 'is_pinned']
+        for col in boolean_columns:
+            query = re.sub(rf'\b{col}\s*=\s*0\b', f'{col} = false', query)
+            query = re.sub(rf'\b{col}\s*=\s*1\b', f'{col} = true', query)
 
         return query
 
     def execute(self, query: str, params: Tuple = ()) -> List[Dict[str, Any]]:
         query = self._convert_query(query)
-        query = self._convert_json_extract(query)
+        query = self._convert_query_syntax(query)
 
         with self.get_connection() as conn:
             with conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor) as cursor:
@@ -211,7 +217,7 @@ class PostgreSQLDatabase(DatabaseBase):
 
     def execute_one(self, query: str, params: Tuple = ()) -> Optional[Dict[str, Any]]:
         query = self._convert_query(query)
-        query = self._convert_json_extract(query)
+        query = self._convert_query_syntax(query)
 
         with self.get_connection() as conn:
             with conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor) as cursor:
@@ -221,7 +227,7 @@ class PostgreSQLDatabase(DatabaseBase):
 
     def execute_write(self, query: str, params: Tuple = ()) -> int:
         query = self._convert_query(query)
-        query = self._convert_json_extract(query)
+        query = self._convert_query_syntax(query)
 
         # Add RETURNING id for INSERT statements to get the inserted ID
         is_insert = query.strip().upper().startswith('INSERT')

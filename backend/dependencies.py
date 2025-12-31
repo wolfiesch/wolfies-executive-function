@@ -19,7 +19,7 @@ project_root = Path(__file__).parent.parent
 if str(project_root) not in sys.path:
     sys.path.insert(0, str(project_root))
 
-from src.core.database import Database
+from src.core.database import get_database as create_database
 from src.core.config import Config
 from src.agents import MasterAgent, TaskAgent, CalendarAgent, NoteAgent, GoalAgent
 from src.dashboard.aggregator import DashboardAggregator
@@ -37,14 +37,14 @@ def get_config() -> Config:
 
 
 @lru_cache()
-def get_database() -> Database:
+def get_database():
     """
     Get cached Database instance.
 
-    The Database class handles connection pooling internally,
-    so we only need one instance.
+    Uses the factory function from src.core.database to create
+    the appropriate database backend (SQLite or PostgreSQL).
     """
-    return Database()
+    return create_database()
 
 
 def get_master_agent() -> MasterAgent:
