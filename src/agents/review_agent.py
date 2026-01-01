@@ -22,10 +22,17 @@ rather than a separate table. This allows:
 
 from datetime import datetime, timedelta, timezone, date
 from typing import Any, Dict, List, Optional, Tuple
+from pathlib import Path
 import json
 import re
+import sys
 
 from .base_agent import BaseAgent, AgentResponse
+
+# Add SocialMedia skills to path for Twitter integration
+SOCIAL_MEDIA_PATH = Path(__file__).parent.parent.parent.parent / "SocialMedia" / "skills" / "twitter-manager"
+if SOCIAL_MEDIA_PATH.exists() and str(SOCIAL_MEDIA_PATH) not in sys.path:
+    sys.path.insert(0, str(SOCIAL_MEDIA_PATH))
 
 
 class ReviewAgent(BaseAgent):
@@ -349,6 +356,9 @@ class ReviewAgent(BaseAgent):
         best_day = max(daily_breakdown, key=lambda d: d["completed"]) if daily_breakdown else None
         worst_day = min(daily_breakdown, key=lambda d: d["completed"]) if daily_breakdown else None
 
+        # Get Twitter/X metrics (optional integration)
+        twitter_metrics = self._get_twitter_metrics_for_range(week_start, week_end)
+
         # Build review summary
         review_data = {
             "type": "review",
@@ -376,6 +386,9 @@ class ReviewAgent(BaseAgent):
                 daily_breakdown, completion_rate
             ),
             "upcoming_priorities": self._get_upcoming_priorities(),
+            "social_media": {
+                "twitter": twitter_metrics,
+            } if twitter_metrics else None,
         }
 
         # Optionally save the review as a note
@@ -399,6 +412,13 @@ class ReviewAgent(BaseAgent):
 
         if weekly_goal_progress:
             summary_lines.append(f"Goal Progress: {len(weekly_goal_progress)} goal(s) advanced")
+
+        # Add Twitter metrics to summary if available
+        if twitter_metrics and twitter_metrics.get("posts_published", 0) > 0:
+            summary_lines.append(
+                f"Twitter: {twitter_metrics['posts_published']} posts, "
+                f"{twitter_metrics.get('total_engagement', 0)} engagement"
+            )
 
         summary_message = "\n".join(summary_lines)
 
@@ -834,6 +854,36 @@ class ReviewAgent(BaseAgent):
             current += timedelta(days=1)
 
         return breakdown
+
+    def _get_twitter_metrics_for_range(self, start_date: date, end_date: date) -> Optional[Dict[str, Any]]:
+        """
+        Get Twitter/X metrics for a date range using the twitter-manager skill.
+
+        Returns None if Twitter integration is not available.
+        """
+        try:
+            from integrations.review_export import get_weekly_twitter_metrics
+
+            # Get the database path for twitter-manager
+            db_path = SOCIAL_MEDIA_PATH / "database" / "twitter_manager.db"
+            if not db_path.exists():
+                self.logger.debug("Twitter manager database not found")
+                return None
+
+            metrics = get_weekly_twitter_metrics(
+                str(db_path),
+                start_date.isoformat(),
+                end_date.isoformat()
+            )
+
+            return metrics
+
+        except ImportError:
+            self.logger.debug("Twitter review_export module not available")
+            return None
+        except Exception as e:
+            self.logger.warning(f"Failed to get Twitter metrics: {e}")
+            return None
 
     # =========================================================================
     # Insight Analysis Methods
@@ -1336,6 +1386,29 @@ class ReviewAgent(BaseAgent):
                 ])
                 if trends.get("worst_day"):
                     lines.append(f"- Needs Improvement: {trends['worst_day'].get('day_name', '')}")
+                lines.append("")
+
+            # Social Media / Twitter section
+            social_media = review_data.get("social_media", {})
+            twitter = social_media.get("twitter") if social_media else None
+            if twitter and twitter.get("posts_published", 0) > 0:
+                lines.extend([
+                    "## Social Media (Twitter/X)",
+                    "",
+                    f"- Posts Published: {twitter.get('posts_published', 0)}",
+                    f"- Total Engagement: {twitter.get('total_engagement', 0)}",
+                    f"- Avg Engagement Rate: {twitter.get('avg_engagement_rate', 0):.1f}%",
+                ])
+                if twitter.get("best_post"):
+                    bp = twitter["best_post"]
+                    lines.append(f"- Best Post: \"{bp.get('content', '')[:50]}...\" ({bp.get('engagement', 0)} interactions)")
+                lines.append(f"- Engagement Given: {twitter.get('engagement_given', 0)} likes/replies")
+                if twitter.get("mentions_received", 0) > 0:
+                    lines.append(
+                        f"- Mentions: {twitter.get('mentions_received', 0)} received, "
+                        f"{twitter.get('mentions_responded', 0)} responded "
+                        f"({twitter.get('response_rate', 0):.0f}%)"
+                    )
                 lines.append("")
 
             upcoming = review_data.get("upcoming_priorities", [])
