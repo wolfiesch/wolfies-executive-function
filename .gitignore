@@ -29,6 +29,9 @@ data/database/*.db
 data/database/*.db-journal
 data/database/*.db-wal
 data/database/*.db-shm
+# Runtime data/cache
+data/chroma/
+data/notifier_state.json
 
 # Notes and attachments (optional - uncomment if you want to keep these private)
 # data/notes/
