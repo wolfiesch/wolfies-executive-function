@@ -1,0 +1,39 @@
+{
+  "agent_id": "5-reminders",
+  "component_name": "Reminders Integration",
+  "total_loc": 2122,
+  "total_files": 8,
+  "by_language": {
+    "python": {"loc": 2122, "files": 8}
+  },
+  "by_directory": {
+    "Reminders/src/": {"loc": 1421, "files": 4},
+    "Reminders/mcp_server/": {"loc": 392, "files": 1},
+    "Reminders/scripts/": {"loc": 309, "files": 2},
+    "Reminders/tests/": {"loc": 0, "files": 1}
+  },
+  "largest_files": [
+    {"path": "Reminders/src/reminders_interface.py", "loc": 709, "language": "python"},
+    {"path": "Reminders/src/reminder_manager.py", "loc": 460, "language": "python"},
+    {"path": "Reminders/mcp_server/server.py", "loc": 392, "language": "python"},
+    {"path": "Reminders/src/reminder_sync.py", "loc": 252, "language": "python"},
+    {"path": "Reminders/scripts/test_mcp_protocol.py", "loc": 222, "language": "python"},
+    {"path": "Reminders/scripts/init_db.py", "loc": 87, "language": "python"},
+    {"path": "Reminders/tests/__init__.py", "loc": 0, "language": "python"},
+    {"path": "Reminders/src/__init__.py", "loc": 0, "language": "python"}
+  ],
+  "patterns_detected": {
+    "mcp_tools": 5,
+    "sync_mechanisms": [
+      "AppleScript via osascript",
+      "EventKit (PyObjC)",
+      "SQLite logging to life planner database"
+    ],
+    "test_files": 2
+  },
+  "complexity_indicators": {
+    "files_over_500_loc": ["Reminders/src/reminders_interface.py"],
+    "average_file_size": 265.25
+  },
+  "key_libraries": ["mcp", "EventKit (PyObjC)", "Foundation (PyObjC)", "sqlite3"]
+}

@@ -1,0 +1,42 @@
+AGENT 5: Reminders Integration Analysis
+
+SCOPE: Analyze Reminders/ (all subdirectories: src/, mcp_server/, scripts/, tests/)
+
+EXCLUSIONS: Skip __pycache__
+
+REQUIRED OUTPUT FORMAT (JSON):
+{
+  "agent_id": "5-reminders",
+  "component_name": "Reminders Integration",
+  "total_loc": 0,
+  "total_files": 0,
+  "by_language": {
+    "python": {"loc": 0, "files": 0}
+  },
+  "by_directory": {
+    "Reminders/src/": {"loc": 0, "files": 0},
+    "Reminders/mcp_server/": {"loc": 0, "files": 0},
+    "Reminders/scripts/": {"loc": 0, "files": 0},
+    "Reminders/tests/": {"loc": 0, "files": 0}
+  },
+  "largest_files": [
+    {"path": "", "loc": 0, "language": ""}
+  ],
+  "patterns_detected": {
+    "mcp_tools": 0,
+    "sync_mechanisms": [],
+    "test_files": 0
+  },
+  "complexity_indicators": {
+    "files_over_500_loc": [],
+    "average_file_size": 0
+  },
+  "key_libraries": []
+}
+
+INSTRUCTIONS:
+1. Count LOC in all Python files under Reminders/
+2. Count MCP tools implemented
+3. Identify sync mechanisms (AppleScript, database sync, etc.)
+4. List top 10 largest files
+5. Output as JSON matching format above

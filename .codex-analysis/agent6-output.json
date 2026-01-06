@@ -1,0 +1,43 @@
+{
+  "agent_id": "6-socialmedia",
+  "component_name": "Social Media Integration",
+  "total_loc": 7269,
+  "total_files": 20,
+  "by_language": {
+    "python": {"loc": 7269, "files": 20}
+  },
+  "by_directory": {
+    "SocialMedia/skills/": {"loc": 7269, "files": 20},
+    "SocialMedia/database/": {"loc": 0, "files": 0},
+    "SocialMedia/utils/": {"loc": 0, "files": 0},
+    "SocialMedia/analytics/": {"loc": 0, "files": 0}
+  },
+  "largest_files": [
+    {"path": "SocialMedia/skills/twitter-manager/scripts/monitor_profiles.py", "loc": 890, "language": "python"},
+    {"path": "SocialMedia/skills/twitter-manager/database/init_db.py", "loc": 803, "language": "python"},
+    {"path": "SocialMedia/skills/twitter-manager/scripts/find_opportunities.py", "loc": 732, "language": "python"},
+    {"path": "SocialMedia/skills/twitter-manager/utils/media_library.py", "loc": 570, "language": "python"},
+    {"path": "SocialMedia/skills/twitter-manager/analytics/dashboard.py", "loc": 512, "language": "python"},
+    {"path": "SocialMedia/skills/twitter-manager/utils/media_utils.py", "loc": 418, "language": "python"},
+    {"path": "SocialMedia/skills/twitter-manager/utils/notifications.py", "loc": 411, "language": "python"},
+    {"path": "SocialMedia/skills/twitter-manager/integrations/review_export.py", "loc": 339, "language": "python"},
+    {"path": "SocialMedia/skills/twitter-manager/voices/refresh_profiles.py", "loc": 329, "language": "python"},
+    {"path": "SocialMedia/skills/twitter-manager/scripts/import_historical.py", "loc": 285, "language": "python"}
+  ],
+  "patterns_detected": {
+    "twitter_integration": true,
+    "voice_profiles": 15,
+    "automation_scripts": 8
+  },
+  "complexity_indicators": {
+    "files_over_500_loc": [
+      "SocialMedia/skills/twitter-manager/scripts/monitor_profiles.py",
+      "SocialMedia/skills/twitter-manager/database/init_db.py",
+      "SocialMedia/skills/twitter-manager/scripts/find_opportunities.py",
+      "SocialMedia/skills/twitter-manager/utils/media_library.py",
+      "SocialMedia/skills/twitter-manager/analytics/dashboard.py"
+    ],
+    "average_file_size": 363.45
+  },
+  "key_libraries": ["sqlite3", "requests", "tabulate"]
+}

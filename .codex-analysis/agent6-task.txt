@@ -1,0 +1,43 @@
+AGENT 6: Social Media Integration Analysis
+
+SCOPE: Analyze SocialMedia/ submodule (all Python files)
+
+EXCLUSIONS: Skip __pycache__, node_modules, .git
+
+REQUIRED OUTPUT FORMAT (JSON):
+{
+  "agent_id": "6-socialmedia",
+  "component_name": "Social Media Integration",
+  "total_loc": 0,
+  "total_files": 0,
+  "by_language": {
+    "python": {"loc": 0, "files": 0}
+  },
+  "by_directory": {
+    "SocialMedia/skills/": {"loc": 0, "files": 0},
+    "SocialMedia/database/": {"loc": 0, "files": 0},
+    "SocialMedia/utils/": {"loc": 0, "files": 0},
+    "SocialMedia/analytics/": {"loc": 0, "files": 0}
+  },
+  "largest_files": [
+    {"path": "", "loc": 0, "language": ""}
+  ],
+  "patterns_detected": {
+    "twitter_integration": false,
+    "voice_profiles": 0,
+    "automation_scripts": 0
+  },
+  "complexity_indicators": {
+    "files_over_500_loc": [],
+    "average_file_size": 0
+  },
+  "key_libraries": []
+}
+
+INSTRUCTIONS:
+1. Count LOC in all Python files under SocialMedia/
+2. Identify Twitter/X integration patterns
+3. Count voice profiles (in voices/ or database/)
+4. Count automation scripts (in scripts/)
+5. List top 10 largest files
+6. Output as JSON matching format above

@@ -1,0 +1,49 @@
+AGENT 2: Frontend Application Analysis
+
+SCOPE: Analyze frontend/src/ (all TypeScript, TSX, JavaScript, JSX files)
+
+EXCLUSIONS: Skip node_modules, dist, .cache
+
+REQUIRED OUTPUT FORMAT (JSON):
+{
+  "agent_id": "2-frontend",
+  "component_name": "Frontend Application",
+  "total_loc": 0,
+  "total_files": 0,
+  "by_language": {
+    "typescript": {"loc": 0, "files": 0},
+    "tsx": {"loc": 0, "files": 0},
+    "javascript": {"loc": 0, "files": 0},
+    "jsx": {"loc": 0, "files": 0}
+  },
+  "by_directory": {
+    "frontend/src/components/": {"loc": 0, "files": 0},
+    "frontend/src/pages/": {"loc": 0, "files": 0},
+    "frontend/src/hooks/": {"loc": 0, "files": 0},
+    "frontend/src/api/": {"loc": 0, "files": 0}
+  },
+  "largest_files": [
+    {"path": "", "loc": 0, "language": ""}
+  ],
+  "patterns_detected": {
+    "react": true,
+    "components": 0,
+    "hooks": 0,
+    "pages": 0,
+    "ui_libraries": []
+  },
+  "complexity_indicators": {
+    "files_over_500_loc": [],
+    "average_file_size": 0
+  },
+  "key_libraries": []
+}
+
+INSTRUCTIONS:
+1. Count LOC in all TS, TSX, JS, JSX files under frontend/src/
+2. Count React components (files in components/ directory)
+3. Count custom hooks (files in hooks/ directory)
+4. Count pages/routes (files in pages/ directory)
+5. Identify UI libraries from imports (e.g., shadcn, recharts)
+6. List top 10 largest files
+7. Output as JSON matching format above

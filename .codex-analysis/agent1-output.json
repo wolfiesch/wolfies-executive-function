@@ -1,0 +1,97 @@
+{
+  "agent_id": "1-backend",
+  "component_name": "Backend Infrastructure",
+  "total_loc": 4420,
+  "total_files": 17,
+  "by_language": {
+    "python": {
+      "loc": 4420,
+      "files": 17
+    }
+  },
+  "by_directory": {
+    "backend/": {
+      "loc": 2369,
+      "files": 12
+    },
+    "scripts/": {
+      "loc": 1013,
+      "files": 4
+    }
+  },
+  "largest_files": [
+    {
+      "path": "planner.py",
+      "loc": 1038,
+      "language": "python"
+    },
+    {
+      "path": "backend/websocket.py",
+      "loc": 381,
+      "language": "python"
+    },
+    {
+      "path": "backend/schemas.py",
+      "loc": 347,
+      "language": "python"
+    },
+    {
+      "path": "backend/routers/tasks.py",
+      "loc": 329,
+      "language": "python"
+    },
+    {
+      "path": "scripts/init_db.py",
+      "loc": 287,
+      "language": "python"
+    },
+    {
+      "path": "scripts/init_db_postgres.py",
+      "loc": 267,
+      "language": "python"
+    },
+    {
+      "path": "backend/routers/goals.py",
+      "loc": 261,
+      "language": "python"
+    },
+    {
+      "path": "scripts/setup_google_oauth.py",
+      "loc": 254,
+      "language": "python"
+    },
+    {
+      "path": "backend/routers/notes.py",
+      "loc": 239,
+      "language": "python"
+    },
+    {
+      "path": "backend/routers/dashboard.py",
+      "loc": 211,
+      "language": "python"
+    }
+  ],
+  "patterns_detected": {
+    "fastapi": true,
+    "routers": 6,
+    "websocket": true,
+    "api_endpoints": 36
+  },
+  "complexity_indicators": {
+    "files_over_500_loc": [
+      "planner.py"
+    ],
+    "average_file_size": 260.0
+  },
+  "key_libraries": [
+    "fastapi",
+    "rich",
+    "psycopg2",
+    "google",
+    "uvicorn",
+    "pydantic",
+    "typer",
+    "google_auth_oauthlib",
+    "googleapiclient"
+  ]
+}
