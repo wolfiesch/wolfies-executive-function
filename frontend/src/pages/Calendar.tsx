@@ -1,10 +1,11 @@
-import { useState } from 'react'
+import { useState, useRef, useCallback } from 'react'
 import { ChevronLeft, ChevronRight, Plus, Loader2 } from 'lucide-react'
 import { AppShell } from '@/components/layout'
 import { useTodayEvents } from '@/api/hooks'
 import { EventCreateDialog } from '@/components/calendar/EventCreateDialog'
-import { format, parseISO, startOfWeek, addDays } from 'date-fns'
+import { format, parseISO, startOfWeek, addDays, setHours, setMinutes } from 'date-fns'
 import type { CalendarEvent } from '@/types/models'
+import { cn } from '@/lib/utils'
 
 /**
  * Calendar - Calendar view page
@@ -13,6 +14,8 @@ import type { CalendarEvent } from '@/types/models'
  * - Day/Week/Month view toggle
  * - Navigation between time periods
  * - Event display on calendar grid
+ * - Click-and-drag to create events
+ * - Current time indicator
  * - Time blocking support
  *
  * Design pattern: **Time-Based Grid Pattern** - visual representation
@@ -20,17 +23,29 @@ import type { CalendarEvent } from '@/types/models'
  */
 export function Calendar() {
   const [createDialogOpen, setCreateDialogOpen] = useState(false)
+  const [dragState, setDragState] = useState<{
+    dayIndex: number
+    startHour: number
+    endHour: number
+  } | null>(null)
+  const [presetTime, setPresetTime] = useState<{ start: Date; end: Date } | null>(null)
+  const gridRef = useRef<HTMLDivElement>(null)
 
   // Fetch events from API
   const { data: events, isLoading } = useTodayEvents()
 
   // Get current date info for header
   const today = new Date()
+  const currentHour = today.getHours()
+  const currentMinute = today.getMinutes()
   const weekStart = startOfWeek(today, { weekStartsOn: 0 })
   const monthYear = today.toLocaleDateString('en-US', {
     month: 'long',
     year: 'numeric',
   })
+
+  // Calculate current time offset for indicator (as rem based on hour height of 3rem)
+  const currentTimeOffset = (currentHour + currentMinute / 60) * 3
 
   // Get events for each day of the week
   const getEventsForDay = (dayIndex: number): CalendarEvent[] => {
@@ -55,6 +70,41 @@ export function Calendar() {
     }
   }
 
+  // Handle mouse down on grid for drag-to-create
+  const handleMouseDown = useCallback(
+    (dayIndex: number, e: React.MouseEvent<HTMLDivElement>) => {
+      const rect = e.currentTarget.getBoundingClientRect()
+      const y = e.clientY - rect.top
+      const hour = Math.floor(y / 48) // 48px = 3rem at 16px base
+      setDragState({ dayIndex, startHour: hour, endHour: hour + 1 })
+    },
+    []
+  )
+
+  // Handle mouse move for drag preview
+  const handleMouseMove = useCallback(
+    (e: React.MouseEvent<HTMLDivElement>) => {
+      if (!dragState || !e.currentTarget) return
+      const rect = e.currentTarget.getBoundingClientRect()
+      const y = e.clientY - rect.top
+      const hour = Math.max(dragState.startHour + 1, Math.ceil(y / 48))
+      setDragState((prev) => (prev ? { ...prev, endHour: Math.min(hour, 24) } : null))
+    },
+    [dragState]
+  )
+
+  // Handle mouse up to open create dialog
+  const handleMouseUp = useCallback(() => {
+    if (dragState) {
+      const dayDate = addDays(weekStart, dragState.dayIndex)
+      const startTime = setMinutes(setHours(dayDate, dragState.startHour), 0)
+      const endTime = setMinutes(setHours(dayDate, dragState.endHour), 0)
+      setPresetTime({ start: startTime, end: endTime })
+      setCreateDialogOpen(true)
+    }
+    setDragState(null)
+  }, [dragState, weekStart])
+
   return (
     <AppShell>
       <div className="flex h-[calc(100vh-theme(spacing.20))] flex-col">
@@ -67,13 +117,19 @@ export function Calendar() {
 
             {/* Date navigation */}
             <div className="flex items-center gap-2">
-              <button className="rounded-lg p-2 text-[var(--color-text-secondary)] hover:bg-[var(--color-bg-hover)] hover:text-[var(--color-text-primary)]">
+              <button
+                className="rounded-lg p-2 text-[var(--color-text-secondary)] hover:bg-[var(--color-bg-hover)] hover:text-[var(--color-text-primary)]"
+                aria-label="Previous week"
+              >
                 <ChevronLeft className="h-5 w-5" />
               </button>
               <span className="min-w-[200px] text-center font-medium text-[var(--color-text-primary)]">
                 {monthYear}
               </span>
-              <button className="rounded-lg p-2 text-[var(--color-text-secondary)] hover:bg-[var(--color-bg-hover)] hover:text-[var(--color-text-primary)]">
+              <button
+                className="rounded-lg p-2 text-[var(--color-text-secondary)] hover:bg-[var(--color-bg-hover)] hover:text-[var(--color-text-primary)]"
+                aria-label="Next week"
+              >
                 <ChevronRight className="h-5 w-5" />
               </button>
               <button className="ml-2 rounded-lg border border-[var(--color-border-default)] px-3 py-1.5 text-sm text-[var(--color-text-secondary)] hover:bg-[var(--color-bg-hover)]">
@@ -108,31 +164,42 @@ export function Calendar() {
             <div className="border-r border-[var(--color-border-subtle)] p-2" />
 
             {/* Day headers */}
-            {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map((day, i) => (
-              <div
-                key={day}
-                className="border-r border-[var(--color-border-subtle)] p-3 text-center last:border-r-0"
-              >
-                <p className="text-xs text-[var(--color-text-secondary)]">{day}</p>
-                <p
-                  className={`mt-1 text-lg font-semibold ${
-                    i === today.getDay()
-                      ? 'rounded-full bg-[var(--color-accent-blue)] px-2 text-white'
-                      : 'text-[var(--color-text-primary)]'
-                  }`}
+            {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map((day, i) => {
+              const dayDate = addDays(weekStart, i)
+              const isToday = format(dayDate, 'yyyy-MM-dd') === format(today, 'yyyy-MM-dd')
+              return (
+                <div
+                  key={day}
+                  className={cn(
+                    'border-r border-[var(--color-border-subtle)] p-3 text-center last:border-r-0',
+                    isToday && 'bg-[var(--color-accent-blue)]/5'
+                  )}
                 >
-                  {new Date(
-                    today.getTime() + (i - today.getDay()) * 24 * 60 * 60 * 1000
-                  ).getDate()}
-                </p>
-              </div>
-            ))}
+                  <p className="text-xs text-[var(--color-text-secondary)]">{day}</p>
+                  <p
+                    className={cn(
+                      'mt-1 inline-flex h-8 w-8 items-center justify-center rounded-full text-lg font-semibold',
+                      isToday
+                        ? 'bg-[var(--color-accent-blue)] text-white'
+                        : 'text-[var(--color-text-primary)]'
+                    )}
+                  >
+                    {dayDate.getDate()}
+                  </p>
+                </div>
+              )
+            })}
           </div>
 
           {/* Time grid */}
-          <div className="grid h-[calc(100%-60px)] grid-cols-8 overflow-y-auto">
+          <div
+            ref={gridRef}
+            className="grid h-[calc(100%-60px)] grid-cols-8 overflow-y-auto"
+            onMouseUp={handleMouseUp}
+            onMouseLeave={() => setDragState(null)}
+          >
             {/* Time labels */}
-            <div className="border-r border-[var(--color-border-subtle)]">
+            <div className="relative border-r border-[var(--color-border-subtle)]">
               {Array.from({ length: 24 }, (_, i) => (
                 <div
                   key={i}
@@ -147,26 +214,68 @@ export function Calendar() {
                         : `${i - 12} PM`}
                 </div>
               ))}
+
+              {/* Current time label */}
+              <div
+                className="absolute right-0 z-20 -translate-y-1/2 pr-1 text-xs font-semibold text-[var(--color-accent-red)]"
+                style={{ top: `${currentTimeOffset}rem` }}
+              >
+                Now
+              </div>
             </div>
 
             {/* Day columns */}
             {Array.from({ length: 7 }, (_, dayIndex) => {
               const dayEvents = getEventsForDay(dayIndex)
+              const dayDate = addDays(weekStart, dayIndex)
+              const isToday = format(dayDate, 'yyyy-MM-dd') === format(today, 'yyyy-MM-dd')
+
               return (
                 <div
                   key={dayIndex}
-                  className="relative border-r border-[var(--color-border-subtle)] last:border-r-0"
+                  className={cn(
+                    'relative border-r border-[var(--color-border-subtle)] last:border-r-0',
+                    isToday && 'bg-[var(--color-accent-blue)]/5'
+                  )}
+                  onMouseDown={(e) => handleMouseDown(dayIndex, e)}
+                  onMouseMove={handleMouseMove}
                 >
                   {/* Hour grid lines */}
                   {Array.from({ length: 24 }, (_, hourIndex) => (
                     <div
                       key={hourIndex}
-                      className="h-12 border-b border-[var(--color-border-subtle)]"
+                      className="h-12 border-b border-[var(--color-border-subtle)] transition-colors hover:bg-[var(--color-bg-hover)]/50"
                     />
                   ))}
 
+                  {/* Current time indicator line */}
+                  {isToday && (
+                    <div
+                      className="pointer-events-none absolute left-0 right-0 z-10 flex items-center"
+                      style={{ top: `${currentTimeOffset}rem` }}
+                    >
+                      <div className="h-3 w-3 -ml-1.5 rounded-full bg-[var(--color-accent-red)]" />
+                      <div className="flex-1 h-0.5 bg-[var(--color-accent-red)]" />
+                    </div>
+                  )}
+
+                  {/* Drag preview */}
+                  {dragState && dragState.dayIndex === dayIndex && (
+                    <div
+                      className="absolute left-1 right-1 rounded-md border-2 border-dashed border-[var(--color-accent-blue)] bg-[var(--color-accent-blue)]/20"
+                      style={{
+                        top: `${dragState.startHour * 3}rem`,
+                        height: `${(dragState.endHour - dragState.startHour) * 3}rem`,
+                      }}
+                    >
+                      <p className="p-1 text-xs font-medium text-[var(--color-accent-blue)]">
+                        New Event
+                      </p>
+                    </div>
+                  )}
+
                   {/* Loading indicator for today's column */}
-                  {isLoading && dayIndex === today.getDay() && (
+                  {isLoading && isToday && (
                     <div className="absolute inset-0 flex items-center justify-center bg-[var(--color-bg-secondary)]/50">
                       <Loader2 className="h-5 w-5 animate-spin text-[var(--color-accent-blue)]" />
                     </div>
@@ -175,14 +284,27 @@ export function Calendar() {
                   {/* Real events from API */}
                   {dayEvents.map((event) => {
                     const pos = getEventPosition(event)
+                    const isTimeBlock = (event as { type?: string }).type === 'time-block'
                     return (
                       <div
                         key={event.id}
-                        className="absolute left-1 right-1 cursor-pointer rounded border-l-2 border-[var(--color-accent-blue)] bg-[var(--color-accent-blue)]/20 p-1 transition-colors hover:bg-[var(--color-accent-blue)]/30"
+                        className={cn(
+                          'absolute left-1 right-1 cursor-pointer rounded border-l-4 p-1.5 transition-colors',
+                          isTimeBlock
+                            ? 'border-[var(--color-accent-purple)] bg-[var(--color-accent-purple)]/20 hover:bg-[var(--color-accent-purple)]/30'
+                            : 'border-[var(--color-accent-blue)] bg-[var(--color-accent-blue)]/20 hover:bg-[var(--color-accent-blue)]/30'
+                        )}
                         style={{ top: pos.top, height: pos.height }}
                         title={event.title}
                       >
-                        <p className="truncate text-xs font-medium text-[var(--color-accent-blue)]">
+                        <p
+                          className={cn(
+                            'truncate text-xs font-medium',
+                            isTimeBlock
+                              ? 'text-[var(--color-accent-purple)]'
+                              : 'text-[var(--color-accent-blue)]'
+                          )}
+                        >
                           {event.title}
                         </p>
                         <p className="text-xs text-[var(--color-text-secondary)]">
@@ -201,7 +323,14 @@ export function Calendar() {
       </div>
 
       {/* Create event dialog */}
-      <EventCreateDialog open={createDialogOpen} onOpenChange={setCreateDialogOpen} />
+      <EventCreateDialog
+        open={createDialogOpen}
+        onOpenChange={(open) => {
+          setCreateDialogOpen(open)
+          if (!open) setPresetTime(null)
+        }}
+        presetTime={presetTime}
+      />
     </AppShell>
   )
 }
@@ -210,11 +339,12 @@ export function Calendar() {
 function ViewButton({ label, active }: { label: string; active: boolean }) {
   return (
     <button
-      className={`px-3 py-1.5 text-sm transition-colors first:rounded-l-lg last:rounded-r-lg ${
+      className={cn(
+        'px-3 py-1.5 text-sm transition-colors first:rounded-l-lg last:rounded-r-lg',
         active
           ? 'bg-[var(--color-bg-active)] text-[var(--color-text-primary)]'
           : 'text-[var(--color-text-secondary)] hover:bg-[var(--color-bg-hover)]'
-      }`}
+      )}
     >
       {label}
     </button>
@@ -222,3 +352,4 @@ function ViewButton({ label, active }: { label: string; active: boolean }) {
 }
 
 export default Calendar
+
