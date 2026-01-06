@@ -1,0 +1,10 @@
+{
+  "_comment": "Reminder list configuration (T1 feature - multi-list support)",
+  "lists": [
+    {
+      "name": "Reminders",
+      "description": "Default reminder list",
+      "is_default": true
+    }
+  ]
+}

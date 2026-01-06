@@ -1,0 +1,30 @@
+{
+  "server_name": "reminders-life-planner",
+  "version": "0.2.0",
+  "description": "Apple Reminders MCP server with Life Planner integration",
+
+  "paths": {
+    "life_planner_db": "../data/database/planner.db"
+  },
+
+  "reminders": {
+    "default_list": "Reminders",
+    "tag_parsing_enabled": true,
+    "max_recurrence_interval": 365
+  },
+
+  "logging": {
+    "level": "INFO",
+    "file": "logs/mcp_server.log",
+    "max_size_mb": 10,
+    "backup_count": 5
+  },
+
+  "features": {
+    "auto_interaction_logging": true,
+    "multi_list_support": true,
+    "recurring_reminders": true,
+    "priority_support": true,
+    "tag_support": true
+  }
+}

@@ -1,0 +1,5 @@
+mcp>=1.0.0
+pyobjc-framework-EventKit>=12.0
+pyobjc-core
+pytest>=7.0.0
+pytest-cov>=4.0.0
