@@ -71,6 +71,30 @@ def is_group_chat_identifier(chat_identifier: Optional[str]) -> bool:
     return False
 
 
+def sanitize_like_pattern(value: str) -> str:
+    """
+    Escape SQL LIKE wildcards in user input to prevent pattern injection.
+
+    LIKE patterns use % (any chars) and _ (single char) as wildcards.
+    User input must be escaped to prevent unintended matching behavior
+    or performance issues from overly broad patterns.
+
+    Args:
+        value: User-provided string to be used in a LIKE clause
+
+    Returns:
+        Escaped string safe for use in SQL LIKE patterns
+
+    Example:
+        >>> sanitize_like_pattern("test%value")
+        'test\\%value'
+    """
+    if not value:
+        return value
+    # Escape backslashes first, then LIKE wildcards
+    return value.replace('\\', '\\\\').replace('%', '\\%').replace('_', '\\_')
+
+
 def parse_attributed_body(blob: bytes) -> Optional[str]:
     """
     Parse the attributedBody column from macOS Messages database.
@@ -317,7 +341,8 @@ class MessagesInterface:
     def get_recent_messages(
         self,
         phone: str,
-        limit: int = 20
+        limit: int = 20,
+        offset: int = 0
     ) -> List[Dict]:
         """
         Retrieve recent messages with a contact from Messages database.
@@ -325,6 +350,7 @@ class MessagesInterface:
         Args:
             phone: Phone number or iMessage handle
             limit: Number of recent messages to retrieve
+            offset: Number of messages to skip (for pagination)
 
         Returns:
             List[Dict]: List of message dicts with keys:
@@ -335,6 +361,12 @@ class MessagesInterface:
         Note:
             Requires Full Disk Access permission for ~/Library/Messages/chat.db
             Includes attributedBody parsing for macOS Ventura+
+
+        Example pagination:
+            # Page 1: messages 0-99
+            get_recent_messages(phone, limit=100, offset=0)
+            # Page 2: messages 100-199
+            get_recent_messages(phone, limit=100, offset=100)
         """
         logger.info(f"Retrieving recent messages for {phone}")
 
@@ -349,6 +381,7 @@ class MessagesInterface:
 
             # Query messages for this contact
             # Include attributedBody for macOS Ventura+ message parsing
+            # LIMIT/OFFSET for pagination support
             query = """
                 SELECT
                     message.text,
@@ -360,11 +393,11 @@ class MessagesInterface:
                 JOIN handle ON message.handle_id = handle.ROWID
                 WHERE handle.id LIKE ?
                 ORDER BY message.date DESC
-                LIMIT ?
+                LIMIT ? OFFSET ?
             """
 
             # macOS Messages uses time since 2001-01-01 (Cocoa reference date)
-            cursor.execute(query, (f"%{phone}%", limit))
+            cursor.execute(query, (f"%{phone}%", limit, offset))
             rows = cursor.fetchall()
 
             messages = []
@@ -509,6 +542,108 @@ class MessagesInterface:
 
             conn.close()
             logger.info(f"Retrieved {len(messages)} messages from all conversations")
+            return messages
+
+        except sqlite3.Error as e:
+            logger.error(f"Database error: {e}")
+            return []
+        except Exception as e:
+            logger.error(f"Error retrieving messages: {e}")
+            return []
+
+    def get_messages_since(
+        self,
+        since: datetime,
+        limit: Optional[int] = None
+    ) -> List[Dict]:
+        """
+        Get messages modified since a specific timestamp.
+
+        Incremental indexing: Only fetch messages newer than the last
+        indexed timestamp to avoid re-processing unchanged data.
+
+        Args:
+            since: Return messages with date >= this timestamp
+            limit: Optional maximum number of messages to fetch
+
+        Returns:
+            List[Dict]: List of message dicts sorted by date ascending
+                (oldest first, for chronological processing)
+
+        Example:
+            last_indexed = datetime(2025, 12, 31, 12, 0, 0)
+            new_messages = interface.get_messages_since(last_indexed)
+        """
+        logger.info(f"Retrieving messages since {since.isoformat()}")
+
+        if not self.messages_db_path.exists():
+            logger.error(f"Messages database not found: {self.messages_db_path}")
+            return []
+
+        try:
+            conn = sqlite3.connect(f"file:{self.messages_db_path}?mode=ro", uri=True)
+            cursor = conn.cursor()
+
+            # Convert datetime to Cocoa timestamp (nanoseconds since 2001-01-01)
+            cocoa_epoch = datetime(2001, 1, 1)
+            delta = since - cocoa_epoch
+            cocoa_timestamp = int(delta.total_seconds() * 1_000_000_000)
+
+            # Query messages since timestamp
+            # ORDER BY ASC for chronological processing
+            query = """
+                SELECT
+                    message.text,
+                    message.attributedBody,
+                    message.date,
+                    message.is_from_me,
+                    handle.id,
+                    message.cache_roomnames
+                FROM message
+                LEFT JOIN handle ON message.handle_id = handle.ROWID
+                WHERE message.date >= ?
+                ORDER BY message.date ASC
+            """
+
+            params = [cocoa_timestamp]
+            if limit:
+                query += " LIMIT ?"
+                params.append(limit)
+
+            cursor.execute(query, params)
+            rows = cursor.fetchall()
+
+            messages = []
+            for row in rows:
+                text, attributed_body, date_cocoa, is_from_me, handle_id, cache_roomnames = row
+
+                # Extract message text
+                message_text = text
+                if not message_text and attributed_body:
+                    message_text = extract_text_from_blob(attributed_body)
+
+                # Convert timestamp
+                if date_cocoa:
+                    date = cocoa_epoch + timedelta(seconds=date_cocoa / 1_000_000_000)
+                else:
+                    date = None
+
+                # Check if this is a group chat
+                is_group_chat = is_group_chat_identifier(cache_roomnames)
+
+                messages.append({
+                    "text": message_text or "[message content not available]",
+                    "date": date.isoformat() if date else None,
+                    "is_from_me": bool(is_from_me),
+                    "phone": handle_id or "unknown",
+                    "contact_name": None,
+                    "is_group_chat": is_group_chat,
+                    "group_id": cache_roomnames if is_group_chat else None,
+                    "sender_handle": handle_id
+                })
+
+            conn.close()
+            logger.info(f"Retrieved {len(messages)} messages since {since.isoformat()}")
             return messages
 
         except sqlite3.Error as e:
@@ -811,7 +946,7 @@ class MessagesInterface:
                     JOIN handle h ON chj.handle_id = h.ROWID
                     WHERE h.id LIKE ?
                         AND (c.chat_identifier LIKE 'chat%' OR c.display_name IS NOT NULL)
-                """, (f"%{participant_filter}%",))
+                """, (f"%{sanitize_like_pattern(participant_filter)}%",))
 
             chats = cursor.fetchall()
 
@@ -1019,7 +1154,7 @@ class MessagesInterface:
 
             if phone:
                 query += " AND h.id LIKE ?"
-                params.append(f"%{phone}%")
+                params.append(f"%{sanitize_like_pattern(phone)}%")
 
             if mime_type_filter:
                 query += " AND a.mime_type LIKE ?"
@@ -1236,7 +1371,7 @@ class MessagesInterface:
 
             if phone:
                 query += " AND h.id LIKE ?"
-                params.append(f"%{phone}%")
+                params.append(f"%{sanitize_like_pattern(phone)}%")
 
             query += " ORDER BY r.date DESC LIMIT ?"
             params.append(limit)
@@ -1340,7 +1475,7 @@ class MessagesInterface:
 
             if phone:
                 base_filter += " AND h.id LIKE ?"
-                params.append(f"%{phone}%")
+                params.append(f"%{sanitize_like_pattern(phone)}%")
 
             # Get total counts
             cursor.execute(f"""
@@ -1351,7 +1486,7 @@ class MessagesInterface:
                 FROM message m
                 LEFT JOIN handle h ON m.handle_id = h.ROWID
                 {base_filter}
-                AND m.associated_message_type IS NULL OR m.associated_message_type = 0
+                AND (m.associated_message_type IS NULL OR m.associated_message_type = 0)
             """, params)
             row = cursor.fetchone()
             total, sent, received = row if row else (0, 0, 0)
@@ -1610,70 +1745,51 @@ class MessagesInterface:
             conn = sqlite3.connect(f"file:{self.messages_db_path}?mode=ro", uri=True)
             cursor = conn.cursor()
 
-            # Build query
-            query = """
-                SELECT
-                    m.text,
-                    m.attributedBody,
-                    m.date,
-                    m.is_from_me,
-                    h.id as sender_handle
-                FROM message m
-                LEFT JOIN handle h ON m.handle_id = h.ROWID
-                WHERE (m.text LIKE '%http%' OR m.was_data_detected = 1)
-            """
-            params = []
-
-            if phone:
-                query += " AND h.id LIKE ?"
-                params.append(f"%{phone}%")
-
-            if days:
-                cutoff_date = datetime.now() - timedelta(days=days)
-                cocoa_epoch = datetime(2001, 1, 1)
-                cutoff_cocoa = int((cutoff_date - cocoa_epoch).total_seconds() * 1_000_000_000)
-                query += " AND m.date >= ?"
-                params.append(cutoff_cocoa)
-
-            query += " ORDER BY m.date DESC LIMIT ?"
-            params.append(limit * 2)  # Fetch more since some may not have URLs
-
-            cursor.execute(query, params)
-            rows = cursor.fetchall()
-
             # URL regex pattern
             url_pattern = re.compile(
                 r'https?://[^\s<>"{}|\\^`\[\]]+'
             )
 
-            links = []
-            for row in rows:
-                text, attributed_body, date_cocoa, is_from_me, sender_handle = row
+            cocoa_epoch = datetime(2001, 1, 1)
+            cutoff_cocoa = None
+            if days:
+                cutoff_date = datetime.now() - timedelta(days=days)
+                cutoff_cocoa = int((cutoff_date - cocoa_epoch).total_seconds() * 1_000_000_000)
 
-                # Extract text
-                message_text = text
-                if not message_text and attributed_body:
-                    message_text = extract_text_from_blob(attributed_body)
+            filters = []
+            params_base = []
+            if phone:
+                filters.append("h.id LIKE ?")
+                params_base.append(f"%{sanitize_like_pattern(phone)}%")
+            if cutoff_cocoa is not None:
+                filters.append("m.date >= ?")
+                params_base.append(cutoff_cocoa)
+            filter_sql = (" AND " + " AND ".join(filters)) if filters else ""
 
+            links: List[Dict] = []
+
+            def add_links_from_text(message_text: str, date_cocoa: Optional[int], is_from_me: int, sender_handle: Optional[str]):
+                """Extract URLs from a message and append to the links list.
+
+                Args:
+                    message_text: Message body to scan for URLs.
+                    date_cocoa: Message timestamp in Cocoa epoch nanoseconds.
+                    is_from_me: 1 if message is sent by the user, else 0.
+                    sender_handle: Sender handle or identifier.
+                """
                 if not message_text:
-                    continue
+                    return
 
-                # Find URLs in text
                 urls = url_pattern.findall(message_text)
                 if not urls:
-                    continue
+                    return
 
-                # Convert timestamp
+                date = None
                 if date_cocoa:
-                    cocoa_epoch = datetime(2001, 1, 1)
                     date = cocoa_epoch + timedelta(seconds=date_cocoa / 1_000_000_000)
-                else:
-                    date = None
 
                 for url in urls:
-                    # Clean URL (remove trailing punctuation)
                     url = url.rstrip('.,;:!?)')
-
                     links.append({
                         "url": url,
                         "message_text": message_text[:200] + "..." if len(message_text) > 200 else message_text,
@@ -1681,12 +1797,59 @@ class MessagesInterface:
                         "is_from_me": bool(is_from_me),
                         "sender_handle": sender_handle or ("me" if is_from_me else "unknown")
                     })
-
                     if len(links) >= limit:
-                        break
+                        return
 
+            # Pass 1 (fast): only messages with plain text containing "http".
+            cursor.execute(
+                f"""
+                SELECT
+                    m.text,
+                    m.date,
+                    m.is_from_me,
+                    h.id as sender_handle
+                FROM message m
+                LEFT JOIN handle h ON m.handle_id = h.ROWID
+                WHERE m.text IS NOT NULL
+                  AND m.text LIKE '%http%'
+                {filter_sql}
+                ORDER BY m.date DESC
+                LIMIT ?
+                """,
+                (*params_base, limit * 4),
+            )
+            for text, date_cocoa, is_from_me, sender_handle in cursor.fetchall():
+                add_links_from_text(text or "", date_cocoa, is_from_me, sender_handle)
                 if len(links) >= limit:
                     break
+
+            # Pass 2 (slower): messages with null text but data-detected; parse attributedBody.
+            remaining = limit - len(links)
+            if remaining > 0:
+                cursor.execute(
+                    f"""
+                    SELECT
+                        m.attributedBody,
+                        m.date,
+                        m.is_from_me,
+                        h.id as sender_handle
+                    FROM message m
+                    LEFT JOIN handle h ON m.handle_id = h.ROWID
+                    WHERE m.text IS NULL
+                      AND m.attributedBody IS NOT NULL
+                      AND m.was_data_detected = 1
+                    {filter_sql}
+                    ORDER BY m.date DESC
+                    LIMIT ?
+                    """,
+                    (*params_base, min(5000, remaining * 10)),
+                )
+                for attributed_body, date_cocoa, is_from_me, sender_handle in cursor.fetchall():
+                    message_text = extract_text_from_blob(attributed_body) if attributed_body else None
+                    if message_text:
+                        add_links_from_text(message_text, date_cocoa, is_from_me, sender_handle)
+                        if len(links) >= limit:
+                            break
 
             conn.close()
             logger.info(f"Found {len(links)} links")
@@ -1761,7 +1924,7 @@ class MessagesInterface:
 
             if phone:
                 query += " AND h.id LIKE ?"
-                params.append(f"%{phone}%")
+                params.append(f"%{sanitize_like_pattern(phone)}%")
 
             query += " ORDER BY m.date DESC LIMIT ?"
             params.append(limit)
@@ -1906,7 +2069,11 @@ class MessagesInterface:
         self,
         phone: str,
         days: Optional[int] = None,
-        limit: int = 200
+        limit: int = 200,
+        offset: int = 0,
+        order: str = "asc",
+        start_date: Optional[datetime] = None,
+        end_date: Optional[datetime] = None
     ) -> Dict:
         """
         Get conversation data formatted for AI summarization.
@@ -1916,8 +2083,12 @@ class MessagesInterface:
 
         Args:
             phone: Contact phone number or handle
-            days: Optional limit to last N days
+            days: Optional limit to last N days (ignored if start_date/end_date provided)
             limit: Maximum messages to include
+            offset: Skip this many messages (pagination)
+            order: Sort order by date ("asc" or "desc")
+            start_date: Optional start date filter (YYYY-MM-DD)
+            end_date: Optional end date filter (YYYY-MM-DD)
 
         Returns:
             Dict: Formatted conversation data including:
@@ -1933,7 +2104,15 @@ class MessagesInterface:
             data = interface.get_conversation_for_summary(phone="+14155551234", days=7)
             # Pass data['conversation_text'] to Claude for summarization
         """
-        logger.info(f"Getting conversation for summary (phone: {phone}, days: {days})")
+        logger.info(
+            "Getting conversation for summary (phone: %s, days: %s, start: %s, end: %s, order: %s, offset: %s)",
+            phone,
+            days,
+            start_date,
+            end_date,
+            order,
+            offset,
+        )
 
         if not self.messages_db_path.exists():
             logger.error(f"Messages database not found: {self.messages_db_path}")
@@ -1958,15 +2137,25 @@ class MessagesInterface:
             """
             params = [f"%{phone}%"]
 
-            if days:
+            cocoa_epoch = datetime(2001, 1, 1)
+            if start_date:
+                start_cocoa = int((start_date - cocoa_epoch).total_seconds() * 1_000_000_000)
+                query += " AND m.date >= ?"
+                params.append(start_cocoa)
+            if end_date:
+                end_cocoa = int((end_date - cocoa_epoch).total_seconds() * 1_000_000_000)
+                query += " AND m.date <= ?"
+                params.append(end_cocoa)
+            if days and not (start_date or end_date):
                 cutoff_date = datetime.now() - timedelta(days=days)
-                cocoa_epoch = datetime(2001, 1, 1)
                 cutoff_cocoa = int((cutoff_date - cocoa_epoch).total_seconds() * 1_000_000_000)
                 query += " AND m.date >= ?"
                 params.append(cutoff_cocoa)
 
-            query += " ORDER BY m.date ASC LIMIT ?"
+            order_sql = "DESC" if order.lower() == "desc" else "ASC"
+            query += f" ORDER BY m.date {order_sql} LIMIT ? OFFSET ?"
             params.append(limit)
+            params.append(max(0, offset))
 
             cursor.execute(query, params)
             rows = cursor.fetchall()
@@ -2053,12 +2242,15 @@ class MessagesInterface:
             # Get top topics
             top_topics = sorted(word_freq.items(), key=lambda x: x[1], reverse=True)[:10]
 
+            date_start = min(m["date"] for m in messages)
+            date_end = max(m["date"] for m in messages)
+
             result = {
                 "phone": phone,
                 "message_count": len(messages),
                 "date_range": {
-                    "start": messages[0]["date"].isoformat(),
-                    "end": messages[-1]["date"].isoformat()
+                    "start": date_start.isoformat(),
+                    "end": date_end.isoformat()
                 },
                 "conversation_text": "\n".join(conversation_lines),
                 "key_stats": {
@@ -2067,7 +2259,7 @@ class MessagesInterface:
                     "avg_message_length": round(total_length / len(messages)) if messages else 0,
                 },
                 "recent_topics": [word for word, count in top_topics if count >= 2],
-                "last_interaction": messages[-1]["date"].isoformat()
+                "last_interaction": date_end.isoformat()
             }
 
             logger.info(f"Prepared summary data: {len(messages)} messages")
@@ -2187,21 +2379,34 @@ class MessagesInterface:
             }
 
             # Get recent messages with context
-            cursor.execute("""
-                SELECT
-                    m.text,
-                    m.attributedBody,
-                    m.date,
-                    m.is_from_me,
-                    h.id as phone,
-                    m.ROWID
-                FROM message m
-                JOIN handle h ON m.handle_id = h.ROWID
-                WHERE m.date >= ?
-                    AND (m.associated_message_type IS NULL OR m.associated_message_type = 0)
-                    AND m.item_type = 0
-                ORDER BY h.id, m.date DESC
-            """, (cutoff_cocoa,))
+            # Windowed query: only keep the most recent N messages per handle.
+            # This avoids scanning/processing every message within the time range for high-volume users.
+            per_contact_limit = max(50, limit)
+            cursor.execute(
+                """
+                WITH recent AS (
+                    SELECT
+                        m.text,
+                        m.attributedBody,
+                        m.date,
+                        m.is_from_me,
+                        h.id AS phone,
+                        m.ROWID AS rowid,
+                        ROW_NUMBER() OVER (PARTITION BY h.id ORDER BY m.date DESC) AS rn
+                    FROM message m
+                    JOIN handle h ON m.handle_id = h.ROWID
+                    WHERE m.date >= ?
+                        AND (m.associated_message_type IS NULL OR m.associated_message_type = 0)
+                        AND m.item_type = 0
+                        AND (m.text IS NOT NULL OR m.attributedBody IS NOT NULL)
+                )
+                SELECT text, attributedBody, date, is_from_me, phone, rowid
+                FROM recent
+                WHERE rn <= ?
+                ORDER BY phone, date DESC
+                """,
+                (cutoff_cocoa, per_contact_limit),
+            )
 
             rows = cursor.fetchall()
 
@@ -2346,3 +2551,359 @@ class MessagesInterface:
         except Exception as e:
             logger.error(f"Error detecting follow-ups: {e}")
             return {"error": str(e)}
+
+    def list_recent_handles(self, days: int = 30, limit: int = 100) -> List[Dict]:
+        """
+        List all unique phone numbers/email handles from recent messages.
+
+        Useful for finding temporary numbers or people not in contacts.
+
+        Args:
+            days: Number of days to look back
+            limit: Maximum number of handles to return
+
+        Returns:
+            List[Dict]: List of handle dicts with keys:
+                - handle: Phone number or email
+                - message_count: Number of messages with this handle
+                - last_message_date: Date of most recent message
+                - is_from_me_count: Messages sent by you
+                - is_to_me_count: Messages received
+        """
+        logger.info(f"Listing recent handles from last {days} days")
+
+        if not self.messages_db_path.exists():
+            logger.error(f"Messages database not found: {self.messages_db_path}")
+            return []
+
+        try:
+            conn = sqlite3.connect(f"file:{self.messages_db_path}?mode=ro", uri=True)
+            cursor = conn.cursor()
+
+            # Calculate cutoff date in Cocoa timestamp format
+            cutoff = datetime.now() - timedelta(days=days)
+            cocoa_epoch = datetime(2001, 1, 1)
+            cutoff_cocoa = (cutoff - cocoa_epoch).total_seconds() * 1_000_000_000
+
+            query = """
+                SELECT
+                    handle.id as handle,
+                    COUNT(*) as message_count,
+                    MAX(message.date) as last_message_date,
+                    SUM(CASE WHEN message.is_from_me = 1 THEN 1 ELSE 0 END) as is_from_me_count,
+                    SUM(CASE WHEN message.is_from_me = 0 THEN 1 ELSE 0 END) as is_to_me_count
+                FROM message
+                JOIN handle ON message.handle_id = handle.ROWID
+                WHERE message.date > ?
+                GROUP BY handle.id
+                ORDER BY last_message_date DESC
+                LIMIT ?
+            """
+
+            cursor.execute(query, (cutoff_cocoa, limit))
+            rows = cursor.fetchall()
+
+            handles = []
+            for row in rows:
+                handle, msg_count, last_date_cocoa, from_me, to_me = row
+
+                # Convert Cocoa timestamp
+                if last_date_cocoa:
+                    last_date = cocoa_epoch + timedelta(seconds=last_date_cocoa / 1_000_000_000)
+                else:
+                    last_date = None
+
+                handles.append({
+                    "handle": handle,
+                    "message_count": msg_count,
+                    "last_message_date": last_date.isoformat() if last_date else None,
+                    "is_from_me_count": from_me or 0,
+                    "is_to_me_count": to_me or 0
+                })
+
+            conn.close()
+            logger.info(f"Found {len(handles)} unique handles")
+            return handles
+
+        except sqlite3.Error as e:
+            logger.error(f"Database error: {e}")
+            return []
+        except Exception as e:
+            logger.error(f"Error listing handles: {e}")
+            return []
+
+    def search_unknown_senders(
+        self,
+        known_phones: List[str],
+        days: int = 30,
+        limit: int = 100
+    ) -> List[Dict]:
+        """
+        Find messages from senders not in contacts.
+
+        Identifies phone numbers/emails in recent messages that don't match
+        any known contact phones. Useful for finding temporary numbers,
+        business contacts, or people you haven't added to contacts.
+
+        Args:
+            known_phones: List of normalized phone numbers from contacts
+            days: Number of days to look back
+            limit: Maximum messages to return
+
+        Returns:
+            List[Dict]: Unknown senders with their messages, keys:
+                - handle: Phone number or email
+                - message_count: Total messages with this handle
+                - messages: List of recent messages from this sender
+                - last_message_date: Date of most recent message
+        """
+        logger.info(f"Searching unknown senders in last {days} days")
+
+        if not self.messages_db_path.exists():
+            logger.error(f"Messages database not found: {self.messages_db_path}")
+            return []
+
+        # Normalize known phones for comparison (remove non-digits)
+        normalized_known = set()
+        for phone in known_phones:
+            normalized = "".join(c for c in phone if c.isdigit())
+            if normalized:
+                normalized_known.add(normalized)
+                # Also add without country code for matching
+                if len(normalized) > 10:
+                    normalized_known.add(normalized[-10:])
+
+        try:
+            conn = sqlite3.connect(f"file:{self.messages_db_path}?mode=ro", uri=True)
+            cursor = conn.cursor()
+
+            # Calculate cutoff date in Cocoa timestamp format
+            cutoff = datetime.now() - timedelta(days=days)
+            cocoa_epoch = datetime(2001, 1, 1)
+            cutoff_cocoa = (cutoff - cocoa_epoch).total_seconds() * 1_000_000_000
+
+            # First, get all unique handles with message counts
+            handles_query = """
+                SELECT
+                    handle.id as handle,
+                    COUNT(*) as message_count,
+                    MAX(message.date) as last_message_date
+                FROM message
+                JOIN handle ON message.handle_id = handle.ROWID
+                WHERE message.date > ?
+                GROUP BY handle.id
+                ORDER BY last_message_date DESC
+            """
+
+            cursor.execute(handles_query, (cutoff_cocoa,))
+            all_handles = cursor.fetchall()
+
+            # Filter to unknown handles
+            unknown_handles = []
+            for handle, msg_count, last_date in all_handles:
+                handle_normalized = "".join(c for c in handle if c.isdigit())
+
+                # Check if this handle matches any known phone (bidirectional matching)
+                is_known = False
+
+                # Direct full match
+                if handle_normalized in normalized_known:
+                    is_known = True
+                # Check if handle's last 10 digits match any known phone
+                elif len(handle_normalized) >= 10 and handle_normalized[-10:] in normalized_known:
+                    is_known = True
+                # Bidirectional check: does any known phone end with this handle's last 10?
+                elif len(handle_normalized) >= 10:
+                    handle_last_10 = handle_normalized[-10:]
+                    for known in known_phones:
+                        known_digits = "".join(c for c in known if c.isdigit())
+                        if len(known_digits) >= 10 and known_digits.endswith(handle_last_10):
+                            is_known = True
+                            break
+
+                if not is_known:
+                    unknown_handles.append((handle, msg_count, last_date))
+
+            # Get recent messages for each unknown handle (limited)
+            unknown_senders = []
+            messages_per_handle = max(1, limit // max(1, len(unknown_handles[:20])))
+
+            for handle, msg_count, last_date_cocoa in unknown_handles[:20]:  # Max 20 unknown handles
+                # Get sample messages from this handle
+                msg_query = """
+                    SELECT
+                        message.text,
+                        message.attributedBody,
+                        message.date,
+                        message.is_from_me
+                    FROM message
+                    JOIN handle ON message.handle_id = handle.ROWID
+                    WHERE handle.id = ? AND message.date > ?
+                    ORDER BY message.date DESC
+                    LIMIT ?
+                """
+
+                cursor.execute(msg_query, (handle, cutoff_cocoa, messages_per_handle))
+                msg_rows = cursor.fetchall()
+
+                messages = []
+                for text, blob, date_cocoa, is_from_me in msg_rows:
+                    # Extract text content
+                    msg_text = text
+                    if not msg_text and blob:
+                        # Fixed 01/04/2026: extract_text_from_blob is a module-level function (line ~147),
+                        # not a class method. Previously incorrectly called as self.extract_text_from_blob()
+                        msg_text = extract_text_from_blob(blob)
+                    if not msg_text:
+                        msg_text = "[attachment or empty]"
+
+                    # Convert Cocoa timestamp
+                    if date_cocoa:
+                        msg_date = cocoa_epoch + timedelta(seconds=date_cocoa / 1_000_000_000)
+                    else:
+                        msg_date = None
+
+                    messages.append({
+                        "text": msg_text[:200],  # Truncate long messages
+                        "date": msg_date.isoformat() if msg_date else None,
+                        "is_from_me": bool(is_from_me)
+                    })
+
+                # Convert last message date
+                if last_date_cocoa:
+                    last_date = cocoa_epoch + timedelta(seconds=last_date_cocoa / 1_000_000_000)
+                else:
+                    last_date = None
+
+                unknown_senders.append({
+                    "handle": handle,
+                    "message_count": msg_count,
+                    "messages": messages,
+                    "last_message_date": last_date.isoformat() if last_date else None
+                })
+
+            conn.close()
+            logger.info(f"Found {len(unknown_senders)} unknown senders")
+            return unknown_senders
+
+        except sqlite3.Error as e:
+            logger.error(f"Database error: {e}")
+            return []
+        except Exception as e:
+            logger.error(f"Error searching unknown senders: {e}")
+            return []
+
+    def discover_frequent_contacts(
+        self,
+        days: int = 90,
+        limit: int = 50,
+        min_messages: int = 5
+    ) -> List[Dict]:
+        """
+        Discover frequently-messaged phone numbers from Messages.db.
+
+        Useful for finding contacts that should be added to the contact list.
+
+        Args:
+            days: How far back to look
+            limit: Maximum contacts to return
+            min_messages: Minimum message count to include
+
+        Returns:
+            List of dicts with handle, message_count, sent_count, received_count,
+            last_message_date, sample_messages
+        """
+        logger.info(f"Discovering frequent contacts (days={days}, limit={limit})")
+
+        if not self.messages_db_path.exists():
+            logger.error(f"Messages database not found: {self.messages_db_path}")
+            return []
+
+        try:
+            conn = sqlite3.connect(f"file:{self.messages_db_path}?mode=ro", uri=True)
+            cursor = conn.cursor()
+
+            # Calculate date cutoff
+            cocoa_epoch = datetime(2001, 1, 1)
+            cutoff_date = datetime.now() - timedelta(days=days)
+            cutoff_cocoa = int((cutoff_date - cocoa_epoch).total_seconds() * 1_000_000_000)
+
+            # Get handles with message counts
+            cursor.execute("""
+                SELECT
+                    h.id as handle,
+                    COUNT(*) as total_count,
+                    SUM(CASE WHEN m.is_from_me = 1 THEN 1 ELSE 0 END) as sent_count,
+                    SUM(CASE WHEN m.is_from_me = 0 THEN 1 ELSE 0 END) as received_count,
+                    MAX(m.date) as last_date
+                FROM message m
+                JOIN handle h ON m.handle_id = h.ROWID
+                WHERE m.date >= ?
+                    AND (m.associated_message_type IS NULL OR m.associated_message_type = 0)
+                    AND m.item_type = 0
+                GROUP BY h.id
+                HAVING COUNT(*) >= ?
+                ORDER BY total_count DESC
+                LIMIT ?
+            """, (cutoff_cocoa, min_messages, limit * 2))  # Get more, then filter
+
+            results = []
+            for row in cursor.fetchall():
+                handle, total_count, sent_count, received_count, last_date_cocoa = row
+
+                # Skip non-phone handles (group chats, etc.)
+                if not handle or handle.startswith('chat') or '@' in handle:
+                    continue
+
+                # Get sample messages
+                cursor.execute("""
+                    SELECT m.text, m.attributedBody, m.is_from_me, m.date
+                    FROM message m
+                    JOIN handle h ON m.handle_id = h.ROWID
+                    WHERE h.id = ?
+                        AND (m.associated_message_type IS NULL OR m.associated_message_type = 0)
+                        AND m.item_type = 0
+                    ORDER BY m.date DESC
+                    LIMIT 3
+                """, (handle,))
+
+                sample_messages = []
+                for msg_row in cursor.fetchall():
+                    text, attributed_body, is_from_me, date_cocoa = msg_row
+                    msg_text = text
+                    if not msg_text and attributed_body:
+                        msg_text = extract_text_from_blob(attributed_body)
+
+                    if msg_text:
+                        sample_messages.append({
+                            "text": msg_text[:100],
+                            "is_from_me": bool(is_from_me)
+                        })
+
+                # Convert timestamp
+                last_date = None
+                if last_date_cocoa:
+                    last_date = cocoa_epoch + timedelta(seconds=last_date_cocoa / 1_000_000_000)
+
+                results.append({
+                    "handle": handle,
+                    "message_count": total_count,
+                    "sent_count": sent_count or 0,
+                    "received_count": received_count or 0,
+                    "last_message_date": last_date.isoformat() if last_date else None,
+                    "sample_messages": sample_messages
+                })
+
+                if len(results) >= limit:
+                    break
+
+            conn.close()
+            logger.info(f"Discovered {len(results)} frequent contacts")
+            return results
+
+        except sqlite3.Error as e:
+            logger.error(f"Database error: {e}")
+            return []
+        except Exception as e:
+            logger.error(f"Error discovering contacts: {e}")
+            return []

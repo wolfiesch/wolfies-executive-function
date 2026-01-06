@@ -46,7 +46,7 @@ def temp_contacts_file():
 
 def test_load_contacts(temp_contacts_file):
     """Test loading contacts from config file."""
-    manager = ContactsManager(temp_contacts_file)
+    manager = ContactsManager(temp_contacts_file, use_db=False)
 
     assert len(manager.contacts) == 2
     assert manager.contacts[0].name == "John Doe"
@@ -55,7 +55,7 @@ def test_load_contacts(temp_contacts_file):
 
 def test_get_contact_by_name_exact_match(temp_contacts_file):
     """Test exact name matching."""
-    manager = ContactsManager(temp_contacts_file)
+    manager = ContactsManager(temp_contacts_file, use_db=False)
 
     contact = manager.get_contact_by_name("John Doe")
     assert contact is not None
@@ -65,7 +65,7 @@ def test_get_contact_by_name_exact_match(temp_contacts_file):
 
 def test_get_contact_by_name_case_insensitive(temp_contacts_file):
     """Test case-insensitive name matching."""
-    manager = ContactsManager(temp_contacts_file)
+    manager = ContactsManager(temp_contacts_file, use_db=False)
 
     contact = manager.get_contact_by_name("john doe")
     assert contact is not None
@@ -74,7 +74,7 @@ def test_get_contact_by_name_case_insensitive(temp_contacts_file):
 
 def test_get_contact_by_name_partial_match(temp_contacts_file):
     """Test partial name matching."""
-    manager = ContactsManager(temp_contacts_file)
+    manager = ContactsManager(temp_contacts_file, use_db=False)
 
     contact = manager.get_contact_by_name("John")
     assert contact is not None
@@ -83,7 +83,7 @@ def test_get_contact_by_name_partial_match(temp_contacts_file):
 
 def test_get_contact_by_name_not_found(temp_contacts_file):
     """Test contact not found."""
-    manager = ContactsManager(temp_contacts_file)
+    manager = ContactsManager(temp_contacts_file, use_db=False)
 
     contact = manager.get_contact_by_name("Unknown Person")
     assert contact is None
@@ -91,7 +91,7 @@ def test_get_contact_by_name_not_found(temp_contacts_file):
 
 def test_get_contact_by_phone(temp_contacts_file):
     """Test phone number lookup."""
-    manager = ContactsManager(temp_contacts_file)
+    manager = ContactsManager(temp_contacts_file, use_db=False)
 
     # Full number with +1
     contact = manager.get_contact_by_phone("+14155551234")
@@ -106,7 +106,7 @@ def test_get_contact_by_phone(temp_contacts_file):
 
 def test_get_contact_by_phone_without_country_code(temp_contacts_file):
     """Test phone lookup handles different formats."""
-    manager = ContactsManager(temp_contacts_file)
+    manager = ContactsManager(temp_contacts_file, use_db=False)
 
     # Contact stored without +1, search with it
     contact = manager.get_contact_by_phone("+14155555678")
@@ -116,7 +116,7 @@ def test_get_contact_by_phone_without_country_code(temp_contacts_file):
 
 def test_list_contacts(temp_contacts_file):
     """Test listing all contacts."""
-    manager = ContactsManager(temp_contacts_file)
+    manager = ContactsManager(temp_contacts_file, use_db=False)
 
     all_contacts = manager.list_contacts()
     assert len(all_contacts) == 2
@@ -126,7 +126,7 @@ def test_list_contacts(temp_contacts_file):
 
 def test_add_contact(temp_contacts_file):
     """Test adding a new contact."""
-    manager = ContactsManager(temp_contacts_file)
+    manager = ContactsManager(temp_contacts_file, use_db=False)
 
     initial_count = len(manager.contacts)
 

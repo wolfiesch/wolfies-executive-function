@@ -51,6 +51,12 @@ class SuperWhisperIndexer(BaseSourceIndexer):
         recordings_path: Optional[Path] = None,
         **kwargs,
     ):
+        """Initialize the SuperWhisper indexer.
+
+        Args:
+            recordings_path: Path to SuperWhisper recordings directory.
+            **kwargs: Forwarded to BaseSourceIndexer.
+        """
         super().__init__(**kwargs)
         self.recordings_path = recordings_path or DEFAULT_SUPERWHISPER_PATH
 

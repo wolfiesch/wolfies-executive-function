@@ -30,6 +30,16 @@ class MacOSContact:
         phone_numbers: List[Dict[str, str]] = None,
         email_addresses: List[Dict[str, str]] = None
     ):
+        """Initialize a macOS contact wrapper.
+
+        Args:
+            identifier: Unique identifier from Contacts.app.
+            given_name: Given name.
+            family_name: Family name.
+            organization: Organization name for non-person contacts.
+            phone_numbers: List of phone number dicts from Contacts.app.
+            email_addresses: List of email address dicts from Contacts.app.
+        """
         self.identifier = identifier
         self.given_name = given_name
         self.family_name = family_name
@@ -54,6 +64,7 @@ class MacOSContact:
             return "Unknown"
 
     def __repr__(self):
+        """Return a concise representation for logs/debugging."""
         return f"MacOSContact(name='{self.full_name}', phones={len(self.phone_numbers)})"
 
 

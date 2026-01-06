@@ -57,6 +57,12 @@ class UnifiedRetriever:
         persist_directory: Optional[str] = None,
         use_local_embeddings: bool = False,
     ):
+        """Initialize the unified retriever.
+
+        Args:
+            persist_directory: Path for ChromaDB storage.
+            use_local_embeddings: Whether to use local embeddings.
+        """
         # Default persist directory
         if persist_directory is None:
             project_root = Path(__file__).parent.parent.parent.parent

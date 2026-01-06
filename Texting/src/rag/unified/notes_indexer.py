@@ -57,6 +57,14 @@ class NotesIndexer(BaseSourceIndexer):
         max_chunk_words: int = 500,
         **kwargs,
     ):
+        """Initialize the notes indexer.
+
+        Args:
+            notes_path: Root directory for markdown notes.
+            min_chunk_words: Minimum words per chunk.
+            max_chunk_words: Maximum words before splitting a chunk.
+            **kwargs: Forwarded to BaseSourceIndexer.
+        """
         super().__init__(**kwargs)
 
         # Default notes path relative to project

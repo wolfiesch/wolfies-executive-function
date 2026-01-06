@@ -49,6 +49,15 @@ class SlackIndexer(BaseSourceIndexer):
         min_words: int = 20,
         **kwargs,
     ):
+        """Initialize the Slack indexer.
+
+        Args:
+            slack_fetcher: Callable to fetch Slack messages.
+            window_hours: Hours between messages in a chunk.
+            min_messages: Minimum messages per chunk.
+            min_words: Minimum words per chunk.
+            **kwargs: Forwarded to BaseSourceIndexer.
+        """
         super().__init__(**kwargs)
         self.slack_fetcher = slack_fetcher
         self.window_hours = window_hours
