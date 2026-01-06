@@ -1,0 +1,124 @@
+{
+  "agent_id": "2-frontend",
+  "component_name": "Frontend Application",
+  "total_loc": 10106,
+  "total_files": 71,
+  "by_language": {
+    "typescript": {
+      "loc": 4154,
+      "files": 31
+    },
+    "tsx": {
+      "loc": 5952,
+      "files": 40
+    },
+    "javascript": {
+      "loc": 0,
+      "files": 0
+    },
+    "jsx": {
+      "loc": 0,
+      "files": 0
+    }
+  },
+  "by_directory": {
+    "frontend/src/components/": {
+      "loc": 4232,
+      "files": 33
+    },
+    "frontend/src/pages/": {
+      "loc": 1506,
+      "files": 9
+    },
+    "frontend/src/hooks/": {
+      "loc": 612,
+      "files": 7
+    },
+    "frontend/src/api/": {
+      "loc": 2732,
+      "files": 10
+    }
+  },
+  "largest_files": [
+    {
+      "path": "frontend/src/api/endpoints.ts",
+      "loc": 686,
+      "language": "typescript"
+    },
+    {
+      "path": "frontend/src/api/mock-data.ts",
+      "loc": 628,
+      "language": "typescript"
+    },
+    {
+      "path": "frontend/src/components/layout/CommandPalette.tsx",
+      "loc": 357,
+      "language": "tsx"
+    },
+    {
+      "path": "frontend/src/api/hooks/useGoals.ts",
+      "loc": 306,
+      "language": "typescript"
+    },
+    {
+      "path": "frontend/src/components/calendar/EventCreateDialog.tsx",
+      "loc": 302,
+      "language": "tsx"
+    },
+    {
+      "path": "frontend/src/hooks/useWebSocket.ts",
+      "loc": 287,
+      "language": "typescript"
+    },
+    {
+      "path": "frontend/src/pages/Dashboard.tsx",
+      "loc": 282,
+      "language": "tsx"
+    },
+    {
+      "path": "frontend/src/api/hooks/useTasks.ts",
+      "loc": 281,
+      "language": "typescript"
+    },
+    {
+      "path": "frontend/src/components/ui/Dropdown.tsx",
+      "loc": 254,
+      "language": "tsx"
+    },
+    {
+      "path": "frontend/src/pages/Notes.tsx",
+      "loc": 238,
+      "language": "tsx"
+    }
+  ],
+  "patterns_detected": {
+    "react": true,
+    "components": 33,
+    "hooks": 7,
+    "pages": 9,
+    "ui_libraries": [
+      "@radix-ui",
+      "lucide-react",
+      "radix"
+    ]
+  },
+  "complexity_indicators": {
+    "files_over_500_loc": [
+      "frontend/src/api/endpoints.ts",
+      "frontend/src/api/mock-data.ts"
+    ],
+    "average_file_size": 142.34
+  },
+  "key_libraries": [
+    "react",
+    "lucide-react",
+    "@tanstack/react-query",
+    "react-router-dom",
+    "zustand",
+    "zustand/middleware",
+    "date-fns",
+    "framer-motion",
+    "react-hot-toast",
+    "react-dom/client"
+  ]
+}

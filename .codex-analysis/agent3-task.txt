@@ -1,0 +1,44 @@
+AGENT 3: Core System & Agents Analysis
+
+SCOPE: Analyze src/core/, src/agents/, src/dashboard/, src/integrations/, src/utils/
+
+EXCLUSIONS: Skip __pycache__
+
+REQUIRED OUTPUT FORMAT (JSON):
+{
+  "agent_id": "3-core",
+  "component_name": "Core System & Agents",
+  "total_loc": 0,
+  "total_files": 0,
+  "by_language": {
+    "python": {"loc": 0, "files": 0}
+  },
+  "by_directory": {
+    "src/core/": {"loc": 0, "files": 0},
+    "src/agents/": {"loc": 0, "files": 0},
+    "src/dashboard/": {"loc": 0, "files": 0},
+    "src/integrations/": {"loc": 0, "files": 0},
+    "src/utils/": {"loc": 0, "files": 0}
+  },
+  "largest_files": [
+    {"path": "", "loc": 0, "language": ""}
+  ],
+  "patterns_detected": {
+    "agent_count": 0,
+    "agent_types": [],
+    "core_models": 0
+  },
+  "complexity_indicators": {
+    "files_over_500_loc": [],
+    "average_file_size": 0
+  },
+  "key_libraries": []
+}
+
+INSTRUCTIONS:
+1. Count LOC in all Python files under src/
+2. Count agent implementations (files in src/agents/)
+3. Identify core models (in src/core/)
+4. List integration types (in src/integrations/)
+5. List top 10 largest files
+6. Output as JSON matching format above

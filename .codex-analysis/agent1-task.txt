@@ -1,0 +1,43 @@
+AGENT 1: Backend Infrastructure Analysis
+
+SCOPE: Analyze backend/, scripts/, and root-level Python files (planner.py, etc.)
+
+EXCLUSIONS: Skip node_modules, dist, __pycache__, .pytest_cache, .git, .vercel
+
+REQUIRED OUTPUT FORMAT (JSON):
+{
+  "agent_id": "1-backend",
+  "component_name": "Backend Infrastructure",
+  "total_loc": 0,
+  "total_files": 0,
+  "by_language": {
+    "python": {"loc": 0, "files": 0}
+  },
+  "by_directory": {
+    "backend/": {"loc": 0, "files": 0},
+    "scripts/": {"loc": 0, "files": 0}
+  },
+  "largest_files": [
+    {"path": "", "loc": 0, "language": ""}
+  ],
+  "patterns_detected": {
+    "fastapi": false,
+    "routers": 0,
+    "websocket": false,
+    "api_endpoints": 0
+  },
+  "complexity_indicators": {
+    "files_over_500_loc": [],
+    "average_file_size": 0
+  },
+  "key_libraries": []
+}
+
+INSTRUCTIONS:
+1. Count all lines of code (including blanks/comments) in Python files
+2. Identify FastAPI patterns (routers, endpoints, schemas)
+3. Count API endpoints defined
+4. List top 10 largest files with LOC counts
+5. Detect key libraries from imports
+6. Identify files over 500 LOC
+7. Output results as JSON matching the format above

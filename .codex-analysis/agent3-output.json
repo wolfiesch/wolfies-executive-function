@@ -1,0 +1,140 @@
+{
+  "agent_id": "3-core",
+  "component_name": "Core System & Agents",
+  "total_loc": 10972,
+  "total_files": 25,
+  "by_language": {
+    "python": {
+      "loc": 10972,
+      "files": 25
+    }
+  },
+  "by_directory": {
+    "src/core/": {
+      "loc": 794,
+      "files": 4
+    },
+    "src/agents/": {
+      "loc": 6610,
+      "files": 8
+    },
+    "src/dashboard/": {
+      "loc": 1314,
+      "files": 4
+    },
+    "src/integrations/": {
+      "loc": 2254,
+      "files": 8
+    },
+    "src/utils/": {
+      "loc": 0,
+      "files": 1
+    }
+  },
+  "largest_files": [
+    {
+      "path": "src/agents/review_agent.py",
+      "loc": 1556,
+      "language": "python"
+    },
+    {
+      "path": "src/agents/goal_agent.py",
+      "loc": 1223,
+      "language": "python"
+    },
+    {
+      "path": "src/agents/note_agent.py",
+      "loc": 1122,
+      "language": "python"
+    },
+    {
+      "path": "src/agents/calendar_agent.py",
+      "loc": 985,
+      "language": "python"
+    },
+    {
+      "path": "src/agents/task_agent.py",
+      "loc": 752,
+      "language": "python"
+    },
+    {
+      "path": "src/integrations/google_calendar/server.py",
+      "loc": 716,
+      "language": "python"
+    },
+    {
+      "path": "src/agents/master_agent.py",
+      "loc": 635,
+      "language": "python"
+    },
+    {
+      "path": "src/integrations/gmail/server.py",
+      "loc": 619,
+      "language": "python"
+    },
+    {
+      "path": "src/dashboard/formatter.py",
+      "loc": 497,
+      "language": "python"
+    },
+    {
+      "path": "src/integrations/google_calendar/calendar_client.py",
+      "loc": 476,
+      "language": "python"
+    }
+  ],
+  "patterns_detected": {
+    "agent_count": 8,
+    "agent_types": [
+      "BaseAgent",
+      "CalendarAgent",
+      "GoalAgent",
+      "MasterAgent",
+      "NoteAgent",
+      "ReviewAgent",
+      "TaskAgent"
+    ],
+    "core_models": 5
+  },
+  "complexity_indicators": {
+    "files_over_500_loc": [
+      {
+        "path": "src/agents/review_agent.py",
+        "loc": 1556
+      },
+      {
+        "path": "src/agents/goal_agent.py",
+        "loc": 1223
+      },
+      {
+        "path": "src/agents/note_agent.py",
+        "loc": 1122
+      },
+      {
+        "path": "src/agents/calendar_agent.py",
+        "loc": 985
+      },
+      {
+        "path": "src/agents/task_agent.py",
+        "loc": 752
+      },
+      {
+        "path": "src/integrations/google_calendar/server.py",
+        "loc": 716
+      },
+      {
+        "path": "src/agents/master_agent.py",
+        "loc": 635
+      },
+      {
+        "path": "src/integrations/gmail/server.py",
+        "loc": 619
+      }
+    ],
+    "average_file_size": 438.88
+  },
+  "key_libraries": [
+    "gmail",
+    "google_calendar"
+  ]
+}
