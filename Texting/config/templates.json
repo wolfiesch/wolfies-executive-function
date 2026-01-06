@@ -1,0 +1,93 @@
+{
+  "_comment": "Message templates for quick responses. Variables: {name}, {date}, {time}, {topic}, {custom}",
+  "templates": {
+    "thank-you": {
+      "name": "Thank You",
+      "template": "Thanks for {topic}, {name}! Really appreciate it.",
+      "description": "Express gratitude for something specific",
+      "variables": [
+        "name",
+        "topic"
+      ]
+    },
+    "follow-up": {
+      "name": "Follow Up",
+      "template": "Hey {name}, wanted to follow up on {topic}. Any updates?",
+      "description": "Check in on a previous conversation",
+      "variables": [
+        "name",
+        "topic"
+      ]
+    },
+    "birthday": {
+      "name": "Birthday",
+      "template": "Happy birthday {name}! Hope you have an amazing day! \ud83c\udf82",
+      "description": "Birthday wishes",
+      "variables": [
+        "name"
+      ]
+    },
+    "thinking-of-you": {
+      "name": "Thinking of You",
+      "template": "Hey {name}, been thinking about you. Hope everything's going well!",
+      "description": "Casual check-in message",
+      "variables": [
+        "name"
+      ]
+    },
+    "running-late": {
+      "name": "Running Late",
+      "template": "Hey {name}, running about {time} late. Be there soon!",
+      "description": "Let someone know you're delayed",
+      "variables": [
+        "name",
+        "time"
+      ]
+    },
+    "congratulations": {
+      "name": "Congratulations",
+      "template": "Congrats on {topic}, {name}! That's awesome! \ud83c\udf89",
+      "description": "Celebrate an achievement",
+      "variables": [
+        "name",
+        "topic"
+      ]
+    },
+    "sorry": {
+      "name": "Apology",
+      "template": "Hey {name}, I'm really sorry about {topic}. Can we talk?",
+      "description": "Apologize for something",
+      "variables": [
+        "name",
+        "topic"
+      ]
+    },
+    "reminder": {
+      "name": "Reminder",
+      "template": "Hey {name}, just a friendly reminder about {topic} on {date}.",
+      "description": "Remind about an event or task",
+      "variables": [
+        "name",
+        "topic",
+        "date"
+      ]
+    },
+    "thanks-for-time": {
+      "name": "Thanks for Your Time",
+      "template": "Thanks for taking the time to meet today, {name}. I really enjoyed our conversation about {topic}.",
+      "description": "Post-meeting appreciation",
+      "variables": [
+        "name",
+        "topic"
+      ]
+    },
+    "good-morning": {
+      "name": "Good Morning",
+      "template": "Good morning {name}! Hope you have a great day!",
+      "description": "Morning greeting",
+      "variables": [
+        "name"
+      ]
+    }
+  }
+}
