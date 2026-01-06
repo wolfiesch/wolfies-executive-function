@@ -38,6 +38,19 @@ const iconMap: Record<string, LucideIcon> = {
 }
 
 /**
+ * Keyboard shortcut hints for navigation items
+ * Maps nav item IDs to their shortcut keys (g + letter)
+ */
+const shortcutHints: Record<string, string> = {
+  today: 'G H',
+  tasks: 'G T',
+  calendar: 'G C',
+  notes: 'G N',
+  goals: 'G G',
+  projects: 'G P',
+}
+
+/**
  * Sidebar navigation component with keyboard navigation support.
  *
  * Features:
@@ -147,7 +160,7 @@ export function Sidebar() {
                   to={item.path}
                   role="menuitem"
                   className={cn(
-                    'flex items-center gap-3 rounded-lg px-3 py-2.5',
+                    'group flex items-center gap-3 rounded-lg px-3 py-2.5',
                     'text-sm font-medium transition-colors duration-[var(--transition-fast)]',
                     'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-blue focus-visible:ring-offset-2 focus-visible:ring-offset-bg-secondary',
                     isActive
@@ -167,7 +180,16 @@ export function Sidebar() {
                       aria-hidden="true"
                     />
                   )}
-                  {!sidebarCollapsed && <span>{item.label}</span>}
+                  {!sidebarCollapsed && (
+                    <>
+                      <span className="flex-1">{item.label}</span>
+                      {shortcutHints[item.id] && (
+                        <kbd className="ml-auto rounded bg-bg-tertiary px-1.5 py-0.5 font-mono text-[10px] text-text-tertiary opacity-0 transition-opacity group-hover:opacity-100">
+                          {shortcutHints[item.id]}
+                        </kbd>
+                      )}
+                    </>
+                  )}
                 </NavLink>
               </li>
             )
