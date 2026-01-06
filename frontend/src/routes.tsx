@@ -26,6 +26,7 @@ const Calendar = lazy(() => import('@/pages/Calendar'))
 const Notes = lazy(() => import('@/pages/Notes'))
 const Goals = lazy(() => import('@/pages/Goals'))
 const Projects = lazy(() => import('@/pages/Projects'))
+const Plan = lazy(() => import('@/pages/Plan'))
 const Settings = lazy(() => import('@/pages/Settings'))
 const NotFound = lazy(() => import('@/pages/NotFound'))
 
@@ -103,6 +104,16 @@ export const router = createBrowserRouter([
     element: (
       <LazyPage>
         <Tasks />
+      </LazyPage>
+    ),
+  },
+
+  // Plan - Lazy loaded
+  {
+    path: '/plan',
+    element: (
+      <LazyPage>
+        <Plan />
       </LazyPage>
     ),
   },
@@ -202,6 +213,7 @@ export const router = createBrowserRouter([
  */
 export const routes = {
   dashboard: () => '/',
+  plan: () => '/plan',
   tasks: () => '/tasks',
   task: (id: string) => `/tasks/${id}`,
   calendar: () => '/calendar',

@@ -56,6 +56,11 @@ def get_interfaces():
 
     # Register cleanup to close database connections on exit
     # This prevents subprocess hanging due to unclosed SQLite connections
+    # [*TO-DO:P1*] DEEP DIVE: Subprocess still hangs ~5s despite this fix
+    # Root cause: Multiprocessing semaphore leak (/mp-*) preventing clean exit
+    # Quick fix: Use alternative operations (find, recent) that exit cleanly
+    # Investigation needed: Check for threading/ChromaDB/resource leaks
+    # See: ~/.claude/plans/deep-chasing-diffie.md Phase 3E
     def cleanup():
         try:
             if hasattr(cm, 'close'):

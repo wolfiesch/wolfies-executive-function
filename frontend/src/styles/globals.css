@@ -40,8 +40,9 @@
   --color-priority-1: #4a4a4a;
 
   /* Typography */
-  --font-family-ui: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  --font-family-mono: 'JetBrains Mono', 'Fira Code', Consolas, monospace;
+  --font-family-ui:
+    "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-family-mono: "JetBrains Mono", "Fira Code", Consolas, monospace;
 
   /* Spacing scale */
   --spacing-xs: 0.25rem;
@@ -61,12 +62,59 @@
   /* Shadows */
   --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
   --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.2), 0 2px 4px -2px rgb(0 0 0 / 0.1);
-  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.3), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+  --shadow-lg:
+    0 10px 15px -3px rgb(0 0 0 / 0.3), 0 4px 6px -4px rgb(0 0 0 / 0.1);
 
   /* Transitions */
   --transition-fast: 150ms;
   --transition-normal: 200ms;
   --transition-slow: 300ms;
+
+  /* ===== ENHANCED DESIGN TOKENS ===== */
+
+  /* Typography Scale (Perfect Fourth - 1.333 ratio) */
+  --font-size-xs: 0.75rem; /* 12px - Metadata, timestamps */
+  --font-size-sm: 0.875rem; /* 14px - Body text, descriptions */
+  --font-size-base: 1rem; /* 16px - Default text */
+  --font-size-lg: 1.125rem; /* 18px - Subheadings */
+  --font-size-xl: 1.5rem; /* 24px - Page headings */
+  --font-size-2xl: 2rem; /* 32px - Section titles */
+  --font-size-3xl: 2.5rem; /* 40px - Hero text */
+
+  /* Line Heights */
+  --line-height-tight: 1.25;
+  --line-height-normal: 1.5;
+  --line-height-relaxed: 1.75;
+
+  /* Font Weights */
+  --font-weight-normal: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+
+  /* Glassmorphism Overlays */
+  --color-glass-overlay: rgba(10, 10, 10, 0.8);
+  --color-glass-subtle: rgba(20, 20, 20, 0.6);
+  --backdrop-blur: blur(12px);
+  --backdrop-blur-sm: blur(4px);
+
+  /* Enhanced Shadows */
+  --shadow-xl:
+    0 20px 25px -5px rgb(0 0 0 / 0.4), 0 8px 10px -6px rgb(0 0 0 / 0.2);
+  --shadow-glow-blue: 0 0 20px rgb(29 155 240 / 0.3);
+  --shadow-glow-purple: 0 0 20px rgb(120 86 255 / 0.3);
+
+  /* Animation Timing Functions */
+  --ease-out: cubic-bezier(0.33, 1, 0.68, 1);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+
+  /* Animation Durations */
+  --duration-instant: 100ms;
+  --duration-fast: 150ms;
+  --duration-normal: 200ms;
+  --duration-slow: 300ms;
+  --duration-slower: 500ms;
 }
 
 /* Base styles */
@@ -133,28 +181,155 @@ a:hover {
 }
 
 /* Code elements */
-code, pre {
+code,
+pre {
   font-family: var(--font-family-mono);
 }
 
 /* Utility classes for the design system */
-.text-primary { color: var(--color-text-primary); }
-.text-secondary { color: var(--color-text-secondary); }
-.text-tertiary { color: var(--color-text-tertiary); }
+.text-primary {
+  color: var(--color-text-primary);
+}
+.text-secondary {
+  color: var(--color-text-secondary);
+}
+.text-tertiary {
+  color: var(--color-text-tertiary);
+}
 
-.bg-primary { background-color: var(--color-bg-primary); }
-.bg-secondary { background-color: var(--color-bg-secondary); }
-.bg-tertiary { background-color: var(--color-bg-tertiary); }
+.bg-primary {
+  background-color: var(--color-bg-primary);
+}
+.bg-secondary {
+  background-color: var(--color-bg-secondary);
+}
+.bg-tertiary {
+  background-color: var(--color-bg-tertiary);
+}
 
 /* Priority badge colors */
-.priority-5 { color: var(--color-priority-5); }
-.priority-4 { color: var(--color-priority-4); }
-.priority-3 { color: var(--color-priority-3); }
-.priority-2 { color: var(--color-priority-2); }
-.priority-1 { color: var(--color-priority-1); }
+.priority-5 {
+  color: var(--color-priority-5);
+}
+.priority-4 {
+  color: var(--color-priority-4);
+}
+.priority-3 {
+  color: var(--color-priority-3);
+}
+.priority-2 {
+  color: var(--color-priority-2);
+}
+.priority-1 {
+  color: var(--color-priority-1);
+}
 
 /* Status indicator colors */
-.status-done { color: var(--color-accent-green); }
-.status-overdue { color: var(--color-accent-red); }
-.status-in-progress { color: var(--color-accent-blue); }
-.status-waiting { color: var(--color-accent-yellow); }
+.status-done {
+  color: var(--color-accent-green);
+}
+.status-overdue {
+  color: var(--color-accent-red);
+}
+.status-in-progress {
+  color: var(--color-accent-blue);
+}
+.status-waiting {
+  color: var(--color-accent-yellow);
+}
+
+/* ===== ACCESSIBILITY UTILITIES ===== */
+
+/* Screen reader only - visually hidden but accessible */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+/* Enhanced focus visible with glow */
+.focus-ring:focus-visible {
+  outline: 2px solid var(--color-accent-blue);
+  outline-offset: 2px;
+  box-shadow: var(--shadow-glow-blue);
+}
+
+/* ===== STATUS GRADIENT BACKGROUNDS ===== */
+
+/* Overdue/urgent card background */
+.card-overdue {
+  background: linear-gradient(
+    135deg,
+    rgba(244, 33, 46, 0.08) 0%,
+    rgba(244, 33, 46, 0.02) 100%
+  );
+}
+
+/* Success/completed card background */
+.card-success {
+  background: linear-gradient(
+    135deg,
+    rgba(0, 186, 124, 0.08) 0%,
+    rgba(0, 186, 124, 0.02) 100%
+  );
+}
+
+/* Warning card background */
+.card-warning {
+  background: linear-gradient(
+    135deg,
+    rgba(255, 212, 0, 0.08) 0%,
+    rgba(255, 212, 0, 0.02) 100%
+  );
+}
+
+/* ===== GLASSMORPHISM UTILITIES ===== */
+
+.glass {
+  background: var(--color-glass-overlay);
+  -webkit-backdrop-filter: var(--backdrop-blur);
+  backdrop-filter: var(--backdrop-blur);
+}
+
+.glass-subtle {
+  background: var(--color-glass-subtle);
+  -webkit-backdrop-filter: var(--backdrop-blur-sm);
+  backdrop-filter: var(--backdrop-blur-sm);
+}
+
+/* ===== ANIMATION UTILITIES ===== */
+
+.animate-pulse-subtle {
+  animation: pulse-subtle 2s ease-in-out infinite;
+}
+
+@keyframes pulse-subtle {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.7;
+  }
+}
+
+.animate-slide-up {
+  animation: slide-up var(--duration-slow) var(--ease-out);
+}
+
+@keyframes slide-up {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

@@ -1,4 +1,5 @@
 export { Dashboard } from './Dashboard'
+export { Plan } from './Plan'
 export { Tasks } from './Tasks'
 export { Calendar } from './Calendar'
 export { Notes } from './Notes'

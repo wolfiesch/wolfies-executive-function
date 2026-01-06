@@ -3,24 +3,39 @@ import { formatRelativeTime } from '@/lib/utils'
 import type { Task } from '@/types/models'
 import { PriorityBadge } from './PriorityBadge'
 import { StatusIcon } from './StatusBadge'
-import { Calendar, Clock, Folder, AlertTriangle } from 'lucide-react'
+import { Calendar, Clock, Folder, AlertTriangle, Edit2, MoreVertical } from 'lucide-react'
+import { motion } from 'framer-motion'
 
 interface TaskCardProps {
   task: Task
   onClick?: () => void
   onStatusChange?: () => void
+  onEdit?: () => void
   selected?: boolean
+  /** Rank badge for top priority tasks (1, 2, 3) */
+  rank?: number
+  /** Animation delay for staggered entrance */
+  animationDelay?: number
   className?: string
 }
 
 /**
  * Task card component for list views
+ * 
+ * Features:
+ * - Framer Motion animations for smooth entrance/exit
+ * - Quick action buttons on hover
+ * - Rank badges for top priority tasks
+ * - Overdue visual indicators
  */
 export function TaskCard({
   task,
   onClick,
   onStatusChange,
+  onEdit,
   selected,
+  rank,
+  animationDelay = 0,
   className,
 }: TaskCardProps) {
   const isOverdue =
@@ -34,13 +49,27 @@ export function TaskCard({
     onStatusChange?.()
   }
 
+  const handleEditClick = (e: React.MouseEvent) => {
+    e.stopPropagation()
+    onEdit?.()
+  }
+
   return (
-    <div
+    <motion.div
+      layout
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, x: -100 }}
+      transition={{
+        duration: 0.2,
+        delay: animationDelay,
+        layout: { duration: 0.3 },
+      }}
       className={cn(
-        'group flex cursor-pointer items-start gap-3 rounded-lg border border-[var(--color-border-subtle)] bg-[var(--color-bg-secondary)] p-3 transition-colors',
-        'hover:border-[var(--color-border-default)] hover:bg-[var(--color-bg-tertiary)]',
+        'group relative flex cursor-pointer items-start gap-3 rounded-lg border border-[var(--color-border-subtle)] bg-[var(--color-bg-secondary)] p-3',
+        'transition-colors hover:border-[var(--color-border-default)] hover:bg-[var(--color-bg-tertiary)]',
         selected && 'border-[var(--color-accent-blue)] bg-[var(--color-bg-tertiary)]',
-        isOverdue && 'border-l-2 border-l-[var(--color-accent-red)]',
+        isOverdue && 'border-l-4 border-l-[var(--color-accent-red)]',
         className
       )}
       onClick={onClick}
@@ -48,6 +77,13 @@ export function TaskCard({
       tabIndex={0}
       onKeyDown={(e) => e.key === 'Enter' && onClick?.()}
     >
+      {/* Rank badge for top 3 priority tasks */}
+      {rank && rank <= 3 && (
+        <div className="absolute -left-1 -top-1 flex h-5 w-5 items-center justify-center rounded-full bg-[var(--color-accent-blue)] text-[10px] font-bold text-white shadow-md">
+          {rank}
+        </div>
+      )}
+
       {/* Status checkbox */}
       <button
         onClick={handleStatusClick}
@@ -84,7 +120,7 @@ export function TaskCard({
             <span
               className={cn(
                 'flex items-center gap-1',
-                isOverdue && 'text-[var(--color-accent-red)]'
+                isOverdue && 'font-medium text-[var(--color-accent-red)]'
               )}
             >
               {isOverdue && <AlertTriangle className="h-3 w-3" />}
@@ -127,9 +163,27 @@ export function TaskCard({
         )}
       </div>
 
+      {/* Quick actions (visible on hover) */}
+      <div className="flex items-center gap-1 opacity-0 transition-opacity group-hover:opacity-100">
+        <button
+          onClick={handleEditClick}
+          className="rounded p-1.5 text-[var(--color-text-tertiary)] transition-colors hover:bg-[var(--color-bg-hover)] hover:text-[var(--color-text-primary)]"
+          aria-label="Edit task"
+        >
+          <Edit2 className="h-4 w-4" />
+        </button>
+        <button
+          onClick={(e) => e.stopPropagation()}
+          className="rounded p-1.5 text-[var(--color-text-tertiary)] transition-colors hover:bg-[var(--color-bg-hover)] hover:text-[var(--color-text-primary)]"
+          aria-label="More options"
+        >
+          <MoreVertical className="h-4 w-4" />
+        </button>
+      </div>
+
       {/* Priority badge */}
       <PriorityBadge priority={task.priority} className="flex-shrink-0" />
-    </div>
+    </motion.div>
   )
 }
 
