@@ -1,5 +1,28 @@
 # Gmail MCP Integration
 
+> **⚠️ WARNING - DO NOT USE THIS INTEGRATION ⚠️**
+>
+> **This local Gmail MCP is NOT CONFIGURED and should NOT be used.**
+>
+> **USE RUBE/COMPOSIO INSTEAD:**
+> - The project already has a **FULLY WORKING** Gmail integration via Rube/Composio
+> - Connected account: `wolfgangs2000@gmail.com`
+> - Access via: `RUBE_SEARCH_TOOLS` → `RUBE_MULTI_EXECUTE_TOOL`
+> - Tools: `GMAIL_FETCH_EMAILS`, `GMAIL_SEND_EMAIL`, `GMAIL_SEARCH_EMAILS`, etc.
+>
+> **Why this shows as "Connected" in `claude mcp list`:**
+> - The MCP server is *registered* but NOT *configured* (missing credentials)
+> - "Connected" only means the server process starts, not that it's authenticated
+>
+> **When to use this local MCP:**
+> - ONLY if you explicitly want a separate, local-only Gmail integration
+> - Requires Google Cloud Console setup and OAuth credentials
+> - See setup instructions below
+>
+> **For normal Gmail operations, see:** `CLAUDE.md` → Integration Guidelines → Gmail Integration
+>
+> ---
+
 Gmail MCP server for the Life Planner project. Provides email management capabilities through the Model Context Protocol.
 
 ## Features
