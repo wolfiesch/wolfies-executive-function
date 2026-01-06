@@ -3,6 +3,8 @@ import { cn } from '@/lib/utils'
 import { Sidebar } from './Sidebar'
 import { Header } from './Header'
 import { RightPanel } from './RightPanel'
+import { KeyboardProvider } from './KeyboardProvider'
+import { MobileBottomNav } from './MobileBottomNav'
 import { useUIStore, type RightPanelContent } from '@/stores/uiStore'
 
 // ============================================================
@@ -80,39 +82,46 @@ export function AppShell({
   }, [commandPaletteOpen, hasOpenedPalette])
 
   return (
-    <div className="min-h-screen bg-bg-primary">
-      {/* Fixed Sidebar */}
-      <Sidebar />
+    <KeyboardProvider>
+      <div className="min-h-screen bg-bg-primary">
+        {/* Fixed Sidebar - hidden on mobile */}
+        <div className="hidden lg:block">
+          <Sidebar />
+        </div>
 
-      {/* Fixed Header */}
-      <Header title={pageTitle} breadcrumbs={breadcrumbs} />
+        {/* Fixed Header */}
+        <Header title={pageTitle} breadcrumbs={breadcrumbs} />
 
-      {/* Main content area - adjusts based on sidebar state */}
-      <main
-        className={cn(
-          'min-h-screen pt-14',
-          'transition-[padding] duration-[var(--transition-normal)] ease-in-out',
-          sidebarCollapsed ? 'pl-16' : 'pl-64'
+        {/* Main content area - adjusts based on sidebar state */}
+        <main
+          className={cn(
+            'min-h-screen pt-14 pb-16 lg:pb-0',
+            'transition-[padding] duration-[var(--transition-normal)] ease-in-out',
+            sidebarCollapsed ? 'lg:pl-16' : 'lg:pl-64'
+          )}
+        >
+          <div className="p-4 lg:p-6">{children}</div>
+        </main>
+
+        {/* Right Panel Overlay - for task/event/note details */}
+        <RightPanel renderContent={renderPanelContent} />
+
+        {/* Mobile Bottom Navigation - visible only on mobile */}
+        <MobileBottomNav />
+
+        {/*
+          Global Command Palette - Lazy Loaded
+
+          Only loads the CommandPalette chunk after the first ⌘K press.
+          Suspense fallback is null since the palette has its own animations.
+          After first load, stays mounted for instant subsequent opens.
+        */}
+        {hasOpenedPalette && (
+          <Suspense fallback={null}>
+            <CommandPalette />
+          </Suspense>
         )}
-      >
-        <div className="p-6">{children}</div>
-      </main>
-
-      {/* Right Panel Overlay - for task/event/note details */}
-      <RightPanel renderContent={renderPanelContent} />
-
-      {/*
-        Global Command Palette - Lazy Loaded
-
-        Only loads the CommandPalette chunk after the first ⌘K press.
-        Suspense fallback is null since the palette has its own animations.
-        After first load, stays mounted for instant subsequent opens.
-      */}
-      {hasOpenedPalette && (
-        <Suspense fallback={null}>
-          <CommandPalette />
-        </Suspense>
-      )}
-    </div>
+      </div>
+    </KeyboardProvider>
   )
 }
