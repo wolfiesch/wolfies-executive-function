@@ -1,0 +1,278 @@
+{
+  "suite_name": "comprehensive",
+  "timestamp": "2026-01-04 16:24:51",
+  "metadata": {
+    "cli_path": "/Users/wolfgangschoenberger/LIFE-PLANNER/Texting/gateway/imessage_client.py",
+    "total_benchmarks": 24,
+    "python_version": "3.13.2",
+    "timeout_s": 30,
+    "include_rag": false,
+    "iterations_override": 5
+  },
+  "results": [
+    {
+      "name": "startup_overhead_quiet",
+      "description": "CLI startup time with --help (quiet)",
+      "iterations": 5,
+      "mean_ms": 47.10207479947712,
+      "median_ms": 39.97249999883934,
+      "min_ms": 39.30104099890741,
+      "max_ms": 76.44629199967312,
+      "std_dev_ms": 16.407145953387413,
+      "success_rate": 100.0
+    },
+    {
+      "name": "contacts_json",
+      "description": "List all contacts (JSON)",
+      "iterations": 5,
+      "mean_ms": 75.92640840011882,
+      "median_ms": 76.12045899986697,
+      "min_ms": 74.99745799941593,
+      "max_ms": 77.27375000104075,
+      "std_dev_ms": 0.9548712578487493,
+      "success_rate": 100.0
+    },
+    {
+      "name": "recent_10_json",
+      "description": "Recent conversations (10, JSON)",
+      "iterations": 5,
+      "mean_ms": 75.69936660001986,
+      "median_ms": 75.48366700029874,
+      "min_ms": 74.20108299993444,
+      "max_ms": 77.56741600132955,
+      "std_dev_ms": 1.4346017251210332,
+      "success_rate": 100.0
+    },
+    {
+      "name": "recent_50_json",
+      "description": "Recent conversations (50, JSON)",
+      "iterations": 5,
+      "mean_ms": 75.97415860036563,
+      "median_ms": 76.57345799998438,
+      "min_ms": 72.40425000054529,
+      "max_ms": 77.52008399984334,
+      "std_dev_ms": 2.058682875126827,
+      "success_rate": 100.0
+    },
+    {
+      "name": "unread_json",
+      "description": "Unread messages (JSON)",
+      "iterations": 5,
+      "mean_ms": 75.15714979999757,
+      "median_ms": 76.70762499947159,
+      "min_ms": 72.01983300001302,
+      "max_ms": 77.48862499829556,
+      "std_dev_ms": 2.726163277004768,
+      "success_rate": 100.0
+    },
+    {
+      "name": "handles_30d_json",
+      "description": "Recent handles (30d, JSON)",
+      "iterations": 5,
+      "mean_ms": 75.82866679986182,
+      "median_ms": 76.15649999934249,
+      "min_ms": 73.67391700063308,
+      "max_ms": 77.32812499853026,
+      "std_dev_ms": 1.3466769561897796,
+      "success_rate": 100.0
+    },
+    {
+      "name": "unknown_7d_json",
+      "description": "Unknown senders (7d, JSON)",
+      "iterations": 5,
+      "mean_ms": 75.5449915999634,
+      "median_ms": 75.87474999854749,
+      "min_ms": 73.97720799963281,
+      "max_ms": 77.14641700113134,
+      "std_dev_ms": 1.459516335085261,
+      "success_rate": 100.0
+    },
+    {
+      "name": "scheduled_json",
+      "description": "Scheduled messages (JSON)",
+      "iterations": 5,
+      "mean_ms": 74.95624979965214,
+      "median_ms": 74.98308299909695,
+      "min_ms": 73.98933299919008,
+      "max_ms": 76.02108299943211,
+      "std_dev_ms": 0.8076656516018577,
+      "success_rate": 100.0
+    },
+    {
+      "name": "links_default_json",
+      "description": "Links (default lookback, JSON)",
+      "iterations": 5,
+      "mean_ms": 76.04892519993882,
+      "median_ms": 75.98137499917357,
+      "min_ms": 74.31983399874298,
+      "max_ms": 77.2095000011177,
+      "std_dev_ms": 1.20611781109746,
+      "success_rate": 100.0
+    },
+    {
+      "name": "links_all_time_json",
+      "description": "Links (all-time, JSON)",
+      "iterations": 5,
+      "mean_ms": 109.2450503998407,
+      "median_ms": 126.94316699889896,
+      "min_ms": 77.180166999824,
+      "max_ms": 132.36499999948137,
+      "std_dev_ms": 29.2377652348404,
+      "success_rate": 100.0
+    },
+    {
+      "name": "groups_json",
+      "description": "List group chats (JSON)",
+      "iterations": 5,
+      "mean_ms": 76.22599180031102,
+      "median_ms": 76.27725000020291,
+      "min_ms": 74.96600000013132,
+      "max_ms": 77.18854199993075,
+      "std_dev_ms": 0.9319746937231403,
+      "success_rate": 100.0
+    },
+    {
+      "name": "group_messages_50_json",
+      "description": "Group messages (50, JSON)",
+      "iterations": 5,
+      "mean_ms": 73.65497520004283,
+      "median_ms": 74.51545799995074,
+      "min_ms": 70.81937499970081,
+      "max_ms": 75.05441700050142,
+      "std_dev_ms": 1.7469996728249848,
+      "success_rate": 100.0
+    },
+    {
+      "name": "attachments_50_json",
+      "description": "Attachments (50, JSON)",
+      "iterations": 5,
+      "mean_ms": 107.91019159951247,
+      "median_ms": 75.05945799857727,
+      "min_ms": 72.93983299859974,
+      "max_ms": 240.97354100013035,
+      "std_dev_ms": 74.39163355035762,
+      "success_rate": 100.0
+    },
+    {
+      "name": "voice_50_json",
+      "description": "Voice messages (50, JSON)",
+      "iterations": 5,
+      "mean_ms": 76.60902500028897,
+      "median_ms": 77.04058300078032,
+      "min_ms": 75.54779100064479,
+      "max_ms": 77.2390420006559,
+      "std_dev_ms": 0.7625517987891804,
+      "success_rate": 100.0
+    },
+    {
+      "name": "reactions_100_json",
+      "description": "Reactions (100, JSON)",
+      "iterations": 5,
+      "mean_ms": 76.72803340028622,
+      "median_ms": 77.18691700029012,
+      "min_ms": 74.84525000108988,
+      "max_ms": 77.23174999955518,
+      "std_dev_ms": 1.0526944880848832,
+      "success_rate": 100.0
+    },
+    {
+      "name": "messages_contact_20_json",
+      "description": "Messages with sample contact (20, JSON)",
+      "iterations": 5,
+      "mean_ms": 75.78433320013573,
+      "median_ms": 75.28358300078253,
+      "min_ms": 74.5157500005007,
+      "max_ms": 77.2173749992362,
+      "std_dev_ms": 1.3322622226495942,
+      "success_rate": 100.0
+    },
+    {
+      "name": "find_contact_noquery_json",
+      "description": "Find with sample contact (no query, JSON)",
+      "iterations": 5,
+      "mean_ms": 75.22576660012419,
+      "median_ms": 75.24466699942423,
+      "min_ms": 72.33950000045297,
+      "max_ms": 77.20566600073653,
+      "std_dev_ms": 1.9354920360244492,
+      "success_rate": 100.0
+    },
+    {
+      "name": "find_contact_query_json",
+      "description": "Find with sample contact + query (JSON)",
+      "iterations": 5,
+      "mean_ms": 75.18686660005187,
+      "median_ms": 76.25758299946028,
+      "min_ms": 72.3847500012198,
+      "max_ms": 77.30737500060059,
+      "std_dev_ms": 2.165500369243954,
+      "success_rate": 100.0
+    },
+    {
+      "name": "summary_contact_7d_json",
+      "description": "Summary with sample contact (7d, JSON)",
+      "iterations": 5,
+      "mean_ms": 76.92766680047498,
+      "median_ms": 77.15433400153415,
+      "min_ms": 76.39470799949777,
+      "max_ms": 77.21500000116066,
+      "std_dev_ms": 0.360241180587768,
+      "success_rate": 100.0
+    },
+    {
+      "name": "analytics_contact_30d_json",
+      "description": "Analytics for sample contact (30d, JSON)",
+      "iterations": 5,
+      "mean_ms": 75.34631660091691,
+      "median_ms": 76.74125000085041,
+      "min_ms": 70.43879100092454,
+      "max_ms": 77.11350000136008,
+      "std_dev_ms": 2.8012001011095222,
+      "success_rate": 100.0
+    },
+    {
+      "name": "analytics_7d_json",
+      "description": "Analytics (7d, JSON)",
+      "iterations": 5,
+      "mean_ms": 76.16356660000747,
+      "median_ms": 75.92954099891358,
+      "min_ms": 75.04125000014028,
+      "max_ms": 77.27675000023737,
+      "std_dev_ms": 1.0311839286771576,
+      "success_rate": 100.0
+    },
+    {
+      "name": "analytics_30d_json",
+      "description": "Analytics (30d, JSON)",
+      "iterations": 5,
+      "mean_ms": 76.55473360027827,
+      "median_ms": 77.16733400047815,
+      "min_ms": 74.3029999994178,
+      "max_ms": 77.22066700080177,
+      "std_dev_ms": 1.2645028933133562,
+      "success_rate": 100.0
+    },
+    {
+      "name": "followup_7d_json",
+      "description": "Follow-up detection (7d, JSON)",
+      "iterations": 5,
+      "mean_ms": 74.27509160006593,
+      "median_ms": 73.93625000077009,
+      "min_ms": 72.01104199884867,
+      "max_ms": 77.25933300025645,
+      "std_dev_ms": 1.8994859095207801,
+      "success_rate": 100.0
+    },
+    {
+      "name": "thread_50_json",
+      "description": "Thread lookup by GUID (50, JSON)",
+      "iterations": 5,
+      "mean_ms": 74.95149200003652,
+      "median_ms": 74.9855000012758,
+      "min_ms": 74.83533400045417,
+      "max_ms": 74.98591699913959,
+      "std_dev_ms": 0.06555069543795422,
+      "success_rate": 100.0
+    }
+  ]
+}
