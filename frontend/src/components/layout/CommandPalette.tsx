@@ -4,6 +4,7 @@ import { Command } from 'cmdk'
 import { AnimatePresence, motion } from 'framer-motion'
 import {
   LayoutDashboard,
+  Compass,
   CheckSquare,
   Calendar,
   FileText,
@@ -23,6 +24,7 @@ import { useUIStore } from '@/stores/uiStore'
  */
 const iconMap: Record<string, LucideIcon> = {
   LayoutDashboard,
+  Compass,
   CheckSquare,
   Calendar,
   FileText,

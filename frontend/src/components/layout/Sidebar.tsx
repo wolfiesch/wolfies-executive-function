@@ -2,6 +2,7 @@ import * as React from 'react'
 import { NavLink, useLocation } from 'react-router-dom'
 import {
   LayoutDashboard,
+  Compass,
   CheckSquare,
   Calendar,
   FileText,
@@ -28,6 +29,7 @@ import { useUIStore } from '@/stores/uiStore'
  */
 const iconMap: Record<string, LucideIcon> = {
   LayoutDashboard,
+  Compass,
   CheckSquare,
   Calendar,
   FileText,

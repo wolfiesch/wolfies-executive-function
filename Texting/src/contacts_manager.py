@@ -518,7 +518,14 @@ class ContactsManager:
             return []
 
     def close(self):
-        """Close database connection."""
+        """Close database connection.
+
+        [*TO-DO:P1*] SUBPROCESS HANG INVESTIGATION
+        This close() is now called via atexit handler in imessage_client.py
+        but subprocess still hangs ~5s when run via benchmark (exits fast when run directly).
+        Root cause appears to be multiprocessing semaphore leak, not just SQLite connection.
+        See: gateway/imessage_client.py:59-63 and ~/.claude/plans/deep-chasing-diffie.md Phase 3E
+        """
         if self._db_conn:
             self._db_conn.close()
             self._db_conn = None
