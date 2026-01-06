@@ -43,6 +43,12 @@ class CalendarIndexer(BaseSourceIndexer):
         calendar_fetcher: Optional[Callable] = None,
         **kwargs,
     ):
+        """Initialize the calendar indexer.
+
+        Args:
+            calendar_fetcher: Callable to fetch calendar events.
+            **kwargs: Forwarded to BaseSourceIndexer.
+        """
         super().__init__(**kwargs)
         self.calendar_fetcher = calendar_fetcher
 

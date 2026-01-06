@@ -142,6 +142,14 @@ class ConversationChunker:
         max_words: int = 500,
         min_messages: int = 2,
     ):
+        """Initialize a conversation chunker.
+
+        Args:
+            window_hours: Max hours between messages in a chunk.
+            min_words: Minimum words per chunk.
+            max_words: Maximum words before splitting a chunk.
+            min_messages: Minimum messages per chunk.
+        """
         self.window_hours = window_hours
         self.min_words = min_words
         self.max_words = max_words

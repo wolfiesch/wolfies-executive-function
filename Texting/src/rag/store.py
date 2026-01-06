@@ -75,6 +75,12 @@ class EmbeddingProvider:
         use_local: bool = False,
         model: Optional[str] = None,
     ):
+        """Initialize an embedding provider.
+
+        Args:
+            use_local: Whether to use local sentence-transformers.
+            model: Embedding model name override.
+        """
         self.use_local = use_local
 
         if use_local:
@@ -196,6 +202,13 @@ class MessageVectorStore:
         collection_name: str = "imessage_chunks",
         use_local_embeddings: bool = False,
     ):
+        """Initialize the vector store and embedding backend.
+
+        Args:
+            persist_directory: Path for ChromaDB persistence.
+            collection_name: ChromaDB collection name.
+            use_local_embeddings: Whether to use local embeddings.
+        """
         # Default persist directory relative to Texting project
         if persist_directory is None:
             project_root = Path(__file__).parent.parent.parent

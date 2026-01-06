@@ -55,6 +55,12 @@ class GmailIndexer(BaseSourceIndexer):
         gmail_fetcher: Optional[Callable] = None,
         **kwargs,
     ):
+        """Initialize the Gmail indexer.
+
+        Args:
+            gmail_fetcher: Callable to fetch Gmail messages.
+            **kwargs: Forwarded to BaseSourceIndexer.
+        """
         super().__init__(**kwargs)
         self.gmail_fetcher = gmail_fetcher
 

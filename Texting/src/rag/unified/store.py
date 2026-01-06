@@ -9,12 +9,23 @@ Extends the base MessageVectorStore to support:
 
 CS Concept: This uses the **Facade Pattern** - providing a simplified
 interface to a complex subsystem (multiple ChromaDB collections).
+
+CHANGELOG (recent first, max 5 entries)
+01/04/2026 - Added TTL query result cache for repeated searches (Claude)
+01/04/2026 - Fixed O(n) deduplication scan: batch ID check instead of full scan (Claude)
 """
 
 import logging
 from pathlib import Path
-from typing import List, Dict, Optional, Any
+from typing import List, Dict, Optional, Any, Tuple
 from datetime import datetime
+from functools import lru_cache
+import hashlib
+
+try:
+    from cachetools import TTLCache
+except ImportError:
+    TTLCache = None  # Fallback to no caching if cachetools not installed
 
 from .chunk import UnifiedChunk, SOURCE_TYPES
 
@@ -61,6 +72,12 @@ class UnifiedVectorStore:
         persist_directory: Optional[str] = None,
         use_local_embeddings: bool = False,
     ):
+        """Initialize the unified vector store.
+
+        Args:
+            persist_directory: Path for ChromaDB persistence.
+            use_local_embeddings: Whether to use local embeddings.
+        """
         # Default persist directory
         if persist_directory is None:
             project_root = Path(__file__).parent.parent.parent.parent
@@ -83,7 +100,49 @@ class UnifiedVectorStore:
         # Collection cache
         self._collections: Dict[str, Any] = {}
 
+        # Query result cache (TTL = 5 minutes)
+        # PERF: Cache search results to avoid re-embedding and re-searching for repeated queries
+        if TTLCache is not None:
+            self._search_cache: Optional[TTLCache] = TTLCache(maxsize=100, ttl=300)
+        else:
+            self._search_cache = None
+            logger.debug("cachetools not installed - query caching disabled")
+
         logger.info(f"Initialized UnifiedVectorStore at {persist_directory}")
+
+    def _make_cache_key(
+        self,
+        query: str,
+        sources: Optional[List[str]],
+        limit: int,
+        min_date: Optional[datetime],
+        max_date: Optional[datetime],
+        participants: Optional[List[str]],
+        tags: Optional[List[str]],
+    ) -> str:
+        """Create a deterministic cache key for search parameters."""
+        # Use a hash of all parameters for the key
+        key_parts = [
+            query,
+            str(sorted(sources) if sources else []),
+            str(limit),
+            str(min_date.isoformat() if min_date else ""),
+            str(max_date.isoformat() if max_date else ""),
+            str(sorted(participants) if participants else []),
+            str(sorted(tags) if tags else []),
+        ]
+        key_string = "|".join(key_parts)
+        return hashlib.md5(key_string.encode()).hexdigest()
+
+    def invalidate_cache(self):
+        """
+        Invalidate the search cache.
+
+        Call after indexing new content to ensure fresh results.
+        """
+        if self._search_cache is not None:
+            self._search_cache.clear()
+            logger.debug("Search cache invalidated")
 
     def _get_collection(self, source: str):
         """
@@ -137,8 +196,17 @@ class UnifiedVectorStore:
         for source, source_chunks in by_source.items():
             collection = self._get_collection(source)
 
-            # Filter out existing chunks
-            existing_ids = set(collection.get()["ids"])
+            # Filter out existing chunks - use batch ID check instead of full scan
+            # PERF: Changed from O(collection_size) to O(batch_size)
+            # Before: collection.get()["ids"] fetches ALL IDs (slow for large collections)
+            # After: collection.get(ids=[...]) checks only the IDs we're about to add
+            batch_ids = [c.chunk_id for c in source_chunks]
+            try:
+                existing = collection.get(ids=batch_ids)["ids"]
+                existing_ids = set(existing)
+            except Exception:
+                # Fallback for empty collection or other errors
+                existing_ids = set()
             new_chunks = [c for c in source_chunks if c.chunk_id not in existing_ids]
 
             if not new_chunks:
@@ -175,6 +243,10 @@ class UnifiedVectorStore:
             results[source] = added
             logger.info(f"Indexed {added} {source} chunks")
 
+        # Invalidate search cache after adding new content
+        if any(count > 0 for count in results.values()):
+            self.invalidate_cache()
+
         return results
 
     def search(
@@ -210,6 +282,17 @@ class UnifiedVectorStore:
         invalid_sources = set(sources) - SOURCE_TYPES
         if invalid_sources:
             raise ValueError(f"Invalid sources: {invalid_sources}")
+
+        # Check cache first
+        # PERF: Cache search results to avoid re-embedding and re-searching
+        cache_key = None
+        if self._search_cache is not None:
+            cache_key = self._make_cache_key(
+                query, sources, limit, min_date, max_date, participants, tags
+            )
+            if cache_key in self._search_cache:
+                logger.debug(f"Search cache hit for query: {query[:50]}...")
+                return self._search_cache[cache_key]
 
         # Generate query embedding once
         query_embedding = self.embedder.embed_single(query)
@@ -281,8 +364,15 @@ class UnifiedVectorStore:
         # Sort by score (highest first)
         all_results.sort(key=lambda x: x["score"], reverse=True)
 
-        # Return top results across all sources
-        return all_results[:limit]
+        # Get final results
+        final_results = all_results[:limit]
+
+        # Store in cache
+        if self._search_cache is not None and cache_key is not None:
+            self._search_cache[cache_key] = final_results
+            logger.debug(f"Cached search results for query: {query[:50]}...")
+
+        return final_results
 
     def get_stats(self, source: Optional[str] = None) -> Dict[str, Any]:
         """
