@@ -1,0 +1,95 @@
+{
+  "generated_at": "2026-01-07 05:47:06",
+  "metadata": {
+    "iterations": 1,
+    "phase_timeout_s": 10,
+    "npx_download": true
+  },
+  "servers": [
+    {
+      "name": "npx MCP: @iflow-mcp/imessage-mcp-server (stdio)",
+      "command": "npx",
+      "args": [
+        "--yes",
+        "--package",
+        "@iflow-mcp/imessage-mcp-server",
+        "iMessage MCP Server"
+      ],
+      "iterations": 1,
+      "results": [
+        {
+          "iteration": 1,
+          "initialize": {
+            "ok": true,
+            "ms": 2.8458330052671954,
+            "error": null,
+            "stdout_bytes": 180,
+            "approx_tokens": 45
+          },
+          "list_tools": {
+            "ok": true,
+            "ms": 0.6739580057910644,
+            "error": null,
+            "stdout_bytes": 565,
+            "approx_tokens": 142
+          },
+          "call_tool": {
+            "ok": false,
+            "ms": 10093.963416002225,
+            "error": "TIMEOUT",
+            "stdout_bytes": 0,
+            "approx_tokens": 0
+          },
+          "chosen_tool": "search_contacts",
+          "chosen_args": {
+            "query": "a"
+          }
+        }
+      ],
+      "notes": []
+    },
+    {
+      "name": "npx MCP: @foxychat-mcp/apple-imessages (stdio)",
+      "command": "npx",
+      "args": [
+        "--yes",
+        "--package",
+        "@foxychat-mcp/apple-imessages",
+        "apple-imessages-mcp"
+      ],
+      "iterations": 1,
+      "results": [
+        {
+          "iteration": 1,
+          "initialize": {
+            "ok": true,
+            "ms": 1.5513749967794865,
+            "error": null,
+            "stdout_bytes": 180,
+            "approx_tokens": 45
+          },
+          "list_tools": {
+            "ok": true,
+            "ms": 0.6089999951655045,
+            "error": null,
+            "stdout_bytes": 1487,
+            "approx_tokens": 372
+          },
+          "call_tool": {
+            "ok": true,
+            "ms": 61.62620800023433,
+            "error": null,
+            "stdout_bytes": 76,
+            "approx_tokens": 19
+          },
+          "chosen_tool": "read_imessages",
+          "chosen_args": {
+            "phone_number": "a",
+            "limit": 1
+          }
+        }
+      ],
+      "notes": []
+    }
+  ]
+}

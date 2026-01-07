@@ -1,0 +1,263 @@
+{
+  "suite_name": "competitor_tier_a",
+  "timestamp": "2026-01-07 05:03:33",
+  "metadata": {
+    "iterations": 5,
+    "python_version": "2026-01-07 (py Python 3.13.2)",
+    "tier": "a",
+    "include_rw": true,
+    "allow_npx": false,
+    "resume": false,
+    "tool_filter": null
+  },
+  "tool_results": [
+    {
+      "name": "Wolfies iMessage Gateway (CLI)",
+      "tool_type": "cli",
+      "commands": [
+        {
+          "label": "startup_help",
+          "cmd": "python3 /Users/wolfgangschoenberger/LIFE-PLANNER/Texting/gateway/imessage_client.py --help",
+          "read_only": true,
+          "iterations": 5,
+          "mean_ms": 48.31504979811143,
+          "median_ms": 48.88099999516271,
+          "p95_ms": 49.924075401213486,
+          "min_ms": 46.69945799832931,
+          "max_ms": 50.12120900209993,
+          "std_dev_ms": 1.5291182202180993,
+          "success_rate": 100.0,
+          "stdout_bytes_mean": 4371,
+          "approx_tokens_mean": 1093,
+          "error": null
+        },
+        {
+          "label": "recent_10",
+          "cmd": "python3 /Users/wolfgangschoenberger/LIFE-PLANNER/Texting/gateway/imessage_client.py recent --limit 10 --json",
+          "read_only": true,
+          "iterations": 5,
+          "mean_ms": 55.6812416005414,
+          "median_ms": 52.38187500071945,
+          "p95_ms": 72.24172500282293,
+          "min_ms": 46.20733299816493,
+          "max_ms": 77.12575000186916,
+          "std_dev_ms": 12.265826993811501,
+          "success_rate": 100.0,
+          "stdout_bytes_mean": 2746,
+          "approx_tokens_mean": 687,
+          "error": null
+        },
+        {
+          "label": "unread",
+          "cmd": "python3 /Users/wolfgangschoenberger/LIFE-PLANNER/Texting/gateway/imessage_client.py unread --json",
+          "read_only": true,
+          "iterations": 5,
+          "mean_ms": 50.503441800537985,
+          "median_ms": 50.289874998270534,
+          "p95_ms": 52.99699999886798,
+          "min_ms": 47.36425000010058,
+          "max_ms": 53.25287499726983,
+          "std_dev_ms": 2.256757392363861,
+          "success_rate": 100.0,
+          "stdout_bytes_mean": 6195,
+          "approx_tokens_mean": 1549,
+          "error": null
+        },
+        {
+          "label": "search_http_contact",
+          "cmd": "python3 /Users/wolfgangschoenberger/LIFE-PLANNER/Texting/gateway/imessage_client.py find 'AJ K' --query http --limit 20 --json",
+          "read_only": true,
+          "iterations": 5,
+          "mean_ms": 55.58637480135076,
+          "median_ms": 55.166707999887876,
+          "p95_ms": 57.942632798221894,
+          "min_ms": 53.36291600542609,
+          "max_ms": 58.3994159969734,
+          "std_dev_ms": 1.857533413504886,
+          "success_rate": 100.0,
+          "stdout_bytes_mean": 3,
+          "approx_tokens_mean": 1,
+          "error": null
+        },
+        {
+          "label": "send_message",
+          "cmd": "python3 /Users/wolfgangschoenberger/LIFE-PLANNER/Texting/gateway/imessage_client.py send-by-phone {send_to} 'benchmark ping (ignore)'",
+          "read_only": false,
+          "iterations": 5,
+          "mean_ms": 176.7975665992708,
+          "median_ms": 162.89016600057948,
+          "p95_ms": 235.43390839913624,
+          "min_ms": 146.78766599536175,
+          "max_ms": 251.83624999772292,
+          "std_dev_ms": 42.88525439670677,
+          "success_rate": 100.0,
+          "stdout_bytes_mean": 0,
+          "approx_tokens_mean": 0,
+          "error": null
+        }
+      ]
+    },
+    {
+      "name": "jean-claude (iMessage)",
+      "tool_type": "cli",
+      "commands": [
+        {
+          "label": "startup_help",
+          "cmd": "jean-claude imessage --help",
+          "read_only": true,
+          "iterations": 5,
+          "mean_ms": 1066.8737915999372,
+          "median_ms": 932.338416998391,
+          "p95_ms": 1739.1470500006105,
+          "min_ms": 747.2372499978519,
+          "max_ms": 1937.8240000005462,
+          "std_dev_ms": 495.08837891638154,
+          "success_rate": 100.0,
+          "stdout_bytes_mean": 817,
+          "approx_tokens_mean": 205,
+          "error": null
+        },
+        {
+          "label": "chats",
+          "cmd": "jean-claude imessage chats",
+          "read_only": true,
+          "iterations": 5,
+          "mean_ms": 1063.9458665988059,
+          "median_ms": 1049.4857499943464,
+          "p95_ms": 1169.0577585992287,
+          "min_ms": 962.2442499967292,
+          "max_ms": 1187.945541998488,
+          "std_dev_ms": 83.96537163409874,
+          "success_rate": 100.0,
+          "stdout_bytes_mean": 3938,
+          "approx_tokens_mean": 985,
+          "error": null
+        },
+        {
+          "label": "unread",
+          "cmd": "jean-claude imessage unread",
+          "read_only": true,
+          "iterations": 5,
+          "mean_ms": 957.1319416019833,
+          "median_ms": 943.6571250043926,
+          "p95_ms": 1018.4401250036899,
+          "min_ms": 908.9355830001296,
+          "max_ms": 1027.8985000040848,
+          "std_dev_ms": 47.76043198124686,
+          "success_rate": 100.0,
+          "stdout_bytes_mean": 5196,
+          "approx_tokens_mean": 1299,
+          "error": null
+        },
+        {
+          "label": "search_http",
+          "cmd": "jean-claude imessage search http",
+          "read_only": true,
+          "iterations": 5,
+          "mean_ms": 993.8510502004647,
+          "median_ms": 993.0343750020256,
+          "p95_ms": 1043.6383249994833,
+          "min_ms": 948.5014590027276,
+          "max_ms": 1054.959624998446,
+          "std_dev_ms": 39.337841227554826,
+          "success_rate": 100.0,
+          "stdout_bytes_mean": 6255,
+          "approx_tokens_mean": 1564,
+          "error": null
+        },
+        {
+          "label": "history_contact_10",
+          "cmd": "jean-claude imessage history --name 'AJ K' -n 10",
+          "read_only": true,
+          "iterations": 5,
+          "mean_ms": 1572.2852416001842,
+          "median_ms": 1574.6016249977401,
+          "p95_ms": 1632.7885661987239,
+          "min_ms": 1525.848124998447,
+          "max_ms": 1644.9685409970698,
+          "std_dev_ms": 47.98771091081181,
+          "success_rate": 100.0,
+          "stdout_bytes_mean": 1823,
+          "approx_tokens_mean": 456,
+          "error": null
+        }
+      ]
+    },
+    {
+      "name": "imessage-exporter",
+      "tool_type": "cli",
+      "commands": [
+        {
+          "label": "startup_help",
+          "cmd": "imessage-exporter --help",
+          "read_only": true,
+          "iterations": 5,
+          "mean_ms": 89.79221659828909,
+          "median_ms": 32.26537499722326,
+          "p95_ms": 261.64546659711044,
+          "min_ms": 30.843874999845866,
+          "max_ms": 318.1219999969471,
+          "std_dev_ms": 127.65332656844329,
+          "success_rate": 100.0,
+          "stdout_bytes_mean": 495,
+          "approx_tokens_mean": 124,
+          "error": null
+        },
+        {
+          "label": "list_chats",
+          "cmd": "imessage-exporter --list-chats",
+          "read_only": true,
+          "iterations": 5,
+          "mean_ms": 213.0362502008211,
+          "median_ms": 96.07562499877531,
+          "p95_ms": 568.4729004016843,
+          "min_ms": 87.34795800410211,
+          "max_ms": 684.0226670028642,
+          "std_dev_ms": 263.3838709107113,
+          "success_rate": 100.0,
+          "stdout_bytes_mean": 3223,
+          "approx_tokens_mean": 806,
+          "error": null
+        },
+        {
+          "label": "search_http",
+          "cmd": "imessage-exporter --search http",
+          "read_only": true,
+          "iterations": 5,
+          "mean_ms": 60.77557499811519,
+          "median_ms": 58.79999999888241,
+          "p95_ms": 66.35811619780725,
+          "min_ms": 55.83279200072866,
+          "max_ms": 66.54841599811334,
+          "std_dev_ms": 4.960260115621334,
+          "success_rate": 100.0,
+          "stdout_bytes_mean": 51187,
+          "approx_tokens_mean": 12797,
+          "error": null
+        }
+      ]
+    },
+    {
+      "name": "mcp-server-imessage (import)",
+      "tool_type": "import",
+      "commands": [
+        {
+          "label": "import_module",
+          "cmd": "python3 -c \"import mcp_server_imessage; print('ok')\"",
+          "read_only": true,
+          "iterations": 5,
+          "mean_ms": 262.21281660255045,
+          "median_ms": 173.79883299872745,
+          "p95_ms": 527.7341916036675,
+          "min_ms": 170.64250000112224,
+          "max_ms": 614.872625003045,
+          "std_dev_ms": 197.1683054425446,
+          "success_rate": 100.0,
+          "stdout_bytes_mean": 3,
+          "approx_tokens_mean": 1,
+          "error": null
+        }
+      ]
+    }
+  ]
+}

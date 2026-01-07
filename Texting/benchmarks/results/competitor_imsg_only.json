@@ -1,0 +1,71 @@
+{
+  "suite_name": "competitor_tier_a",
+  "timestamp": "2026-01-07 05:34:06",
+  "metadata": {
+    "iterations": 3,
+    "python_version": "2026-01-07 (py Python 3.13.2)",
+    "tier": "a",
+    "include_rw": false,
+    "allow_npx": false,
+    "npx_download": false,
+    "npx_timeout_s": 15,
+    "resume": false,
+    "tool_filter": "imsg"
+  },
+  "tool_results": [
+    {
+      "name": "imsg (Messages.app CLI) [steipete/imsg]",
+      "tool_type": "cli",
+      "commands": [
+        {
+          "label": "startup_help",
+          "cmd": "benchmarks/vendor/imsg/bin/imsg --help",
+          "read_only": true,
+          "iterations": 3,
+          "mean_ms": 5.614055335172452,
+          "median_ms": 5.495582998264581,
+          "p95_ms": 5.817895503423642,
+          "min_ms": 5.492875003255904,
+          "max_ms": 5.853708003996871,
+          "std_dev_ms": 0.20754971588812615,
+          "success_rate": 100.0,
+          "stdout_bytes_mean": 339,
+          "approx_tokens_mean": 85,
+          "error": null
+        },
+        {
+          "label": "chats_10_json",
+          "cmd": "benchmarks/vendor/imsg/bin/imsg chats --limit 10 --json",
+          "read_only": true,
+          "iterations": 3,
+          "mean_ms": 67.17109700063399,
+          "median_ms": 66.52516599569935,
+          "p95_ms": 69.00856660067802,
+          "min_ms": 65.7036250049714,
+          "max_ms": 69.28450000123121,
+          "std_dev_ms": 1.8757895889628906,
+          "success_rate": 100.0,
+          "stdout_bytes_mean": 1180,
+          "approx_tokens_mean": 295,
+          "error": null
+        },
+        {
+          "label": "history_10_json",
+          "cmd": "benchmarks/vendor/imsg/bin/imsg history --chat-id 935 --limit 10 --json",
+          "read_only": true,
+          "iterations": 3,
+          "mean_ms": 371.1442359975384,
+          "median_ms": 361.59529099677457,
+          "p95_ms": 389.009179394634,
+          "min_ms": 359.7822500014445,
+          "max_ms": 392.05516699439613,
+          "std_dev_ms": 18.132072572632072,
+          "success_rate": 100.0,
+          "stdout_bytes_mean": 2210,
+          "approx_tokens_mean": 553,
+          "error": null
+        }
+      ]
+    }
+  ]
+}

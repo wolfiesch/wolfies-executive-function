@@ -1,0 +1,107 @@
+
+=== Quick Benchmark Suite ===
+
+Running: startup_overhead (10 iterations)... ✓ (mean: 50.19ms, success: 100%)
+Running: contacts_list (5 iterations)... ✓ (mean: 47.20ms, success: 100%)
+Running: unread_messages (5 iterations)... ✓ (mean: 48.45ms, success: 100%)
+Running: recent_conversations_10 (5 iterations)... ✓ (mean: 51.75ms, success: 100%)
+Running: search_small (5 iterations)... ✓ (mean: 49.72ms, success: 100%)
+Running: bundle_compact (5 iterations)... ✓ (mean: 51.70ms, success: 100%)
+{
+  "suite_name": "quick",
+  "timestamp": "2026-01-07 04:54:29",
+  "metadata": {
+    "cli_path": "/Users/wolfgangschoenberger/LIFE-PLANNER/Texting/gateway/imessage_client.py",
+    "total_benchmarks": 6,
+    "python_version": "3.13.2",
+    "timeout_s": 30,
+    "include_rag": false,
+    "iterations_override": null
+  },
+  "results": [
+    {
+      "name": "startup_overhead",
+      "description": "CLI startup time with --help",
+      "iterations": 10,
+      "mean_ms": 50.1861539989477,
+      "median_ms": 49.408958497224376,
+      "p95_ms": 58.90158299735049,
+      "min_ms": 45.92849999608006,
+      "max_ms": 58.90158299735049,
+      "std_dev_ms": 3.939930265739676,
+      "success_rate": 100.0,
+      "stdout_bytes_mean": 4371,
+      "approx_tokens_mean": 1093
+    },
+    {
+      "name": "contacts_list",
+      "description": "List all contacts (no JSON)",
+      "iterations": 5,
+      "mean_ms": 47.20135840034345,
+      "median_ms": 47.768832999281585,
+      "p95_ms": 49.076583003625274,
+      "min_ms": 44.981374994677026,
+      "max_ms": 49.076583003625274,
+      "std_dev_ms": 1.6977213727259661,
+      "success_rate": 100.0,
+      "stdout_bytes_mean": 6444,
+      "approx_tokens_mean": 1611
+    },
+    {
+      "name": "unread_messages",
+      "description": "Fetch unread messages",
+      "iterations": 5,
+      "mean_ms": 48.45086660061497,
+      "median_ms": 47.49058299785247,
+      "p95_ms": 54.772082999988925,
+      "min_ms": 45.35225000290666,
+      "max_ms": 54.772082999988925,
+      "std_dev_ms": 3.7655779235232565,
+      "success_rate": 100.0,
+      "stdout_bytes_mean": 2320,
+      "approx_tokens_mean": 580
+    },
+    {
+      "name": "recent_conversations_10",
+      "description": "Fetch 10 recent conversations",
+      "iterations": 5,
+      "mean_ms": 51.75334960076725,
+      "median_ms": 52.1112910064403,
+      "p95_ms": 53.44945799879497,
+      "min_ms": 49.758916000428144,
+      "max_ms": 53.44945799879497,
+      "std_dev_ms": 1.3547629698118613,
+      "success_rate": 100.0,
+      "stdout_bytes_mean": 213,
+      "approx_tokens_mean": 54
+    },
+    {
+      "name": "search_small",
+      "description": "Search recent messages (limit 10, contact-agnostic)",
+      "iterations": 5,
+      "mean_ms": 49.723233201075345,
+      "median_ms": 49.676750000799075,
+      "p95_ms": 50.18954200204462,
+      "min_ms": 49.25566600286402,
+      "max_ms": 50.18954200204462,
+      "std_dev_ms": 0.44034013554077117,
+      "success_rate": 100.0,
+      "stdout_bytes_mean": 213,
+      "approx_tokens_mean": 54
+    },
+    {
+      "name": "bundle_compact",
+      "description": "Bundle (unread+recent+search) with compact JSON output",
+      "iterations": 5,
+      "mean_ms": 51.701524801319465,
+      "median_ms": 51.071791000140365,
+      "p95_ms": 53.75108300358988,
+      "min_ms": 50.6811250015744,
+      "max_ms": 53.75108300358988,
+      "std_dev_ms": 1.3095911164622454,
+      "success_rate": 100.0,
+      "stdout_bytes_mean": 6715,
+      "approx_tokens_mean": 1679
+    }
+  ]
+}

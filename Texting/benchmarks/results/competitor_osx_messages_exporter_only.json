@@ -1,0 +1,39 @@
+{
+  "suite_name": "competitor_tier_extended",
+  "timestamp": "2026-01-07 05:34:22",
+  "metadata": {
+    "iterations": 3,
+    "python_version": "2026-01-07 (py Python 3.13.2)",
+    "tier": "extended",
+    "include_rw": false,
+    "allow_npx": false,
+    "npx_download": false,
+    "npx_timeout_s": 15,
+    "resume": false,
+    "tool_filter": "OSX-Messages-Exporter"
+  },
+  "tool_results": [
+    {
+      "name": "OSX-Messages-Exporter [cfinke/OSX-Messages-Exporter]",
+      "tool_type": "cli",
+      "commands": [
+        {
+          "label": "startup_help",
+          "cmd": "php benchmarks/vendor/osx-messages-exporter/messages-exporter.php --help",
+          "read_only": true,
+          "iterations": 3,
+          "mean_ms": 59.77349999981622,
+          "median_ms": 42.529124999418855,
+          "p95_ms": 92.89440029751857,
+          "min_ms": 38.30083300272236,
+          "max_ms": 98.49054199730745,
+          "std_dev_ms": 33.59652689012596,
+          "success_rate": 100.0,
+          "stdout_bytes_mean": 2480,
+          "approx_tokens_mean": 620,
+          "error": null
+        }
+      ]
+    }
+  ]
+}

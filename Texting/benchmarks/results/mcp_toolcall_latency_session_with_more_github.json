@@ -1,0 +1,797 @@
+{
+  "generated_at": "2026-01-07 13:30:00",
+  "metadata": {
+    "mode": "session",
+    "iterations": 5,
+    "phase_timeout_s": 25,
+    "npx_download": false
+  },
+  "servers": [
+    {
+      "name": "github MCP: Causality-C/imessage-mcp-improved (node stdio)",
+      "command": "node",
+      "args": [
+        "server/index.js"
+      ],
+      "iterations": 5,
+      "results": [
+        {
+          "iteration": 1,
+          "initialize": {
+            "ok": true,
+            "ms": 0.0,
+            "error": "(session mode)",
+            "stdout_bytes": null,
+            "approx_tokens": null
+          },
+          "list_tools": {
+            "ok": true,
+            "ms": 0.0,
+            "error": "(session mode)",
+            "stdout_bytes": null,
+            "approx_tokens": null
+          },
+          "call_tool": {
+            "ok": true,
+            "ms": 72.35566699819174,
+            "error": null,
+            "stdout_bytes": 79,
+            "approx_tokens": 20
+          },
+          "chosen_tool": "read_imessages",
+          "chosen_args": null
+        },
+        {
+          "iteration": 2,
+          "initialize": {
+            "ok": true,
+            "ms": 0.0,
+            "error": "(session mode)",
+            "stdout_bytes": null,
+            "approx_tokens": null
+          },
+          "list_tools": {
+            "ok": true,
+            "ms": 0.0,
+            "error": "(session mode)",
+            "stdout_bytes": null,
+            "approx_tokens": null
+          },
+          "call_tool": {
+            "ok": true,
+            "ms": 30.209624994313344,
+            "error": null,
+            "stdout_bytes": 79,
+            "approx_tokens": 20
+          },
+          "chosen_tool": "read_imessages",
+          "chosen_args": null
+        },
+        {
+          "iteration": 3,
+          "initialize": {
+            "ok": true,
+            "ms": 0.0,
+            "error": "(session mode)",
+            "stdout_bytes": null,
+            "approx_tokens": null
+          },
+          "list_tools": {
+            "ok": true,
+            "ms": 0.0,
+            "error": "(session mode)",
+            "stdout_bytes": null,
+            "approx_tokens": null
+          },
+          "call_tool": {
+            "ok": true,
+            "ms": 25.490333006018773,
+            "error": null,
+            "stdout_bytes": 79,
+            "approx_tokens": 20
+          },
+          "chosen_tool": "read_imessages",
+          "chosen_args": null
+        },
+        {
+          "iteration": 4,
+          "initialize": {
+            "ok": true,
+            "ms": 0.0,
+            "error": "(session mode)",
+            "stdout_bytes": null,
+            "approx_tokens": null
+          },
+          "list_tools": {
+            "ok": true,
+            "ms": 0.0,
+            "error": "(session mode)",
+            "stdout_bytes": null,
+            "approx_tokens": null
+          },
+          "call_tool": {
+            "ok": true,
+            "ms": 17.417957991710864,
+            "error": null,
+            "stdout_bytes": 79,
+            "approx_tokens": 20
+          },
+          "chosen_tool": "read_imessages",
+          "chosen_args": null
+        },
+        {
+          "iteration": 5,
+          "initialize": {
+            "ok": true,
+            "ms": 0.0,
+            "error": "(session mode)",
+            "stdout_bytes": null,
+            "approx_tokens": null
+          },
+          "list_tools": {
+            "ok": true,
+            "ms": 0.0,
+            "error": "(session mode)",
+            "stdout_bytes": null,
+            "approx_tokens": null
+          },
+          "call_tool": {
+            "ok": true,
+            "ms": 20.09625000937376,
+            "error": null,
+            "stdout_bytes": 79,
+            "approx_tokens": 20
+          },
+          "chosen_tool": "read_imessages",
+          "chosen_args": null
+        }
+      ],
+      "notes": [],
+      "mode": "session",
+      "session_initialize": {
+        "ok": true,
+        "ms": 1044.6313750144327,
+        "error": null,
+        "stdout_bytes": 180,
+        "approx_tokens": 45
+      },
+      "session_list_tools": {
+        "ok": true,
+        "ms": 0.5568330088863149,
+        "error": null,
+        "stdout_bytes": 2161,
+        "approx_tokens": 541
+      }
+    },
+    {
+      "name": "github MCP: wyattjoh/imessage-mcp (deno stdio)",
+      "command": "deno",
+      "args": [
+        "run",
+        "--allow-read",
+        "--allow-env",
+        "--allow-sys",
+        "--allow-run",
+        "--allow-ffi",
+        "packages/imessage-mcp/mod.ts"
+      ],
+      "iterations": 5,
+      "results": [
+        {
+          "iteration": 1,
+          "initialize": {
+            "ok": true,
+            "ms": 0.0,
+            "error": "(session mode)",
+            "stdout_bytes": null,
+            "approx_tokens": null
+          },
+          "list_tools": {
+            "ok": true,
+            "ms": 0.0,
+            "error": "(session mode)",
+            "stdout_bytes": null,
+            "approx_tokens": null
+          },
+          "call_tool": {
+            "ok": true,
+            "ms": 228.09624999354128,
+            "error": null,
+            "stdout_bytes": 816,
+            "approx_tokens": 204
+          },
+          "chosen_tool": "search_messages",
+          "chosen_args": null
+        },
+        {
+          "iteration": 2,
+          "initialize": {
+            "ok": true,
+            "ms": 0.0,
+            "error": "(session mode)",
+            "stdout_bytes": null,
+            "approx_tokens": null
+          },
+          "list_tools": {
+            "ok": true,
+            "ms": 0.0,
+            "error": "(session mode)",
+            "stdout_bytes": null,
+            "approx_tokens": null
+          },
+          "call_tool": {
+            "ok": true,
+            "ms": 49.91575000167359,
+            "error": null,
+            "stdout_bytes": 816,
+            "approx_tokens": 204
+          },
+          "chosen_tool": "search_messages",
+          "chosen_args": null
+        },
+        {
+          "iteration": 3,
+          "initialize": {
+            "ok": true,
+            "ms": 0.0,
+            "error": "(session mode)",
+            "stdout_bytes": null,
+            "approx_tokens": null
+          },
+          "list_tools": {
+            "ok": true,
+            "ms": 0.0,
+            "error": "(session mode)",
+            "stdout_bytes": null,
+            "approx_tokens": null
+          },
+          "call_tool": {
+            "ok": true,
+            "ms": 42.745583996293135,
+            "error": null,
+            "stdout_bytes": 816,
+            "approx_tokens": 204
+          },
+          "chosen_tool": "search_messages",
+          "chosen_args": null
+        },
+        {
+          "iteration": 4,
+          "initialize": {
+            "ok": true,
+            "ms": 0.0,
+            "error": "(session mode)",
+            "stdout_bytes": null,
+            "approx_tokens": null
+          },
+          "list_tools": {
+            "ok": true,
+            "ms": 0.0,
+            "error": "(session mode)",
+            "stdout_bytes": null,
+            "approx_tokens": null
+          },
+          "call_tool": {
+            "ok": true,
+            "ms": 30.822957996861078,
+            "error": null,
+            "stdout_bytes": 816,
+            "approx_tokens": 204
+          },
+          "chosen_tool": "search_messages",
+          "chosen_args": null
+        },
+        {
+          "iteration": 5,
+          "initialize": {
+            "ok": true,
+            "ms": 0.0,
+            "error": "(session mode)",
+            "stdout_bytes": null,
+            "approx_tokens": null
+          },
+          "list_tools": {
+            "ok": true,
+            "ms": 0.0,
+            "error": "(session mode)",
+            "stdout_bytes": null,
+            "approx_tokens": null
+          },
+          "call_tool": {
+            "ok": true,
+            "ms": 27.47437500511296,
+            "error": null,
+            "stdout_bytes": 816,
+            "approx_tokens": 204
+          },
+          "chosen_tool": "search_messages",
+          "chosen_args": null
+        }
+      ],
+      "notes": [],
+      "mode": "session",
+      "session_initialize": {
+        "ok": true,
+        "ms": 1046.028374999878,
+        "error": null,
+        "stdout_bytes": 207,
+        "approx_tokens": 52
+      },
+      "session_list_tools": {
+        "ok": true,
+        "ms": 3.4727089951047674,
+        "error": null,
+        "stdout_bytes": 6134,
+        "approx_tokens": 1534
+      }
+    },
+    {
+      "name": "github MCP: hannesrudolph/imessage-query-fastmcp-mcp-server (python stdio)",
+      "command": "/Users/wolfgangschoenberger/LIFE-PLANNER/Texting/benchmarks/vendor/github_mcp/imessage-query-fastmcp-mcp-server/.venv/bin/python",
+      "args": [
+        "-u",
+        "imessage-query-server.py"
+      ],
+      "iterations": 5,
+      "results": [
+        {
+          "iteration": 1,
+          "initialize": {
+            "ok": true,
+            "ms": 0.0,
+            "error": "(session mode)",
+            "stdout_bytes": null,
+            "approx_tokens": null
+          },
+          "list_tools": {
+            "ok": true,
+            "ms": 0.0,
+            "error": "(session mode)",
+            "stdout_bytes": null,
+            "approx_tokens": null
+          },
+          "call_tool": {
+            "ok": true,
+            "ms": 2.573916004621424,
+            "error": null,
+            "stdout_bytes": 221,
+            "approx_tokens": 56
+          },
+          "chosen_tool": "get_chat_transcript",
+          "chosen_args": null
+        },
+        {
+          "iteration": 2,
+          "initialize": {
+            "ok": true,
+            "ms": 0.0,
+            "error": "(session mode)",
+            "stdout_bytes": null,
+            "approx_tokens": null
+          },
+          "list_tools": {
+            "ok": true,
+            "ms": 0.0,
+            "error": "(session mode)",
+            "stdout_bytes": null,
+            "approx_tokens": null
+          },
+          "call_tool": {
+            "ok": true,
+            "ms": 1.0722920123953372,
+            "error": null,
+            "stdout_bytes": 221,
+            "approx_tokens": 56
+          },
+          "chosen_tool": "get_chat_transcript",
+          "chosen_args": null
+        },
+        {
+          "iteration": 3,
+          "initialize": {
+            "ok": true,
+            "ms": 0.0,
+            "error": "(session mode)",
+            "stdout_bytes": null,
+            "approx_tokens": null
+          },
+          "list_tools": {
+            "ok": true,
+            "ms": 0.0,
+            "error": "(session mode)",
+            "stdout_bytes": null,
+            "approx_tokens": null
+          },
+          "call_tool": {
+            "ok": true,
+            "ms": 1.0530410072533414,
+            "error": null,
+            "stdout_bytes": 221,
+            "approx_tokens": 56
+          },
+          "chosen_tool": "get_chat_transcript",
+          "chosen_args": null
+        },
+        {
+          "iteration": 4,
+          "initialize": {
+            "ok": true,
+            "ms": 0.0,
+            "error": "(session mode)",
+            "stdout_bytes": null,
+            "approx_tokens": null
+          },
+          "list_tools": {
+            "ok": true,
+            "ms": 0.0,
+            "error": "(session mode)",
+            "stdout_bytes": null,
+            "approx_tokens": null
+          },
+          "call_tool": {
+            "ok": true,
+            "ms": 0.9421669965377077,
+            "error": null,
+            "stdout_bytes": 221,
+            "approx_tokens": 56
+          },
+          "chosen_tool": "get_chat_transcript",
+          "chosen_args": null
+        },
+        {
+          "iteration": 5,
+          "initialize": {
+            "ok": true,
+            "ms": 0.0,
+            "error": "(session mode)",
+            "stdout_bytes": null,
+            "approx_tokens": null
+          },
+          "list_tools": {
+            "ok": true,
+            "ms": 0.0,
+            "error": "(session mode)",
+            "stdout_bytes": null,
+            "approx_tokens": null
+          },
+          "call_tool": {
+            "ok": true,
+            "ms": 0.8776249887887388,
+            "error": null,
+            "stdout_bytes": 221,
+            "approx_tokens": 56
+          },
+          "chosen_tool": "get_chat_transcript",
+          "chosen_args": null
+        }
+      ],
+      "notes": [],
+      "mode": "session",
+      "session_initialize": {
+        "ok": true,
+        "ms": 1057.916457997635,
+        "error": null,
+        "stdout_bytes": 274,
+        "approx_tokens": 69
+      },
+      "session_list_tools": {
+        "ok": true,
+        "ms": 2.188124999520369,
+        "error": null,
+        "stdout_bytes": 799,
+        "approx_tokens": 200
+      }
+    },
+    {
+      "name": "github MCP: jonmmease/jons-mcp-imessage (python fastmcp stdio)",
+      "command": "/Users/wolfgangschoenberger/LIFE-PLANNER/Texting/benchmarks/vendor/github_mcp/jons-mcp-imessage/.venv/bin/jons-mcp-imessage",
+      "args": [],
+      "iterations": 5,
+      "results": [
+        {
+          "iteration": 1,
+          "initialize": {
+            "ok": true,
+            "ms": 0.0,
+            "error": "(session mode)",
+            "stdout_bytes": null,
+            "approx_tokens": null
+          },
+          "list_tools": {
+            "ok": true,
+            "ms": 0.0,
+            "error": "(session mode)",
+            "stdout_bytes": null,
+            "approx_tokens": null
+          },
+          "call_tool": {
+            "ok": true,
+            "ms": 3.441709006438032,
+            "error": null,
+            "stdout_bytes": 374,
+            "approx_tokens": 94
+          },
+          "chosen_tool": "search_contacts",
+          "chosen_args": null
+        },
+        {
+          "iteration": 2,
+          "initialize": {
+            "ok": true,
+            "ms": 0.0,
+            "error": "(session mode)",
+            "stdout_bytes": null,
+            "approx_tokens": null
+          },
+          "list_tools": {
+            "ok": true,
+            "ms": 0.0,
+            "error": "(session mode)",
+            "stdout_bytes": null,
+            "approx_tokens": null
+          },
+          "call_tool": {
+            "ok": true,
+            "ms": 2.153666995582171,
+            "error": null,
+            "stdout_bytes": 374,
+            "approx_tokens": 94
+          },
+          "chosen_tool": "search_contacts",
+          "chosen_args": null
+        },
+        {
+          "iteration": 3,
+          "initialize": {
+            "ok": true,
+            "ms": 0.0,
+            "error": "(session mode)",
+            "stdout_bytes": null,
+            "approx_tokens": null
+          },
+          "list_tools": {
+            "ok": true,
+            "ms": 0.0,
+            "error": "(session mode)",
+            "stdout_bytes": null,
+            "approx_tokens": null
+          },
+          "call_tool": {
+            "ok": true,
+            "ms": 1.9450420077191666,
+            "error": null,
+            "stdout_bytes": 374,
+            "approx_tokens": 94
+          },
+          "chosen_tool": "search_contacts",
+          "chosen_args": null
+        },
+        {
+          "iteration": 4,
+          "initialize": {
+            "ok": true,
+            "ms": 0.0,
+            "error": "(session mode)",
+            "stdout_bytes": null,
+            "approx_tokens": null
+          },
+          "list_tools": {
+            "ok": true,
+            "ms": 0.0,
+            "error": "(session mode)",
+            "stdout_bytes": null,
+            "approx_tokens": null
+          },
+          "call_tool": {
+            "ok": true,
+            "ms": 2.062208004645072,
+            "error": null,
+            "stdout_bytes": 374,
+            "approx_tokens": 94
+          },
+          "chosen_tool": "search_contacts",
+          "chosen_args": null
+        },
+        {
+          "iteration": 5,
+          "initialize": {
+            "ok": true,
+            "ms": 0.0,
+            "error": "(session mode)",
+            "stdout_bytes": null,
+            "approx_tokens": null
+          },
+          "list_tools": {
+            "ok": true,
+            "ms": 0.0,
+            "error": "(session mode)",
+            "stdout_bytes": null,
+            "approx_tokens": null
+          },
+          "call_tool": {
+            "ok": true,
+            "ms": 2.0945419964846224,
+            "error": null,
+            "stdout_bytes": 374,
+            "approx_tokens": 94
+          },
+          "chosen_tool": "search_contacts",
+          "chosen_args": null
+        }
+      ],
+      "notes": [],
+      "mode": "session",
+      "session_initialize": {
+        "ok": true,
+        "ms": 1024.7999590064865,
+        "error": null,
+        "stdout_bytes": 2411,
+        "approx_tokens": 603
+      },
+      "session_list_tools": {
+        "ok": true,
+        "ms": 1.3484579976648092,
+        "error": null,
+        "stdout_bytes": 11316,
+        "approx_tokens": 2829
+      }
+    },
+    {
+      "name": "github MCP: TextFly/photon-imsg-mcp (node stdio)",
+      "command": "node",
+      "args": [
+        "dist/index.js",
+        "--stdio"
+      ],
+      "iterations": 5,
+      "results": [
+        {
+          "iteration": 1,
+          "initialize": {
+            "ok": true,
+            "ms": 0.0,
+            "error": "(session mode)",
+            "stdout_bytes": null,
+            "approx_tokens": null
+          },
+          "list_tools": {
+            "ok": true,
+            "ms": 0.0,
+            "error": "(session mode)",
+            "stdout_bytes": null,
+            "approx_tokens": null
+          },
+          "call_tool": {
+            "ok": true,
+            "ms": 35.66533299454022,
+            "error": null,
+            "stdout_bytes": 151,
+            "approx_tokens": 38
+          },
+          "chosen_tool": "photon_read_messages",
+          "chosen_args": null
+        },
+        {
+          "iteration": 2,
+          "initialize": {
+            "ok": true,
+            "ms": 0.0,
+            "error": "(session mode)",
+            "stdout_bytes": null,
+            "approx_tokens": null
+          },
+          "list_tools": {
+            "ok": true,
+            "ms": 0.0,
+            "error": "(session mode)",
+            "stdout_bytes": null,
+            "approx_tokens": null
+          },
+          "call_tool": {
+            "ok": true,
+            "ms": 0.49004200263880193,
+            "error": null,
+            "stdout_bytes": 151,
+            "approx_tokens": 38
+          },
+          "chosen_tool": "photon_read_messages",
+          "chosen_args": null
+        },
+        {
+          "iteration": 3,
+          "initialize": {
+            "ok": true,
+            "ms": 0.0,
+            "error": "(session mode)",
+            "stdout_bytes": null,
+            "approx_tokens": null
+          },
+          "list_tools": {
+            "ok": true,
+            "ms": 0.0,
+            "error": "(session mode)",
+            "stdout_bytes": null,
+            "approx_tokens": null
+          },
+          "call_tool": {
+            "ok": true,
+            "ms": 0.2321659994777292,
+            "error": null,
+            "stdout_bytes": 151,
+            "approx_tokens": 38
+          },
+          "chosen_tool": "photon_read_messages",
+          "chosen_args": null
+        },
+        {
+          "iteration": 4,
+          "initialize": {
+            "ok": true,
+            "ms": 0.0,
+            "error": "(session mode)",
+            "stdout_bytes": null,
+            "approx_tokens": null
+          },
+          "list_tools": {
+            "ok": true,
+            "ms": 0.0,
+            "error": "(session mode)",
+            "stdout_bytes": null,
+            "approx_tokens": null
+          },
+          "call_tool": {
+            "ok": true,
+            "ms": 0.2027080045081675,
+            "error": null,
+            "stdout_bytes": 151,
+            "approx_tokens": 38
+          },
+          "chosen_tool": "photon_read_messages",
+          "chosen_args": null
+        },
+        {
+          "iteration": 5,
+          "initialize": {
+            "ok": true,
+            "ms": 0.0,
+            "error": "(session mode)",
+            "stdout_bytes": null,
+            "approx_tokens": null
+          },
+          "list_tools": {
+            "ok": true,
+            "ms": 0.0,
+            "error": "(session mode)",
+            "stdout_bytes": null,
+            "approx_tokens": null
+          },
+          "call_tool": {
+            "ok": true,
+            "ms": 0.3787079913308844,
+            "error": null,
+            "stdout_bytes": 151,
+            "approx_tokens": 38
+          },
+          "chosen_tool": "photon_read_messages",
+          "chosen_args": null
+        }
+      ],
+      "notes": [],
+      "mode": "session",
+      "session_initialize": {
+        "ok": true,
+        "ms": 1057.9373750078958,
+        "error": null,
+        "stdout_bytes": 153,
+        "approx_tokens": 39
+      },
+      "session_list_tools": {
+        "ok": true,
+        "ms": 1.602958989678882,
+        "error": null,
+        "stdout_bytes": 2054,
+        "approx_tokens": 514
+      }
+    }
+  ]
+}

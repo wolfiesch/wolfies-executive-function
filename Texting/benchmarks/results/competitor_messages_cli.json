@@ -1,0 +1,71 @@
+{
+  "suite_name": "competitor_tier_a",
+  "timestamp": "2026-01-07 05:36:31",
+  "metadata": {
+    "iterations": 3,
+    "python_version": "2026-01-07 (py Python 3.13.2)",
+    "tier": "a",
+    "include_rw": false,
+    "allow_npx": false,
+    "npx_download": false,
+    "npx_timeout_s": 15,
+    "resume": false,
+    "tool_filter": "messages (CLI/MCP)"
+  },
+  "tool_results": [
+    {
+      "name": "messages (CLI/MCP) [cardmagic/messages]",
+      "tool_type": "cli",
+      "commands": [
+        {
+          "label": "startup_help",
+          "cmd": "messages --help",
+          "read_only": true,
+          "iterations": 3,
+          "mean_ms": 54.053166667775564,
+          "median_ms": 49.70645800494822,
+          "p95_ms": 62.40069609848433,
+          "min_ms": 48.641875000612345,
+          "max_ms": 63.81116699776612,
+          "std_dev_ms": 8.467423579422027,
+          "success_rate": 100.0,
+          "stdout_bytes_mean": 890,
+          "approx_tokens_mean": 223,
+          "error": null
+        },
+        {
+          "label": "recent_10",
+          "cmd": "messages recent --limit 10",
+          "read_only": true,
+          "iterations": 3,
+          "mean_ms": 61.50006933118372,
+          "median_ms": 62.14758299756795,
+          "p95_ms": 63.54693359899102,
+          "min_ms": 58.65020799683407,
+          "max_ms": 63.702416999149136,
+          "std_dev_ms": 2.587597227522884,
+          "success_rate": 100.0,
+          "stdout_bytes_mean": 616,
+          "approx_tokens_mean": 154,
+          "error": null
+        },
+        {
+          "label": "search_http",
+          "cmd": "messages search http --limit 10 --context 0",
+          "read_only": true,
+          "iterations": 3,
+          "mean_ms": 657.8791943296286,
+          "median_ms": 641.9880829998874,
+          "p95_ms": 700.0602832958975,
+          "min_ms": 625.1367499935441,
+          "max_ms": 706.5127499954542,
+          "std_dev_ms": 42.95240282624932,
+          "success_rate": 100.0,
+          "stdout_bytes_mean": 4929,
+          "approx_tokens_mean": 1233,
+          "error": null
+        }
+      ]
+    }
+  ]
+}

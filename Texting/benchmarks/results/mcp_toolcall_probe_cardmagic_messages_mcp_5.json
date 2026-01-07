@@ -1,0 +1,167 @@
+{
+  "generated_at": "2026-01-07 13:52:46",
+  "metadata": {
+    "mode": "session",
+    "iterations": 5,
+    "phase_timeout_s": 30,
+    "npx_download": false
+  },
+  "servers": [
+    {
+      "name": "brew MCP: cardmagic/messages (messages --mcp)",
+      "command": "messages",
+      "args": [
+        "--mcp"
+      ],
+      "iterations": 5,
+      "results": [
+        {
+          "iteration": 1,
+          "initialize": {
+            "ok": true,
+            "ms": 0.0,
+            "error": "(session mode)",
+            "stdout_bytes": null,
+            "approx_tokens": null
+          },
+          "list_tools": {
+            "ok": true,
+            "ms": 0.0,
+            "error": "(session mode)",
+            "stdout_bytes": null,
+            "approx_tokens": null
+          },
+          "call_tool": {
+            "ok": true,
+            "ms": 28.392541003995575,
+            "error": null,
+            "stdout_bytes": 142,
+            "approx_tokens": 36
+          },
+          "chosen_tool": "recent_messages",
+          "chosen_args": null
+        },
+        {
+          "iteration": 2,
+          "initialize": {
+            "ok": true,
+            "ms": 0.0,
+            "error": "(session mode)",
+            "stdout_bytes": null,
+            "approx_tokens": null
+          },
+          "list_tools": {
+            "ok": true,
+            "ms": 0.0,
+            "error": "(session mode)",
+            "stdout_bytes": null,
+            "approx_tokens": null
+          },
+          "call_tool": {
+            "ok": true,
+            "ms": 0.5989159981254488,
+            "error": null,
+            "stdout_bytes": 142,
+            "approx_tokens": 36
+          },
+          "chosen_tool": "recent_messages",
+          "chosen_args": null
+        },
+        {
+          "iteration": 3,
+          "initialize": {
+            "ok": true,
+            "ms": 0.0,
+            "error": "(session mode)",
+            "stdout_bytes": null,
+            "approx_tokens": null
+          },
+          "list_tools": {
+            "ok": true,
+            "ms": 0.0,
+            "error": "(session mode)",
+            "stdout_bytes": null,
+            "approx_tokens": null
+          },
+          "call_tool": {
+            "ok": true,
+            "ms": 0.3987910022260621,
+            "error": null,
+            "stdout_bytes": 142,
+            "approx_tokens": 36
+          },
+          "chosen_tool": "recent_messages",
+          "chosen_args": null
+        },
+        {
+          "iteration": 4,
+          "initialize": {
+            "ok": true,
+            "ms": 0.0,
+            "error": "(session mode)",
+            "stdout_bytes": null,
+            "approx_tokens": null
+          },
+          "list_tools": {
+            "ok": true,
+            "ms": 0.0,
+            "error": "(session mode)",
+            "stdout_bytes": null,
+            "approx_tokens": null
+          },
+          "call_tool": {
+            "ok": true,
+            "ms": 0.3733750054379925,
+            "error": null,
+            "stdout_bytes": 142,
+            "approx_tokens": 36
+          },
+          "chosen_tool": "recent_messages",
+          "chosen_args": null
+        },
+        {
+          "iteration": 5,
+          "initialize": {
+            "ok": true,
+            "ms": 0.0,
+            "error": "(session mode)",
+            "stdout_bytes": null,
+            "approx_tokens": null
+          },
+          "list_tools": {
+            "ok": true,
+            "ms": 0.0,
+            "error": "(session mode)",
+            "stdout_bytes": null,
+            "approx_tokens": null
+          },
+          "call_tool": {
+            "ok": true,
+            "ms": 0.36662499769590795,
+            "error": null,
+            "stdout_bytes": 142,
+            "approx_tokens": 36
+          },
+          "chosen_tool": "recent_messages",
+          "chosen_args": null
+        }
+      ],
+      "notes": [],
+      "mode": "session",
+      "session_initialize": {
+        "ok": true,
+        "ms": 1026.917750001303,
+        "error": null,
+        "stdout_bytes": 146,
+        "approx_tokens": 37
+      },
+      "session_list_tools": {
+        "ok": true,
+        "ms": 1.9657500088214874,
+        "error": null,
+        "stdout_bytes": 2625,
+        "approx_tokens": 657
+      }
+    }
+  ]
+}

@@ -1,0 +1,63 @@
+{
+  "generated_at": "2026-01-07 13:43:47",
+  "metadata": {
+    "mode": "session",
+    "iterations": 1,
+    "phase_timeout_s": 25,
+    "npx_download": false
+  },
+  "servers": [
+    {
+      "name": "github MCP: marissamarym/imessage-mcp-server (node stdio)",
+      "command": "node",
+      "args": [
+        "build/index.js"
+      ],
+      "iterations": 1,
+      "results": [
+        {
+          "iteration": 1,
+          "initialize": {
+            "ok": true,
+            "ms": 0.0,
+            "error": "(session mode)",
+            "stdout_bytes": null,
+            "approx_tokens": null
+          },
+          "list_tools": {
+            "ok": true,
+            "ms": 0.0,
+            "error": "(session mode)",
+            "stdout_bytes": null,
+            "approx_tokens": null
+          },
+          "call_tool": {
+            "ok": false,
+            "ms": 10084.914750012103,
+            "error": "TIMEOUT",
+            "stdout_bytes": 0,
+            "approx_tokens": 0
+          },
+          "chosen_tool": "search_contacts",
+          "chosen_args": null
+        }
+      ],
+      "notes": [],
+      "mode": "session",
+      "session_initialize": {
+        "ok": true,
+        "ms": 1007.9521669977112,
+        "error": null,
+        "stdout_bytes": 180,
+        "approx_tokens": 45
+      },
+      "session_list_tools": {
+        "ok": true,
+        "ms": 0.34658299409784377,
+        "error": null,
+        "stdout_bytes": 565,
+        "approx_tokens": 142
+      }
+    }
+  ]
+}
