@@ -70,6 +70,14 @@ def _extract_controls(params: dict[str, Any]) -> dict[str, Any]:
     }
 
 
+def _coerce_limit(value: Any, *, default: int, min_value: int = 1, max_value: int = 500) -> int:
+    try:
+        num = int(value)
+    except (TypeError, ValueError):
+        num = default
+    return max(min_value, min(max_value, num))
+
+
 @dataclass
 class DaemonConfig:
     """Daemon configuration."""
@@ -105,13 +113,14 @@ class DaemonService:
             _ = self._mi.get_unread_count()
         except Exception:
             can_read_db = False
+        messages_db_path = getattr(self._mi, "messages_db_path", None)
 
         return {
             "pid": os.getpid(),
             "started_at": self.started_at,
             "version": "v1",
             "socket": str(self.socket_path),
-            "chat_db": str(getattr(self._mi, "messages_db_path", "")),
+            "chat_db": str(messages_db_path) if messages_db_path is not None else None,
             "can_read_db": can_read_db,
         }
 
@@ -152,10 +161,10 @@ class DaemonService:
             include = {s.strip() for s in include_raw.split(",") if s.strip()}
             include.add("meta")
 
-        unread_limit = int(params.get("unread_limit") or 20)
-        recent_limit = int(params.get("recent_limit") or 10)
-        search_limit = int(params.get("search_limit") or 20)
-        messages_limit = int(params.get("messages_limit") or 20)
+        unread_limit = _coerce_limit(params.get("unread_limit"), default=20)
+        recent_limit = _coerce_limit(params.get("recent_limit"), default=10)
+        search_limit = _coerce_limit(params.get("search_limit"), default=20)
+        messages_limit = _coerce_limit(params.get("messages_limit"), default=20)
         query = params.get("query")
         phone = params.get("phone")
 
@@ -245,7 +254,8 @@ class DaemonServer(socketserver.UnixStreamServer):
                 result = self.service.unread_count()
             elif method == "unread_messages":
                 controls = _extract_controls(params)
-                msgs = self.service.unread_messages(limit=int(params.get("limit") or 20)).get("messages") or []
+                limit = _coerce_limit(params.get("limit"), default=20)
+                msgs = self.service.unread_messages(limit=limit).get("messages") or []
                 shaped = apply_output_controls(
                     msgs,
                     fields=controls["fields"],
@@ -257,7 +267,8 @@ class DaemonServer(socketserver.UnixStreamServer):
                 result = {"messages": shaped}
             elif method == "recent":
                 controls = _extract_controls(params)
-                msgs = self.service.recent(limit=int(params.get("limit") or 10)).get("messages") or []
+                limit = _coerce_limit(params.get("limit"), default=10)
+                msgs = self.service.recent(limit=limit).get("messages") or []
                 shaped = apply_output_controls(
                     msgs,
                     fields=controls["fields"],
@@ -274,7 +285,7 @@ class DaemonServer(socketserver.UnixStreamServer):
                 controls = _extract_controls(params)
                 results = self.service.text_search(
                     query=q,
-                    limit=int(params.get("limit") or 20),
+                    limit=_coerce_limit(params.get("limit"), default=20),
                     since=params.get("since"),
                 ).get("results") or []
                 shaped = apply_output_controls(
@@ -291,7 +302,8 @@ class DaemonServer(socketserver.UnixStreamServer):
                 if not isinstance(phone, str) or not phone:
                     raise ValueError("phone is required")
                 controls = _extract_controls(params)
-                msgs = self.service.messages_by_phone(phone=phone, limit=int(params.get("limit") or 20)).get("messages") or []
+                limit = _coerce_limit(params.get("limit"), default=20)
+                msgs = self.service.messages_by_phone(phone=phone, limit=limit).get("messages") or []
                 shaped = apply_output_controls(
                     msgs,
                     fields=controls["fields"],
@@ -388,13 +400,8 @@ def cmd_start(args: argparse.Namespace) -> int:
         try:
             cfg.socket_path.unlink()
         except Exception:
+            # Best-effort cleanup: ignore failure removing stale socket.
             pass
-
-    def _handle_sig(_signum: int, _frame) -> None:
-        try:
-            server.server_close()
-        finally:
-            raise SystemExit(0)
 
     if args.foreground:
         started_at = _now_iso()
@@ -402,6 +409,12 @@ def cmd_start(args: argparse.Namespace) -> int:
         server = DaemonServer(cfg.socket_path, service)
         os.chmod(cfg.socket_path, 0o600)
         cfg.pid_path.write_text(str(os.getpid()))
+
+        def _handle_sig(_signum: int, _frame) -> None:
+            try:
+                server.server_close()
+            finally:
+                raise SystemExit(0)
 
         signal.signal(signal.SIGTERM, _handle_sig)
         signal.signal(signal.SIGINT, _handle_sig)
@@ -411,6 +424,13 @@ def cmd_start(args: argparse.Namespace) -> int:
         return 0
 
     # Minimal detach: use a child process to own the server.
+    if os.name != "posix":
+        print(
+            "Background mode is only supported on Unix-like systems (e.g. macOS). "
+            "Please use --foreground on this platform.",
+            file=sys.stderr,
+        )
+        return 1
     pid = os.fork()
     if pid > 0:
         cfg.pid_path.write_text(str(pid))
@@ -426,12 +446,19 @@ def cmd_start(args: argparse.Namespace) -> int:
             os.dup2(devnull_out.fileno(), 1)
             os.dup2(devnull_out.fileno(), 2)
     except Exception:
+        # Best-effort: if detaching stdio fails, continue with inherited fds.
         pass
 
     started_at = _now_iso()
     service = DaemonService(started_at=started_at, socket_path=cfg.socket_path)
     server = DaemonServer(cfg.socket_path, service)
     os.chmod(cfg.socket_path, 0o600)
+
+    def _handle_sig(_signum: int, _frame) -> None:
+        try:
+            server.server_close()
+        finally:
+            raise SystemExit(0)
 
     signal.signal(signal.SIGTERM, _handle_sig)
     signal.signal(signal.SIGINT, _handle_sig)
@@ -462,6 +489,7 @@ def cmd_stop(args: argparse.Namespace) -> int:
             try:
                 socket_path.unlink()
             except Exception:
+                # Best-effort cleanup of stale socket.
                 pass
         print("not running")
         return 1
@@ -483,11 +511,13 @@ def cmd_stop(args: argparse.Namespace) -> int:
     try:
         pid_path.unlink()
     except Exception:
+        # Best-effort cleanup: ignore missing pidfile or permission issues.
         pass
     try:
         if socket_path.exists():
             socket_path.unlink()
     except Exception:
+        # Best-effort cleanup: stale sockets are handled on next start/stop.
         pass
     print("stopped")
     return 0

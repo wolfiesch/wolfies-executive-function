@@ -221,7 +221,7 @@ python3 Texting/gateway/benchmarks.py --quick --include-daemon --json
 
 Acceptance for “v1 is worth it”:
 - warm call p50 improves vs direct CLI for at least unread/recent/search on the same machine
-- failure rate remains ~100% (no hangs)
+- success rate remains ~100% (no hangs)
 
 ---
 

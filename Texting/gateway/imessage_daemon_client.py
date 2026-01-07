@@ -198,7 +198,18 @@ def main() -> int:
     try:
         resp = _call_daemon(socket_path, req, timeout_s=float(args.timeout))
     except Exception as exc:
-        out = {"ok": False, "error": {"code": "CONNECT_FAILED", "message": str(exc), "details": None}}
+        out = {
+            "ok": False,
+            "error": {
+                "code": "CONNECT_FAILED",
+                "message": str(exc),
+                "details": {
+                    "socket_path": str(socket_path),
+                    "exception_type": type(exc).__name__,
+                    "exception_args": exc.args,
+                },
+            },
+        }
         print(_json_dumps(out, pretty=args.pretty))
         return 2
 
