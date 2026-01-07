@@ -4,32 +4,32 @@
 
 ### 1. Run Setup Script
 ```bash
-cd /Users/wolfgangschoenberger/LIFE-PLANNER/src/integrations/gmail
+cd src/integrations/gmail
 ./setup.sh
 ```
 
 ### 2. Get Google Credentials
 
-**Before running setup.sh, get credentials:**
+Before running setup.sh, get credentials:
 
 1. Visit [Google Cloud Console](https://console.cloud.google.com/apis/credentials)
 2. Create OAuth 2.0 Client ID (Desktop app)
 3. Download as `credentials.json`
-4. Save to: `/Users/wolfgangschoenberger/LIFE-PLANNER/config/google_credentials/credentials.json`
+4. Save to: `config/google_credentials/credentials.json`
 
-**OR share existing Calendar credentials:**
-- If you already have Calendar integration, just use the same `credentials.json`
+Or share existing Calendar credentials:
+- If you already have Calendar integration, reuse the same `credentials.json`
 - Gmail will create its own token file
 
 ### 3. Register with Claude Code
 ```bash
-claude mcp add -t stdio gmail -- python3 /Users/wolfgangschoenberger/LIFE-PLANNER/src/integrations/gmail/server.py
+claude mcp add -t stdio gmail -- python3 src/integrations/gmail/server.py
 ```
 
 ### 4. Verify
 ```bash
 claude mcp list
-# Should show: ✓ gmail (Connected)
+# Should show: gmail (Connected)
 ```
 
 ## First Use
@@ -63,36 +63,33 @@ claude mcp list
 ## Troubleshooting
 
 ### "Gmail client not initialized"
-→ Missing credentials.json. Download from Google Cloud Console.
+-> Missing credentials.json. Download from Google Cloud Console.
 
 ### "Permission denied"
-→ Delete `gmail_token.pickle` and re-authenticate.
+-> Delete `gmail_token.pickle` and re-authenticate.
 
 ### Server not showing
-→ Check: `claude mcp list` and re-register if needed.
+-> Check: `claude mcp list` and re-register if needed.
 
 ### Import errors
-→ Install dependencies: `pip install -r requirements.txt`
+-> Install dependencies: `pip install -r requirements.txt`
 
 ## Files Created
 
 ```
 src/integrations/gmail/
-├── server.py              # MCP server
-├── gmail_client.py        # Gmail API wrapper
-├── __init__.py
-├── requirements.txt       # Dependencies
-├── README.md             # Full documentation
-├── QUICKSTART.md         # This file
-├── setup.sh              # Automated setup
-└── test_gmail.py         # Test script
-
-.claude/skills/managing-gmail/
-└── SKILL.md              # Skill documentation
+|-- server.py              # MCP server
+|-- gmail_client.py        # Gmail API wrapper
+|-- __init__.py
+|-- requirements.txt       # Dependencies
+|-- README.md             # Full documentation
+|-- QUICKSTART.md         # This file
+|-- setup.sh              # Automated setup
+`-- test_gmail.py         # Test script
 
 config/google_credentials/
-├── credentials.json      # OAuth client (you provide)
-└── gmail_token.pickle    # Auto-generated token
+|-- credentials.json      # OAuth client (you provide)
+`-- gmail_token.pickle    # Auto-generated token
 ```
 
 ## Advanced Usage
@@ -130,15 +127,14 @@ label:important
 
 - Test with: `python test_gmail.py`
 - Read full docs: `README.md`
-- See skill triggers: `.claude/skills/managing-gmail/SKILL.md`
 - Integrate with Life Planner CRM and tasks
 
 ## Support
 
-Check logs: `/Users/wolfgangschoenberger/LIFE-PLANNER/logs/gmail.log`
+Check logs: `logs/gmail.log`
 
 ---
 
 **Setup Time:** 5 minutes
-**Dependencies:** Python 3.8+, Google Cloud account
+**Dependencies:** Python 3.9+, Google Cloud account
 **Status:** Production ready

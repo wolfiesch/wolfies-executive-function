@@ -23,7 +23,7 @@ pip install -r requirements.txt
 
 ### 2. Set Up Google Calendar API
 
-Run the setup script which will guide you through:
+Run the setup script (from repo root) which will guide you through:
 - Creating a Google Cloud Console project
 - Enabling the Google Calendar API
 - Setting up OAuth2 credentials
@@ -39,7 +39,7 @@ Follow the detailed instructions provided by the script.
 
 ```bash
 claude mcp add -t stdio google-calendar -- \
-  python3 /Users/wolfgangschoenberger/LIFE-PLANNER/src/integrations/google_calendar/server.py
+  python3 src/integrations/google_calendar/server.py
 ```
 
 ### 4. Restart Claude Code
@@ -132,9 +132,6 @@ config/google_credentials/
 
 scripts/
 └── setup_google_oauth.py  # Setup wizard
-
-.claude/skills/managing-google-calendar/
-└── SKILL.md          # Claude skill documentation
 
 logs/
 └── google_calendar.log  # Server logs

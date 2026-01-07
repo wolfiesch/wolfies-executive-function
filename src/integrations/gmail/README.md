@@ -1,25 +1,16 @@
 # Gmail MCP Integration
 
-> **⚠️ WARNING - DO NOT USE THIS INTEGRATION ⚠️**
+> **Local Gmail MCP (primary integration)**  
+> This server provides Gmail access via local OAuth credentials.
 >
-> **This local Gmail MCP is NOT CONFIGURED and should NOT be used.**
+> **Setup required:** Google Cloud Console credentials + OAuth token (see below).
 >
-> **USE RUBE/COMPOSIO INSTEAD:**
-> - The project already has a **FULLY WORKING** Gmail integration via Rube/Composio
-> - Connected account: `wolfgangs2000@gmail.com`
-> - Access via: `RUBE_SEARCH_TOOLS` → `RUBE_MULTI_EXECUTE_TOOL`
-> - Tools: `GMAIL_FETCH_EMAILS`, `GMAIL_SEND_EMAIL`, `GMAIL_SEARCH_EMAILS`, etc.
+> **Tools exposed:** `mcp__gmail__*` (list, search, read, send, unread count).
 >
-> **Why this shows as "Connected" in `claude mcp list`:**
-> - The MCP server is *registered* but NOT *configured* (missing credentials)
-> - "Connected" only means the server process starts, not that it's authenticated
+> **Using Rube/Composio instead?** See `src/integrations/INTEGRATION_GUIDE.md`.
 >
-> **When to use this local MCP:**
-> - ONLY if you explicitly want a separate, local-only Gmail integration
-> - Requires Google Cloud Console setup and OAuth credentials
-> - See setup instructions below
->
-> **For normal Gmail operations, see:** `CLAUDE.md` → Integration Guidelines → Gmail Integration
+> **Note on `claude mcp list`:** "Connected" only means the server starts; it does not confirm auth.
+> Check `logs/gmail.log` if tools fail.
 >
 > ---
 
@@ -38,7 +29,7 @@ Gmail MCP server for the Life Planner project. Provides email management capabil
 ### 1. Install Dependencies
 
 ```bash
-cd /Users/wolfgangschoenberger/LIFE-PLANNER/src/integrations/gmail
+cd src/integrations/gmail
 pip install -r requirements.txt
 ```
 
@@ -60,17 +51,15 @@ pip install -r requirements.txt
 ### 3. Install Credentials
 
 ```bash
-# Create credentials directory
-mkdir -p /Users/wolfgangschoenberger/LIFE-PLANNER/config/google_credentials
-
-# Copy downloaded credentials
-cp ~/Downloads/client_secret_*.json /Users/wolfgangschoenberger/LIFE-PLANNER/config/google_credentials/credentials.json
+# From repo root
+mkdir -p config/google_credentials
+cp ~/Downloads/client_secret_*.json config/google_credentials/credentials.json
 ```
 
 ### 4. Register MCP Server with Claude Code
 
 ```bash
-claude mcp add -t stdio gmail -- python3 /Users/wolfgangschoenberger/LIFE-PLANNER/src/integrations/gmail/server.py
+claude mcp add -t stdio gmail -- python3 src/integrations/gmail/server.py
 ```
 
 ### 5. First Run - OAuth Flow
@@ -214,7 +203,7 @@ The server requests these Gmail API scopes:
 ```bash
 # Remove and re-add
 claude mcp remove gmail
-claude mcp add -t stdio gmail -- python3 /Users/wolfgangschoenberger/LIFE-PLANNER/src/integrations/gmail/server.py
+claude mcp add -t stdio gmail -- python3 src/integrations/gmail/server.py
 ```
 
 ### Import errors
@@ -237,8 +226,8 @@ pip install -r requirements.txt
 
 ```bash
 # Set restrictive permissions on credentials
-chmod 600 /Users/wolfgangschoenberger/LIFE-PLANNER/config/google_credentials/credentials.json
-chmod 600 /Users/wolfgangschoenberger/LIFE-PLANNER/config/google_credentials/gmail_token.pickle
+chmod 600 config/google_credentials/credentials.json
+chmod 600 config/google_credentials/gmail_token.pickle
 
 # Add to .gitignore
 echo "config/google_credentials/*.json" >> .gitignore
