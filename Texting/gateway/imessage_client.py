@@ -25,13 +25,20 @@ import sys
 import argparse
 import json
 import atexit
-from datetime import datetime
+from datetime import datetime, timedelta
 from pathlib import Path
+from typing import Any
 
 # Add parent directory to path for imports
 SCRIPT_DIR = Path(__file__).parent
 REPO_ROOT = SCRIPT_DIR.parent
 sys.path.insert(0, str(REPO_ROOT))
+
+# Import version
+try:
+    from gateway.__version__ import __version__
+except ImportError:
+    __version__ = "4.0.0"
 
 try:
     from src.messages_interface import MessagesInterface
@@ -47,6 +54,54 @@ CONTACTS_CONFIG = REPO_ROOT / "config" / "contacts.json"
 
 # Valid RAG sources (single source of truth)
 VALID_RAG_SOURCES = ['imessage', 'superwhisper', 'notes', 'local', 'gmail', 'slack', 'calendar']
+
+from gateway.output_utils import apply_output_controls, parse_fields
+
+
+def _emit_json(data: Any, args, *, default_fields: list[str] | None = None) -> None:
+    fields = parse_fields(getattr(args, "fields", None))
+    max_text_chars = getattr(args, "max_text_chars", None)
+    compact = bool(getattr(args, "compact", False))
+    minimal = bool(getattr(args, "minimal", False))
+
+    payload = apply_output_controls(
+        data,
+        fields=fields,
+        max_text_chars=max_text_chars,
+        compact=compact,
+        minimal=minimal,
+        default_fields=default_fields,
+    )
+
+    if compact or minimal:
+        print(json.dumps(payload, separators=(",", ":"), default=str))
+    else:
+        print(json.dumps(payload, indent=2, default=str))
+
+
+def _add_output_args(parser: argparse.ArgumentParser) -> None:
+    """Add LLM-friendly output controls for JSON output."""
+    parser.add_argument(
+        "--compact",
+        action="store_true",
+        help="Minify JSON and include fewer fields (reduces token cost).",
+    )
+    parser.add_argument(
+        "--minimal",
+        action="store_true",
+        help="LLM-minimal JSON preset (compact + default fields + text truncation).",
+    )
+    parser.add_argument(
+        "--fields",
+        help="Comma-separated list of JSON fields to include (overrides --compact defaults).",
+    )
+    parser.add_argument(
+        "--max-text-chars",
+        dest="max_text_chars",
+        type=int,
+        default=None,
+        help="Truncate large text fields in JSON output (e.g., 200).",
+    )
 
 
 def get_interfaces():
@@ -142,7 +197,11 @@ def cmd_find(args):
         messages = mi.get_messages_by_phone(contact.phone, limit=args.limit)
 
     if args.json:
-        print(json.dumps(messages, indent=2, default=str))
+        _emit_json(
+            messages,
+            args,
+            default_fields=["date", "is_from_me", "text", "match_snippet", "group_id"],
+        )
     else:
         print(f"Messages with {contact.name} ({contact.phone}):")
         print("-" * 60)
@@ -168,7 +227,11 @@ def cmd_messages(args):
     messages = mi.get_messages_by_phone(contact.phone, limit=args.limit)
 
     if args.json:
-        print(json.dumps(messages, indent=2, default=str))
+        _emit_json(
+            messages,
+            args,
+            default_fields=["date", "is_from_me", "text", "group_id"],
+        )
     else:
         if not messages:
             print("No messages found.")
@@ -189,7 +252,11 @@ def cmd_recent(args):
     conversations = mi.get_all_recent_conversations(limit=args.limit)
 
     if args.json:
-        print(json.dumps(conversations, indent=2, default=str))
+        _emit_json(
+            conversations,
+            args,
+            default_fields=["date", "is_from_me", "phone", "text", "group_id"],
+        )
     else:
         if not conversations:
             print("No recent conversations found.")
@@ -211,9 +278,17 @@ def cmd_unread(args):
     mi, _ = get_interfaces()
 
     messages = mi.get_unread_messages(limit=args.limit)
+    # Guard against time-skew producing negative values.
+    for m in messages:
+        if isinstance(m, dict) and isinstance(m.get("days_old"), int) and m["days_old"] < 0:
+            m["days_old"] = 0
 
     if args.json:
-        print(json.dumps(messages, indent=2, default=str))
+        _emit_json(
+            messages,
+            args,
+            default_fields=["date", "phone", "text", "days_old", "group_id", "group_name"],
+        )
     else:
         if not messages:
             print("No unread messages.")
@@ -222,10 +297,216 @@ def cmd_unread(args):
         print(f"Unread Messages ({len(messages)}):")
         print("-" * 60)
         for m in messages:
-            sender = m.get('sender', 'Unknown')
+            sender = m.get("group_name") or m.get("phone", "Unknown")
             text = m.get('text', '[media]') or '[media]'
             print(f"{sender}: {text[:150]}")
 
+    return 0
+
+
+def cmd_text_search(args):
+    """Fast text search across all messages (no embeddings)."""
+    mi, cm = get_interfaces()
+
+    phone = None
+    if args.contact:
+        contact = resolve_contact(cm, args.contact)
+        if not contact:
+            return handle_contact_not_found(args.contact, cm)
+        phone = contact.phone
+
+    since = None
+    if args.since:
+        since = parse_date_arg(args.since)
+    if args.days is not None:
+        since = datetime.now() - timedelta(days=args.days)
+
+    results = mi.search_messages(
+        query=args.query,
+        phone=phone,
+        limit=args.limit,
+        since=since,
+    )
+
+    if args.json:
+        _emit_json(
+            results,
+            args,
+            default_fields=["date", "is_from_me", "phone", "text", "match_snippet", "group_id"],
+        )
+    else:
+        if not results:
+            print("No matches.")
+            return 0
+
+        print(f"Matches ({len(results)}):")
+        print("-" * 60)
+        for r in results:
+            phone_val = r.get("phone", "unknown")
+            text = r.get("text") or "[message]"
+            date = r.get("date") or ""
+            snippet = r.get("match_snippet") or text
+            print(f"{date} | {phone_val}: {snippet[:160]}")
+
+    return 0
+
+
+def cmd_bundle(args):
+    """
+    Run a canonical “LLM end-to-end” workload bundle in a single tool call.
+
+    Motivation:
+    - LLM tool runners often pay significant overhead per tool invocation
+      (process spawn, imports, stdout capture, JSON parsing).
+    - Bundling common reads into one call reduces total latency and token cost.
+
+    Bundle contents (read-only):
+    - unread_count + unread_messages (bounded)
+    - recent messages (bounded)
+    - optional: keyword text search (bounded)
+    - optional: last N messages for a specific contact (bounded)
+    """
+    mi, cm = get_interfaces()
+
+    include_raw = getattr(args, "include", None)
+    include = None
+    if include_raw:
+        include = {s.strip() for s in include_raw.split(",") if s.strip()}
+        allowed = {"meta", "unread_count", "unread_messages", "recent", "search", "contact_messages"}
+        unknown = sorted(include - allowed)
+        if unknown:
+            print(f"Error: Unknown bundle section(s): {', '.join(unknown)}", file=sys.stderr)
+            print("Valid sections: meta, unread_count, unread_messages, recent, search, contact_messages", file=sys.stderr)
+            return 1
+        include.add("meta")  # always emit meta
+
+    contact = None
+    phone = None
+    if args.contact:
+        contact = resolve_contact(cm, args.contact)
+        if not contact:
+            return handle_contact_not_found(args.contact, cm)
+        phone = contact.phone
+
+    since = None
+    if args.since:
+        since = parse_date_arg(args.since)
+    if args.days is not None:
+        since = datetime.now() - timedelta(days=args.days)
+
+    unread_count = mi.get_unread_count() if (include is None or "unread_count" in include) else None
+    unread_messages = mi.get_unread_messages(limit=args.unread_limit) if (include is None or "unread_messages" in include) else None
+    # Guard against time-skew producing negative values.
+    if unread_messages:
+        for m in unread_messages:
+            if isinstance(m, dict) and isinstance(m.get("days_old"), int) and m["days_old"] < 0:
+                m["days_old"] = 0
+
+    recent = mi.get_all_recent_conversations(limit=args.recent_limit) if (include is None or "recent" in include) else None
+
+    search_results = None
+    if args.query and (include is None or "search" in include):
+        search_results = mi.search_messages(
+            query=args.query,
+            phone=phone if (phone and args.search_scoped_to_contact) else None,
+            limit=args.search_limit,
+            since=since,
+        )
+
+    contact_messages = None
+    if phone and args.messages_limit and (include is None or "contact_messages" in include):
+        contact_messages = mi.get_messages_by_phone(phone, limit=args.messages_limit)
+
+    fields = parse_fields(getattr(args, "fields", None))
+    max_text_chars = getattr(args, "max_text_chars", None)
+    compact = bool(getattr(args, "compact", False))
+    minimal = bool(getattr(args, "minimal", False))
+
+    payload: dict[str, Any] = {
+        "meta": {
+            "generated_at": datetime.now().isoformat(),
+            "contact": {"name": contact.name, "phone": contact.phone} if contact else None,
+            "query": args.query,
+            "since": since.isoformat() if since else None,
+            "limits": {
+                "unread_limit": args.unread_limit,
+                "recent_limit": args.recent_limit,
+                "search_limit": args.search_limit,
+                "messages_limit": args.messages_limit,
+            },
+            "search_scoped_to_contact": bool(phone) and bool(args.search_scoped_to_contact),
+        }
+    }
+
+    if unread_count is not None or unread_messages is not None:
+        payload["unread"] = {}
+        if unread_count is not None:
+            payload["unread"]["count"] = unread_count
+        if unread_messages is not None:
+            payload["unread"]["messages"] = apply_output_controls(
+                unread_messages,
+                fields=fields,
+                max_text_chars=max_text_chars,
+                compact=compact,
+                minimal=minimal,
+                default_fields=["date", "phone", "text", "days_old", "group_id", "group_name"],
+            )
+
+    if recent is not None:
+        payload["recent"] = apply_output_controls(
+            recent,
+            fields=fields,
+            max_text_chars=max_text_chars,
+            compact=compact,
+            minimal=minimal,
+            default_fields=["date", "is_from_me", "phone", "text", "group_id"],
+        )
+
+    if search_results is not None:
+        payload["search"] = {
+            "results": apply_output_controls(
+                search_results,
+                fields=fields,
+                max_text_chars=max_text_chars,
+                compact=compact,
+                minimal=minimal,
+                default_fields=["date", "is_from_me", "phone", "text", "match_snippet", "group_id"],
+            )
+        }
+
+    if phone and contact_messages is not None:
+        payload["contact_messages"] = {
+            "messages": apply_output_controls(
+                contact_messages,
+                fields=fields,
+                max_text_chars=max_text_chars,
+                compact=compact,
+                minimal=minimal,
+                default_fields=["date", "is_from_me", "text", "group_id"],
+            )
+        }
+
+    if args.json:
+        if compact or minimal:
+            print(json.dumps(payload, separators=(",", ":"), default=str))
+        else:
+            print(json.dumps(payload, indent=2, default=str))
+        return 0
+
+    print("Bundle Summary")
+    print("-" * 60)
+    if unread_count is not None:
+        print(f"Unread count: {unread_count}")
+    if unread_messages is not None:
+        print(f"Unread messages: {len(unread_messages)} shown")
+    if recent is not None:
+        print(f"Recent: {len(recent)} messages")
+    if args.query:
+        print(f"Search '{args.query}': {len(search_results or [])} matches")
+    if contact:
+        print(f"Contact: {contact.name} ({contact.phone})")
+        if contact_messages:
+            print(f"Last messages: {len(contact_messages)}")
     return 0
 
 
@@ -1693,6 +1974,8 @@ Examples:
         """
     )
 
+    parser.add_argument('--version', action='version', version=f'%(prog)s {__version__}')
+
     subparsers = parser.add_subparsers(dest='command', help='Command to run')
 
     # find command (keyword search in messages)
@@ -1702,7 +1985,46 @@ Examples:
     p_find.add_argument('--limit', '-l', type=int, default=30, choices=range(1, 501), metavar='N',
                         help='Max messages to return (1-500, default: 30)')
     p_find.add_argument('--json', action='store_true', help='Output as JSON')
+    _add_output_args(p_find)
     p_find.set_defaults(func=cmd_find)
+
+    # text-search command (global, non-embedding search)
+    p_text_search = subparsers.add_parser('text-search', help='Fast text search across all messages (no embeddings)')
+    p_text_search.add_argument('query', help='Search query (keyword or phrase)')
+    p_text_search.add_argument('--contact', help='Optional contact name to filter results')
+    p_text_search.add_argument('--limit', '-l', type=int, default=50, choices=range(1, 501), metavar='N',
+                               help='Max results (1-500, default: 50)')
+    p_text_search.add_argument('--days', type=int, default=None, choices=range(1, 366), metavar='N',
+                               help='Only search messages from the last N days (1-365)')
+    p_text_search.add_argument('--since', help='Only search messages on/after YYYY-MM-DD')
+    p_text_search.add_argument('--json', action='store_true', help='Output as JSON')
+    _add_output_args(p_text_search)
+    p_text_search.set_defaults(func=cmd_text_search)
+
+    # bundle command (canonical workload bundle)
+    p_bundle = subparsers.add_parser('bundle', help='Run a canonical LLM workload bundle in one call')
+    p_bundle.add_argument('--contact', help='Optional contact name to include contact-specific data')
+    p_bundle.add_argument('--query', help='Optional keyword search query to include search results')
+    p_bundle.add_argument('--days', type=int, default=None, choices=range(1, 366), metavar='N',
+                          help='Only search messages from the last N days (1-365)')
+    p_bundle.add_argument('--since', help='Only search messages on/after YYYY-MM-DD')
+    p_bundle.add_argument('--unread-limit', type=int, default=20, choices=range(1, 501), metavar='N',
+                          help='Unread messages to include (1-500, default: 20)')
+    p_bundle.add_argument('--recent-limit', type=int, default=10, choices=range(1, 501), metavar='N',
+                          help='Recent messages to include (1-500, default: 10)')
+    p_bundle.add_argument('--search-limit', type=int, default=20, choices=range(1, 501), metavar='N',
+                          help='Search results to include (1-500, default: 20)')
+    p_bundle.add_argument('--messages-limit', type=int, default=20, choices=range(0, 501), metavar='N',
+                          help='Messages to include for contact_messages (0 disables, default: 20)')
+    p_bundle.add_argument('--search-scoped-to-contact', action='store_true',
+                          help='When --contact is provided, scope keyword search to that contact')
+    p_bundle.add_argument(
+        '--include',
+        help='Comma-separated bundle sections to include: meta,unread_count,unread_messages,recent,search,contact_messages',
+    )
+    p_bundle.add_argument('--json', action='store_true', help='Output as JSON')
+    _add_output_args(p_bundle)
+    p_bundle.set_defaults(func=cmd_bundle)
 
     # messages command
     p_messages = subparsers.add_parser('messages', help='Get messages with a contact')
@@ -1710,6 +2032,7 @@ Examples:
     p_messages.add_argument('--limit', '-l', type=int, default=20, choices=range(1, 501), metavar='N',
                             help='Max messages (1-500, default: 20)')
     p_messages.add_argument('--json', action='store_true', help='Output as JSON')
+    _add_output_args(p_messages)
     p_messages.set_defaults(func=cmd_messages)
 
     # recent command
@@ -1717,6 +2040,7 @@ Examples:
     p_recent.add_argument('--limit', '-l', type=int, default=10, choices=range(1, 501), metavar='N',
                           help='Max conversations (1-500, default: 10)')
     p_recent.add_argument('--json', action='store_true', help='Output as JSON')
+    _add_output_args(p_recent)
     p_recent.set_defaults(func=cmd_recent)
 
     # unread command
@@ -1724,6 +2048,7 @@ Examples:
     p_unread.add_argument('--limit', '-l', type=int, default=20, choices=range(1, 501), metavar='N',
                           help='Max messages (1-500, default: 20)')
     p_unread.add_argument('--json', action='store_true', help='Output as JSON')
+    _add_output_args(p_unread)
     p_unread.set_defaults(func=cmd_unread)
 
     # send command

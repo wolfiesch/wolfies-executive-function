@@ -142,7 +142,7 @@ Returns best score normalized to 0-1.
 
 | File | Purpose |
 |------|---------|
-| `gateway/imessage_client.py` | Gateway CLI entry point (27 commands) |
+| `gateway/imessage_client.py` | Gateway CLI entry point |
 | `src/messages_interface.py` | AppleScript send + chat.db read |
 | `src/contacts_manager.py` | Contact lookup from JSON config |
 | `src/contacts_sync.py` | macOS Contacts sync + fuzzy matching |
@@ -160,7 +160,7 @@ The unified RAG system supports semantic search across multiple sources:
 - **superwhisper**: Voice note transcriptions
 - **notes**: Markdown documents
 - **local**: Both superwhisper + notes
-- **gmail/slack/calendar**: Via Rube integration (pre-fetched data)
+- **gmail/slack/calendar**: Optional external sources (requires integration + pre-fetch)
 
 ### Incremental Indexing
 
