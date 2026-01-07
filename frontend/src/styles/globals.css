@@ -374,6 +374,11 @@ pre {
   animation: confetti-fall 2s ease-out forwards;
 }
 
+.confetti-piece {
+  left: var(--confetti-x, 0%);
+  animation-delay: var(--confetti-delay, 0s);
+}
+
 /* Confetti spin animation */
 @keyframes confetti-spin {
   0%, 100% {
@@ -392,6 +397,11 @@ pre {
 
 .animate-confetti-spin {
   animation: confetti-spin 0.6s linear infinite;
+}
+
+.confetti-inner {
+  background-color: var(--confetti-color, var(--color-accent-blue));
+  border-radius: 2px;
 }
 
 /* Button ripple effect */

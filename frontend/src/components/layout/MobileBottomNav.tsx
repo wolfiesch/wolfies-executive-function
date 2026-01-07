@@ -42,7 +42,7 @@ export function MobileBottomNav() {
         <nav
             className={cn(
                 'fixed bottom-0 left-0 right-0 z-50 lg:hidden',
-                'border-t border-[var(--color-border-subtle)] bg-[var(--color-bg-secondary)]',
+                'border-t border-border-subtle bg-bg-secondary',
                 'pb-safe' // Safe area for notched phones
             )}
             aria-label="Mobile navigation"
@@ -63,15 +63,15 @@ export function MobileBottomNav() {
                                 'flex flex-col items-center gap-1 px-3 py-1.5 rounded-lg min-w-[64px]',
                                 'transition-colors touch-manipulation',
                                 isActive
-                                    ? 'text-[var(--color-accent-blue)]'
-                                    : 'text-[var(--color-text-tertiary)]'
+                                    ? 'text-(--color-accent-blue)'
+                                    : 'text-(--color-text-tertiary)'
                             )}
                             aria-current={isActive ? 'page' : undefined}
                         >
                             <Icon
                                 className={cn(
                                     'h-6 w-6',
-                                    isActive && 'text-[var(--color-accent-blue)]'
+                                    isActive && 'text-(--color-accent-blue)'
                                 )}
                                 aria-hidden="true"
                             />
