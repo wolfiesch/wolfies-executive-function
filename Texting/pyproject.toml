@@ -41,7 +41,7 @@ Repository = "https://github.com/wolfiesch/wolfies-imessage-gateway"
 Benchmark = "https://github.com/wolfiesch/wolfies-imessage-gateway/blob/main/PERFORMANCE_COMPARISON.md"
 
 [tool.hatch.build.targets.wheel]
-packages = ["gateway", "src"]
+packages = ["gateway"]
 include = ["config/**", "skills/**"]
 
 [tool.hatch.version]
