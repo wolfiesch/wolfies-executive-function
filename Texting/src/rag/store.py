@@ -38,7 +38,9 @@ def _get_chromadb():
             _chromadb = chromadb
         except ImportError:
             raise ImportError(
-                "ChromaDB not installed. Run: pip install chromadb"
+                "ChromaDB not installed. Install the RAG extras:\n"
+                "  pip install 'wolfies-imessage-gateway[rag]'\n"
+                "(or install chromadb directly)."
             )
     return _chromadb
 
@@ -111,8 +113,9 @@ class EmbeddingProvider:
             _sentence_transformers = SentenceTransformer
         except ImportError:
             raise ImportError(
-                "sentence-transformers not installed. "
-                "Run: pip install sentence-transformers"
+                "sentence-transformers not installed. Install the RAG extras:\n"
+                "  pip install 'wolfies-imessage-gateway[rag]'\n"
+                "(or install sentence-transformers directly)."
             )
 
         self.client = _sentence_transformers(self.model)
