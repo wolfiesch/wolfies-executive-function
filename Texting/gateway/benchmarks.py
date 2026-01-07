@@ -22,10 +22,13 @@ import json
 import subprocess
 import statistics
 import sqlite3
+import tempfile
+import socket
 from pathlib import Path
-from typing import Dict, List, Any
+from typing import Dict, List, Any, Optional
 from dataclasses import dataclass, asdict
 import argparse
+import math
 
 # Project paths
 SCRIPT_DIR = Path(__file__).parent
@@ -33,6 +36,8 @@ REPO_ROOT = SCRIPT_DIR.parent
 sys.path.insert(0, str(REPO_ROOT))
 
 CLI_PATH = SCRIPT_DIR / "imessage_client.py"
+DAEMON_PATH = SCRIPT_DIR / "imessage_daemon.py"
+DAEMON_CLIENT_PATH = SCRIPT_DIR / "imessage_daemon_client.py"
 
 
 @dataclass
@@ -43,10 +48,13 @@ class BenchmarkResult:
     iterations: int
     mean_ms: float
     median_ms: float
+    p95_ms: float
     min_ms: float
     max_ms: float
     std_dev_ms: float
     success_rate: float
+    stdout_bytes_mean: Optional[float] = None
+    approx_tokens_mean: Optional[float] = None
 
 
 @dataclass
@@ -86,6 +94,36 @@ def run_cli_command(cmd: List[str], timeout: int = 30) -> tuple[float, bool, str
         return elapsed, False, str(e)
 
 
+def run_external_command(cmd: List[str], timeout: int = 30) -> tuple[float, bool, str]:
+    """
+    Run an arbitrary command and measure execution time.
+
+    This is used for daemon benchmarks where the executable is not CLI_PATH.
+
+    Returns:
+        (execution_time_ms, success, output)
+    """
+    start = time.perf_counter()
+    try:
+        result = subprocess.run(
+            cmd,
+            capture_output=True,
+            text=True,
+            timeout=timeout,
+            cwd=str(REPO_ROOT),
+        )
+        elapsed = (time.perf_counter() - start) * 1000
+        success = result.returncode == 0
+        output = result.stdout if success else result.stderr
+        return elapsed, success, output
+    except subprocess.TimeoutExpired:
+        elapsed = (time.perf_counter() - start) * 1000
+        return elapsed, False, "TIMEOUT"
+    except Exception as e:  # pragma: no cover - defensive
+        elapsed = (time.perf_counter() - start) * 1000
+        return elapsed, False, str(e)
+
+
 def benchmark_command(
     name: str,
     description: str,
@@ -108,14 +146,24 @@ def benchmark_command(
 
     timings = []
     successes = 0
+    stdout_sizes: List[int] = []
 
-    for i in range(iterations):
-        elapsed, success, _ = run_cli_command(cmd)
+    for _ in range(iterations):
+        elapsed, success, output = run_cli_command(cmd)
         timings.append(elapsed)
         if success:
             successes += 1
+            # Capture output size in bytes (tool-runner + LLM-facing cost proxy).
+            # run_cli_command already captured stdout as text; estimate bytes via utf-8.
+            stdout_sizes.append(len((output or "").encode("utf-8", errors="ignore")))
 
     success_rate = (successes / iterations) * 100
+
+    sorted_timings = sorted(timings)
+    p95_idx = int(math.ceil(0.95 * len(sorted_timings))) - 1 if sorted_timings else 0
+    p95_ms = sorted_timings[max(0, min(p95_idx, len(sorted_timings) - 1))] if sorted_timings else 0.0
+    stdout_bytes_mean = statistics.mean(stdout_sizes) if stdout_sizes else None
+    approx_tokens_mean = math.ceil(stdout_bytes_mean / 4.0) if stdout_bytes_mean is not None else None
 
     result = BenchmarkResult(
         name=name,
@@ -123,14 +171,90 @@ def benchmark_command(
         iterations=iterations,
         mean_ms=statistics.mean(timings),
         median_ms=statistics.median(timings),
+        p95_ms=p95_ms,
         min_ms=min(timings),
         max_ms=max(timings),
         std_dev_ms=statistics.stdev(timings) if len(timings) > 1 else 0,
-        success_rate=success_rate
+        success_rate=success_rate,
+        stdout_bytes_mean=stdout_bytes_mean,
+        approx_tokens_mean=approx_tokens_mean,
     )
 
     print(f"✓ (mean: {result.mean_ms:.2f}ms, success: {success_rate:.0f}%)")
     return result
+
+
+def _daemon_probe_health(socket_path: Path, timeout_s: float = 0.2) -> bool:
+    """
+    Lightweight health probe without spawning a client process.
+
+    This measures daemon readiness more directly than shelling out to a client.
+    """
+    try:
+        with socket.socket(socket.AF_UNIX, socket.SOCK_STREAM) as s:
+            s.settimeout(timeout_s)
+            s.connect(str(socket_path))
+            s.sendall(b'{"id":"bench","v":1,"method":"health","params":{}}\n')
+            buf = s.recv(4096)
+        if not buf:
+            return False
+        line = buf.split(b"\n", 1)[0]
+        resp = json.loads(line.decode("utf-8"))
+        return bool(resp.get("ok"))
+    except Exception:
+        return False
+
+
+def _start_daemon_for_bench(*, socket_path: Path, pidfile_path: Path, timeout_s: float = 5.0) -> float:
+    """
+    Start the daemon and block until it's ready.
+
+    Returns:
+        time_to_ready_ms
+    """
+    start = time.perf_counter()
+    proc = subprocess.run(
+        [
+            "python3",
+            str(DAEMON_PATH),
+            "--socket",
+            str(socket_path),
+            "--pidfile",
+            str(pidfile_path),
+            "start",
+        ],
+        capture_output=True,
+        text=True,
+        timeout=max(2.0, timeout_s),
+        cwd=str(REPO_ROOT),
+    )
+    if proc.returncode != 0:
+        raise RuntimeError((proc.stderr or proc.stdout or "failed to start daemon").strip())
+
+    deadline = time.time() + timeout_s
+    while time.time() < deadline:
+        if socket_path.exists() and _daemon_probe_health(socket_path):
+            return (time.perf_counter() - start) * 1000
+        time.sleep(0.02)
+    raise TimeoutError("daemon did not become ready in time")
+
+
+def _stop_daemon_for_bench(*, socket_path: Path, pidfile_path: Path) -> None:
+    subprocess.run(
+        [
+            "python3",
+            str(DAEMON_PATH),
+            "--socket",
+            str(socket_path),
+            "--pidfile",
+            str(pidfile_path),
+            "stop",
+        ],
+        stdout=subprocess.DEVNULL,
+        stderr=subprocess.DEVNULL,
+        timeout=5,
+        cwd=str(REPO_ROOT),
+    )
 
 
 def run_cli_command_quiet(cmd: List[str], timeout: int = 30) -> tuple[float, bool]:
@@ -186,6 +310,7 @@ def benchmark_command_quiet(
         iterations=iterations,
         mean_ms=statistics.mean(timings),
         median_ms=statistics.median(timings),
+        p95_ms=sorted(timings)[max(0, min(int(math.ceil(0.95 * len(timings))) - 1, len(timings) - 1))] if timings else 0.0,
         min_ms=min(timings),
         max_ms=max(timings),
         std_dev_ms=statistics.stdev(timings) if len(timings) > 1 else 0,
@@ -318,6 +443,164 @@ def benchmark_search_large(iterations: int = 5) -> BenchmarkResult:
         cmd=["recent", "--limit", "200"],
         iterations=iterations
     )
+
+def benchmark_bundle(iterations: int = 10) -> BenchmarkResult:
+    """Benchmark the canonical bundle workload (single-call LLM read path)."""
+    return benchmark_command(
+        name="bundle_compact",
+        description="Bundle (unread+recent+search) with compact JSON output",
+        cmd=[
+            "bundle",
+            "--json",
+            "--compact",
+            "--unread-limit", "20",
+            "--recent-limit", "10",
+            "--query", "http",
+            "--search-limit", "20",
+            "--max-text-chars", "120",
+        ],
+        iterations=iterations,
+    )
+
+
+def benchmark_daemon_bundle(iterations: int = 10) -> List[BenchmarkResult]:
+    """
+    Benchmark canonical read workloads via the daemon.
+
+    This measures:
+    - one-time daemon startup (time-to-ready)
+    - warm per-call end-to-end cost (python client spawn + socket + daemon + stdout capture)
+    """
+
+    def _benchmark_daemon_client_cmd(
+        *,
+        name: str,
+        description: str,
+        cmd: List[str],
+        iterations: int,
+        timeout: int = 30,
+    ) -> BenchmarkResult:
+        print(f"Running: {name} (warm) ({iterations} iterations)...", end=" ", flush=True)
+        timings: List[float] = []
+        successes = 0
+        stdout_sizes: List[int] = []
+
+        for _ in range(iterations):
+            elapsed, ok, output = run_external_command(cmd, timeout=timeout)
+            timings.append(elapsed)
+            if ok:
+                successes += 1
+                stdout_sizes.append(len((output or "").encode("utf-8", errors="ignore")))
+
+        success_rate = (successes / iterations) * 100 if iterations > 0 else 0.0
+        sorted_timings = sorted(timings)
+        p95_idx = int(math.ceil(0.95 * len(sorted_timings))) - 1 if sorted_timings else 0
+        p95_ms = sorted_timings[max(0, min(p95_idx, len(sorted_timings) - 1))] if sorted_timings else 0.0
+        stdout_bytes_mean = statistics.mean(stdout_sizes) if stdout_sizes else None
+        approx_tokens_mean = math.ceil(stdout_bytes_mean / 4.0) if stdout_bytes_mean is not None else None
+
+        result = BenchmarkResult(
+            name=name,
+            description=description,
+            iterations=iterations,
+            mean_ms=statistics.mean(timings) if timings else 0.0,
+            median_ms=statistics.median(timings) if timings else 0.0,
+            p95_ms=p95_ms,
+            min_ms=min(timings) if timings else 0.0,
+            max_ms=max(timings) if timings else 0.0,
+            std_dev_ms=statistics.stdev(timings) if len(timings) > 1 else 0.0,
+            success_rate=success_rate,
+            stdout_bytes_mean=stdout_bytes_mean,
+            approx_tokens_mean=approx_tokens_mean,
+        )
+        print(f"✓ (mean: {result.mean_ms:.2f}ms, success: {success_rate:.0f}%)")
+        return result
+
+    with tempfile.TemporaryDirectory(prefix="wolfies-imessage-daemon-", dir="/tmp") as d:
+        dpath = Path(d)
+        socket_path = dpath / "daemon.sock"
+        pid_path = dpath / "daemon.pid"
+
+        time_to_ready_ms = _start_daemon_for_bench(socket_path=socket_path, pidfile_path=pid_path, timeout_s=8.0)
+
+        try:
+            startup_result = BenchmarkResult(
+                name="daemon_startup_ready",
+                description="Daemon startup: time-to-ready (health probe)",
+                iterations=1,
+                mean_ms=time_to_ready_ms,
+                median_ms=time_to_ready_ms,
+                p95_ms=time_to_ready_ms,
+                min_ms=time_to_ready_ms,
+                max_ms=time_to_ready_ms,
+                std_dev_ms=0.0,
+                success_rate=100.0,
+            )
+
+            base = [
+                "python3",
+                str(DAEMON_CLIENT_PATH),
+                "--socket",
+                str(socket_path),
+                "--minimal",
+            ]
+
+            warm_results: List[BenchmarkResult] = []
+            warm_results.append(
+                _benchmark_daemon_client_cmd(
+                    name="daemon_unread_count",
+                    description="Unread count via daemon (thin client, warm daemon)",
+                    cmd=base + ["unread-count"],
+                    iterations=iterations,
+                )
+            )
+            warm_results.append(
+                _benchmark_daemon_client_cmd(
+                    name="daemon_unread_messages_20",
+                    description="Unread messages via daemon (limit 20, thin client, warm daemon)",
+                    cmd=base + ["unread", "--limit", "20"],
+                    iterations=iterations,
+                )
+            )
+            warm_results.append(
+                _benchmark_daemon_client_cmd(
+                    name="daemon_recent_10",
+                    description="Recent messages via daemon (limit 10, thin client, warm daemon)",
+                    cmd=base + ["recent", "--limit", "10"],
+                    iterations=iterations,
+                )
+            )
+            warm_results.append(
+                _benchmark_daemon_client_cmd(
+                    name="daemon_text_search_http_20",
+                    description="Text search via daemon (query=http, limit 20, thin client, warm daemon)",
+                    cmd=base + ["text-search", "http", "--limit", "20"],
+                    iterations=iterations,
+                )
+            )
+            warm_results.append(
+                _benchmark_daemon_client_cmd(
+                    name="daemon_bundle",
+                    description="Bundle via daemon (thin client, warm daemon)",
+                    cmd=base
+                    + [
+                        "bundle",
+                        "--unread-limit",
+                        "20",
+                        "--recent-limit",
+                        "10",
+                        "--query",
+                        "http",
+                        "--search-limit",
+                        "20",
+                    ],
+                    iterations=iterations,
+                )
+            )
+
+            return [startup_result, *warm_results]
+        finally:
+            _stop_daemon_for_bench(socket_path=socket_path, pidfile_path=pid_path)
 
 
 def benchmark_analytics(iterations: int = 5) -> BenchmarkResult:
@@ -481,6 +764,7 @@ def benchmark_mcp_server_startup(iterations: int = 10) -> BenchmarkResult:
         iterations=iterations,
         mean_ms=statistics.mean(timings) if timings else 0,
         median_ms=statistics.median(timings) if timings else 0,
+        p95_ms=sorted(timings)[max(0, min(int(math.ceil(0.95 * len(timings))) - 1, len(timings) - 1))] if timings else 0.0,
         min_ms=min(timings) if timings else 0,
         max_ms=max(timings) if timings else 0,
         std_dev_ms=statistics.stdev(timings) if len(timings) > 1 else 0,
@@ -491,17 +775,80 @@ def benchmark_mcp_server_startup(iterations: int = 10) -> BenchmarkResult:
     return result
 
 
-def run_quick_benchmarks() -> List[BenchmarkResult]:
+def run_quick_benchmarks(*, iterations: int = 5) -> List[BenchmarkResult]:
     """Run a quick subset of benchmarks (fast execution)."""
     print("\n=== Quick Benchmark Suite ===\n")
     return [
-        benchmark_startup_overhead(iterations=10),
-        benchmark_contacts_list(iterations=5),
-        benchmark_unread_messages(iterations=5),
-        benchmark_recent_conversations(iterations=5, limit=10),
-        benchmark_search_small(iterations=5),
+        benchmark_startup_overhead(iterations=iterations),
+        benchmark_contacts_list(iterations=iterations),
+        benchmark_unread_messages(iterations=iterations),
+        benchmark_recent_conversations(iterations=iterations, limit=10),
+        benchmark_search_small(iterations=iterations),
+        benchmark_bundle(iterations=iterations),
     ]
 
+
+def run_llm_canonical_benchmarks(*, iterations: int = 5, include_daemon: bool = True) -> List[BenchmarkResult]:
+    """
+    Canonical LLM-facing workload suite (JSON + minimal output).
+
+    This is closer to how an LLM tool runner uses the gateway: JSON in/out, bounded limits,
+    and token-conscious output shaping.
+    """
+    print("\n=== LLM Canonical Benchmark Suite (JSON minimal) ===\n")
+
+    results: List[BenchmarkResult] = []
+
+    # CLI cold path (spawn per call).
+    results.append(
+        benchmark_command(
+            name="llm_cli_unread_20_minimal_json",
+            description="Unread messages (20) via CLI (JSON minimal)",
+            cmd=["unread", "--limit", "20", "--json", "--minimal"],
+            iterations=iterations,
+        )
+    )
+    results.append(
+        benchmark_command(
+            name="llm_cli_recent_10_minimal_json",
+            description="Recent conversations (10) via CLI (JSON minimal)",
+            cmd=["recent", "--limit", "10", "--json", "--minimal"],
+            iterations=iterations,
+        )
+    )
+    results.append(
+        benchmark_command(
+            name="llm_cli_text_search_http_20_minimal_json",
+            description="Text search (http, 20) via CLI (JSON minimal)",
+            cmd=["text-search", "http", "--limit", "20", "--json", "--minimal"],
+            iterations=iterations,
+        )
+    )
+    results.append(
+        benchmark_command(
+            name="llm_cli_bundle_minimal_json",
+            description="Bundle via CLI (JSON minimal)",
+            cmd=[
+                "bundle",
+                "--json",
+                "--minimal",
+                "--unread-limit",
+                "20",
+                "--recent-limit",
+                "10",
+                "--query",
+                "http",
+                "--search-limit",
+                "20",
+            ],
+            iterations=iterations,
+        )
+    )
+
+    if include_daemon:
+        results.extend(benchmark_daemon_bundle(iterations=iterations))
+
+    return results
 
 def run_full_benchmarks() -> List[BenchmarkResult]:
     """Run the full benchmark suite."""
@@ -521,6 +868,7 @@ def run_full_benchmarks() -> List[BenchmarkResult]:
         benchmark_search_small(iterations=10),
         benchmark_search_medium(iterations=10),
         benchmark_search_large(iterations=5),
+        benchmark_bundle(iterations=10),
 
         # Complex operations
         benchmark_analytics(iterations=5),
@@ -880,6 +1228,16 @@ def main():
         help="Per-command timeout in seconds (default: 30)"
     )
     parser.add_argument(
+        "--include-daemon",
+        action="store_true",
+        help="Include daemon warm-path benchmarks (requires daemon to access chat.db)",
+    )
+    parser.add_argument(
+        "--llm",
+        action="store_true",
+        help="Run canonical LLM-facing benchmarks (JSON minimal), optionally including daemon warm-path",
+    )
+    parser.add_argument(
         "--json",
         action="store_true",
         help="Output results as JSON"
@@ -893,14 +1251,18 @@ def main():
     args = parser.parse_args()
 
     # Run benchmarks
-    if args.comprehensive:
+    if args.llm:
+        results = run_llm_canonical_benchmarks(iterations=args.iterations or 5, include_daemon=bool(args.include_daemon))
+    elif args.comprehensive:
         results = run_comprehensive_benchmarks(
             iterations=args.iterations or 5,
             timeout=args.timeout,
             include_rag=args.include_rag
         )
     elif args.quick:
-        results = run_quick_benchmarks()
+        results = run_quick_benchmarks(iterations=args.iterations or 5)
+        if args.include_daemon:
+            results.extend(benchmark_daemon_bundle(iterations=args.iterations or 5))
     elif args.compare_mcp:
         results = run_comparison_benchmarks()
     else:
