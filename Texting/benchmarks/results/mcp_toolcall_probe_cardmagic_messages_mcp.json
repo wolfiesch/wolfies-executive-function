@@ -1,0 +1,63 @@
+{
+  "generated_at": "2026-01-07 13:52:31",
+  "metadata": {
+    "mode": "session",
+    "iterations": 1,
+    "phase_timeout_s": 30,
+    "npx_download": false
+  },
+  "servers": [
+    {
+      "name": "brew MCP: cardmagic/messages (messages --mcp)",
+      "command": "messages",
+      "args": [
+        "--mcp"
+      ],
+      "iterations": 1,
+      "results": [
+        {
+          "iteration": 1,
+          "initialize": {
+            "ok": true,
+            "ms": 0.0,
+            "error": "(session mode)",
+            "stdout_bytes": null,
+            "approx_tokens": null
+          },
+          "list_tools": {
+            "ok": true,
+            "ms": 0.0,
+            "error": "(session mode)",
+            "stdout_bytes": null,
+            "approx_tokens": null
+          },
+          "call_tool": {
+            "ok": true,
+            "ms": 1145.7092499913415,
+            "error": null,
+            "stdout_bytes": 142,
+            "approx_tokens": 36
+          },
+          "chosen_tool": "recent_messages",
+          "chosen_args": null
+        }
+      ],
+      "notes": [],
+      "mode": "session",
+      "session_initialize": {
+        "ok": true,
+        "ms": 1019.8211670067394,
+        "error": null,
+        "stdout_bytes": 146,
+        "approx_tokens": 37
+      },
+      "session_list_tools": {
+        "ok": true,
+        "ms": 1.7780000052880496,
+        "error": null,
+        "stdout_bytes": 2625,
+        "approx_tokens": 657
+      }
+    }
+  ]
+}

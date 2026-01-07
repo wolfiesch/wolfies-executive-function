@@ -1,0 +1,323 @@
+{
+  "generated_at": "2026-01-07 05:49:19",
+  "metadata": {
+    "iterations": 5,
+    "phase_timeout_s": 10,
+    "npx_download": false
+  },
+  "servers": [
+    {
+      "name": "npx MCP: @iflow-mcp/imessage-mcp-server (stdio)",
+      "command": "npx",
+      "args": [
+        "--no-install",
+        "--package",
+        "@iflow-mcp/imessage-mcp-server",
+        "iMessage MCP Server"
+      ],
+      "iterations": 5,
+      "results": [
+        {
+          "iteration": 1,
+          "initialize": {
+            "ok": true,
+            "ms": 1050.8600419998402,
+            "error": null,
+            "stdout_bytes": 180,
+            "approx_tokens": 45
+          },
+          "list_tools": {
+            "ok": true,
+            "ms": 0.9179170010611415,
+            "error": null,
+            "stdout_bytes": 565,
+            "approx_tokens": 142
+          },
+          "call_tool": {
+            "ok": false,
+            "ms": 3068.204707997211,
+            "error": "TIMEOUT",
+            "stdout_bytes": 0,
+            "approx_tokens": 0
+          },
+          "chosen_tool": "search_contacts",
+          "chosen_args": {
+            "query": "a"
+          }
+        },
+        {
+          "iteration": 2,
+          "initialize": {
+            "ok": true,
+            "ms": 1023.2022919954034,
+            "error": null,
+            "stdout_bytes": 180,
+            "approx_tokens": 45
+          },
+          "list_tools": {
+            "ok": true,
+            "ms": 0.8612910023657605,
+            "error": null,
+            "stdout_bytes": 565,
+            "approx_tokens": 142
+          },
+          "call_tool": {
+            "ok": false,
+            "ms": 3079.379709000932,
+            "error": "TIMEOUT",
+            "stdout_bytes": 0,
+            "approx_tokens": 0
+          },
+          "chosen_tool": "search_contacts",
+          "chosen_args": {
+            "query": "a"
+          }
+        },
+        {
+          "iteration": 3,
+          "initialize": {
+            "ok": true,
+            "ms": 1044.4384170041303,
+            "error": null,
+            "stdout_bytes": 180,
+            "approx_tokens": 45
+          },
+          "list_tools": {
+            "ok": true,
+            "ms": 0.961125006142538,
+            "error": null,
+            "stdout_bytes": 565,
+            "approx_tokens": 142
+          },
+          "call_tool": {
+            "ok": false,
+            "ms": 3075.4616250051185,
+            "error": "TIMEOUT",
+            "stdout_bytes": 0,
+            "approx_tokens": 0
+          },
+          "chosen_tool": "search_contacts",
+          "chosen_args": {
+            "query": "a"
+          }
+        },
+        {
+          "iteration": 4,
+          "initialize": {
+            "ok": true,
+            "ms": 1022.976666004979,
+            "error": null,
+            "stdout_bytes": 180,
+            "approx_tokens": 45
+          },
+          "list_tools": {
+            "ok": true,
+            "ms": 0.6945409986656159,
+            "error": null,
+            "stdout_bytes": 565,
+            "approx_tokens": 142
+          },
+          "call_tool": {
+            "ok": false,
+            "ms": 3097.212207998382,
+            "error": "TIMEOUT",
+            "stdout_bytes": 0,
+            "approx_tokens": 0
+          },
+          "chosen_tool": "search_contacts",
+          "chosen_args": {
+            "query": "a"
+          }
+        },
+        {
+          "iteration": 5,
+          "initialize": {
+            "ok": true,
+            "ms": 1055.8033749985043,
+            "error": null,
+            "stdout_bytes": 180,
+            "approx_tokens": 45
+          },
+          "list_tools": {
+            "ok": true,
+            "ms": 0.9774169957381673,
+            "error": null,
+            "stdout_bytes": 565,
+            "approx_tokens": 142
+          },
+          "call_tool": {
+            "ok": false,
+            "ms": 3090.0472089997493,
+            "error": "TIMEOUT",
+            "stdout_bytes": 0,
+            "approx_tokens": 0
+          },
+          "chosen_tool": "search_contacts",
+          "chosen_args": {
+            "query": "a"
+          }
+        }
+      ],
+      "notes": []
+    },
+    {
+      "name": "npx MCP: @foxychat-mcp/apple-imessages (stdio)",
+      "command": "npx",
+      "args": [
+        "--no-install",
+        "--package",
+        "@foxychat-mcp/apple-imessages",
+        "apple-imessages-mcp"
+      ],
+      "iterations": 5,
+      "results": [
+        {
+          "iteration": 1,
+          "initialize": {
+            "ok": true,
+            "ms": 1062.554749994888,
+            "error": null,
+            "stdout_bytes": 180,
+            "approx_tokens": 45
+          },
+          "list_tools": {
+            "ok": true,
+            "ms": 0.5456250000861473,
+            "error": null,
+            "stdout_bytes": 1487,
+            "approx_tokens": 372
+          },
+          "call_tool": {
+            "ok": true,
+            "ms": 47.253958000510465,
+            "error": null,
+            "stdout_bytes": 76,
+            "approx_tokens": 19
+          },
+          "chosen_tool": "read_imessages",
+          "chosen_args": {
+            "phone_number": "a",
+            "limit": 1
+          }
+        },
+        {
+          "iteration": 2,
+          "initialize": {
+            "ok": true,
+            "ms": 1055.9317080042092,
+            "error": null,
+            "stdout_bytes": 180,
+            "approx_tokens": 45
+          },
+          "list_tools": {
+            "ok": true,
+            "ms": 1.0321669979020953,
+            "error": null,
+            "stdout_bytes": 1487,
+            "approx_tokens": 372
+          },
+          "call_tool": {
+            "ok": true,
+            "ms": 34.08216599927982,
+            "error": null,
+            "stdout_bytes": 76,
+            "approx_tokens": 19
+          },
+          "chosen_tool": "read_imessages",
+          "chosen_args": {
+            "phone_number": "a",
+            "limit": 1
+          }
+        },
+        {
+          "iteration": 3,
+          "initialize": {
+            "ok": true,
+            "ms": 1009.9706250039162,
+            "error": null,
+            "stdout_bytes": 180,
+            "approx_tokens": 45
+          },
+          "list_tools": {
+            "ok": true,
+            "ms": 0.8841669987305067,
+            "error": null,
+            "stdout_bytes": 1487,
+            "approx_tokens": 372
+          },
+          "call_tool": {
+            "ok": true,
+            "ms": 25.18887499900302,
+            "error": null,
+            "stdout_bytes": 76,
+            "approx_tokens": 19
+          },
+          "chosen_tool": "read_imessages",
+          "chosen_args": {
+            "phone_number": "a",
+            "limit": 1
+          }
+        },
+        {
+          "iteration": 4,
+          "initialize": {
+            "ok": true,
+            "ms": 1058.630916995753,
+            "error": null,
+            "stdout_bytes": 180,
+            "approx_tokens": 45
+          },
+          "list_tools": {
+            "ok": true,
+            "ms": 2.3139160039136186,
+            "error": null,
+            "stdout_bytes": 1487,
+            "approx_tokens": 372
+          },
+          "call_tool": {
+            "ok": true,
+            "ms": 34.05683299934026,
+            "error": null,
+            "stdout_bytes": 76,
+            "approx_tokens": 19
+          },
+          "chosen_tool": "read_imessages",
+          "chosen_args": {
+            "phone_number": "a",
+            "limit": 1
+          }
+        },
+        {
+          "iteration": 5,
+          "initialize": {
+            "ok": true,
+            "ms": 1032.8001249945373,
+            "error": null,
+            "stdout_bytes": 180,
+            "approx_tokens": 45
+          },
+          "list_tools": {
+            "ok": true,
+            "ms": 1.019208000798244,
+            "error": null,
+            "stdout_bytes": 1487,
+            "approx_tokens": 372
+          },
+          "call_tool": {
+            "ok": true,
+            "ms": 36.425083002541214,
+            "error": null,
+            "stdout_bytes": 76,
+            "approx_tokens": 19
+          },
+          "chosen_tool": "read_imessages",
+          "chosen_args": {
+            "phone_number": "a",
+            "limit": 1
+          }
+        }
+      ],
+      "notes": []
+    }
+  ]
+}

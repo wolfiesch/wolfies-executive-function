@@ -1,0 +1,61 @@
+{
+  "suite_name": "competitor_tier_extended",
+  "timestamp": "2026-01-07 05:30:51",
+  "metadata": {
+    "iterations": 3,
+    "python_version": "2026-01-07 (py Python 3.13.2)",
+    "tier": "extended",
+    "include_rw": false,
+    "allow_npx": true,
+    "npx_download": false,
+    "npx_timeout_s": 10,
+    "resume": false,
+    "tool_filter": "npx MCP"
+  },
+  "tool_results": [
+    {
+      "name": "npx MCP: @iflow-mcp/imessage-mcp-server",
+      "tool_type": "cli",
+      "commands": [
+        {
+          "label": "startup_ready",
+          "cmd": "npx --no-install @iflow-mcp/imessage-mcp-server --help",
+          "read_only": true,
+          "iterations": 3,
+          "mean_ms": 1023.7760416663756,
+          "median_ms": 996.8244999981835,
+          "p95_ms": 1180.9465746999194,
+          "min_ms": 873.0990420008311,
+          "max_ms": 1201.4045830001123,
+          "std_dev_ms": 165.8038638314165,
+          "success_rate": 100.0,
+          "stdout_bytes_mean": null,
+          "approx_tokens_mean": null,
+          "error": null
+        }
+      ]
+    },
+    {
+      "name": "npx MCP: @foxychat-mcp/apple-imessages",
+      "tool_type": "cli",
+      "commands": [
+        {
+          "label": "startup_ready",
+          "cmd": "npx --no-install @foxychat-mcp/apple-imessages --help",
+          "read_only": true,
+          "iterations": 3,
+          "mean_ms": 990.4614583332053,
+          "median_ms": 840.7320420010365,
+          "p95_ms": 1375.8613166981374,
+          "min_ms": 695.3322080007638,
+          "max_ms": 1435.3201249978156,
+          "std_dev_ms": 392.0582901964807,
+          "success_rate": 100.0,
+          "stdout_bytes_mean": null,
+          "approx_tokens_mean": null,
+          "error": null
+        }
+      ]
+    }
+  ]
+}

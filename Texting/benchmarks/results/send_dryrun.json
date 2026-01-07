@@ -1,0 +1,101 @@
+{
+  "suite_name": "competitor_tier_a",
+  "timestamp": "2026-01-07 04:42:44",
+  "metadata": {
+    "iterations": 1,
+    "python_version": "2026-01-07 (py Python 3.13.2)",
+    "tier": "a",
+    "include_rw": true,
+    "allow_npx": false,
+    "resume": false,
+    "tool_filter": "Wolfies"
+  },
+  "tool_results": [
+    {
+      "name": "Wolfies iMessage Gateway (CLI)",
+      "tool_type": "cli",
+      "commands": [
+        {
+          "label": "startup_help",
+          "cmd": "python3 /Users/wolfgangschoenberger/LIFE-PLANNER/Texting/gateway/imessage_client.py --help",
+          "read_only": true,
+          "iterations": 1,
+          "mean_ms": 42.370082999696024,
+          "median_ms": 42.370082999696024,
+          "p95_ms": 42.370082999696024,
+          "min_ms": 42.370082999696024,
+          "max_ms": 42.370082999696024,
+          "std_dev_ms": 0.0,
+          "success_rate": 100.0,
+          "stdout_bytes_mean": 4371,
+          "approx_tokens_mean": 1093,
+          "error": null
+        },
+        {
+          "label": "recent_10",
+          "cmd": "python3 /Users/wolfgangschoenberger/LIFE-PLANNER/Texting/gateway/imessage_client.py recent --limit 10 --json",
+          "read_only": true,
+          "iterations": 1,
+          "mean_ms": 44.28029099653941,
+          "median_ms": 44.28029099653941,
+          "p95_ms": 44.28029099653941,
+          "min_ms": 44.28029099653941,
+          "max_ms": 44.28029099653941,
+          "std_dev_ms": 0.0,
+          "success_rate": 100.0,
+          "stdout_bytes_mean": 3018,
+          "approx_tokens_mean": 755,
+          "error": null
+        },
+        {
+          "label": "unread",
+          "cmd": "python3 /Users/wolfgangschoenberger/LIFE-PLANNER/Texting/gateway/imessage_client.py unread --json",
+          "read_only": true,
+          "iterations": 1,
+          "mean_ms": 50.5957089990261,
+          "median_ms": 50.5957089990261,
+          "p95_ms": 50.5957089990261,
+          "min_ms": 50.5957089990261,
+          "max_ms": 50.5957089990261,
+          "std_dev_ms": 0.0,
+          "success_rate": 100.0,
+          "stdout_bytes_mean": 6271,
+          "approx_tokens_mean": 1568,
+          "error": null
+        },
+        {
+          "label": "search_http_contact",
+          "cmd": "python3 /Users/wolfgangschoenberger/LIFE-PLANNER/Texting/gateway/imessage_client.py find 'AJ K' --query http --limit 20 --json",
+          "read_only": true,
+          "iterations": 1,
+          "mean_ms": 52.12875000142958,
+          "median_ms": 52.12875000142958,
+          "p95_ms": 52.12875000142958,
+          "min_ms": 52.12875000142958,
+          "max_ms": 52.12875000142958,
+          "std_dev_ms": 0.0,
+          "success_rate": 100.0,
+          "stdout_bytes_mean": 3,
+          "approx_tokens_mean": 1,
+          "error": null
+        },
+        {
+          "label": "send_message",
+          "cmd": "python3 /Users/wolfgangschoenberger/LIFE-PLANNER/Texting/gateway/imessage_client.py send-by-phone {send_to} 'benchmark ping (ignore)'",
+          "read_only": false,
+          "iterations": 1,
+          "mean_ms": 289.3678330001421,
+          "median_ms": 289.3678330001421,
+          "p95_ms": 289.3678330001421,
+          "min_ms": 289.3678330001421,
+          "max_ms": 289.3678330001421,
+          "std_dev_ms": 0.0,
+          "success_rate": 100.0,
+          "stdout_bytes_mean": 0,
+          "approx_tokens_mean": 0,
+          "error": null
+        }
+      ]
+    }
+  ]
+}

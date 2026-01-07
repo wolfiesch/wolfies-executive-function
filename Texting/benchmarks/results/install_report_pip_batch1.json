@@ -1,0 +1,152 @@
+{
+  "generated_at": "2026-01-07 05:15:15",
+  "discovery": "/Users/wolfgangschoenberger/LIFE-PLANNER/Texting/benchmarks/results/discovery_20260107_041316.json",
+  "min_score": 10,
+  "timeout_s": 600,
+  "results": [
+    {
+      "manager": "pip",
+      "name": "imessage-exporter",
+      "ok": true,
+      "elapsed_ms": 1131.4428750047227,
+      "command": [
+        "python3",
+        "-m",
+        "pip",
+        "install",
+        "--upgrade",
+        "--disable-pip-version-check",
+        "imessage-exporter"
+      ],
+      "error": null,
+      "stdout_tail": "Requirement already satisfied: imessage-exporter in /Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages (0.2.0)\n",
+      "stderr_tail": ""
+    },
+    {
+      "manager": "pip",
+      "name": "imessage-mcp-server",
+      "ok": true,
+      "elapsed_ms": 2026.992084000085,
+      "command": [
+        "python3",
+        "-m",
+        "pip",
+        "install",
+        "--upgrade",
+        "--disable-pip-version-check",
+        "imessage-mcp-server"
+      ],
+      "error": null,
+      "stdout_tail": "already satisfied: pyobjc-framework-ThreadNetwork==12.1 in /Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages (from pyobjc>=11.0->imessage-mcp-server) (12.1)\nRequirement already satisfied: pyobjc-framework-UniformTypeIdentifiers==12.1 in /Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages (from pyobjc>=11.0->imessage-mcp-server) (12.1)\nRequirement already satisfied: pyobjc-framework-UserNotifications==12.1 in /Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages (from pyobjc>=11.0->imessage-mcp-server) (12.1)\nRequirement already satisfied: pyobjc-framework-UserNotificationsUI==12.1 in /Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages (from pyobjc>=11.0->imessage-mcp-server) (12.1)\nRequirement already satisfied: pyobjc-framework-VideoSubscriberAccount==12.1 in /Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages (from pyobjc>=11.0->imessage-mcp-server) (12.1)\nRequirement already satisfied: pyobjc-framework-VideoToolbox==12.1 in /Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages (from pyobjc>=11.0->imessage-mcp-server) (12.1)\nRequirement already satisfied: pyobjc-framework-Virtualization==12.1 in /Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages (from pyobjc>=11.0->imessage-mcp-server) (12.1)\nRequirement already satisfied: pyobjc-framework-Vision==12.1 in /Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages (from pyobjc>=11.0->imessage-mcp-server) (12.1)\nRequirement already satisfied: pyobjc-framework-iTunesLibrary==12.1 in /Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages (from pyobjc>=11.0->imessage-mcp-server) (12.1)\nRequirement already satisfied: markdown-it-py>=2.1.0 in /Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages (from markdown-it-py[linkify]>=2.1.0->textual>=0.52.1->imessage-mcp-server) (3.0.0)\nRequirement already satisfied: mdit-py-plugins in /Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages (from textual>=0.52.1->imessage-mcp-server) (0.5.0)\nRequirement already satisfied: platformdirs<5,>=3.6.0 in /Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages (from textual>=0.52.1->imessage-mcp-server) (4.3.8)\nRequirement already satisfied: pygments<3.0.0,>=2.19.2 in /Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages (from textual>=0.52.1->imessage-mcp-server) (2.19.2)\nRequirement already satisfied: rich>=14.2.0 in /Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages (from textual>=0.52.1->imessage-mcp-server) (14.2.0)\nRequirement already satisfied: mdurl~=0.1 in /Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages (from markdown-it-py>=2.1.0->markdown-it-py[linkify]>=2.1.0->textual>=0.52.1->imessage-mcp-server) (0.1.2)\nRequirement already satisfied: linkify-it-py<3,>=1 in /Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages (from markdown-it-py[linkify]>=2.1.0->textual>=0.52.1->imessage-mcp-server) (2.0.3)\nRequirement already satisfied: uc-micro-py in /Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages (from linkify-it-py<3,>=1->markdown-it-py[linkify]>=2.1.0->textual>=0.52.1->imessage-mcp-server) (1.0.3)\nRequirement already satisfied: click>=8.0.0 in /Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages (from typer>=0.16.0->mcp[cli]>=1.2.0->imessage-mcp-server) (8.3.1)\nRequirement already satisfied: shellingham>=1.3.0 in /Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages (from typer>=0.16.0->mcp[cli]>=1.2.0->imessage-mcp-server) (1.5.4)\nDownloading imessage_mcp_server-0.0.4-py3-none-any.whl (12 kB)\nInstalling collected packages: imessage-mcp-server\nSuccessfully installed imessage-mcp-server-0.0.4\n",
+      "stderr_tail": ""
+    },
+    {
+      "manager": "pip",
+      "name": "imessage-reader",
+      "ok": true,
+      "elapsed_ms": 990.3999169982853,
+      "command": [
+        "python3",
+        "-m",
+        "pip",
+        "install",
+        "--upgrade",
+        "--disable-pip-version-check",
+        "imessage-reader"
+      ],
+      "error": null,
+      "stdout_tail": "Requirement already satisfied: imessage-reader in /Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages (0.6.1)\nRequirement already satisfied: openpyxl in /Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages (from imessage-reader) (3.1.5)\nRequirement already satisfied: et-xmlfile in /Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages (from openpyxl->imessage-reader) (2.0.0)\n",
+      "stderr_tail": ""
+    },
+    {
+      "manager": "pip",
+      "name": "mcp-server-imessage",
+      "ok": true,
+      "elapsed_ms": 1717.0579160010675,
+      "command": [
+        "python3",
+        "-m",
+        "pip",
+        "install",
+        "--upgrade",
+        "--disable-pip-version-check",
+        "mcp-server-imessage"
+      ],
+      "error": null,
+      "stdout_tail": "temExtensions==12.1 in /Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages (from pyobjc>=11.0->mcp-server-imessage) (12.1)\nRequirement already satisfied: pyobjc-framework-ThreadNetwork==12.1 in /Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages (from pyobjc>=11.0->mcp-server-imessage) (12.1)\nRequirement already satisfied: pyobjc-framework-UniformTypeIdentifiers==12.1 in /Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages (from pyobjc>=11.0->mcp-server-imessage) (12.1)\nRequirement already satisfied: pyobjc-framework-UserNotifications==12.1 in /Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages (from pyobjc>=11.0->mcp-server-imessage) (12.1)\nRequirement already satisfied: pyobjc-framework-UserNotificationsUI==12.1 in /Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages (from pyobjc>=11.0->mcp-server-imessage) (12.1)\nRequirement already satisfied: pyobjc-framework-VideoSubscriberAccount==12.1 in /Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages (from pyobjc>=11.0->mcp-server-imessage) (12.1)\nRequirement already satisfied: pyobjc-framework-VideoToolbox==12.1 in /Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages (from pyobjc>=11.0->mcp-server-imessage) (12.1)\nRequirement already satisfied: pyobjc-framework-Virtualization==12.1 in /Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages (from pyobjc>=11.0->mcp-server-imessage) (12.1)\nRequirement already satisfied: pyobjc-framework-Vision==12.1 in /Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages (from pyobjc>=11.0->mcp-server-imessage) (12.1)\nRequirement already satisfied: pyobjc-framework-iTunesLibrary==12.1 in /Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages (from pyobjc>=11.0->mcp-server-imessage) (12.1)\nRequirement already satisfied: markdown-it-py>=2.1.0 in /Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages (from markdown-it-py[linkify]>=2.1.0->textual>=0.52.1->mcp-server-imessage) (3.0.0)\nRequirement already satisfied: mdit-py-plugins in /Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages (from textual>=0.52.1->mcp-server-imessage) (0.5.0)\nRequirement already satisfied: platformdirs<5,>=3.6.0 in /Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages (from textual>=0.52.1->mcp-server-imessage) (4.3.8)\nRequirement already satisfied: pygments<3.0.0,>=2.19.2 in /Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages (from textual>=0.52.1->mcp-server-imessage) (2.19.2)\nRequirement already satisfied: rich>=14.2.0 in /Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages (from textual>=0.52.1->mcp-server-imessage) (14.2.0)\nRequirement already satisfied: mdurl~=0.1 in /Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages (from markdown-it-py>=2.1.0->markdown-it-py[linkify]>=2.1.0->textual>=0.52.1->mcp-server-imessage) (0.1.2)\nRequirement already satisfied: linkify-it-py<3,>=1 in /Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages (from markdown-it-py[linkify]>=2.1.0->textual>=0.52.1->mcp-server-imessage) (2.0.3)\nRequirement already satisfied: uc-micro-py in /Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages (from linkify-it-py<3,>=1->markdown-it-py[linkify]>=2.1.0->textual>=0.52.1->mcp-server-imessage) (1.0.3)\nRequirement already satisfied: click>=8.0.0 in /Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages (from typer>=0.16.0->mcp[cli]>=1.2.0->mcp-server-imessage) (8.3.1)\nRequirement already satisfied: shellingham>=1.3.0 in /Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages (from typer>=0.16.0->mcp[cli]>=1.2.0->mcp-server-imessage) (1.5.4)\n",
+      "stderr_tail": ""
+    },
+    {
+      "manager": "pip",
+      "name": "imessage-wrapped",
+      "ok": true,
+      "elapsed_ms": 886.7305419989862,
+      "command": [
+        "python3",
+        "-m",
+        "pip",
+        "install",
+        "--upgrade",
+        "--disable-pip-version-check",
+        "imessage-wrapped"
+      ],
+      "error": null,
+      "stdout_tail": "Requirement already satisfied: imessage-wrapped in /Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages (0.1.24)\nRequirement already satisfied: rich>=13.0.0 in /Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages (from imessage-wrapped) (14.2.0)\nRequirement already satisfied: questionary>=2.0.0 in /Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages (from imessage-wrapped) (2.1.1)\nRequirement already satisfied: requests>=2.31.0 in /Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages (from imessage-wrapped) (2.32.4)\nRequirement already satisfied: emoji>=2.0.0 in /Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages (from imessage-wrapped) (2.15.0)\nRequirement already satisfied: ruff>=0.14.10 in /Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages (from imessage-wrapped) (0.14.10)\nRequirement already satisfied: prompt_toolkit<4.0,>=2.0 in /Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages (from questionary>=2.0.0->imessage-wrapped) (3.0.51)\nRequirement already satisfied: wcwidth in /Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages (from prompt_toolkit<4.0,>=2.0->questionary>=2.0.0->imessage-wrapped) (0.2.13)\nRequirement already satisfied: charset_normalizer<4,>=2 in /Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages (from requests>=2.31.0->imessage-wrapped) (3.4.2)\nRequirement already satisfied: idna<4,>=2.5 in /Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages (from requests>=2.31.0->imessage-wrapped) (3.10)\nRequirement already satisfied: urllib3<3,>=1.21.1 in /Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages (from requests>=2.31.0->imessage-wrapped) (2.3.0)\nRequirement already satisfied: certifi>=2017.4.17 in /Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages (from requests>=2.31.0->imessage-wrapped) (2025.11.12)\nRequirement already satisfied: markdown-it-py>=2.2.0 in /Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages (from rich>=13.0.0->imessage-wrapped) (3.0.0)\nRequirement already satisfied: pygments<3.0.0,>=2.13.0 in /Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages (from rich>=13.0.0->imessage-wrapped) (2.19.2)\nRequirement already satisfied: mdurl~=0.1 in /Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages (from markdown-it-py>=2.2.0->rich>=13.0.0->imessage-wrapped) (0.1.2)\n",
+      "stderr_tail": ""
+    },
+    {
+      "manager": "pip",
+      "name": "iflow-mcp-mac-messages-mcp",
+      "ok": true,
+      "elapsed_ms": 2115.661125004408,
+      "command": [
+        "python3",
+        "-m",
+        "pip",
+        "install",
+        "--upgrade",
+        "--disable-pip-version-check",
+        "iflow-mcp-mac-messages-mcp"
+      ],
+      "error": null,
+      "stdout_tail": "kages (from pydantic<3.0.0,>=2.11.0->mcp[cli]->iflow-mcp-mac-messages-mcp) (2.33.2)\nRequirement already satisfied: idna>=2.8 in /Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages (from anyio>=4.5->mcp[cli]->iflow-mcp-mac-messages-mcp) (3.10)\nRequirement already satisfied: sniffio>=1.1 in /Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages (from anyio>=4.5->mcp[cli]->iflow-mcp-mac-messages-mcp) (1.3.1)\nRequirement already satisfied: certifi in /Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages (from httpx>=0.27.1->mcp[cli]->iflow-mcp-mac-messages-mcp) (2025.11.12)\nRequirement already satisfied: httpcore==1.* in /Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages (from httpx>=0.27.1->mcp[cli]->iflow-mcp-mac-messages-mcp) (1.0.9)\nRequirement already satisfied: h11>=0.16 in /Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages (from httpcore==1.*->httpx>=0.27.1->mcp[cli]->iflow-mcp-mac-messages-mcp) (0.16.0)\nRequirement already satisfied: attrs>=22.2.0 in /Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages (from jsonschema>=4.20.0->mcp[cli]->iflow-mcp-mac-messages-mcp) (25.3.0)\nRequirement already satisfied: jsonschema-specifications>=2023.03.6 in /Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages (from jsonschema>=4.20.0->mcp[cli]->iflow-mcp-mac-messages-mcp) (2025.4.1)\nRequirement already satisfied: referencing>=0.28.4 in /Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages (from jsonschema>=4.20.0->mcp[cli]->iflow-mcp-mac-messages-mcp) (0.36.2)\nRequirement already satisfied: rpds-py>=0.7.1 in /Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages (from jsonschema>=4.20.0->mcp[cli]->iflow-mcp-mac-messages-mcp) (0.26.0)\nRequirement already satisfied: cryptography>=3.4.0 in /Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages (from pyjwt[crypto]>=2.10.1->mcp[cli]->iflow-mcp-mac-messages-mcp) (45.0.6)\nRequirement already satisfied: cffi>=1.14 in /Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages (from cryptography>=3.4.0->pyjwt[crypto]>=2.10.1->mcp[cli]->iflow-mcp-mac-messages-mcp) (1.17.1)\nRequirement already satisfied: pycparser in /Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages (from cffi>=1.14->cryptography>=3.4.0->pyjwt[crypto]>=2.10.1->mcp[cli]->iflow-mcp-mac-messages-mcp) (2.22)\nRequirement already satisfied: click>=8.0.0 in /Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages (from typer>=0.16.0->mcp[cli]->iflow-mcp-mac-messages-mcp) (8.3.1)\nRequirement already satisfied: shellingham>=1.3.0 in /Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages (from typer>=0.16.0->mcp[cli]->iflow-mcp-mac-messages-mcp) (1.5.4)\nRequirement already satisfied: rich>=10.11.0 in /Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages (from typer>=0.16.0->mcp[cli]->iflow-mcp-mac-messages-mcp) (14.2.0)\nRequirement already satisfied: markdown-it-py>=2.2.0 in /Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages (from rich>=10.11.0->typer>=0.16.0->mcp[cli]->iflow-mcp-mac-messages-mcp) (3.0.0)\nRequirement already satisfied: pygments<3.0.0,>=2.13.0 in /Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages (from rich>=10.11.0->typer>=0.16.0->mcp[cli]->iflow-mcp-mac-messages-mcp) (2.19.2)\nRequirement already satisfied: mdurl~=0.1 in /Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages (from markdown-it-py>=2.2.0->rich>=10.11.0->typer>=0.16.0->mcp[cli]->iflow-mcp-mac-messages-mcp) (0.1.2)\nDownloading iflow_mcp_mac_messages_mcp-0.7.3-py3-none-any.whl (21 kB)\nInstalling collected packages: iflow-mcp-mac-messages-mcp\nSuccessfully installed iflow-mcp-mac-messages-mcp-0.7.3\n",
+      "stderr_tail": ""
+    },
+    {
+      "manager": "pip",
+      "name": "mac-messages-mcp",
+      "ok": true,
+      "elapsed_ms": 1271.9560420009657,
+      "command": [
+        "python3",
+        "-m",
+        "pip",
+        "install",
+        "--upgrade",
+        "--disable-pip-version-check",
+        "mac-messages-mcp"
+      ],
+      "error": null,
+      "stdout_tail": "thon3.13/site-packages (from pydantic<3.0.0,>=2.11.0->mcp[cli]->mac-messages-mcp) (0.7.0)\nRequirement already satisfied: pydantic-core==2.33.2 in /Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages (from pydantic<3.0.0,>=2.11.0->mcp[cli]->mac-messages-mcp) (2.33.2)\nRequirement already satisfied: idna>=2.8 in /Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages (from anyio>=4.5->mcp[cli]->mac-messages-mcp) (3.10)\nRequirement already satisfied: sniffio>=1.1 in /Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages (from anyio>=4.5->mcp[cli]->mac-messages-mcp) (1.3.1)\nRequirement already satisfied: certifi in /Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages (from httpx>=0.27.1->mcp[cli]->mac-messages-mcp) (2025.11.12)\nRequirement already satisfied: httpcore==1.* in /Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages (from httpx>=0.27.1->mcp[cli]->mac-messages-mcp) (1.0.9)\nRequirement already satisfied: h11>=0.16 in /Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages (from httpcore==1.*->httpx>=0.27.1->mcp[cli]->mac-messages-mcp) (0.16.0)\nRequirement already satisfied: attrs>=22.2.0 in /Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages (from jsonschema>=4.20.0->mcp[cli]->mac-messages-mcp) (25.3.0)\nRequirement already satisfied: jsonschema-specifications>=2023.03.6 in /Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages (from jsonschema>=4.20.0->mcp[cli]->mac-messages-mcp) (2025.4.1)\nRequirement already satisfied: referencing>=0.28.4 in /Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages (from jsonschema>=4.20.0->mcp[cli]->mac-messages-mcp) (0.36.2)\nRequirement already satisfied: rpds-py>=0.7.1 in /Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages (from jsonschema>=4.20.0->mcp[cli]->mac-messages-mcp) (0.26.0)\nRequirement already satisfied: cryptography>=3.4.0 in /Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages (from pyjwt[crypto]>=2.10.1->mcp[cli]->mac-messages-mcp) (45.0.6)\nRequirement already satisfied: cffi>=1.14 in /Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages (from cryptography>=3.4.0->pyjwt[crypto]>=2.10.1->mcp[cli]->mac-messages-mcp) (1.17.1)\nRequirement already satisfied: pycparser in /Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages (from cffi>=1.14->cryptography>=3.4.0->pyjwt[crypto]>=2.10.1->mcp[cli]->mac-messages-mcp) (2.22)\nRequirement already satisfied: click>=8.0.0 in /Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages (from typer>=0.16.0->mcp[cli]->mac-messages-mcp) (8.3.1)\nRequirement already satisfied: shellingham>=1.3.0 in /Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages (from typer>=0.16.0->mcp[cli]->mac-messages-mcp) (1.5.4)\nRequirement already satisfied: rich>=10.11.0 in /Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages (from typer>=0.16.0->mcp[cli]->mac-messages-mcp) (14.2.0)\nRequirement already satisfied: markdown-it-py>=2.2.0 in /Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages (from rich>=10.11.0->typer>=0.16.0->mcp[cli]->mac-messages-mcp) (3.0.0)\nRequirement already satisfied: pygments<3.0.0,>=2.13.0 in /Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages (from rich>=10.11.0->typer>=0.16.0->mcp[cli]->mac-messages-mcp) (2.19.2)\nRequirement already satisfied: mdurl~=0.1 in /Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages (from markdown-it-py>=2.2.0->rich>=10.11.0->typer>=0.16.0->mcp[cli]->mac-messages-mcp) (0.1.2)\nDownloading mac_messages_mcp-0.7.3-py3-none-any.whl (20 kB)\nInstalling collected packages: mac-messages-mcp\nSuccessfully installed mac-messages-mcp-0.7.3\n",
+      "stderr_tail": ""
+    },
+    {
+      "manager": "pip",
+      "name": "mac-messages-mcp-fastmcp",
+      "ok": true,
+      "elapsed_ms": 2600.5706249998184,
+      "command": [
+        "python3",
+        "-m",
+        "pip",
+        "install",
+        "--upgrade",
+        "--disable-pip-version-check",
+        "mac-messages-mcp-fastmcp"
+      ],
+      "error": null,
+      "stdout_tail": "mework/Versions/3.13/lib/python3.13/site-packages (from pydantic<3.0.0,>=2.11.0->mcp[cli]->mac-messages-mcp-fastmcp) (2.33.2)\nRequirement already satisfied: idna>=2.8 in /Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages (from anyio>=4.5->mcp[cli]->mac-messages-mcp-fastmcp) (3.10)\nRequirement already satisfied: sniffio>=1.1 in /Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages (from anyio>=4.5->mcp[cli]->mac-messages-mcp-fastmcp) (1.3.1)\nRequirement already satisfied: certifi in /Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages (from httpx>=0.27.1->mcp[cli]->mac-messages-mcp-fastmcp) (2025.11.12)\nRequirement already satisfied: httpcore==1.* in /Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages (from httpx>=0.27.1->mcp[cli]->mac-messages-mcp-fastmcp) (1.0.9)\nRequirement already satisfied: h11>=0.16 in /Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages (from httpcore==1.*->httpx>=0.27.1->mcp[cli]->mac-messages-mcp-fastmcp) (0.16.0)\nRequirement already satisfied: attrs>=22.2.0 in /Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages (from jsonschema>=4.20.0->mcp[cli]->mac-messages-mcp-fastmcp) (25.3.0)\nRequirement already satisfied: jsonschema-specifications>=2023.03.6 in /Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages (from jsonschema>=4.20.0->mcp[cli]->mac-messages-mcp-fastmcp) (2025.4.1)\nRequirement already satisfied: referencing>=0.28.4 in /Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages (from jsonschema>=4.20.0->mcp[cli]->mac-messages-mcp-fastmcp) (0.36.2)\nRequirement already satisfied: rpds-py>=0.7.1 in /Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages (from jsonschema>=4.20.0->mcp[cli]->mac-messages-mcp-fastmcp) (0.26.0)\nRequirement already satisfied: cryptography>=3.4.0 in /Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages (from pyjwt[crypto]>=2.10.1->mcp[cli]->mac-messages-mcp-fastmcp) (45.0.6)\nRequirement already satisfied: cffi>=1.14 in /Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages (from cryptography>=3.4.0->pyjwt[crypto]>=2.10.1->mcp[cli]->mac-messages-mcp-fastmcp) (1.17.1)\nRequirement already satisfied: pycparser in /Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages (from cffi>=1.14->cryptography>=3.4.0->pyjwt[crypto]>=2.10.1->mcp[cli]->mac-messages-mcp-fastmcp) (2.22)\nRequirement already satisfied: click>=8.0.0 in /Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages (from typer>=0.16.0->mcp[cli]->mac-messages-mcp-fastmcp) (8.3.1)\nRequirement already satisfied: shellingham>=1.3.0 in /Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages (from typer>=0.16.0->mcp[cli]->mac-messages-mcp-fastmcp) (1.5.4)\nRequirement already satisfied: rich>=10.11.0 in /Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages (from typer>=0.16.0->mcp[cli]->mac-messages-mcp-fastmcp) (14.2.0)\nRequirement already satisfied: markdown-it-py>=2.2.0 in /Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages (from rich>=10.11.0->typer>=0.16.0->mcp[cli]->mac-messages-mcp-fastmcp) (3.0.0)\nRequirement already satisfied: pygments<3.0.0,>=2.13.0 in /Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages (from rich>=10.11.0->typer>=0.16.0->mcp[cli]->mac-messages-mcp-fastmcp) (2.19.2)\nRequirement already satisfied: mdurl~=0.1 in /Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages (from markdown-it-py>=2.2.0->rich>=10.11.0->typer>=0.16.0->mcp[cli]->mac-messages-mcp-fastmcp) (0.1.2)\nDownloading mac_messages_mcp_fastmcp-0.7.4-py3-none-any.whl (21 kB)\nInstalling collected packages: mac-messages-mcp-fastmcp\nSuccessfully installed mac-messages-mcp-fastmcp-0.7.4\n",
+      "stderr_tail": ""
+    }
+  ]
+}

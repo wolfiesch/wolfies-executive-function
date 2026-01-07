@@ -1,0 +1,159 @@
+{
+  "generated_at": "2026-01-07 12:14:12",
+  "metadata": {
+    "iterations": 5,
+    "phase_timeout_s": 15,
+    "npx_download": false
+  },
+  "servers": [
+    {
+      "name": "python MCP: mcp-server-imessage (pip, stdio?)",
+      "command": "/Users/wolfgangschoenberger/LIFE-PLANNER/Texting/benchmarks/.venv_competitors/bin/mcp-server-imessage",
+      "args": [],
+      "iterations": 5,
+      "results": [
+        {
+          "iteration": 1,
+          "initialize": {
+            "ok": true,
+            "ms": 1019.9991249974119,
+            "error": null,
+            "stdout_bytes": 184,
+            "approx_tokens": 46
+          },
+          "list_tools": {
+            "ok": true,
+            "ms": 4.992040994693525,
+            "error": null,
+            "stdout_bytes": 463,
+            "approx_tokens": 116
+          },
+          "call_tool": {
+            "ok": true,
+            "ms": 5.883332996745594,
+            "error": null,
+            "stdout_bytes": 65,
+            "approx_tokens": 17
+          },
+          "chosen_tool": "inbox",
+          "chosen_args": {
+            "limit": 1
+          }
+        },
+        {
+          "iteration": 2,
+          "initialize": {
+            "ok": true,
+            "ms": 1049.5358340122038,
+            "error": null,
+            "stdout_bytes": 184,
+            "approx_tokens": 46
+          },
+          "list_tools": {
+            "ok": true,
+            "ms": 6.089750007959083,
+            "error": null,
+            "stdout_bytes": 463,
+            "approx_tokens": 116
+          },
+          "call_tool": {
+            "ok": true,
+            "ms": 3.9747080008964986,
+            "error": null,
+            "stdout_bytes": 65,
+            "approx_tokens": 17
+          },
+          "chosen_tool": "inbox",
+          "chosen_args": {
+            "limit": 1
+          }
+        },
+        {
+          "iteration": 3,
+          "initialize": {
+            "ok": true,
+            "ms": 1011.1900829942897,
+            "error": null,
+            "stdout_bytes": 184,
+            "approx_tokens": 46
+          },
+          "list_tools": {
+            "ok": true,
+            "ms": 4.502708005020395,
+            "error": null,
+            "stdout_bytes": 463,
+            "approx_tokens": 116
+          },
+          "call_tool": {
+            "ok": true,
+            "ms": 3.469875009614043,
+            "error": null,
+            "stdout_bytes": 65,
+            "approx_tokens": 17
+          },
+          "chosen_tool": "inbox",
+          "chosen_args": {
+            "limit": 1
+          }
+        },
+        {
+          "iteration": 4,
+          "initialize": {
+            "ok": true,
+            "ms": 1019.8437080107396,
+            "error": null,
+            "stdout_bytes": 184,
+            "approx_tokens": 46
+          },
+          "list_tools": {
+            "ok": true,
+            "ms": 5.191750009544194,
+            "error": null,
+            "stdout_bytes": 463,
+            "approx_tokens": 116
+          },
+          "call_tool": {
+            "ok": true,
+            "ms": 2.5893330021062866,
+            "error": null,
+            "stdout_bytes": 65,
+            "approx_tokens": 17
+          },
+          "chosen_tool": "inbox",
+          "chosen_args": {
+            "limit": 1
+          }
+        },
+        {
+          "iteration": 5,
+          "initialize": {
+            "ok": true,
+            "ms": 1020.3839580062777,
+            "error": null,
+            "stdout_bytes": 184,
+            "approx_tokens": 46
+          },
+          "list_tools": {
+            "ok": true,
+            "ms": 5.983167007798329,
+            "error": null,
+            "stdout_bytes": 463,
+            "approx_tokens": 116
+          },
+          "call_tool": {
+            "ok": true,
+            "ms": 4.99412500357721,
+            "error": null,
+            "stdout_bytes": 65,
+            "approx_tokens": 17
+          },
+          "chosen_tool": "inbox",
+          "chosen_args": {
+            "limit": 1
+          }
+        }
+      ],
+      "notes": []
+    }
+  ]
+}

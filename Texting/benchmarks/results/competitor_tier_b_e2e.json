@@ -1,0 +1,147 @@
+{
+  "suite_name": "competitor_tier_b",
+  "timestamp": "2026-01-07 04:53:45",
+  "metadata": {
+    "iterations": 5,
+    "python_version": "2026-01-07 (py Python 3.13.2)",
+    "tier": "b",
+    "include_rw": false,
+    "allow_npx": false,
+    "resume": false,
+    "tool_filter": null
+  },
+  "tool_results": [
+    {
+      "name": "imessagedb",
+      "tool_type": "import",
+      "commands": [
+        {
+          "label": "import_module",
+          "cmd": "python3 -c \"import imessagedb; print('ok')\"",
+          "read_only": true,
+          "iterations": 5,
+          "mean_ms": 123.54477519838838,
+          "median_ms": 87.72470900294138,
+          "p95_ms": 233.69283339707178,
+          "min_ms": 82.99516699480591,
+          "max_ms": 269.24324999708915,
+          "std_dev_ms": 81.50501085596665,
+          "success_rate": 100.0,
+          "stdout_bytes_mean": 3,
+          "approx_tokens_mean": 1,
+          "error": null
+        }
+      ]
+    },
+    {
+      "name": "imessage-reader",
+      "tool_type": "import",
+      "commands": [
+        {
+          "label": "import_module",
+          "cmd": "python3 -c \"import imessage_reader; print('ok')\"",
+          "read_only": true,
+          "iterations": 5,
+          "mean_ms": 23.669582800357603,
+          "median_ms": 23.884708003606647,
+          "p95_ms": 24.168215999088716,
+          "min_ms": 22.437291001551785,
+          "max_ms": 24.2161659989506,
+          "std_dev_ms": 0.7043677773159546,
+          "success_rate": 100.0,
+          "stdout_bytes_mean": 3,
+          "approx_tokens_mean": 1,
+          "error": null
+        }
+      ]
+    },
+    {
+      "name": "imessage-monitor",
+      "tool_type": "import",
+      "commands": [
+        {
+          "label": "import_module",
+          "cmd": "python3 -c \"import imessage_monitor; print('ok')\"",
+          "read_only": true,
+          "iterations": 5,
+          "mean_ms": 66.89878360048169,
+          "median_ms": 61.444166996807326,
+          "p95_ms": 85.2556083991658,
+          "min_ms": 58.93337500310736,
+          "max_ms": 91.0503749983036,
+          "std_dev_ms": 13.552435894581706,
+          "success_rate": 100.0,
+          "stdout_bytes_mean": 3,
+          "approx_tokens_mean": 1,
+          "error": null
+        }
+      ]
+    },
+    {
+      "name": "imessage-conversation-analyzer",
+      "tool_type": "cli",
+      "commands": [
+        {
+          "label": "startup_help",
+          "cmd": "ica --help",
+          "read_only": true,
+          "iterations": 5,
+          "mean_ms": 353.0380664000404,
+          "median_ms": 280.22329099621857,
+          "p95_ms": 573.527982798987,
+          "min_ms": 277.88104199862573,
+          "max_ms": 646.4124159974745,
+          "std_dev_ms": 164.00876305000233,
+          "success_rate": 100.0,
+          "stdout_bytes_mean": 1695,
+          "approx_tokens_mean": 424,
+          "error": null
+        }
+      ]
+    },
+    {
+      "name": "imessage-wrapped",
+      "tool_type": "cli",
+      "commands": [
+        {
+          "label": "startup_help",
+          "cmd": "imexport --help",
+          "read_only": true,
+          "iterations": 5,
+          "mean_ms": 154.3906834020163,
+          "median_ms": 140.75462500477443,
+          "p95_ms": 208.43268360185903,
+          "min_ms": 130.0221670026076,
+          "max_ms": 224.1046670023934,
+          "std_dev_ms": 39.51734508903734,
+          "success_rate": 100.0,
+          "stdout_bytes_mean": 2582,
+          "approx_tokens_mean": 646,
+          "error": null
+        }
+      ]
+    },
+    {
+      "name": "imessage-year-wrapped",
+      "tool_type": "cli",
+      "commands": [
+        {
+          "label": "startup_help",
+          "cmd": "imessage-wrapped --help",
+          "read_only": true,
+          "iterations": 1,
+          "mean_ms": 125.03704100527102,
+          "median_ms": 125.03704100527102,
+          "p95_ms": 125.03704100527102,
+          "min_ms": 125.03704100527102,
+          "max_ms": 125.03704100527102,
+          "std_dev_ms": 0.0,
+          "success_rate": 0.0,
+          "stdout_bytes_mean": null,
+          "approx_tokens_mean": null,
+          "error": "Traceback (most recent call last):\n  File \"/Library/Frameworks/Python.framework/Versions/3.13/bin/imessage-wrapped\", line 3, in <module>\n    from imessage_wrapped import main\nImportError: cannot import name 'main' from 'imessage_wrapped' (/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages/imessage_wrapped/__init__.py)"
+        }
+      ]
+    }
+  ]
+}

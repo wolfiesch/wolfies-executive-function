@@ -1,0 +1,450 @@
+{
+  "generated_at": "2026-01-07 12:12:40",
+  "metadata": {
+    "iterations": 5,
+    "phase_timeout_s": 15,
+    "npx_download": false
+  },
+  "servers": [
+    {
+      "name": "python MCP: imessage-life-planner (archived stdio)",
+      "command": "python3",
+      "args": [
+        "-u",
+        "mcp_server_archive/server.py"
+      ],
+      "iterations": 5,
+      "results": [
+        {
+          "iteration": 1,
+          "initialize": {
+            "ok": true,
+            "ms": 1025.2795839915052,
+            "error": null,
+            "stdout_bytes": 197,
+            "approx_tokens": 50
+          },
+          "list_tools": {
+            "ok": true,
+            "ms": 4.25445799191948,
+            "error": null,
+            "stdout_bytes": 15238,
+            "approx_tokens": 3810
+          },
+          "call_tool": {
+            "ok": true,
+            "ms": 7.47491700167302,
+            "error": null,
+            "stdout_bytes": 190,
+            "approx_tokens": 48
+          },
+          "chosen_tool": "get_unread_messages",
+          "chosen_args": {
+            "limit": 1
+          }
+        },
+        {
+          "iteration": 2,
+          "initialize": {
+            "ok": true,
+            "ms": 1044.9720410106238,
+            "error": null,
+            "stdout_bytes": 197,
+            "approx_tokens": 50
+          },
+          "list_tools": {
+            "ok": true,
+            "ms": 3.727999996044673,
+            "error": null,
+            "stdout_bytes": 15238,
+            "approx_tokens": 3810
+          },
+          "call_tool": {
+            "ok": true,
+            "ms": 8.387416994082741,
+            "error": null,
+            "stdout_bytes": 190,
+            "approx_tokens": 48
+          },
+          "chosen_tool": "get_unread_messages",
+          "chosen_args": {
+            "limit": 1
+          }
+        },
+        {
+          "iteration": 3,
+          "initialize": {
+            "ok": true,
+            "ms": 1025.6952920026379,
+            "error": null,
+            "stdout_bytes": 197,
+            "approx_tokens": 50
+          },
+          "list_tools": {
+            "ok": true,
+            "ms": 3.151665994664654,
+            "error": null,
+            "stdout_bytes": 15238,
+            "approx_tokens": 3810
+          },
+          "call_tool": {
+            "ok": true,
+            "ms": 7.488500006729737,
+            "error": null,
+            "stdout_bytes": 190,
+            "approx_tokens": 48
+          },
+          "chosen_tool": "get_unread_messages",
+          "chosen_args": {
+            "limit": 1
+          }
+        },
+        {
+          "iteration": 4,
+          "initialize": {
+            "ok": true,
+            "ms": 1013.9970839954913,
+            "error": null,
+            "stdout_bytes": 197,
+            "approx_tokens": 50
+          },
+          "list_tools": {
+            "ok": true,
+            "ms": 3.2232079975074157,
+            "error": null,
+            "stdout_bytes": 15238,
+            "approx_tokens": 3810
+          },
+          "call_tool": {
+            "ok": true,
+            "ms": 7.892083012848161,
+            "error": null,
+            "stdout_bytes": 190,
+            "approx_tokens": 48
+          },
+          "chosen_tool": "get_unread_messages",
+          "chosen_args": {
+            "limit": 1
+          }
+        },
+        {
+          "iteration": 5,
+          "initialize": {
+            "ok": true,
+            "ms": 1047.8778329998022,
+            "error": null,
+            "stdout_bytes": 197,
+            "approx_tokens": 50
+          },
+          "list_tools": {
+            "ok": true,
+            "ms": 2.9718329897150397,
+            "error": null,
+            "stdout_bytes": 15238,
+            "approx_tokens": 3810
+          },
+          "call_tool": {
+            "ok": true,
+            "ms": 4.834249994019046,
+            "error": null,
+            "stdout_bytes": 190,
+            "approx_tokens": 48
+          },
+          "chosen_tool": "get_unread_messages",
+          "chosen_args": {
+            "limit": 1
+          }
+        }
+      ],
+      "notes": []
+    },
+    {
+      "name": "python MCP: mac-messages-mcp (pip, stdio)",
+      "command": "/Users/wolfgangschoenberger/LIFE-PLANNER/Texting/benchmarks/.venv_competitors/bin/mac-messages-mcp",
+      "args": [],
+      "iterations": 5,
+      "results": [
+        {
+          "iteration": 1,
+          "initialize": {
+            "ok": true,
+            "ms": 1027.4697089917026,
+            "error": null,
+            "stdout_bytes": 273,
+            "approx_tokens": 69
+          },
+          "list_tools": {
+            "ok": true,
+            "ms": 3.0032079957891256,
+            "error": null,
+            "stdout_bytes": 4856,
+            "approx_tokens": 1214
+          },
+          "call_tool": {
+            "ok": true,
+            "ms": 105.56870799337048,
+            "error": null,
+            "stdout_bytes": 14688,
+            "approx_tokens": 3672
+          },
+          "chosen_tool": "tool_get_recent_messages",
+          "chosen_args": {}
+        },
+        {
+          "iteration": 2,
+          "initialize": {
+            "ok": true,
+            "ms": 1031.630833997042,
+            "error": null,
+            "stdout_bytes": 273,
+            "approx_tokens": 69
+          },
+          "list_tools": {
+            "ok": true,
+            "ms": 2.359541002078913,
+            "error": null,
+            "stdout_bytes": 4856,
+            "approx_tokens": 1214
+          },
+          "call_tool": {
+            "ok": true,
+            "ms": 84.35112501319963,
+            "error": null,
+            "stdout_bytes": 14688,
+            "approx_tokens": 3672
+          },
+          "chosen_tool": "tool_get_recent_messages",
+          "chosen_args": {}
+        },
+        {
+          "iteration": 3,
+          "initialize": {
+            "ok": true,
+            "ms": 1039.541125006508,
+            "error": null,
+            "stdout_bytes": 273,
+            "approx_tokens": 69
+          },
+          "list_tools": {
+            "ok": true,
+            "ms": 1.9425420032348484,
+            "error": null,
+            "stdout_bytes": 4856,
+            "approx_tokens": 1214
+          },
+          "call_tool": {
+            "ok": true,
+            "ms": 82.94966699031647,
+            "error": null,
+            "stdout_bytes": 14688,
+            "approx_tokens": 3672
+          },
+          "chosen_tool": "tool_get_recent_messages",
+          "chosen_args": {}
+        },
+        {
+          "iteration": 4,
+          "initialize": {
+            "ok": true,
+            "ms": 1047.682624994195,
+            "error": null,
+            "stdout_bytes": 273,
+            "approx_tokens": 69
+          },
+          "list_tools": {
+            "ok": true,
+            "ms": 2.062874991679564,
+            "error": null,
+            "stdout_bytes": 4856,
+            "approx_tokens": 1214
+          },
+          "call_tool": {
+            "ok": true,
+            "ms": 75.71983399975579,
+            "error": null,
+            "stdout_bytes": 14688,
+            "approx_tokens": 3672
+          },
+          "chosen_tool": "tool_get_recent_messages",
+          "chosen_args": {}
+        },
+        {
+          "iteration": 5,
+          "initialize": {
+            "ok": true,
+            "ms": 1032.3740830062889,
+            "error": null,
+            "stdout_bytes": 273,
+            "approx_tokens": 69
+          },
+          "list_tools": {
+            "ok": true,
+            "ms": 2.121917001204565,
+            "error": null,
+            "stdout_bytes": 4856,
+            "approx_tokens": 1214
+          },
+          "call_tool": {
+            "ok": true,
+            "ms": 86.53045899700373,
+            "error": null,
+            "stdout_bytes": 14688,
+            "approx_tokens": 3672
+          },
+          "chosen_tool": "tool_get_recent_messages",
+          "chosen_args": {}
+        }
+      ],
+      "notes": []
+    },
+    {
+      "name": "python MCP: mcp-server-imessage (pip, stdio?)",
+      "command": "/Users/wolfgangschoenberger/LIFE-PLANNER/Texting/benchmarks/.venv_competitors/bin/mcp-server-imessage",
+      "args": [],
+      "iterations": 5,
+      "results": [
+        {
+          "iteration": 1,
+          "initialize": {
+            "ok": true,
+            "ms": 1025.0511249905685,
+            "error": null,
+            "stdout_bytes": 184,
+            "approx_tokens": 46
+          },
+          "list_tools": {
+            "ok": true,
+            "ms": 5.84816699847579,
+            "error": null,
+            "stdout_bytes": 463,
+            "approx_tokens": 116
+          },
+          "call_tool": {
+            "ok": true,
+            "ms": 24.98879200720694,
+            "error": null,
+            "stdout_bytes": 339,
+            "approx_tokens": 85
+          },
+          "chosen_tool": "sent",
+          "chosen_args": {
+            "limit": 1
+          }
+        },
+        {
+          "iteration": 2,
+          "initialize": {
+            "ok": true,
+            "ms": 1016.2342910043662,
+            "error": null,
+            "stdout_bytes": 184,
+            "approx_tokens": 46
+          },
+          "list_tools": {
+            "ok": true,
+            "ms": 6.137165997643024,
+            "error": null,
+            "stdout_bytes": 463,
+            "approx_tokens": 116
+          },
+          "call_tool": {
+            "ok": true,
+            "ms": 12.124500004574656,
+            "error": null,
+            "stdout_bytes": 339,
+            "approx_tokens": 85
+          },
+          "chosen_tool": "sent",
+          "chosen_args": {
+            "limit": 1
+          }
+        },
+        {
+          "iteration": 3,
+          "initialize": {
+            "ok": true,
+            "ms": 1015.712166990852,
+            "error": null,
+            "stdout_bytes": 184,
+            "approx_tokens": 46
+          },
+          "list_tools": {
+            "ok": true,
+            "ms": 6.03245799720753,
+            "error": null,
+            "stdout_bytes": 463,
+            "approx_tokens": 116
+          },
+          "call_tool": {
+            "ok": true,
+            "ms": 13.004625012399629,
+            "error": null,
+            "stdout_bytes": 339,
+            "approx_tokens": 85
+          },
+          "chosen_tool": "sent",
+          "chosen_args": {
+            "limit": 1
+          }
+        },
+        {
+          "iteration": 4,
+          "initialize": {
+            "ok": true,
+            "ms": 1007.3208749963669,
+            "error": null,
+            "stdout_bytes": 184,
+            "approx_tokens": 46
+          },
+          "list_tools": {
+            "ok": true,
+            "ms": 5.252125003607944,
+            "error": null,
+            "stdout_bytes": 463,
+            "approx_tokens": 116
+          },
+          "call_tool": {
+            "ok": true,
+            "ms": 6.956791010452434,
+            "error": null,
+            "stdout_bytes": 339,
+            "approx_tokens": 85
+          },
+          "chosen_tool": "sent",
+          "chosen_args": {
+            "limit": 1
+          }
+        },
+        {
+          "iteration": 5,
+          "initialize": {
+            "ok": true,
+            "ms": 1022.3113749962067,
+            "error": null,
+            "stdout_bytes": 184,
+            "approx_tokens": 46
+          },
+          "list_tools": {
+            "ok": true,
+            "ms": 5.103624993353151,
+            "error": null,
+            "stdout_bytes": 463,
+            "approx_tokens": 116
+          },
+          "call_tool": {
+            "ok": true,
+            "ms": 11.812291006208397,
+            "error": null,
+            "stdout_bytes": 339,
+            "approx_tokens": 85
+          },
+          "chosen_tool": "sent",
+          "chosen_args": {
+            "limit": 1
+          }
+        }
+      ],
+      "notes": []
+    }
+  ]
+}

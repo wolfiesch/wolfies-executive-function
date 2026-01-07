@@ -1,0 +1,65 @@
+{
+  "generated_at": "2026-01-07 13:47:10",
+  "metadata": {
+    "mode": "session",
+    "iterations": 1,
+    "phase_timeout_s": 30,
+    "npx_download": false
+  },
+  "servers": [
+    {
+      "name": "github MCP: rallyventurepartners/iMessage_MCPServer_AdvancedInsights (python fastmcp stdio)",
+      "command": "/Users/wolfgangschoenberger/LIFE-PLANNER/Texting/benchmarks/vendor/github_mcp/iMessage_MCPServer_AdvancedInsights/.venv/bin/python",
+      "args": [
+        "-u",
+        "-m",
+        "imessage_mcp_server.main"
+      ],
+      "iterations": 1,
+      "results": [
+        {
+          "iteration": 1,
+          "initialize": {
+            "ok": true,
+            "ms": 0.0,
+            "error": "(session mode)",
+            "stdout_bytes": null,
+            "approx_tokens": null
+          },
+          "list_tools": {
+            "ok": true,
+            "ms": 0.0,
+            "error": "(session mode)",
+            "stdout_bytes": null,
+            "approx_tokens": null
+          },
+          "call_tool": {
+            "ok": true,
+            "ms": 15.968874999089167,
+            "error": null,
+            "stdout_bytes": 1674,
+            "approx_tokens": 419
+          },
+          "chosen_tool": "imsg_health_check",
+          "chosen_args": null
+        }
+      ],
+      "notes": [],
+      "mode": "session",
+      "session_initialize": {
+        "ok": true,
+        "ms": 1091.2628329970175,
+        "error": null,
+        "stdout_bytes": 286,
+        "approx_tokens": 72
+      },
+      "session_list_tools": {
+        "ok": true,
+        "ms": 1.20995900942944,
+        "error": null,
+        "stdout_bytes": 12974,
+        "approx_tokens": 3244
+      }
+    }
+  ]
+}

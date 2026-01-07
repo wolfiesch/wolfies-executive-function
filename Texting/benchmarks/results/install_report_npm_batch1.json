@@ -1,0 +1,53 @@
+{
+  "generated_at": "2026-01-07 05:13:14",
+  "discovery": "/Users/wolfgangschoenberger/LIFE-PLANNER/Texting/benchmarks/results/discovery_20260107_041316.json",
+  "min_score": 12,
+  "timeout_s": 600,
+  "results": [
+    {
+      "manager": "npm",
+      "name": "@cardmagic/messages",
+      "ok": true,
+      "elapsed_ms": 16044.454916001996,
+      "command": [
+        "npm",
+        "install",
+        "-g",
+        "@cardmagic/messages"
+      ],
+      "error": null,
+      "stdout_tail": "\nadded 132 packages in 16s\n\n37 packages are looking for funding\n  run `npm fund` for details\n",
+      "stderr_tail": ""
+    },
+    {
+      "manager": "npm",
+      "name": "@foxychat-mcp/apple-imessages",
+      "ok": true,
+      "elapsed_ms": 1089.5692500052974,
+      "command": [
+        "npm",
+        "install",
+        "-g",
+        "@foxychat-mcp/apple-imessages"
+      ],
+      "error": null,
+      "stdout_tail": "\nadded 94 packages in 1s\n\n27 packages are looking for funding\n  run `npm fund` for details\n",
+      "stderr_tail": ""
+    },
+    {
+      "manager": "npm",
+      "name": "@iflow-mcp/imessage-mcp-server",
+      "ok": true,
+      "elapsed_ms": 284.8111249986687,
+      "command": [
+        "npm",
+        "install",
+        "-g",
+        "@iflow-mcp/imessage-mcp-server"
+      ],
+      "error": null,
+      "stdout_tail": "\nadded 15 packages in 231ms\n\n3 packages are looking for funding\n  run `npm fund` for details\n",
+      "stderr_tail": ""
+    }
+  ]
+}

@@ -1,0 +1,37 @@
+{
+  "suite_name": "competitor_tier_extended",
+  "timestamp": "2026-01-07 05:04:29",
+  "metadata": {
+    "iterations": 1,
+    "python_version": "2026-01-07 (py Python 3.13.2)",
+    "tier": "extended",
+    "include_rw": false,
+    "allow_npx": true,
+    "resume": false,
+    "tool_filter": "foxychat"
+  },
+  "tool_results": [
+    {
+      "name": "npx MCP: @foxychat-mcp/apple-imessages",
+      "tool_type": "cli",
+      "commands": [
+        {
+          "label": "startup_help",
+          "cmd": "npx --yes @foxychat-mcp/apple-imessages --help",
+          "read_only": true,
+          "iterations": 1,
+          "mean_ms": 15025.560834001226,
+          "median_ms": 15025.560834001226,
+          "p95_ms": 15025.560834001226,
+          "min_ms": 15025.560834001226,
+          "max_ms": 15025.560834001226,
+          "std_dev_ms": 0.0,
+          "success_rate": 0.0,
+          "stdout_bytes_mean": null,
+          "approx_tokens_mean": null,
+          "error": "TIMEOUT"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,38 @@
+{
+  "generated_at": "2026-01-07 13:46:08",
+  "metadata": {
+    "mode": "session",
+    "iterations": 1,
+    "phase_timeout_s": 30,
+    "npx_download": false
+  },
+  "servers": [
+    {
+      "name": "github MCP: rallyventurepartners/iMessage_MCPServer_AdvancedInsights (python fastmcp stdio)",
+      "command": "/Users/wolfgangschoenberger/LIFE-PLANNER/Texting/benchmarks/vendor/github_mcp/iMessage_MCPServer_AdvancedInsights/.venv/bin/python",
+      "args": [
+        "-u",
+        "-m",
+        "imessage_mcp_server.main"
+      ],
+      "iterations": 1,
+      "results": [],
+      "notes": [],
+      "mode": "session",
+      "session_initialize": {
+        "ok": false,
+        "ms": 0.0,
+        "error": "exception: [Errno 32] Broken pipe",
+        "stdout_bytes": null,
+        "approx_tokens": null
+      },
+      "session_list_tools": {
+        "ok": false,
+        "ms": 0.0,
+        "error": "skipped (session exception)",
+        "stdout_bytes": null,
+        "approx_tokens": null
+      }
+    }
+  ]
+}

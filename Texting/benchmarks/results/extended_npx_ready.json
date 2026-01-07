@@ -1,0 +1,187 @@
+{
+  "suite_name": "competitor_tier_extended",
+  "timestamp": "2026-01-07 05:23:23",
+  "metadata": {
+    "iterations": 3,
+    "python_version": "2026-01-07 (py Python 3.13.2)",
+    "tier": "extended",
+    "include_rw": false,
+    "allow_npx": true,
+    "npx_download": true,
+    "npx_timeout_s": 60,
+    "resume": false,
+    "tool_filter": null
+  },
+  "tool_results": [
+    {
+      "name": "imsg (Messages.app CLI) [steipete/imsg]",
+      "tool_type": "cli",
+      "commands": [
+        {
+          "label": "startup_help",
+          "cmd": "imsg --help",
+          "read_only": true,
+          "iterations": 0,
+          "mean_ms": null,
+          "median_ms": null,
+          "p95_ms": null,
+          "min_ms": null,
+          "max_ms": null,
+          "std_dev_ms": null,
+          "success_rate": 0.0,
+          "stdout_bytes_mean": null,
+          "approx_tokens_mean": null,
+          "error": "SKIPPED (not installed: imsg)"
+        },
+        {
+          "label": "list",
+          "cmd": "imsg list",
+          "read_only": true,
+          "iterations": 0,
+          "mean_ms": null,
+          "median_ms": null,
+          "p95_ms": null,
+          "min_ms": null,
+          "max_ms": null,
+          "std_dev_ms": null,
+          "success_rate": 0.0,
+          "stdout_bytes_mean": null,
+          "approx_tokens_mean": null,
+          "error": "SKIPPED (not installed: imsg)"
+        }
+      ]
+    },
+    {
+      "name": "messages (CLI/MCP) [cardmagic/messages]",
+      "tool_type": "cli",
+      "commands": [
+        {
+          "label": "startup_help",
+          "cmd": "messages --help",
+          "read_only": true,
+          "iterations": 3,
+          "mean_ms": 51.71533333244346,
+          "median_ms": 47.82020799757447,
+          "p95_ms": 59.16077049696469,
+          "min_ms": 46.90495900285896,
+          "max_ms": 60.420832996896934,
+          "std_dev_ms": 7.55305987573458,
+          "success_rate": 100.0,
+          "stdout_bytes_mean": 890,
+          "approx_tokens_mean": 223,
+          "error": null
+        }
+      ]
+    },
+    {
+      "name": "OSX-Messages-Exporter [cfinke/OSX-Messages-Exporter]",
+      "tool_type": "cli",
+      "commands": [
+        {
+          "label": "startup_help",
+          "cmd": "osx-messages-exporter --help",
+          "read_only": true,
+          "iterations": 0,
+          "mean_ms": null,
+          "median_ms": null,
+          "p95_ms": null,
+          "min_ms": null,
+          "max_ms": null,
+          "std_dev_ms": null,
+          "success_rate": 0.0,
+          "stdout_bytes_mean": null,
+          "approx_tokens_mean": null,
+          "error": "SKIPPED (not installed: osx-messages-exporter)"
+        }
+      ]
+    },
+    {
+      "name": "imessage-ruby (send) [Homebrew: imessage-ruby]",
+      "tool_type": "cli",
+      "commands": [
+        {
+          "label": "startup_help",
+          "cmd": "imessage --help",
+          "read_only": false,
+          "iterations": 0,
+          "mean_ms": null,
+          "median_ms": null,
+          "p95_ms": null,
+          "min_ms": null,
+          "max_ms": null,
+          "std_dev_ms": null,
+          "success_rate": 0.0,
+          "stdout_bytes_mean": null,
+          "approx_tokens_mean": null,
+          "error": "SKIPPED (rw disabled)"
+        }
+      ]
+    },
+    {
+      "name": "npx MCP: @iflow-mcp/imessage-mcp-server",
+      "tool_type": "cli",
+      "commands": [
+        {
+          "label": "startup_ready",
+          "cmd": "npx --yes @iflow-mcp/imessage-mcp-server --help",
+          "read_only": true,
+          "iterations": 1,
+          "mean_ms": 60015.560499996354,
+          "median_ms": 60015.560499996354,
+          "p95_ms": 60015.560499996354,
+          "min_ms": 60015.560499996354,
+          "max_ms": 60015.560499996354,
+          "std_dev_ms": 0.0,
+          "success_rate": 0.0,
+          "stdout_bytes_mean": null,
+          "approx_tokens_mean": null,
+          "error": "TIMEOUT"
+        }
+      ]
+    },
+    {
+      "name": "npx MCP: @foxychat-mcp/apple-imessages",
+      "tool_type": "cli",
+      "commands": [
+        {
+          "label": "startup_ready",
+          "cmd": "npx --yes @foxychat-mcp/apple-imessages --help",
+          "read_only": true,
+          "iterations": 1,
+          "mean_ms": 60022.28366700001,
+          "median_ms": 60022.28366700001,
+          "p95_ms": 60022.28366700001,
+          "min_ms": 60022.28366700001,
+          "max_ms": 60022.28366700001,
+          "std_dev_ms": 0.0,
+          "success_rate": 0.0,
+          "stdout_bytes_mean": null,
+          "approx_tokens_mean": null,
+          "error": "TIMEOUT"
+        }
+      ]
+    },
+    {
+      "name": "npx (CLI/MCP): @cardmagic/messages",
+      "tool_type": "cli",
+      "commands": [
+        {
+          "label": "startup_help",
+          "cmd": "npx --yes @cardmagic/messages --help",
+          "read_only": true,
+          "iterations": 3,
+          "mean_ms": 891.7483613331569,
+          "median_ms": 781.74100000615,
+          "p95_ms": 1078.9222752966452,
+          "min_ms": 781.5616669977317,
+          "max_ms": 1111.9424169955892,
+          "std_dev_ms": 190.69366704713795,
+          "success_rate": 100.0,
+          "stdout_bytes_mean": 890,
+          "approx_tokens_mean": 223,
+          "error": null
+        }
+      ]
+    }
+  ]
+}

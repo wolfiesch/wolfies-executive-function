@@ -1,0 +1,4016 @@
+{
+  "generated_at": "2026-01-07 04:11:57",
+  "env": {
+    "github_token_present": false
+  },
+  "queries": {
+    "pypi": [
+      "imessage",
+      "iMessage",
+      "messages chat.db",
+      "mcp imessage",
+      "imessage mcp server",
+      "macos messages",
+      "apple messages"
+    ],
+    "github": [
+      "imessage mcp",
+      "imessage mcp server",
+      "macos messages mcp",
+      "chat.db imessage",
+      "macOS Messages chat.db",
+      "imessage cli",
+      "imessage exporter",
+      "imessage sqlite"
+    ],
+    "npm": [
+      "imessage",
+      "imessage mcp",
+      "macos messages",
+      "mcp imessage",
+      "messages chat.db"
+    ],
+    "crates": [
+      "imessage",
+      "macos messages",
+      "chat.db",
+      "messages"
+    ]
+  },
+  "results": {
+    "pypi": [],
+    "github": [
+      {
+        "full_name": "wolfiesch/wolfies-imessage-gateway",
+        "html_url": "https://github.com/wolfiesch/wolfies-imessage-gateway",
+        "description": "iMessage MCP server for Claude - send and read iMessages on macOS",
+        "stargazers_count": 1,
+        "language": "Python",
+        "score": 26
+      },
+      {
+        "full_name": "tchbw/mcp-imessage",
+        "html_url": "https://github.com/tchbw/mcp-imessage",
+        "description": "Lets Claude send & receive iMessage with Model Context Protocol",
+        "stargazers_count": 7,
+        "language": "TypeScript",
+        "score": 24
+      },
+      {
+        "full_name": "Causality-C/imessage-mcp-improved",
+        "html_url": "https://github.com/Causality-C/imessage-mcp-improved",
+        "description": "Extends claude's imessage MCP Server with group text capabilities",
+        "stargazers_count": 0,
+        "language": "JavaScript",
+        "score": 24
+      },
+      {
+        "full_name": "carterlasalle/mac_messages_mcp",
+        "html_url": "https://github.com/carterlasalle/mac_messages_mcp",
+        "description": "An MCP server that securely interfaces with your iMessage database via the Model Context Protocol (MCP), allowing LLMs to query and analyze iMessage conversations. It includes robust phone number validation, attachment processing, contact management, group chat handling, and full support for sending and receiving messages.",
+        "stargazers_count": 213,
+        "language": "Python",
+        "score": 22
+      },
+      {
+        "full_name": "my-other-github-account/imessage_tools",
+        "html_url": "https://github.com/my-other-github-account/imessage_tools",
+        "description": "Tools for reading iMessage chat.db and sending iMessages on MacOS Ventura - including parsing capabilities for those pesky hidden attributedBody messages - as Ventura seems to like hiding a lot of iMessage texts from SQL now. Can send texts to individuals or group chats, and can send messages that contain reserved characters and strange formatting.",
+        "stargazers_count": 117,
+        "language": "Python",
+        "score": 22
+      },
+      {
+        "full_name": "saylestyler/iExport",
+        "html_url": "https://github.com/saylestyler/iExport",
+        "description": "Converts local iMessage chat.db archive to a single .html file",
+        "stargazers_count": 19,
+        "language": "Python",
+        "score": 21
+      },
+      {
+        "full_name": "samseclog/messageAnalysis",
+        "html_url": "https://github.com/samseclog/messageAnalysis",
+        "description": "So this lets u get data from various message databases (instagram export, iMessage chat.db) by parsing and decoding the text strings.",
+        "stargazers_count": 0,
+        "language": "",
+        "score": 21
+      },
+      {
+        "full_name": "arpan-ghosh/imessage-exporter-service",
+        "html_url": "https://github.com/arpan-ghosh/imessage-exporter-service",
+        "description": "golang service of chat.db from iMessages into s3 for imessages-exporter lambda service",
+        "stargazers_count": 0,
+        "language": "Go",
+        "score": 21
+      },
+      {
+        "full_name": "niftycode/imessage_reader",
+        "html_url": "https://github.com/niftycode/imessage_reader",
+        "description": "Fetch imessages from chat.db",
+        "stargazers_count": 116,
+        "language": "Python",
+        "score": 20
+      },
+      {
+        "full_name": "hannesrudolph/imessage-query-fastmcp-mcp-server",
+        "html_url": "https://github.com/hannesrudolph/imessage-query-fastmcp-mcp-server",
+        "description": "An MCP server that provides safe access to your iMessage database through Model Context Protocol (MCP). This server is built with the FastMCP framework and the imessagedb library, enabling LLMs to query and analyze iMessage conversations with proper phone number validation and attachment handling.",
+        "stargazers_count": 73,
+        "language": "Python",
+        "score": 20
+      },
+      {
+        "full_name": "wyattjoh/imessage-mcp",
+        "html_url": "https://github.com/wyattjoh/imessage-mcp",
+        "description": "A Model Context Protocol server for reading iMessage data from macOS.",
+        "stargazers_count": 18,
+        "language": "TypeScript",
+        "score": 20
+      },
+      {
+        "full_name": "shirhatti/mcp-server-imessage",
+        "html_url": "https://github.com/shirhatti/mcp-server-imessage",
+        "description": "MCP server for interacting with iMessage on macOS",
+        "stargazers_count": 5,
+        "language": "Python",
+        "score": 20
+      },
+      {
+        "full_name": "alexanderkmd/macmessage",
+        "html_url": "https://github.com/alexanderkmd/macmessage",
+        "description": "A simple Golang library to connect to MacOsX chat.db of iMessage App and read messages from it.",
+        "stargazers_count": 3,
+        "language": "Go",
+        "score": 20
+      },
+      {
+        "full_name": "vivek-i/imessage-tracker",
+        "html_url": "https://github.com/vivek-i/imessage-tracker",
+        "description": "An Electron JS app for macOS that analyzes trends from the chat.db file, providing insights into your iMessage conversations.",
+        "stargazers_count": 0,
+        "language": "CSS",
+        "score": 20
+      },
+      {
+        "full_name": "johnlarkin1/imessage-schema",
+        "html_url": "https://github.com/johnlarkin1/imessage-schema",
+        "description": "Snapshot of the current imessage chat.db sqlite schema as well as the addressbook sqlite schema",
+        "stargazers_count": 0,
+        "language": "",
+        "score": 20
+      },
+      {
+        "full_name": "ReagentX/imessage-exporter",
+        "html_url": "https://github.com/ReagentX/imessage-exporter",
+        "description": "Export iMessage data + run iMessage Diagnostics",
+        "stargazers_count": 4668,
+        "language": "Rust",
+        "score": 19
+      },
+      {
+        "full_name": "cfinke/OSX-Messages-Exporter",
+        "html_url": "https://github.com/cfinke/OSX-Messages-Exporter",
+        "description": "Exports iMessages and SMS's to files.",
+        "stargazers_count": 208,
+        "language": "PHP",
+        "score": 19
+      },
+      {
+        "full_name": "steipete/imsg",
+        "html_url": "https://github.com/steipete/imsg",
+        "description": "CLI for Apple's Messages.app so your agent can send and receive text messages/iMessages.",
+        "stargazers_count": 170,
+        "language": "Swift",
+        "score": 18
+      },
+      {
+        "full_name": "bryan1anderson/iMessage-to-Day-One-Importer",
+        "html_url": "https://github.com/bryan1anderson/iMessage-to-Day-One-Importer",
+        "description": "Grabs all the iMessages from Chat.db and begins an import into Day One App",
+        "stargazers_count": 29,
+        "language": "Swift",
+        "score": 18
+      },
+      {
+        "full_name": "marissamarym/imessage-mcp-server",
+        "html_url": "https://github.com/marissamarym/imessage-mcp-server",
+        "description": "An MCP server that uses AppleScript to send iMessages and manage contacts.",
+        "stargazers_count": 24,
+        "language": "JavaScript",
+        "score": 18
+      },
+      {
+        "full_name": "cardmagic/messages",
+        "html_url": "https://github.com/cardmagic/messages",
+        "description": "Fuzzy search through Apple Messages (iMessage/SMS) - CLI and MCP server",
+        "stargazers_count": 16,
+        "language": "TypeScript",
+        "score": 18
+      },
+      {
+        "full_name": "willccbb/imessage-mcp",
+        "html_url": "https://github.com/willccbb/imessage-mcp",
+        "description": "iMessage RAG MCP Server from Anthropic MCP Hackathon (NYC)",
+        "stargazers_count": 14,
+        "language": "Python",
+        "score": 18
+      },
+      {
+        "full_name": "sameelarif/imessage-mcp",
+        "html_url": "https://github.com/sameelarif/imessage-mcp",
+        "description": "",
+        "stargazers_count": 10,
+        "language": "TypeScript",
+        "score": 18
+      },
+      {
+        "full_name": "jprichards/imessage-search",
+        "html_url": "https://github.com/jprichards/imessage-search",
+        "description": "A tool for searching iMessage chat.db",
+        "stargazers_count": 3,
+        "language": "Python",
+        "score": 18
+      },
+      {
+        "full_name": "jonmmease/jons-mcp-imessage",
+        "html_url": "https://github.com/jonmmease/jons-mcp-imessage",
+        "description": "MCP server for iMessage with hybrid search and contact name enrichment",
+        "stargazers_count": 3,
+        "language": "Python",
+        "score": 18
+      },
+      {
+        "full_name": "rallyventurepartners/iMessage_MCPServer_AdvancedInsights",
+        "html_url": "https://github.com/rallyventurepartners/iMessage_MCPServer_AdvancedInsights",
+        "description": "",
+        "stargazers_count": 2,
+        "language": "Python",
+        "score": 18
+      },
+      {
+        "full_name": "minesweeper106/ShinyR-iMessageBrowser",
+        "html_url": "https://github.com/minesweeper106/ShinyR-iMessageBrowser",
+        "description": "A simple shiny app that takes an IOS chat.db/sms.db backup file and renders an html chat view.",
+        "stargazers_count": 2,
+        "language": "R",
+        "score": 18
+      },
+      {
+        "full_name": "DylanMartin2523/iMessageReader",
+        "html_url": "https://github.com/DylanMartin2523/iMessageReader",
+        "description": "Preforms K-means analysis on a chat.db file.",
+        "stargazers_count": 2,
+        "language": "Python",
+        "score": 18
+      },
+      {
+        "full_name": "andrewlayer/gc_wrapped",
+        "html_url": "https://github.com/andrewlayer/gc_wrapped",
+        "description": "A repository for creating a \"Group Chat Wrapped\" Like Spotify, but for iMessage's chat.db",
+        "stargazers_count": 2,
+        "language": "Python",
+        "score": 18
+      },
+      {
+        "full_name": "TextFly/photon-imsg-mcp",
+        "html_url": "https://github.com/TextFly/photon-imsg-mcp",
+        "description": "Read, send, and automate IMessage conversations with AI agents",
+        "stargazers_count": 1,
+        "language": "TypeScript",
+        "score": 18
+      },
+      {
+        "full_name": "CharlesTheGreat77/WhatchuSay-",
+        "html_url": "https://github.com/CharlesTheGreat77/WhatchuSay-",
+        "description": "Exfiltrate iMessage “chat.db” file that contains the messages contained on a Mac. Jailbroken iPhones are vulnerable to an attack like such.",
+        "stargazers_count": 1,
+        "language": "C++",
+        "score": 18
+      },
+      {
+        "full_name": "americanSammy/phrase_forge",
+        "html_url": "https://github.com/americanSammy/phrase_forge",
+        "description": "A simple app to show your top used words in your iMessage chat.db file to create a vocab list to customize foreign language learning.",
+        "stargazers_count": 1,
+        "language": "Python",
+        "score": 18
+      },
+      {
+        "full_name": "trirpi/imessage-analysis",
+        "html_url": "https://github.com/trirpi/imessage-analysis",
+        "description": "Script that creates some visualizations based on chat.db",
+        "stargazers_count": 0,
+        "language": "TypeScript",
+        "score": 18
+      },
+      {
+        "full_name": "Ryxai/Chainmail",
+        "html_url": "https://github.com/Ryxai/Chainmail",
+        "description": "An app to retrieve the text message threads from a Message's chat.db currently in pre-release. Documentation and tests to come",
+        "stargazers_count": 0,
+        "language": "C#",
+        "score": 18
+      },
+      {
+        "full_name": "pdugan20/chat-app-prototype",
+        "html_url": "https://github.com/pdugan20/chat-app-prototype",
+        "description": "An example demonstrating how the Figma MCP server can accelerate rapid prototyping by generating code directly from Figma designs.",
+        "stargazers_count": 0,
+        "language": "TypeScript",
+        "score": 18
+      },
+      {
+        "full_name": "MCP-Mirror/marissamarym_imessage-mcp-server",
+        "html_url": "https://github.com/MCP-Mirror/marissamarym_imessage-mcp-server",
+        "description": "Mirror of https://github.com/marissamarym/imessage-mcp-server",
+        "stargazers_count": 0,
+        "language": "JavaScript",
+        "score": 18
+      },
+      {
+        "full_name": "MCP-Mirror/hannesrudolph_imessage-query-fastmcp-mcp-server",
+        "html_url": "https://github.com/MCP-Mirror/hannesrudolph_imessage-query-fastmcp-mcp-server",
+        "description": "Mirror of https://github.com/hannesrudolph/imessage-query-fastmcp-mcp-server",
+        "stargazers_count": 0,
+        "language": "Python",
+        "score": 18
+      },
+      {
+        "full_name": "gmonaie/chat-analyzer",
+        "html_url": "https://github.com/gmonaie/chat-analyzer",
+        "description": "plugs into iMessage chat.db",
+        "stargazers_count": 0,
+        "language": "",
+        "score": 18
+      },
+      {
+        "full_name": "DavidGreigQC/imessage-mcp-server",
+        "html_url": "https://github.com/DavidGreigQC/imessage-mcp-server",
+        "description": "",
+        "stargazers_count": 0,
+        "language": "JavaScript",
+        "score": 18
+      },
+      {
+        "full_name": "csjoblom/mcp-imessage",
+        "html_url": "https://github.com/csjoblom/mcp-imessage",
+        "description": "",
+        "stargazers_count": 0,
+        "language": "TypeScript",
+        "score": 18
+      },
+      {
+        "full_name": "CliveUnger/imessage-analysis",
+        "html_url": "https://github.com/CliveUnger/imessage-analysis",
+        "description": "Simple scripts for analyzing iMessage chat.db file",
+        "stargazers_count": 0,
+        "language": "Jupyter Notebook",
+        "score": 18
+      },
+      {
+        "full_name": "Abhiram-Kasu/IMessageWrapped",
+        "html_url": "https://github.com/Abhiram-Kasu/IMessageWrapped",
+        "description": "Provides a \"Spotify Wrapped\" compilation of messages using the chat.db that is stored on macs",
+        "stargazers_count": 0,
+        "language": "C#",
+        "score": 18
+      },
+      {
+        "full_name": "rmahmad/imessage-exporter",
+        "html_url": "https://github.com/rmahmad/imessage-exporter",
+        "description": "Super simple tool that reads OSX's iMessage transcript database and exports conversations with specific people",
+        "stargazers_count": 2,
+        "language": "Ruby",
+        "score": 15
+      },
+      {
+        "full_name": "ml-lubich/imessage-exporter",
+        "html_url": "https://github.com/ml-lubich/imessage-exporter",
+        "description": "A robust CLI tool that exports all of your messages via macOS",
+        "stargazers_count": 0,
+        "language": "Python",
+        "score": 15
+      },
+      {
+        "full_name": "jkoefoed21/imsgconverter",
+        "html_url": "https://github.com/jkoefoed21/imsgconverter",
+        "description": "Export imessages from sqlite file into readable text",
+        "stargazers_count": 0,
+        "language": "C#",
+        "score": 15
+      },
+      {
+        "full_name": "gillkyle/imessage-backup-tool",
+        "html_url": "https://github.com/gillkyle/imessage-backup-tool",
+        "description": "A private, browser based SQLite exporter aimed at helping you extract iMessage files into more human friendly formats",
+        "stargazers_count": 0,
+        "language": "JavaScript",
+        "score": 15
+      },
+      {
+        "full_name": "Dynosol/imessage-dump",
+        "html_url": "https://github.com/Dynosol/imessage-dump",
+        "description": "Backup/dump/export iMessage text messages into sqlite.",
+        "stargazers_count": 0,
+        "language": "Python",
+        "score": 15
+      },
+      {
+        "full_name": "mattt/iMCP",
+        "html_url": "https://github.com/mattt/iMCP",
+        "description": "A macOS app that provides an MCP server to your Messages, Contacts, Reminders and more",
+        "stargazers_count": 985,
+        "language": "Swift",
+        "score": 14
+      },
+      {
+        "full_name": "linjunpop/imessage",
+        "html_url": "https://github.com/linjunpop/imessage",
+        "description": "💬 Send iMessages from command-line",
+        "stargazers_count": 354,
+        "language": "Ruby",
+        "score": 14
+      },
+      {
+        "full_name": "CamHenlin/iMessageWebClient",
+        "html_url": "https://github.com/CamHenlin/iMessageWebClient",
+        "description": "send and receive iMessages on anything with a web browser",
+        "stargazers_count": 247,
+        "language": "JavaScript",
+        "score": 14
+      },
+      {
+        "full_name": "petertorelli/imessage-reader",
+        "html_url": "https://github.com/petertorelli/imessage-reader",
+        "description": "Python code for reading macOS Message sqlite.",
+        "stargazers_count": 6,
+        "language": "Python",
+        "score": 14
+      },
+      {
+        "full_name": "adamhoward56/iMessageBot",
+        "html_url": "https://github.com/adamhoward56/iMessageBot",
+        "description": "A fun chatbot that adds some extra features to iMessage (computer running MacOS required).",
+        "stargazers_count": 0,
+        "language": "JavaScript",
+        "score": 14
+      },
+      {
+        "full_name": "siddhxrth/imessage-analyze-and-export",
+        "html_url": "https://github.com/siddhxrth/imessage-analyze-and-export",
+        "description": "command line interface (CLI) to analyze and export imessage conversations into .csv files containing messages, timestamps, and IDs 📲",
+        "stargazers_count": 31,
+        "language": "Python",
+        "score": 13
+      },
+      {
+        "full_name": "hunterunger/imessage_exporter_app",
+        "html_url": "https://github.com/hunterunger/imessage_exporter_app",
+        "description": "Export Apple Messages data to json",
+        "stargazers_count": 22,
+        "language": "Rust",
+        "score": 13
+      },
+      {
+        "full_name": "oshionniemela/imessage-exporter-name-enhancer",
+        "html_url": "https://github.com/oshionniemela/imessage-exporter-name-enhancer",
+        "description": "Enhances iMessage Exporter by adding contact names to HTML message files and renaming files to include contact names.",
+        "stargazers_count": 16,
+        "language": "Python",
+        "score": 13
+      },
+      {
+        "full_name": "drbh/imessage-exporter",
+        "html_url": "https://github.com/drbh/imessage-exporter",
+        "description": "This project aims to help people better analyze thier messaging application and is a continuation of work done for this article: https://towardsdatascience.com/what-your-imessage-data-says-about-you-daa186db16d",
+        "stargazers_count": 6,
+        "language": "Python",
+        "score": 13
+      },
+      {
+        "full_name": "chengluyu/iMessageExporter",
+        "html_url": "https://github.com/chengluyu/iMessageExporter",
+        "description": "A tiny tool used for export your iMessage chat history.",
+        "stargazers_count": 6,
+        "language": "Python",
+        "score": 13
+      },
+      {
+        "full_name": "noqcks/im_exporter",
+        "html_url": "https://github.com/noqcks/im_exporter",
+        "description": "A Ruby Gem that collects all iMessage conversations stored on your Mac and exports them into PDF or TXT files",
+        "stargazers_count": 4,
+        "language": "Ruby",
+        "score": 13
+      },
+      {
+        "full_name": "builtbywill-sp/iNuke",
+        "html_url": "https://github.com/builtbywill-sp/iNuke",
+        "description": "📯 First public release of iNuke — a **fully offline**, **cross-platform** iMessage extraction tool. Skip iMazing. Ditch bloat. Export like a pro.",
+        "stargazers_count": 4,
+        "language": "Rust",
+        "score": 13
+      },
+      {
+        "full_name": "Josh961/imessage-exporter-standalone",
+        "html_url": "https://github.com/Josh961/imessage-exporter-standalone",
+        "description": "",
+        "stargazers_count": 2,
+        "language": "Rust",
+        "score": 13
+      },
+      {
+        "full_name": "saheethao/imessage-exporter",
+        "html_url": "https://github.com/saheethao/imessage-exporter",
+        "description": "",
+        "stargazers_count": 1,
+        "language": "",
+        "score": 13
+      },
+      {
+        "full_name": "lj-1003/imessage-exporter",
+        "html_url": "https://github.com/lj-1003/imessage-exporter",
+        "description": "",
+        "stargazers_count": 1,
+        "language": "Python",
+        "score": 13
+      },
+      {
+        "full_name": "willjasen/imessage-exporter-filter",
+        "html_url": "https://github.com/willjasen/imessage-exporter-filter",
+        "description": "filters imessage-exporter output down to what's wanted",
+        "stargazers_count": 0,
+        "language": "Shell",
+        "score": 13
+      },
+      {
+        "full_name": "WAYFT/imessage-exporter",
+        "html_url": "https://github.com/WAYFT/imessage-exporter",
+        "description": "",
+        "stargazers_count": 0,
+        "language": "",
+        "score": 13
+      },
+      {
+        "full_name": "VasimPatel/imessage-exporter",
+        "html_url": "https://github.com/VasimPatel/imessage-exporter",
+        "description": "turns out it's not hard to export imessage data",
+        "stargazers_count": 0,
+        "language": "Python",
+        "score": 13
+      },
+      {
+        "full_name": "thuhmadhatter42/apple-imessages-exporter",
+        "html_url": "https://github.com/thuhmadhatter42/apple-imessages-exporter",
+        "description": "AppleScript that exports all Messages from Apple iMessage to a folder of your choosing",
+        "stargazers_count": 0,
+        "language": "Python",
+        "score": 13
+      },
+      {
+        "full_name": "sartaj/imessage-exporter-enriched",
+        "html_url": "https://github.com/sartaj/imessage-exporter-enriched",
+        "description": "Export all messages in a file format that's easier to read (uses contact info and updates file timestamps).",
+        "stargazers_count": 0,
+        "language": "Swift",
+        "score": 13
+      },
+      {
+        "full_name": "openhouse/imessage-exporter",
+        "html_url": "https://github.com/openhouse/imessage-exporter",
+        "description": "",
+        "stargazers_count": 0,
+        "language": "JavaScript",
+        "score": 13
+      },
+      {
+        "full_name": "nateober/imessage-exporter",
+        "html_url": "https://github.com/nateober/imessage-exporter",
+        "description": "",
+        "stargazers_count": 0,
+        "language": "Python",
+        "score": 13
+      },
+      {
+        "full_name": "nargetdev/swift-getcontacts-for-imessage-exporter",
+        "html_url": "https://github.com/nargetdev/swift-getcontacts-for-imessage-exporter",
+        "description": "",
+        "stargazers_count": 0,
+        "language": "Swift",
+        "score": 13
+      },
+      {
+        "full_name": "mjsiek/imessage-exporter",
+        "html_url": "https://github.com/mjsiek/imessage-exporter",
+        "description": "",
+        "stargazers_count": 0,
+        "language": "",
+        "score": 13
+      },
+      {
+        "full_name": "LH44-cell/iMessageExporter",
+        "html_url": "https://github.com/LH44-cell/iMessageExporter",
+        "description": "iMessageExporter",
+        "stargazers_count": 0,
+        "language": "Shell",
+        "score": 13
+      },
+      {
+        "full_name": "JanX2/imessage-exporter-export-grouped-by-month",
+        "html_url": "https://github.com/JanX2/imessage-exporter-export-grouped-by-month",
+        "description": "",
+        "stargazers_count": 0,
+        "language": "",
+        "score": 13
+      },
+      {
+        "full_name": "infoinsec/imessage-exporter-app",
+        "html_url": "https://github.com/infoinsec/imessage-exporter-app",
+        "description": "GUI application for exporting iMessage data using imessage-exporter",
+        "stargazers_count": 0,
+        "language": "TypeScript",
+        "score": 13
+      },
+      {
+        "full_name": "ehcheng/rename_messages",
+        "html_url": "https://github.com/ehcheng/rename_messages",
+        "description": "Backup Messages using imessage-exporter, and then run this script to do file renaming based on Contact matching of phone numbers and email addresses",
+        "stargazers_count": 0,
+        "language": "Python",
+        "score": 13
+      },
+      {
+        "full_name": "dion-hagan/imessage_reader",
+        "html_url": "https://github.com/dion-hagan/imessage_reader",
+        "description": "Playing around with OCaml and trying a simple imessage history exporter",
+        "stargazers_count": 0,
+        "language": "",
+        "score": 13
+      },
+      {
+        "full_name": "arnaud-42/imessage-exporter-indexpage",
+        "html_url": "https://github.com/arnaud-42/imessage-exporter-indexpage",
+        "description": "Create an index page for the output generated by iMessage Exporter.",
+        "stargazers_count": 0,
+        "language": "Python",
+        "score": 13
+      },
+      {
+        "full_name": "Antiblue643/IME",
+        "html_url": "https://github.com/Antiblue643/IME",
+        "description": "FREE!!!! iMessage exporter. Geez, why isn't this a thing???",
+        "stargazers_count": 0,
+        "language": "Python",
+        "score": 13
+      },
+      {
+        "full_name": "AndrewSmiley/imessage_photo_exporter",
+        "html_url": "https://github.com/AndrewSmiley/imessage_photo_exporter",
+        "description": "simple script to export photos from imessage",
+        "stargazers_count": 0,
+        "language": "Python",
+        "score": 13
+      },
+      {
+        "full_name": "jsok/django-imessage",
+        "html_url": "https://github.com/jsok/django-imessage",
+        "description": "Django project to read the contents of iOS iMessage sqlite databases",
+        "stargazers_count": 28,
+        "language": "Python",
+        "score": 12
+      },
+      {
+        "full_name": "jkatofsky/rnn-your-friends",
+        "html_url": "https://github.com/jkatofsky/rnn-your-friends",
+        "description": "A React/Material-UI app that processes users' local iMessage DBs and interacts with my text generation API to train and query a language model on their friends' messages.",
+        "stargazers_count": 4,
+        "language": "JavaScript",
+        "score": 12
+      },
+      {
+        "full_name": "builtbywill-sp/iExtract",
+        "html_url": "https://github.com/builtbywill-sp/iExtract",
+        "description": "🚧 W.I.P.💬 iMessage extraction made simple — local, private, courtroom-ready. Built for speed, not fluff.",
+        "stargazers_count": 4,
+        "language": "JavaScript",
+        "score": 12
+      },
+      {
+        "full_name": "dinesh-git17/imessage-wrapped",
+        "html_url": "https://github.com/dinesh-git17/imessage-wrapped",
+        "description": "Your iMessage data tells a story. This Python tool analyzes macOS iMessage conversations to generate a Spotify Wrapped style year in review with deep insights into messaging habits, milestones, and conversation patterns, all fully local and private.",
+        "stargazers_count": 2,
+        "language": "Python",
+        "score": 12
+      },
+      {
+        "full_name": "lodestone/ims",
+        "html_url": "https://github.com/lodestone/ims",
+        "description": "Send macOS iMessages via CLI",
+        "stargazers_count": 1,
+        "language": "Ruby",
+        "score": 12
+      },
+      {
+        "full_name": "lambdalisue/deno-imessage",
+        "html_url": "https://github.com/lambdalisue/deno-imessage",
+        "description": "📲 A Deno module and CLI for sending iMessages from the command line on macOS.",
+        "stargazers_count": 1,
+        "language": "TypeScript",
+        "score": 12
+      },
+      {
+        "full_name": "git-thor/timemessage",
+        "html_url": "https://github.com/git-thor/timemessage",
+        "description": "TimeMessage is a modern Python CLI tool to backup locally stored iMessage conversations on macOS, including local attachments.",
+        "stargazers_count": 1,
+        "language": "Python",
+        "score": 12
+      },
+      {
+        "full_name": "eiiot/imessage-leaderboard",
+        "html_url": "https://github.com/eiiot/imessage-leaderboard",
+        "description": "Create a local iMessage leaderboard with Bun, sqlite, and applescript.",
+        "stargazers_count": 1,
+        "language": "TypeScript",
+        "score": 12
+      },
+      {
+        "full_name": "didierzoho/imsg",
+        "html_url": "https://github.com/didierzoho/imsg",
+        "description": "💬 Send, read, and stream iMessage and SMS through a macOS CLI with easy access to chat history and attachment metadata.",
+        "stargazers_count": 0,
+        "language": "Go",
+        "score": 12
+      },
+      {
+        "full_name": "acemavrick/imessage_analysis",
+        "html_url": "https://github.com/acemavrick/imessage_analysis",
+        "description": "A tool to build and analyze a sqlite database of desired iMessage conversations.",
+        "stargazers_count": 0,
+        "language": "Jupyter Notebook",
+        "score": 12
+      },
+      {
+        "full_name": "AmnesiaLabs/zen-client",
+        "html_url": "https://github.com/AmnesiaLabs/zen-client",
+        "description": "Zen's cross-platform desktop client 💬💻",
+        "stargazers_count": 38,
+        "language": "Vue",
+        "score": 10
+      },
+      {
+        "full_name": "photon-hq/flux",
+        "html_url": "https://github.com/photon-hq/flux",
+        "description": "An open-source CLI for deploying LangChain agents to iMessage in seconds.",
+        "stargazers_count": 20,
+        "language": "TypeScript",
+        "score": 10
+      },
+      {
+        "full_name": "chrisfrommann/iphone-message-extractor",
+        "html_url": "https://github.com/chrisfrommann/iphone-message-extractor",
+        "description": "Simple CLI to extract messages (SMS/iMessage) to CSV from iPhone backups",
+        "stargazers_count": 17,
+        "language": "Python",
+        "score": 10
+      },
+      {
+        "full_name": "stephenlacy/imessage-viewer-cli",
+        "html_url": "https://github.com/stephenlacy/imessage-viewer-cli",
+        "description": "",
+        "stargazers_count": 9,
+        "language": "Go",
+        "score": 10
+      },
+      {
+        "full_name": "samarthkishor/imessage-cli",
+        "html_url": "https://github.com/samarthkishor/imessage-cli",
+        "description": "A Python CLI for sending iMessages from a Mac",
+        "stargazers_count": 8,
+        "language": "Python",
+        "score": 10
+      },
+      {
+        "full_name": "ndneighbor/imessage-terminal",
+        "html_url": "https://github.com/ndneighbor/imessage-terminal",
+        "description": "A cli interface to send messages in your terminal to your parental or friend unit. Its for my mom I swear.",
+        "stargazers_count": 7,
+        "language": "Ruby",
+        "score": 10
+      },
+      {
+        "full_name": "alex-red/imess-client",
+        "html_url": "https://github.com/alex-red/imess-client",
+        "description": "iMessage Client for iMess Server",
+        "stargazers_count": 6,
+        "language": "JavaScript",
+        "score": 10
+      },
+      {
+        "full_name": "janicduplessis/imessage-client",
+        "html_url": "https://github.com/janicduplessis/imessage-client",
+        "description": "iMessage web client",
+        "stargazers_count": 4,
+        "language": "JavaScript",
+        "score": 10
+      },
+      {
+        "full_name": "nabdali/cli-imessage",
+        "html_url": "https://github.com/nabdali/cli-imessage",
+        "description": "CLI imessage and sms sender",
+        "stargazers_count": 3,
+        "language": "JavaScript",
+        "score": 10
+      },
+      {
+        "full_name": "ScottSWu/imessage-client",
+        "html_url": "https://github.com/ScottSWu/imessage-client",
+        "description": "imessage client based on NodeJS",
+        "stargazers_count": 2,
+        "language": "JavaScript",
+        "score": 10
+      },
+      {
+        "full_name": "mitchty/imessage",
+        "html_url": "https://github.com/mitchty/imessage",
+        "description": "iMessage cli",
+        "stargazers_count": 2,
+        "language": "Haskell",
+        "score": 10
+      },
+      {
+        "full_name": "tvand7093/IMessageFinder",
+        "html_url": "https://github.com/tvand7093/IMessageFinder",
+        "description": "A simple cross platfrom CLI tool for pulling text messages and saving them to a file.",
+        "stargazers_count": 1,
+        "language": "C#",
+        "score": 10
+      },
+      {
+        "full_name": "quang1225/slack-cursor-ide-assistant",
+        "html_url": "https://github.com/quang1225/slack-cursor-ide-assistant",
+        "description": "A Slack bot that summarize requirements in a Slack thread and forwards messages to Cursor editor's chat (Agent mode) interface on macOS. This bot runs locally (for fast codebase indexing). Output is a Merge Request with analytics.",
+        "stargazers_count": 1,
+        "language": "JavaScript",
+        "score": 10
+      },
+      {
+        "full_name": "f-ewald/hermes",
+        "html_url": "https://github.com/f-ewald/hermes",
+        "description": "CLI for iMessage databases",
+        "stargazers_count": 1,
+        "language": "Go",
+        "score": 10
+      },
+      {
+        "full_name": "f-a-t-h-e/iMessage-client",
+        "html_url": "https://github.com/f-a-t-h-e/iMessage-client",
+        "description": "This is a practical project for practicing GrapQL & Prisma.",
+        "stargazers_count": 1,
+        "language": "TypeScript",
+        "score": 10
+      },
+      {
+        "full_name": "wdaughtridge/bubblewrap",
+        "html_url": "https://github.com/wdaughtridge/bubblewrap",
+        "description": "Local iMessage CLI",
+        "stargazers_count": 0,
+        "language": "",
+        "score": 10
+      },
+      {
+        "full_name": "tai-abrahams/chatapp-client",
+        "html_url": "https://github.com/tai-abrahams/chatapp-client",
+        "description": "Chat app similar to imessage/MSN messenger.. Incomplete",
+        "stargazers_count": 0,
+        "language": "JavaScript",
+        "score": 10
+      },
+      {
+        "full_name": "rmeyssonnier/python_imessage_client",
+        "html_url": "https://github.com/rmeyssonnier/python_imessage_client",
+        "description": "Client library to access to local iMessage db",
+        "stargazers_count": 0,
+        "language": "Python",
+        "score": 10
+      },
+      {
+        "full_name": "paravorheim/android_client",
+        "html_url": "https://github.com/paravorheim/android_client",
+        "description": "imessage client on Android, using MessageBridge socket.io framework",
+        "stargazers_count": 0,
+        "language": "Java",
+        "score": 10
+      },
+      {
+        "full_name": "openhouse/imessage-cli",
+        "html_url": "https://github.com/openhouse/imessage-cli",
+        "description": "",
+        "stargazers_count": 0,
+        "language": "Python",
+        "score": 10
+      },
+      {
+        "full_name": "Nateight8/imessage-client",
+        "html_url": "https://github.com/Nateight8/imessage-client",
+        "description": "",
+        "stargazers_count": 0,
+        "language": "TypeScript",
+        "score": 10
+      },
+      {
+        "full_name": "moby76/iMessage-clone-client",
+        "html_url": "https://github.com/moby76/iMessage-clone-client",
+        "description": "",
+        "stargazers_count": 0,
+        "language": "TypeScript",
+        "score": 10
+      },
+      {
+        "full_name": "liormakovsky/imessage-client",
+        "html_url": "https://github.com/liormakovsky/imessage-client",
+        "description": "",
+        "stargazers_count": 0,
+        "language": "JavaScript",
+        "score": 10
+      },
+      {
+        "full_name": "LetsUnlockiPhone/imailer",
+        "html_url": "https://github.com/LetsUnlockiPhone/imailer",
+        "description": "NodeJS based CLI for sending imessages/sms.",
+        "stargazers_count": 0,
+        "language": "JavaScript",
+        "score": 10
+      },
+      {
+        "full_name": "johnlarkin1/imessage-cli",
+        "html_url": "https://github.com/johnlarkin1/imessage-cli",
+        "description": "See the corresponding blog post for more detail.",
+        "stargazers_count": 0,
+        "language": "Python",
+        "score": 10
+      },
+      {
+        "full_name": "jayayres/swift-local-notify-mcp",
+        "html_url": "https://github.com/jayayres/swift-local-notify-mcp",
+        "description": "This is a barebones example of an MCP server running in Swift, demonstrating integration with Cursor. The server enables Cursor to display native macOS dialog boxes with customizable title and text messages. It is intended to just be a reference example that can be extended to unlock many different automations with MCP on macOS.",
+        "stargazers_count": 0,
+        "language": "Swift",
+        "score": 10
+      },
+      {
+        "full_name": "jackberger03/blue-msg",
+        "html_url": "https://github.com/jackberger03/blue-msg",
+        "description": "CLI for iMessage via BlueBubbles server",
+        "stargazers_count": 0,
+        "language": "TypeScript",
+        "score": 10
+      },
+      {
+        "full_name": "intelligent-long/iMessageClient",
+        "html_url": "https://github.com/intelligent-long/iMessageClient",
+        "description": "",
+        "stargazers_count": 0,
+        "language": "Java",
+        "score": 10
+      },
+      {
+        "full_name": "gyptazy/iSenderClient",
+        "html_url": "https://github.com/gyptazy/iSenderClient",
+        "description": "iSenderClient - A Python client to send messages via Apple iMessage (TM).",
+        "stargazers_count": 0,
+        "language": "",
+        "score": 10
+      },
+      {
+        "full_name": "Evilator/iMessageWebClient-master",
+        "html_url": "https://github.com/Evilator/iMessageWebClient-master",
+        "description": "Imessage",
+        "stargazers_count": 0,
+        "language": "",
+        "score": 10
+      },
+      {
+        "full_name": "1300Sarthak/imessage-cli",
+        "html_url": "https://github.com/1300Sarthak/imessage-cli",
+        "description": "Updated an old imessage-cli tool to work on apple arc. and make it fully working on the new mac os versions the previous version was over 12+ years old",
+        "stargazers_count": 0,
+        "language": "JavaScript",
+        "score": 10
+      }
+    ],
+    "npm": [
+      {
+        "name": "tavily-mcp",
+        "version": "0.2.12",
+        "description": "MCP server for advanced web search using Tavily",
+        "links": {
+          "npm": "https://www.npmjs.com/package/tavily-mcp"
+        },
+        "score": 18
+      },
+      {
+        "name": "supergateway",
+        "version": "3.4.3",
+        "description": "Run MCP stdio servers over SSE, Streamable HTTP or visa versa",
+        "links": {
+          "homepage": "https://github.com/supercorp-ai/supergateway#readme",
+          "repository": "git+https://github.com/supercorp-ai/supergateway.git",
+          "bugs": "https://github.com/supercorp-ai/supergateway/issues",
+          "npm": "https://www.npmjs.com/package/supergateway"
+        },
+        "score": 18
+      },
+      {
+        "name": "prisma",
+        "version": "7.2.0",
+        "description": "Prisma is an open-source database toolkit. It includes a JavaScript/TypeScript ORM for Node.js, migrations and a modern GUI to view and edit the data in your database. You can use Prisma in new projects or add it to an existing one.",
+        "links": {
+          "homepage": "https://www.prisma.io",
+          "repository": "git+https://github.com/prisma/prisma.git",
+          "bugs": "https://github.com/prisma/prisma/issues",
+          "npm": "https://www.npmjs.com/package/prisma"
+        },
+        "score": 18
+      },
+      {
+        "name": "nx-mcp",
+        "version": "0.12.0",
+        "description": "A Model Context Protocol server implementation for Nx",
+        "links": {
+          "homepage": "https://nx.dev",
+          "repository": "git+https://github.com/nrwl/nx-console.git",
+          "bugs": "https://github.com/nrwl/nx-console/issues",
+          "npm": "https://www.npmjs.com/package/nx-mcp"
+        },
+        "score": 18
+      },
+      {
+        "name": "next-devtools-mcp",
+        "version": "0.3.9",
+        "description": "Next.js development tools MCP server with stdio transport",
+        "links": {
+          "homepage": "https://github.com/vercel/next-devtools-mcp#readme",
+          "repository": "git+https://github.com/vercel/next-devtools-mcp.git",
+          "bugs": "https://github.com/vercel/next-devtools-mcp/issues",
+          "npm": "https://www.npmjs.com/package/next-devtools-mcp"
+        },
+        "score": 18
+      },
+      {
+        "name": "n8n-nodes-mcp",
+        "version": "0.1.37",
+        "description": "MCP nodes for n8n",
+        "links": {
+          "homepage": "https://github.com/nerding-io/n8n-nodes-mcp#readme",
+          "repository": "git+https://github.com/nerding-io/n8n-nodes-mcp.git",
+          "bugs": "https://github.com/nerding-io/n8n-nodes-mcp/issues",
+          "npm": "https://www.npmjs.com/package/n8n-nodes-mcp"
+        },
+        "score": 18
+      },
+      {
+        "name": "n8n-mcp",
+        "version": "2.31.7",
+        "description": "Integration between n8n workflow automation and Model Context Protocol (MCP)",
+        "links": {
+          "homepage": "https://github.com/czlonkowski/n8n-mcp#readme",
+          "repository": "git+https://github.com/czlonkowski/n8n-mcp.git",
+          "bugs": "https://github.com/czlonkowski/n8n-mcp/issues",
+          "npm": "https://www.npmjs.com/package/n8n-mcp"
+        },
+        "score": 18
+      },
+      {
+        "name": "mcp-server-kubernetes",
+        "version": "3.0.5",
+        "description": "MCP server for interacting with Kubernetes clusters via kubectl",
+        "links": {
+          "homepage": "https://github.com/Flux159/mcp-server-kubernetes#readme",
+          "repository": "git+https://github.com/Flux159/mcp-server-kubernetes.git",
+          "bugs": "https://github.com/Flux159/mcp-server-kubernetes/issues",
+          "npm": "https://www.npmjs.com/package/mcp-server-kubernetes"
+        },
+        "score": 18
+      },
+      {
+        "name": "mcp-remote",
+        "version": "0.1.37",
+        "description": "Remote proxy for Model Context Protocol, allowing local-only clients to connect to remote servers using oAuth",
+        "links": {
+          "homepage": "https://github.com/geelen/mcp-remote#readme",
+          "repository": "git+https://github.com/geelen/mcp-remote.git",
+          "bugs": "https://github.com/geelen/mcp-remote/issues",
+          "npm": "https://www.npmjs.com/package/mcp-remote"
+        },
+        "score": 18
+      },
+      {
+        "name": "mcp-proxy",
+        "version": "6.1.10",
+        "description": "A TypeScript SSE proxy for MCP servers that use stdio transport.",
+        "links": {
+          "homepage": "https://glama.ai/mcp",
+          "repository": "git+https://github.com/punkpeye/mcp-proxy.git",
+          "bugs": "https://github.com/punkpeye/mcp-proxy/issues",
+          "npm": "https://www.npmjs.com/package/mcp-proxy"
+        },
+        "score": 18
+      },
+      {
+        "name": "mcp-handler",
+        "version": "1.0.6",
+        "description": "Vercel MCP Adapter for Next.js and other frameworks",
+        "links": {
+          "homepage": "https://github.com/vercel/mcp-handler#readme",
+          "repository": "git+https://github.com/vercel/mcp-handler.git",
+          "bugs": "https://github.com/vercel/mcp-handler/issues",
+          "npm": "https://www.npmjs.com/package/mcp-handler"
+        },
+        "score": 18
+      },
+      {
+        "name": "mcp-framework",
+        "version": "0.2.16",
+        "description": "Framework for building Model Context Protocol (MCP) servers in Typescript",
+        "links": {
+          "npm": "https://www.npmjs.com/package/mcp-framework"
+        },
+        "score": 18
+      },
+      {
+        "name": "mcp-evals",
+        "version": "2.0.1",
+        "description": "GitHub Action for evaluating MCP server tool calls using LLM-based scoring",
+        "links": {
+          "homepage": "https://www.mcpevals.io/",
+          "repository": "git+https://github.com/mclenhard/mcp-evals.git",
+          "bugs": "https://github.com/mclenhard/mcp-evals/issues",
+          "npm": "https://www.npmjs.com/package/mcp-evals"
+        },
+        "score": 18
+      },
+      {
+        "name": "imessage-parser",
+        "version": "0.1.0",
+        "description": "Parse iMessage chat.db attributedBody NSAttributedString format in Node.js",
+        "links": {
+          "homepage": "https://github.com/alexkwolfe/imessage-parser#readme",
+          "repository": "git+https://github.com/alexkwolfe/imessage-parser.git",
+          "bugs": "https://github.com/alexkwolfe/imessage-parser/issues",
+          "npm": "https://www.npmjs.com/package/imessage-parser"
+        },
+        "score": 18
+      },
+      {
+        "name": "firecrawl-mcp",
+        "version": "3.7.4",
+        "description": "MCP server for Firecrawl web scraping integration. Supports both cloud and self-hosted instances. Features include web scraping, search, batch processing, structured data extraction, and LLM-powered content analysis.",
+        "links": {
+          "homepage": "https://github.com/firecrawl/firecrawl-mcp-server#readme",
+          "repository": "git+https://github.com/firecrawl/firecrawl-mcp-server.git",
+          "bugs": "https://github.com/firecrawl/firecrawl-mcp-server/issues",
+          "npm": "https://www.npmjs.com/package/firecrawl-mcp"
+        },
+        "score": 18
+      },
+      {
+        "name": "firebase-tools",
+        "version": "15.1.0",
+        "description": "Command-Line Interface for Firebase",
+        "links": {
+          "homepage": "https://github.com/firebase/firebase-tools",
+          "repository": "git+https://github.com/firebase/firebase-tools.git",
+          "bugs": "https://github.com/firebase/firebase-tools/issues",
+          "npm": "https://www.npmjs.com/package/firebase-tools"
+        },
+        "score": 18
+      },
+      {
+        "name": "figma-developer-mcp",
+        "version": "0.6.4",
+        "description": "Give your coding agent access to your Figma data. Implement designs in any framework in one-shot.",
+        "links": {
+          "homepage": "https://www.framelink.ai",
+          "repository": "git+https://github.com/GLips/Figma-Context-MCP.git",
+          "bugs": "https://github.com/GLips/Figma-Context-MCP/issues",
+          "npm": "https://www.npmjs.com/package/figma-developer-mcp"
+        },
+        "score": 18
+      },
+      {
+        "name": "fastmcp",
+        "version": "3.26.8",
+        "description": "A TypeScript framework for building MCP servers.",
+        "links": {
+          "homepage": "https://glama.ai/mcp",
+          "repository": "git+https://github.com/punkpeye/fastmcp.git",
+          "bugs": "https://github.com/punkpeye/fastmcp/issues",
+          "npm": "https://www.npmjs.com/package/fastmcp"
+        },
+        "score": 18
+      },
+      {
+        "name": "chrome-devtools-mcp",
+        "version": "0.12.1",
+        "description": "MCP server for Chrome DevTools",
+        "links": {
+          "homepage": "https://github.com/ChromeDevTools/chrome-devtools-mcp#readme",
+          "repository": "git+https://github.com/ChromeDevTools/chrome-devtools-mcp.git",
+          "bugs": "https://github.com/ChromeDevTools/chrome-devtools-mcp/issues",
+          "npm": "https://www.npmjs.com/package/chrome-devtools-mcp"
+        },
+        "score": 18
+      },
+      {
+        "name": "@wonderwhy-er/desktop-commander",
+        "version": "0.2.28",
+        "description": "MCP server for terminal operations and file editing",
+        "links": {
+          "homepage": "https://github.com/wonderwhy-er/DesktopCommanderMCP",
+          "bugs": "https://github.com/wonderwhy-er/DesktopCommanderMCP/issues",
+          "npm": "https://www.npmjs.com/package/@wonderwhy-er/desktop-commander"
+        },
+        "score": 18
+      },
+      {
+        "name": "@vercel/mcp-adapter",
+        "version": "1.0.0",
+        "description": "Vercel MCP Adapter for Next.js and other frameworks",
+        "links": {
+          "homepage": "https://github.com/vercel/mcp-adapter#readme",
+          "repository": "git+https://github.com/vercel/mcp-adapter.git",
+          "bugs": "https://github.com/vercel/mcp-adapter/issues",
+          "npm": "https://www.npmjs.com/package/@vercel/mcp-adapter"
+        },
+        "score": 18
+      },
+      {
+        "name": "@upstash/context7-mcp",
+        "version": "2.0.2",
+        "description": "MCP server for Context7",
+        "links": {
+          "homepage": "https://github.com/upstash/context7#readme",
+          "repository": "git+https://github.com/upstash/context7.git",
+          "bugs": "https://github.com/upstash/context7/issues",
+          "npm": "https://www.npmjs.com/package/@upstash/context7-mcp"
+        },
+        "score": 18
+      },
+      {
+        "name": "@stripe/mcp",
+        "version": "0.2.5",
+        "description": "A command line tool for setting up Stripe MCP server",
+        "links": {
+          "homepage": "https://github.com/stripe/agent-toolkit/tree/main/modelcontextprotocol",
+          "npm": "https://www.npmjs.com/package/@stripe/mcp"
+        },
+        "score": 18
+      },
+      {
+        "name": "@storybook/mcp",
+        "version": "0.1.1",
+        "description": "MCP server that serves knowledge about your components based on your Storybook stories and documentation",
+        "links": {
+          "homepage": "https://github.com/storybookjs/mcp/blob/main/packages/mcp/README.md",
+          "repository": "git+https://github.com/storybookjs/mcp.git",
+          "bugs": "https://github.com/storybookjs/mcp/issues",
+          "npm": "https://www.npmjs.com/package/@storybook/mcp"
+        },
+        "score": 18
+      },
+      {
+        "name": "@storybook/addon-mcp",
+        "version": "0.1.6",
+        "description": "Help agents automatically write and test stories for your UI components",
+        "links": {
+          "homepage": "https://github.com/storybookjs/mcp#readme",
+          "repository": "git+https://github.com/storybookjs/mcp.git",
+          "bugs": "https://github.com/storybookjs/mcp/issues",
+          "npm": "https://www.npmjs.com/package/@storybook/addon-mcp"
+        },
+        "score": 18
+      },
+      {
+        "name": "@sap-ux/fiori-mcp-server",
+        "version": "0.6.2",
+        "description": "SAP Fiori - Model Context Protocol (MCP) server",
+        "links": {
+          "homepage": "https://github.com/SAP/open-ux-tools#readme",
+          "repository": "git+https://github.com/SAP/open-ux-tools.git",
+          "bugs": "https://github.com/SAP/open-ux-tools/issues?q=is%3Aopen+is%3Aissue+label%3Abug+label%3Afiori-mcp-server",
+          "npm": "https://www.npmjs.com/package/@sap-ux/fiori-mcp-server"
+        },
+        "score": 18
+      },
+      {
+        "name": "@rekog/mcp-nest",
+        "version": "1.8.4",
+        "description": "NestJS module for creating Model Context Protocol (MCP) servers",
+        "links": {
+          "homepage": "https://github.com/rekog-labs/MCP-Nest#readme",
+          "repository": "git+https://github.com/rekog-labs/MCP-Nest.git",
+          "bugs": "https://github.com/rekog-labs/MCP-Nest/issues",
+          "npm": "https://www.npmjs.com/package/@rekog/mcp-nest"
+        },
+        "score": 18
+      },
+      {
+        "name": "@redocly/mcp-typescript-sdk",
+        "version": "1.18.1",
+        "description": "Model Context Protocol implementation for TypeScript",
+        "links": {
+          "homepage": "https://modelcontextprotocol.io",
+          "repository": "git+https://github.com/redocly-contrib/mcp-typescript-sdk.git",
+          "bugs": "https://github.com/redocly-contrib/mcp-typescript-sdk/issues",
+          "npm": "https://www.npmjs.com/package/@redocly/mcp-typescript-sdk"
+        },
+        "score": 18
+      },
+      {
+        "name": "@playwright/mcp",
+        "version": "0.0.54",
+        "description": "Playwright Tools for MCP",
+        "links": {
+          "homepage": "https://playwright.dev",
+          "repository": "git+https://github.com/microsoft/playwright-mcp.git",
+          "bugs": "https://github.com/microsoft/playwright-mcp/issues",
+          "npm": "https://www.npmjs.com/package/@playwright/mcp"
+        },
+        "score": 18
+      },
+      {
+        "name": "@orval/mcp",
+        "version": "7.17.2",
+        "description": "[![npm version](https://badge.fury.io/js/orval.svg)](https://badge.fury.io/js/orval) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT) [![tests](https://github.com/orval-labs/orval/actions/workflow",
+        "links": {
+          "npm": "https://www.npmjs.com/package/@orval/mcp"
+        },
+        "score": 18
+      },
+      {
+        "name": "@notionhq/notion-mcp-server",
+        "version": "2.0.0",
+        "description": "Official MCP server for Notion API",
+        "links": {
+          "homepage": "https://github.com/makenotion/notion-mcp-server#readme",
+          "repository": "git+ssh://git@github.com/makenotion/notion-mcp-server.git",
+          "bugs": "https://github.com/makenotion/notion-mcp-server/issues",
+          "npm": "https://www.npmjs.com/package/@notionhq/notion-mcp-server"
+        },
+        "score": 18
+      },
+      {
+        "name": "@modelcontextprotocol/server-filesystem",
+        "version": "2025.12.18",
+        "description": "MCP server for filesystem access",
+        "links": {
+          "homepage": "https://modelcontextprotocol.io",
+          "repository": "git+https://github.com/modelcontextprotocol/servers.git",
+          "bugs": "https://github.com/modelcontextprotocol/servers/issues",
+          "npm": "https://www.npmjs.com/package/@modelcontextprotocol/server-filesystem"
+        },
+        "score": 18
+      },
+      {
+        "name": "@modelcontextprotocol/sdk",
+        "version": "1.25.1",
+        "description": "Model Context Protocol implementation for TypeScript",
+        "links": {
+          "homepage": "https://modelcontextprotocol.io",
+          "repository": "git+https://github.com/modelcontextprotocol/typescript-sdk.git",
+          "bugs": "https://github.com/modelcontextprotocol/typescript-sdk/issues",
+          "npm": "https://www.npmjs.com/package/@modelcontextprotocol/sdk"
+        },
+        "score": 18
+      },
+      {
+        "name": "@modelcontextprotocol/inspector",
+        "version": "0.18.0",
+        "description": "Model Context Protocol inspector",
+        "links": {
+          "homepage": "https://modelcontextprotocol.io",
+          "bugs": "https://github.com/modelcontextprotocol/inspector/issues",
+          "npm": "https://www.npmjs.com/package/@modelcontextprotocol/inspector"
+        },
+        "score": 18
+      },
+      {
+        "name": "@mastra/mcp",
+        "version": "0.14.5",
+        "description": "Model Context Protocol (MCP) client implementation for Mastra, providing seamless integration with MCP-compatible AI models and tools.",
+        "links": {
+          "homepage": "https://mastra.ai",
+          "repository": "git+https://github.com/mastra-ai/mastra.git",
+          "bugs": "https://github.com/mastra-ai/mastra/issues",
+          "npm": "https://www.npmjs.com/package/@mastra/mcp"
+        },
+        "score": 18
+      },
+      {
+        "name": "@latitude-data/supergateway",
+        "version": "2.1.4",
+        "description": "Run MCP stdio servers over SSE or visa versa",
+        "links": {
+          "homepage": "https://latitude.so",
+          "repository": "git+https://github.com/latitude-dev/supergateway.git",
+          "bugs": "https://github.com/latitude-dev/supergateway/issues",
+          "npm": "https://www.npmjs.com/package/@latitude-data/supergateway"
+        },
+        "score": 18
+      },
+      {
+        "name": "@langchain/mcp-adapters",
+        "version": "1.1.1",
+        "description": "LangChain.js adapters for Model Context Protocol (MCP)",
+        "links": {
+          "homepage": "https://github.com/langchain-ai/langchainjs/tree/main/libs/langchain-mcp-adapters/",
+          "repository": "git+ssh://git@github.com/langchain-ai/langchainjs.git",
+          "bugs": "https://github.com/langchain-ai/langchainjs/issues",
+          "npm": "https://www.npmjs.com/package/@langchain/mcp-adapters"
+        },
+        "score": 18
+      },
+      {
+        "name": "@kimuson/modular-mcp",
+        "version": "0.0.10",
+        "description": "Modular MCP - Modular tool access for reducing context overhead",
+        "links": {
+          "homepage": "https://github.com/d-kimuson/modular-mcp#readme",
+          "repository": "git+https://github.com/d-kimuson/modular-mcp.git",
+          "bugs": "https://github.com/d-kimuson/modular-mcp/issues",
+          "npm": "https://www.npmjs.com/package/@kimuson/modular-mcp"
+        },
+        "score": 18
+      },
+      {
+        "name": "@iflow-mcp/imessage-mcp-server",
+        "version": "0.1.0",
+        "description": "An MCP server to interact with iMessage and Contacts",
+        "links": {
+          "npm": "https://www.npmjs.com/package/@iflow-mcp/imessage-mcp-server"
+        },
+        "score": 18
+      },
+      {
+        "name": "@hexsleeves/tailscale-mcp-server",
+        "version": "0.3.1",
+        "description": "A Model Context Protocol (MCP) server that provides seamless integration with Tailscale's CLI commands and REST API, enabling automated network management and monitoring through a standardized interface.",
+        "links": {
+          "npm": "https://www.npmjs.com/package/@hexsleeves/tailscale-mcp-server"
+        },
+        "score": 18
+      },
+      {
+        "name": "@foxychat-mcp/apple-imessages",
+        "version": "0.0.2",
+        "description": "Model Context Protocol (MCP) server for Apple iMessage integration - send messages, read conversations, search contacts",
+        "links": {
+          "homepage": "https://github.com/CodeFox-Repo/Remote-MCP-Servers/tree/main/apple-imessages",
+          "repository": "git+https://github.com/CodeFox-Repo/Remote-MCP-Servers.git",
+          "bugs": "https://github.com/CodeFox-Repo/Remote-MCP-Servers/issues",
+          "npm": "https://www.npmjs.com/package/@foxychat-mcp/apple-imessages"
+        },
+        "score": 18
+      },
+      {
+        "name": "@executeautomation/playwright-mcp-server",
+        "version": "1.0.12",
+        "description": "Model Context Protocol servers for Playwright",
+        "links": {
+          "homepage": "https://executeautomation.github.io/mcp-playwright/",
+          "repository": "git+https://github.com/executeautomation/mcp-playwright.git",
+          "bugs": "https://github.com/executeautomation/mcp-playwright/issues",
+          "npm": "https://www.npmjs.com/package/@executeautomation/playwright-mcp-server"
+        },
+        "score": 18
+      },
+      {
+        "name": "@elephant-xyz/mcp",
+        "version": "1.6.0",
+        "description": "Model Context Protocol server that exposes Elephant data graph tooling",
+        "links": {
+          "homepage": "https://github.com/elephant-xyz/elephant-mcp#readme",
+          "repository": "git+https://github.com/elephant-xyz/elephant-mcp.git",
+          "bugs": "https://github.com/elephant-xyz/elephant-mcp/issues",
+          "npm": "https://www.npmjs.com/package/@elephant-xyz/mcp"
+        },
+        "score": 18
+      },
+      {
+        "name": "@dynatrace-oss/dynatrace-mcp-server",
+        "version": "1.1.0",
+        "description": "Model Context Protocol (MCP) server for Dynatrace",
+        "links": {
+          "homepage": "https://github.com/dynatrace-oss/dynatrace-mcp#readme",
+          "repository": "git+https://github.com/dynatrace-oss/dynatrace-mcp.git",
+          "bugs": "https://github.com/dynatrace-oss/dynatrace-mcp/issues",
+          "npm": "https://www.npmjs.com/package/@dynatrace-oss/dynatrace-mcp-server"
+        },
+        "score": 18
+      },
+      {
+        "name": "@clerk/mcp-tools",
+        "version": "0.3.1",
+        "description": "Tools for writing MCP clients and servers without pain",
+        "links": {
+          "homepage": "https://github.com/clerk/mcp-tools#readme",
+          "repository": "git+https://github.com/clerk/mcp-tools.git",
+          "bugs": "https://github.com/clerk/mcp-tools/issues",
+          "npm": "https://www.npmjs.com/package/@clerk/mcp-tools"
+        },
+        "score": 18
+      },
+      {
+        "name": "@cardmagic/messages",
+        "version": "1.2.1",
+        "description": "Fuzzy search and browse Apple Messages/iMessage from CLI or MCP server",
+        "links": {
+          "homepage": "https://github.com/cardmagic/messages#readme",
+          "repository": "git+https://github.com/cardmagic/messages.git",
+          "bugs": "https://github.com/cardmagic/messages/issues",
+          "npm": "https://www.npmjs.com/package/@cardmagic/messages"
+        },
+        "score": 18
+      },
+      {
+        "name": "@azure/mcp-linux-x64",
+        "version": "2.0.0-beta.8",
+        "description": "Azure MCP Server - Model Context Protocol implementation for Azure, for linux on x64",
+        "links": {
+          "homepage": "https://github.com/Microsoft/mcp/blob/main/servers/Azure.Mcp.Server#readme",
+          "repository": "git+https://github.com/microsoft/mcp.git",
+          "bugs": "https://github.com/microsoft/mcp/issues",
+          "npm": "https://www.npmjs.com/package/@azure/mcp-linux-x64"
+        },
+        "score": 18
+      },
+      {
+        "name": "@azure/mcp",
+        "version": "2.0.0-beta.8",
+        "description": "Azure MCP Server - Model Context Protocol implementation for Azure",
+        "links": {
+          "homepage": "https://github.com/Microsoft/mcp/blob/main/servers/Azure.Mcp.Server#readme",
+          "repository": "git+https://github.com/microsoft/mcp.git",
+          "bugs": "https://github.com/microsoft/mcp/issues",
+          "npm": "https://www.npmjs.com/package/@azure/mcp"
+        },
+        "score": 18
+      },
+      {
+        "name": "@antv/mcp-server-chart",
+        "version": "0.9.7",
+        "description": "A Model Context Protocol server for generating charts using AntV. This is a TypeScript-based MCP server that provides chart generation capabilities. It allows you to create various types of charts through MCP tools.",
+        "links": {
+          "homepage": "https://github.com/antvis/mcp-server-chart#readme",
+          "repository": "git+https://github.com/antvis/mcp-server-chart.git",
+          "bugs": "https://github.com/antvis/mcp-server-chart/issues",
+          "npm": "https://www.npmjs.com/package/@antv/mcp-server-chart"
+        },
+        "score": 18
+      },
+      {
+        "name": "@anthropic-ai/mcpb",
+        "version": "2.1.2",
+        "description": "Tools for building MCP Bundles",
+        "links": {
+          "npm": "https://www.npmjs.com/package/@anthropic-ai/mcpb"
+        },
+        "score": 18
+      },
+      {
+        "name": "forever-chat-imessage-export",
+        "version": "0.1.1",
+        "description": "Exports iMessage chat history into a universal chat format",
+        "links": {
+          "npm": "https://www.npmjs.com/package/forever-chat-imessage-export"
+        },
+        "score": 13
+      },
+      {
+        "name": "quicklook-thumbnail",
+        "version": "1.0.0",
+        "description": "Use NodeJS to generate thumbnail images for all QuickLook-enabled filetypes (e.g. .mp4 videos, iMessage transcripts, text files) on Apple OSX.",
+        "links": {
+          "homepage": "https://github.com/sidneys/quicklook-thumbnail#readme",
+          "bugs": "https://github.com/sidneys/quicklook-thumbnail/issues",
+          "npm": "https://www.npmjs.com/package/quicklook-thumbnail"
+        },
+        "score": 12
+      },
+      {
+        "name": "imessage-ts",
+        "version": "0.2.5",
+        "description": "TypeScript library for interacting with iMessage on macOS - send messages, monitor chats, and automate responses",
+        "links": {
+          "homepage": "https://github.com/ryantrattner/imessage-ts#readme",
+          "repository": "git+https://github.com/ryantrattner/imessage-ts.git",
+          "bugs": "https://github.com/ryantrattner/imessage-ts/issues",
+          "npm": "https://www.npmjs.com/package/imessage-ts"
+        },
+        "score": 12
+      },
+      {
+        "name": "imessage-spammer",
+        "version": "1.0.1",
+        "description": "Spam an iMessage account using Messages on a MacOS device",
+        "links": {
+          "repository": "https://github.com/Jahans3/imessage-spammer.git",
+          "npm": "https://www.npmjs.com/package/imessage-spammer"
+        },
+        "score": 12
+      },
+      {
+        "name": "eric-imessage",
+        "version": "1.0.1",
+        "description": "A wrapper on top of osa-imessage to more easily interact with iMessage on macOS",
+        "links": {
+          "repository": "git@github.com/aydenp/Node-iMessage.git",
+          "npm": "https://www.npmjs.com/package/eric-imessage"
+        },
+        "score": 12
+      },
+      {
+        "name": "@photon-ai/imessage-kit",
+        "version": "2.1.0",
+        "description": "A type-safe, elegant iMessage SDK for macOS with zero dependencies",
+        "links": {
+          "homepage": "https://github.com/photon-hq/imessage-kit#readme",
+          "repository": "git+https://github.com/photon-hq/imessage-kit.git",
+          "bugs": "https://github.com/photon-hq/imessage-kit/issues",
+          "npm": "https://www.npmjs.com/package/@photon-ai/imessage-kit"
+        },
+        "score": 12
+      },
+      {
+        "name": "@macos-tools/imessage-sdk",
+        "version": "1.0.0",
+        "description": "A TypeScript SDK for querying iMessage data on macOS",
+        "links": {
+          "npm": "https://www.npmjs.com/package/@macos-tools/imessage-sdk"
+        },
+        "score": 12
+      },
+      {
+        "name": "zora-reporters",
+        "version": "2.0.0",
+        "description": "a set of reporter for zora testing library",
+        "links": {
+          "homepage": "https://github.com/lorenzofox3/zora#readme",
+          "repository": "git+https://github.com/lorenzofox3/zora.git",
+          "bugs": "https://github.com/lorenzofox3/zora/issues",
+          "npm": "https://www.npmjs.com/package/zora-reporters"
+        },
+        "score": 10
+      },
+      {
+        "name": "xcparse",
+        "version": "0.0.3",
+        "description": "pbxproj parser",
+        "links": {
+          "npm": "https://www.npmjs.com/package/xcparse"
+        },
+        "score": 10
+      },
+      {
+        "name": "wild-yak",
+        "version": "1.1.0",
+        "description": "Wild Yak is a state machine which can be used to make conversational bots.",
+        "links": {
+          "npm": "https://www.npmjs.com/package/wild-yak"
+        },
+        "score": 10
+      },
+      {
+        "name": "vue-iphone-imessage",
+        "version": "0.2.0",
+        "description": "Vue 3 components to render a physical iPhone device + basic iMessage",
+        "links": {
+          "homepage": "https://github.com/kfirprods/vue-iphone-imessage#readme",
+          "repository": "git+https://github.com/kfirprods/vue-iphone-imessage.git",
+          "bugs": "https://github.com/kfirprods/vue-iphone-imessage/issues",
+          "npm": "https://www.npmjs.com/package/vue-iphone-imessage"
+        },
+        "score": 10
+      },
+      {
+        "name": "react-native-show-message-extension",
+        "version": "1.0.22",
+        "description": "Shows your iMessage App Extension and delivers info to it. You must handle the code that is sent yourself though. iOS only.",
+        "links": {
+          "homepage": "https://github.com/author/RNReactNativeShowMessageExtension.git",
+          "npm": "https://www.npmjs.com/package/react-native-show-message-extension"
+        },
+        "score": 10
+      },
+      {
+        "name": "react-native-openanything",
+        "version": "0.0.6",
+        "description": "Open anything in React Native, like phone, email, sms, web address, iMessage (iOS only), etc.",
+        "links": {
+          "homepage": "https://github.com/flyandi/react-native-openanything#readme",
+          "repository": "git+https://github.com/flyandi/react-native-openanything.git",
+          "bugs": "https://github.com/flyandi/react-native-openanything/issues",
+          "npm": "https://www.npmjs.com/package/react-native-openanything"
+        },
+        "score": 10
+      },
+      {
+        "name": "react-native-communications",
+        "version": "2.2.1",
+        "description": "Open a web address or call, email, text or iMessage (iOS only) someone in React Native",
+        "links": {
+          "homepage": "https://github.com/anarchicknight/react-native-communications#readme",
+          "repository": "git+https://github.com/anarchicknight/react-native-communications.git",
+          "bugs": "https://github.com/anarchicknight/react-native-communications/issues",
+          "npm": "https://www.npmjs.com/package/react-native-communications"
+        },
+        "score": 10
+      },
+      {
+        "name": "osa-imessage-ts",
+        "version": "1.0.2",
+        "description": "Bring the power of NodeJS to Apple iMessage",
+        "links": {
+          "npm": "https://www.npmjs.com/package/osa-imessage-ts"
+        },
+        "score": 10
+      },
+      {
+        "name": "osa-imessage",
+        "version": "2.4.2",
+        "description": "Bring the power of NodeJS to Apple iMessage",
+        "links": {
+          "homepage": "https://github.com/wtfaremyinitials/osa-imessage#readme",
+          "repository": "git+https://github.com/wtfaremyinitials/osa-imessage.git",
+          "bugs": "https://github.com/wtfaremyinitials/osa-imessage/issues",
+          "npm": "https://www.npmjs.com/package/osa-imessage"
+        },
+        "score": 10
+      },
+      {
+        "name": "nodemessage",
+        "version": "0.0.6",
+        "description": "interact with your imessage database",
+        "links": {
+          "homepage": "https://github.com/codebytere/nodemessage#readme",
+          "repository": "git+https://github.com/codebytere/nodemessage.git",
+          "bugs": "https://github.com/codebytere/nodemessage/issues",
+          "npm": "https://www.npmjs.com/package/nodemessage"
+        },
+        "score": 10
+      },
+      {
+        "name": "n8n-nodes-apple-messages",
+        "version": "0.2.0",
+        "description": "n8n trigger node for Apple Messages (iMessage/SMS/RCS)",
+        "links": {
+          "npm": "https://www.npmjs.com/package/n8n-nodes-apple-messages"
+        },
+        "score": 10
+      },
+      {
+        "name": "misternt-imessage-sender",
+        "version": "1.1.0",
+        "description": "**Clone and run for a quick way to see Electron in action.**",
+        "links": {
+          "npm": "https://www.npmjs.com/package/misternt-imessage-sender"
+        },
+        "score": 10
+      },
+      {
+        "name": "ios-sticker-pack",
+        "version": "1.1.1",
+        "description": "Create and install iMessage sticker packs from the command line",
+        "links": {
+          "homepage": "https://github.com/remixz/ios-sticker-pack#readme",
+          "repository": "git+https://github.com/remixz/ios-sticker-pack.git",
+          "bugs": "https://github.com/remixz/ios-sticker-pack/issues",
+          "npm": "https://www.npmjs.com/package/ios-sticker-pack"
+        },
+        "score": 10
+      },
+      {
+        "name": "imessages",
+        "version": "1.1.0",
+        "description": "extract chats from imessage",
+        "links": {
+          "npm": "https://www.npmjs.com/package/imessages"
+        },
+        "score": 10
+      },
+      {
+        "name": "imessagemodule",
+        "version": "0.4.0",
+        "description": "A fast and reliable module for easily sending iMessages from your Mac",
+        "links": {
+          "homepage": "https://github.com/CamHenlin/iMessageModule",
+          "repository": "git+https://github.com/CamHenlin/iMessageModule.git",
+          "bugs": "https://github.com/CamHenlin/iMessageModule/issues",
+          "npm": "https://www.npmjs.com/package/imessagemodule"
+        },
+        "score": 10
+      },
+      {
+        "name": "imessagegpt-test",
+        "version": "0.0.0",
+        "description": "Ask GPT questions about your iMessage history",
+        "links": {
+          "homepage": "https://github.com/gadhagod/iMessageGPT",
+          "repository": "git+https://github.com/gadhagod/iMessageGPT.git",
+          "bugs": "https://github.com/gadhagod/iMessageGPT/issues",
+          "npm": "https://www.npmjs.com/package/imessagegpt-test"
+        },
+        "score": 10
+      },
+      {
+        "name": "imessagegpt",
+        "version": "0.0.1",
+        "description": "Ask GPT questions about your iMessage history",
+        "links": {
+          "homepage": "https://github.com/gadhagod/iMessageGPT",
+          "repository": "git+https://github.com/gadhagod/iMessageGPT.git",
+          "bugs": "https://github.com/gadhagod/iMessageGPT/issues",
+          "npm": "https://www.npmjs.com/package/imessagegpt"
+        },
+        "score": 10
+      },
+      {
+        "name": "imessage-history",
+        "version": "0.1.0",
+        "description": "TypeScript tool to analyze iMessage history",
+        "links": {
+          "npm": "https://www.npmjs.com/package/imessage-history"
+        },
+        "score": 10
+      },
+      {
+        "name": "imessage",
+        "version": "0.1.6",
+        "description": "Node bindings to Apple iMessage",
+        "links": {
+          "npm": "https://www.npmjs.com/package/imessage"
+        },
+        "score": 10
+      },
+      {
+        "name": "hubot-imessage",
+        "version": "0.0.1",
+        "description": "An iMessage (and general AppleScript) adapter for hubot",
+        "links": {
+          "repository": "git://github.com/lazerwalker/hubot-imessage.git",
+          "npm": "https://www.npmjs.com/package/hubot-imessage"
+        },
+        "score": 10
+      },
+      {
+        "name": "fixparser-common",
+        "version": "9.3.16",
+        "description": "FIXParser shared codebase",
+        "links": {
+          "homepage": "https://fixparser.dev",
+          "repository": "git+https://gitlab.com/logotype/fixparser.git",
+          "bugs": "https://gitlab.com/logotype/fixparser/issues",
+          "npm": "https://www.npmjs.com/package/fixparser-common"
+        },
+        "score": 10
+      },
+      {
+        "name": "create-expo-target",
+        "version": "0.2.0",
+        "description": "CLI tool for scaffolding expo-targets extensions",
+        "links": {
+          "homepage": "https://github.com/csark0812/expo-targets#readme",
+          "repository": "git+https://github.com/csark0812/expo-targets.git",
+          "bugs": "https://github.com/csark0812/expo-targets/issues",
+          "npm": "https://www.npmjs.com/package/create-expo-target"
+        },
+        "score": 10
+      },
+      {
+        "name": "cordova-sticker-pack-extension-ka",
+        "version": "1.0.15",
+        "description": "Adds a Sticker Pack Extension to your Cordova project",
+        "links": {
+          "homepage": "https://github.com/LuckyKat/cordova-sticker-pack-extension",
+          "repository": "git+https://github.com/LuckyKat/cordova-sticker-pack-extension.git",
+          "bugs": "https://github.com/LuckyKat/cordova-sticker-pack-extension/issues",
+          "npm": "https://www.npmjs.com/package/cordova-sticker-pack-extension-ka"
+        },
+        "score": 10
+      },
+      {
+        "name": "clawdbot",
+        "version": "2026.1.5-3",
+        "description": "WhatsApp gateway CLI (Baileys web) with Pi RPC agent",
+        "links": {
+          "npm": "https://www.npmjs.com/package/clawdbot"
+        },
+        "score": 10
+      },
+      {
+        "name": "capacitor-imessage",
+        "version": "7.0.9",
+        "description": "Capacitor plugin for iMessage",
+        "links": {
+          "homepage": "https://github.com/palauaandsons/capacitor-imessage#readme",
+          "repository": "git+https://github.com/palauaandsons/capacitor-imessage.git",
+          "bugs": "https://github.com/palauaandsons/capacitor-imessage/issues",
+          "npm": "https://www.npmjs.com/package/capacitor-imessage"
+        },
+        "score": 10
+      },
+      {
+        "name": "auth-code-copy",
+        "version": "1.0.0",
+        "description": "Copy auth codes sent via iMessage to your clipboard.",
+        "links": {
+          "homepage": "https://github.com/briangonzalez/auth-code-copy#readme",
+          "repository": "git+https://github.com/briangonzalez/auth-code-copy.git",
+          "bugs": "https://github.com/briangonzalez/auth-code-copy/issues",
+          "npm": "https://www.npmjs.com/package/auth-code-copy"
+        },
+        "score": 10
+      },
+      {
+        "name": "astro-opengraph-images",
+        "version": "1.14.0",
+        "description": "Generate Open Graph images for your Astro site.",
+        "links": {
+          "homepage": "https://github.com/shepherdjerred/astro-opengraph-images",
+          "repository": "git+https://github.com/shepherdjerred/astro-opengraph-images.git",
+          "bugs": "https://github.com/shepherdjerred/astro-opengraph-images/issues",
+          "npm": "https://www.npmjs.com/package/astro-opengraph-images"
+        },
+        "score": 10
+      },
+      {
+        "name": "apple-imessage",
+        "version": "0.0.0",
+        "description": "Apple iMessage",
+        "links": {
+          "homepage": "https://github.com/song940/imessage#readme",
+          "repository": "git+https://github.com/song940/imessage.git",
+          "bugs": "https://github.com/song940/imessage/issues",
+          "npm": "https://www.npmjs.com/package/apple-imessage"
+        },
+        "score": 10
+      },
+      {
+        "name": "@rileybarabash/sendblue-ts",
+        "version": "0.1.1",
+        "description": "A Typescript Node.js wrapper for the Sendblue API, a service for seamlessly integrating your apps with iMessage.",
+        "links": {
+          "homepage": "https://sendblue.co",
+          "repository": "git+https://github.com/rileybarabash/sendblue-ts.git",
+          "bugs": "https://github.com/rileybarabash/sendblue-ts/issues",
+          "npm": "https://www.npmjs.com/package/@rileybarabash/sendblue-ts"
+        },
+        "score": 10
+      },
+      {
+        "name": "@photon-cli/flux",
+        "version": "0.3.2",
+        "description": "Flux CLI - Connect LangChain agents to iMessage",
+        "links": {
+          "npm": "https://www.npmjs.com/package/@photon-cli/flux"
+        },
+        "score": 10
+      },
+      {
+        "name": "@photon-ai/flux",
+        "version": "0.6.6",
+        "description": "Flux CLI - Connect LangChain agents to iMessage",
+        "links": {
+          "npm": "https://www.npmjs.com/package/@photon-ai/flux"
+        },
+        "score": 10
+      },
+      {
+        "name": "@photon-ai/advanced-imessage-kit",
+        "version": "1.11.0",
+        "description": "Powerful TypeScript iMessage SDK with real-time message processing",
+        "links": {
+          "homepage": "https://github.com/photon-hq/advanced-imessage-kit#readme",
+          "repository": "git+https://github.com/photon-hq/advanced-imessage-kit.git",
+          "bugs": "https://github.com/photon-hq/advanced-imessage-kit/issues",
+          "npm": "https://www.npmjs.com/package/@photon-ai/advanced-imessage-kit"
+        },
+        "score": 10
+      },
+      {
+        "name": "@nathanvale/chatline",
+        "version": "0.2.1",
+        "description": "Extract, transform, and analyze iMessage conversations with AI-powered enrichment and timeline rendering.",
+        "links": {
+          "homepage": "https://github.com/nathanvale/chatline#readme",
+          "repository": "git+https://github.com/nathanvale/chatline.git",
+          "bugs": "https://github.com/nathanvale/chatline/issues",
+          "npm": "https://www.npmjs.com/package/@nathanvale/chatline"
+        },
+        "score": 10
+      },
+      {
+        "name": "@mojaloop/platform-shared-lib-messaging-types-lib",
+        "version": "0.7.4",
+        "description": "mojaloop vnext platform shared libraries - generic messaging types lib",
+        "links": {
+          "homepage": "https://github.com/mojaloop/platform-shared-lib/tree/main/packages/messaging-types-lib",
+          "bugs": "https://github.com/mojaloop/platform-shared-lib/issues#readme",
+          "npm": "https://www.npmjs.com/package/@mojaloop/platform-shared-lib-messaging-types-lib"
+        },
+        "score": 10
+      },
+      {
+        "name": "@mi-gpt/chat",
+        "version": "1.1.1",
+        "description": "MiGPT 对话模块",
+        "links": {
+          "homepage": "https://github.com/idootop/migpt-next",
+          "repository": "git+https://github.com/idootop/migpt-next.git",
+          "bugs": "https://github.com/idootop/migpt-next/issues",
+          "npm": "https://www.npmjs.com/package/@mi-gpt/chat"
+        },
+        "score": 10
+      },
+      {
+        "name": "@config-plugins/ios-stickers",
+        "version": "12.0.0",
+        "description": "Config plugin to auto configure iOS iMessage stickers",
+        "links": {
+          "homepage": "https://github.com/expo/config-plugins#readme",
+          "repository": "git+https://github.com/expo/config-plugins.git",
+          "bugs": "https://github.com/expo/config-plugins/issues",
+          "npm": "https://www.npmjs.com/package/@config-plugins/ios-stickers"
+        },
+        "score": 10
+      },
+      {
+        "name": "@bacons/xcode",
+        "version": "1.0.0-alpha.28",
+        "description": "pbxproj parser",
+        "links": {
+          "homepage": "https://github.com/EvanBacon/xcode#readme",
+          "repository": "git+https://github.com/EvanBacon/xcode.git",
+          "bugs": "https://github.com/EvanBacon/xcode/issues",
+          "npm": "https://www.npmjs.com/package/@bacons/xcode"
+        },
+        "score": 10
+      },
+      {
+        "name": "@anyq/core",
+        "version": "0.1.1",
+        "description": "Core interfaces and utilities for anyq - Universal Queue Library",
+        "links": {
+          "homepage": "https://github.com/sns45/anyq#readme",
+          "repository": "git+https://github.com/sns45/anyq.git",
+          "bugs": "https://github.com/sns45/anyq/issues",
+          "npm": "https://www.npmjs.com/package/@anyq/core"
+        },
+        "score": 10
+      },
+      {
+        "name": "@alliedpayment/message-bridge",
+        "version": "3.2.9",
+        "description": "apn message bridge ( sets nservice bus headers so node apps can send messages to allied workers )",
+        "links": {
+          "homepage": "https://github.com/AlliedPayment/message-bridge#readme",
+          "repository": "git+https://github.com/AlliedPayment/message-bridge.git",
+          "bugs": "https://github.com/AlliedPayment/message-bridge/issues",
+          "npm": "https://www.npmjs.com/package/@alliedpayment/message-bridge"
+        },
+        "score": 10
+      },
+      {
+        "name": "zod-validation-error",
+        "version": "5.0.0",
+        "description": "Wrap zod validation errors in user-friendly readable messages",
+        "links": {
+          "homepage": "https://github.com/causaly/zod-validation-error#readme",
+          "repository": "git://github.com/causaly/zod-validation-error.git",
+          "bugs": "https://github.com/causaly/zod-validation-error/issues",
+          "npm": "https://www.npmjs.com/package/zod-validation-error"
+        },
+        "score": 8
+      },
+      {
+        "name": "websocket-driver",
+        "version": "0.7.4",
+        "description": "WebSocket protocol handler with pluggable I/O",
+        "links": {
+          "homepage": "https://github.com/faye/websocket-driver-node",
+          "repository": "git://github.com/faye/websocket-driver-node.git",
+          "bugs": "https://github.com/faye/websocket-driver-node/issues",
+          "npm": "https://www.npmjs.com/package/websocket-driver"
+        },
+        "score": 8
+      },
+      {
+        "name": "webpack-messages",
+        "version": "2.0.4",
+        "description": "Beautifully format Webpack messages throughout your bundle lifecycle(s)!",
+        "links": {
+          "homepage": "https://github.com/lukeed/webpack-messages#readme",
+          "repository": "git+https://github.com/lukeed/webpack-messages.git",
+          "bugs": "https://github.com/lukeed/webpack-messages/issues",
+          "npm": "https://www.npmjs.com/package/webpack-messages"
+        },
+        "score": 8
+      },
+      {
+        "name": "webpack-format-messages",
+        "version": "3.0.1",
+        "description": "Beautiful formatting for Webpack messages; ported from Create React App!",
+        "links": {
+          "homepage": "https://github.com/lukeed/webpack-format-messages#readme",
+          "repository": "git+https://github.com/lukeed/webpack-format-messages.git",
+          "bugs": "https://github.com/lukeed/webpack-format-messages/issues",
+          "npm": "https://www.npmjs.com/package/webpack-format-messages"
+        },
+        "score": 8
+      },
+      {
+        "name": "vue-i18n",
+        "version": "11.2.8",
+        "description": "Internationalization plugin for Vue.js",
+        "links": {
+          "homepage": "https://github.com/intlify/vue-i18n/tree/master/packages/vue-i18n#readme",
+          "repository": "git+https://github.com/intlify/vue-i18n.git",
+          "bugs": "https://github.com/intlify/vue-i18n/issues",
+          "npm": "https://www.npmjs.com/package/vue-i18n"
+        },
+        "score": 8
+      },
+      {
+        "name": "verror",
+        "version": "1.10.1",
+        "description": "richer JavaScript errors",
+        "links": {
+          "homepage": "https://github.com/joyent/node-verror#readme",
+          "repository": "git+https://github.com/joyent/node-verror.git",
+          "bugs": "https://github.com/joyent/node-verror/issues",
+          "npm": "https://www.npmjs.com/package/verror"
+        },
+        "score": 8
+      },
+      {
+        "name": "ts-invariant",
+        "version": "0.10.3",
+        "description": "TypeScript implementation of invariant(condition, message)",
+        "links": {
+          "homepage": "https://github.com/apollographql/invariant-packages",
+          "repository": "git+https://github.com/apollographql/invariant-packages.git",
+          "bugs": "https://github.com/apollographql/invariant-packages/issues",
+          "npm": "https://www.npmjs.com/package/ts-invariant"
+        },
+        "score": 8
+      },
+      {
+        "name": "teamcity-service-messages",
+        "version": "0.1.14",
+        "description": "Generate TeamCity service messages.",
+        "links": {
+          "homepage": "https://github.com/pifantastic/teamcity-service-messages#readme",
+          "repository": "git+https://github.com/pifantastic/teamcity-service-messages.git",
+          "bugs": "https://github.com/pifantastic/teamcity-service-messages/issues",
+          "npm": "https://www.npmjs.com/package/teamcity-service-messages"
+        },
+        "score": 8
+      },
+      {
+        "name": "sync-message-port",
+        "version": "1.1.3",
+        "description": "A Node.js communication port that can pass messages synchronously between workers",
+        "links": {
+          "homepage": "https://github.com/sass/sync-message-port#readme",
+          "repository": "git+https://github.com/sass/sync-message-port.git",
+          "bugs": "https://github.com/sass/sync-message-port/issues",
+          "npm": "https://www.npmjs.com/package/sync-message-port"
+        },
+        "score": 8
+      },
+      {
+        "name": "slack-block-builder",
+        "version": "2.8.0",
+        "description": "Maintainable code for interactive Slack messages, modals, home tabs, and workflow steps. A must-have for the Slack Block Kit framework.",
+        "links": {
+          "homepage": "https://blockbuilder.dev",
+          "repository": "git+https://github.com/raycharius/slack-block-builder.git",
+          "bugs": "https://github.com/raycharius/slack-block-builder/issues",
+          "npm": "https://www.npmjs.com/package/slack-block-builder"
+        },
+        "score": 8
+      },
+      {
+        "name": "ra-language-english",
+        "version": "5.13.4",
+        "description": "English messages for react-admin, the frontend framework for building admin applications on top of REST/GraphQL services",
+        "links": {
+          "homepage": "https://github.com/marmelab/react-admin#readme",
+          "repository": "git+https://github.com/marmelab/react-admin.git",
+          "bugs": "https://github.com/marmelab/react-admin/issues",
+          "npm": "https://www.npmjs.com/package/ra-language-english"
+        },
+        "score": 8
+      },
+      {
+        "name": "proc-log",
+        "version": "6.1.0",
+        "description": "just emit 'log' events on the process object",
+        "links": {
+          "homepage": "https://github.com/npm/proc-log#readme",
+          "repository": "git+https://github.com/npm/proc-log.git",
+          "bugs": "https://github.com/npm/proc-log/issues",
+          "npm": "https://www.npmjs.com/package/proc-log"
+        },
+        "score": 8
+      },
+      {
+        "name": "postcss-message-helpers",
+        "version": "2.0.0",
+        "description": "PostCSS helpers to throw or output GNU style messages",
+        "links": {
+          "homepage": "https://github.com/MoOx/postcss-message-helpers",
+          "repository": "https://github.com/MoOx/postcss-message-helpers.git",
+          "bugs": "https://github.com/MoOx/postcss-message-helpers/issues",
+          "npm": "https://www.npmjs.com/package/postcss-message-helpers"
+        },
+        "score": 8
+      },
+      {
+        "name": "nssocket",
+        "version": "0.6.0",
+        "description": "An elegant way to define lightweight protocols on-top of TCP/TLS sockets in node.js",
+        "links": {
+          "homepage": "https://github.com/foreverjs/nssocket#readme",
+          "repository": "git+ssh://git@github.com/foreverjs/nssocket.git",
+          "bugs": "https://github.com/foreverjs/nssocket/issues",
+          "npm": "https://www.npmjs.com/package/nssocket"
+        },
+        "score": 8
+      },
+      {
+        "name": "notifications-node-client",
+        "version": "8.2.1",
+        "description": "GOV.UK Notify Node.js client",
+        "links": {
+          "homepage": "https://docs.notifications.service.gov.uk/node.html",
+          "repository": "git+https://github.com/alphagov/notifications-node-client.git",
+          "bugs": "https://github.com/alphagov/notifications-node-client/issues",
+          "npm": "https://www.npmjs.com/package/notifications-node-client"
+        },
+        "score": 8
+      },
+      {
+        "name": "next-intl-swc-plugin-extractor",
+        "version": "4.7.0",
+        "description": "SWC plugin for extracting inline messages.",
+        "links": {
+          "homepage": "https://next-intl.dev",
+          "repository": "git+https://github.com/amannn/next-intl.git",
+          "bugs": "https://github.com/amannn/next-intl/issues",
+          "npm": "https://www.npmjs.com/package/next-intl-swc-plugin-extractor"
+        },
+        "score": 8
+      },
+      {
+        "name": "makeerror",
+        "version": "1.0.12",
+        "description": "A library to make errors.",
+        "links": {
+          "homepage": "https://github.com/daaku/nodejs-makeerror#readme",
+          "repository": "git+https://github.com/daaku/nodejs-makeerror.git",
+          "bugs": "https://github.com/daaku/nodejs-makeerror/issues",
+          "npm": "https://www.npmjs.com/package/makeerror"
+        },
+        "score": 8
+      },
+      {
+        "name": "extract-react-intl-messages",
+        "version": "5.0.0",
+        "description": "Extract react-intl messages",
+        "links": {
+          "homepage": "https://github.com/akameco/extract-react-intl-messages#readme",
+          "repository": "git+https://github.com/akameco/extract-react-intl-messages.git",
+          "bugs": "https://github.com/akameco/extract-react-intl-messages/issues",
+          "npm": "https://www.npmjs.com/package/extract-react-intl-messages"
+        },
+        "score": 8
+      },
+      {
+        "name": "ember-cli-flash",
+        "version": "6.0.0",
+        "description": "Simple, highly configurable flash messages for ember-cli",
+        "links": {
+          "homepage": "https://github.com/adopted-ember-addons/ember-cli-flash",
+          "repository": "git+https://github.com/adopted-ember-addons/ember-cli-flash.git",
+          "bugs": "https://github.com/adopted-ember-addons/ember-cli-flash/issues",
+          "npm": "https://www.npmjs.com/package/ember-cli-flash"
+        },
+        "score": 8
+      },
+      {
+        "name": "duck",
+        "version": "0.1.12",
+        "description": "Rich matchers inspired by Hamcrest. Useful for generating helpful assertion failure messages in tests.",
+        "links": {
+          "homepage": "https://github.com/mwilliamson/duck.js#readme",
+          "repository": "git+https://github.com/mwilliamson/duck.js.git",
+          "bugs": "https://github.com/mwilliamson/duck.js/issues",
+          "npm": "https://www.npmjs.com/package/duck"
+        },
+        "score": 8
+      },
+      {
+        "name": "connect-flash",
+        "version": "0.1.1",
+        "description": "Flash message middleware for Connect.",
+        "links": {
+          "repository": "git://github.com/jaredhanson/connect-flash.git",
+          "bugs": "http://github.com/jaredhanson/connect-flash/issues",
+          "npm": "https://www.npmjs.com/package/connect-flash"
+        },
+        "score": 8
+      },
+      {
+        "name": "babel-messages",
+        "version": "6.23.0",
+        "description": "Collection of debug messages used by Babel.",
+        "links": {
+          "homepage": "https://babeljs.io/",
+          "repository": "https://github.com/babel/babel/tree/master/packages/babel-messages",
+          "npm": "https://www.npmjs.com/package/babel-messages"
+        },
+        "score": 8
+      },
+      {
+        "name": "angular-messages",
+        "version": "1.8.3",
+        "description": "AngularJS module that provides enhanced support for displaying messages within templates",
+        "links": {
+          "homepage": "http://angularjs.org",
+          "repository": "git+https://github.com/angular/angular.js.git",
+          "bugs": "https://github.com/angular/angular.js/issues",
+          "npm": "https://www.npmjs.com/package/angular-messages"
+        },
+        "score": 8
+      },
+      {
+        "name": "@wallet-standard/errors",
+        "version": "0.1.1",
+        "description": "This package brings together every error message across all Wallet Standard JavaScript modules.",
+        "links": {
+          "homepage": "https://github.com/wallet-standard/wallet-standard#readme",
+          "repository": "git+https://github.com/wallet-standard/wallet-standard.git",
+          "bugs": "https://github.com/wallet-standard/wallet-standard/issues",
+          "npm": "https://www.npmjs.com/package/@wallet-standard/errors"
+        },
+        "score": 8
+      },
+      {
+        "name": "@vonage/messages",
+        "version": "1.22.1",
+        "description": "Multi-channel messaging that integrates WhatsApp, Facebook, Viber, SMS, and MMS",
+        "links": {
+          "homepage": "https://developer.vonage.com",
+          "repository": "git+https://github.com/Vonage/vonage-node-sdk.git",
+          "bugs": "https://github.com/Vonage/vonage-node-sdk/issues",
+          "npm": "https://www.npmjs.com/package/@vonage/messages"
+        },
+        "score": 8
+      },
+      {
+        "name": "@vaadin/vaadin-messages",
+        "version": "23.6.2",
+        "description": "vaadin-messages",
+        "links": {
+          "homepage": "https://vaadin.com/components",
+          "repository": "git+https://github.com/vaadin/web-components.git",
+          "bugs": "https://github.com/vaadin/web-components/issues",
+          "npm": "https://www.npmjs.com/package/@vaadin/vaadin-messages"
+        },
+        "score": 8
+      },
+      {
+        "name": "@supabase/realtime-js",
+        "version": "2.90.0",
+        "description": "Listen to realtime updates to your PostgreSQL database",
+        "links": {
+          "homepage": "https://github.com/supabase/supabase-js/tree/master/packages/core/realtime-js",
+          "repository": "git+https://github.com/supabase/supabase-js.git",
+          "bugs": "https://github.com/supabase/supabase-js/issues",
+          "npm": "https://www.npmjs.com/package/@supabase/realtime-js"
+        },
+        "score": 8
+      },
+      {
+        "name": "@solana/transaction-messages",
+        "version": "5.1.0",
+        "description": "Helpers for creating transaction messages",
+        "links": {
+          "homepage": "https://www.solanakit.com/api#solanatransaction-messages",
+          "repository": "git+https://github.com/anza-xyz/kit.git",
+          "bugs": "https://github.com/anza-xyz/kit/issues",
+          "npm": "https://www.npmjs.com/package/@solana/transaction-messages"
+        },
+        "score": 8
+      },
+      {
+        "name": "@solana/signers",
+        "version": "5.1.0",
+        "description": "An abstraction layer over signing messages and transactions in Solana",
+        "links": {
+          "homepage": "https://www.solanakit.com/api#solanasigners",
+          "repository": "git+https://github.com/anza-xyz/kit.git",
+          "bugs": "https://github.com/anza-xyz/kit/issues",
+          "npm": "https://www.npmjs.com/package/@solana/signers"
+        },
+        "score": 8
+      },
+      {
+        "name": "@solana/offchain-messages",
+        "version": "5.1.0",
+        "description": "Helpers for encoding and decoding messages according to the offchain message specification",
+        "links": {
+          "homepage": "https://www.solanakit.com/api#solanaoffchain-messages",
+          "repository": "git+https://github.com/anza-xyz/kit.git",
+          "bugs": "https://github.com/anza-xyz/kit/issues",
+          "npm": "https://www.npmjs.com/package/@solana/offchain-messages"
+        },
+        "score": 8
+      },
+      {
+        "name": "@solana/errors",
+        "version": "5.1.0",
+        "description": "Throw, identify, and decode Solana JavaScript errors",
+        "links": {
+          "homepage": "https://www.solanakit.com/api#solanaerrors",
+          "repository": "git+https://github.com/anza-xyz/kit.git",
+          "bugs": "https://github.com/anza-xyz/kit/issues",
+          "npm": "https://www.npmjs.com/package/@solana/errors"
+        },
+        "score": 8
+      },
+      {
+        "name": "@sap/audit-logging",
+        "version": "6.9.0",
+        "description": "Provides audit logging functionalities for Node.js applications",
+        "links": {
+          "npm": "https://www.npmjs.com/package/@sap/audit-logging"
+        },
+        "score": 8
+      },
+      {
+        "name": "@rushstack/terminal",
+        "version": "0.19.5",
+        "description": "User interface primitives for console applications",
+        "links": {
+          "homepage": "https://github.com/microsoft/rushstack#readme",
+          "repository": "git+https://github.com/microsoft/rushstack.git",
+          "bugs": "https://github.com/microsoft/rushstack/issues",
+          "npm": "https://www.npmjs.com/package/@rushstack/terminal"
+        },
+        "score": 8
+      },
+      {
+        "name": "@remirror/messages",
+        "version": "3.0.0",
+        "description": "Internalization strings which are used throughout the remirror core codebase.",
+        "links": {
+          "homepage": "https://github.com/remirror/remirror/tree/HEAD/packages/remirror__messages",
+          "repository": "git+https://github.com/remirror/remirror.git",
+          "bugs": "https://github.com/remirror/remirror/issues",
+          "npm": "https://www.npmjs.com/package/@remirror/messages"
+        },
+        "score": 8
+      },
+      {
+        "name": "@messageformat/core",
+        "version": "3.4.0",
+        "description": "PluralFormat and SelectFormat Message and i18n Tool - A JavaScript Implemenation of the ICU standards.",
+        "links": {
+          "homepage": "http://messageformat.github.io/messageformat/api/core/",
+          "repository": "git+https://github.com/messageformat/messageformat.git",
+          "bugs": "https://github.com/messageformat/messageformat/issues",
+          "npm": "https://www.npmjs.com/package/@messageformat/core"
+        },
+        "score": 8
+      },
+      {
+        "name": "@mapbox/jsonlint-lines-primitives",
+        "version": "2.0.2",
+        "description": "Validate JSON",
+        "links": {
+          "homepage": "https://github.com/mapbox/jsonlint#readme",
+          "repository": "git://github.com/mapbox/jsonlint.git",
+          "bugs": "http://github.com/mapbox/jsonlint/issues",
+          "npm": "https://www.npmjs.com/package/@mapbox/jsonlint-lines-primitives"
+        },
+        "score": 8
+      },
+      {
+        "name": "@lingui/babel-plugin-extract-messages",
+        "version": "5.7.0",
+        "description": "Babel plugin for collecting messages from source code for internationalization",
+        "links": {
+          "homepage": "https://lingui.dev",
+          "repository": "git+https://github.com/lingui/js-lingui.git",
+          "bugs": "https://github.com/lingui/js-lingui/issues",
+          "npm": "https://www.npmjs.com/package/@lingui/babel-plugin-extract-messages"
+        },
+        "score": 8
+      },
+      {
+        "name": "@liff/send-messages",
+        "version": "2.27.3",
+        "description": "@liff/send-messages",
+        "links": {
+          "npm": "https://www.npmjs.com/package/@liff/send-messages"
+        },
+        "score": 8
+      },
+      {
+        "name": "@intlify/core",
+        "version": "11.2.8",
+        "description": "@intlify/core",
+        "links": {
+          "homepage": "https://github.com/intlify/vue-i18n/tree/master/packages/core#readme",
+          "repository": "git+https://github.com/intlify/vue-i18n.git",
+          "bugs": "https://github.com/intlify/vue-i18n/issues",
+          "npm": "https://www.npmjs.com/package/@intlify/core"
+        },
+        "score": 8
+      },
+      {
+        "name": "@gulpjs/messages",
+        "version": "1.1.0",
+        "description": "Symbols for all messages within gulp-cli",
+        "links": {
+          "homepage": "https://github.com/gulpjs/messages#readme",
+          "repository": "git+https://github.com/gulpjs/messages.git",
+          "bugs": "https://github.com/gulpjs/messages/issues",
+          "npm": "https://www.npmjs.com/package/@gulpjs/messages"
+        },
+        "score": 8
+      },
+      {
+        "name": "@extend-chrome/messages",
+        "version": "1.2.2",
+        "description": "An API for Chrome extension messages that makes sense.",
+        "links": {
+          "homepage": "https://github.com/extend-chrome/messages#readme",
+          "repository": "git+https://github.com/extend-chrome/messages.git",
+          "bugs": "https://github.com/extend-chrome/messages/issues",
+          "npm": "https://www.npmjs.com/package/@extend-chrome/messages"
+        },
+        "score": 8
+      },
+      {
+        "name": "@cucumber/junit-xml-formatter",
+        "version": "0.9.0",
+        "description": "⚠️ This is an internal package; you don't need to install it in order to use the junit formatter in `@cucumber/cucumber` as it's built in there.",
+        "links": {
+          "homepage": "https://github.com/cucumber/junit-xml-formatter#readme",
+          "repository": "git+https://github.com/cucumber/junit-xml-formatter.git",
+          "bugs": "https://github.com/cucumber/junit-xml-formatter/issues",
+          "npm": "https://www.npmjs.com/package/@cucumber/junit-xml-formatter"
+        },
+        "score": 8
+      },
+      {
+        "name": "@cucumber/html-formatter",
+        "version": "22.3.0",
+        "description": "HTML formatter for Cucumber",
+        "links": {
+          "homepage": "https://github.com/cucumber/html-formatter#readme",
+          "repository": "git+https://github.com/cucumber/html-formatter.git",
+          "bugs": "https://github.com/cucumber/html-formatter/issues",
+          "npm": "https://www.npmjs.com/package/@cucumber/html-formatter"
+        },
+        "score": 8
+      },
+      {
+        "name": "@commitlint/read",
+        "version": "20.2.0",
+        "description": "Read commit messages from a specified range or last edit",
+        "links": {
+          "homepage": "https://commitlint.js.org/",
+          "repository": "https://github.com/conventional-changelog/commitlint.git",
+          "bugs": "https://github.com/conventional-changelog/commitlint/issues",
+          "npm": "https://www.npmjs.com/package/@commitlint/read"
+        },
+        "score": 8
+      },
+      {
+        "name": "@commitlint/cli",
+        "version": "20.3.0",
+        "description": "Lint your commit messages",
+        "links": {
+          "homepage": "https://commitlint.js.org/",
+          "repository": "https://github.com/conventional-changelog/commitlint.git",
+          "bugs": "https://github.com/conventional-changelog/commitlint/issues",
+          "npm": "https://www.npmjs.com/package/@commitlint/cli"
+        },
+        "score": 8
+      },
+      {
+        "name": "@changesets/logger",
+        "version": "0.1.1",
+        "description": "Console log alias",
+        "links": {
+          "homepage": "https://github.com/changesets/changesets/tree/main#readme",
+          "repository": "git+https://github.com/changesets/changesets.git#main",
+          "bugs": "https://github.com/changesets/changesets/issues",
+          "npm": "https://www.npmjs.com/package/@changesets/logger"
+        },
+        "score": 8
+      },
+      {
+        "name": "@applitools/logger",
+        "version": "2.2.7",
+        "description": "Applitools logger",
+        "links": {
+          "homepage": "https://applitools.com",
+          "repository": "git://github.com/applitools/eyes.sdk.javascript1.git",
+          "bugs": "https://github.com/applitools/eyes.sdk.javascript1/issues",
+          "npm": "https://www.npmjs.com/package/@applitools/logger"
+        },
+        "score": 8
+      },
+      {
+        "name": "siginfo",
+        "version": "2.0.0",
+        "description": "Utility module to print pretty messages on SIGINFO/SIGUSR1",
+        "links": {
+          "homepage": "https://github.com/emilbayes/siginfo#readme",
+          "repository": "git+https://github.com/emilbayes/siginfo.git",
+          "bugs": "https://github.com/emilbayes/siginfo/issues",
+          "npm": "https://www.npmjs.com/package/siginfo"
+        },
+        "score": 2
+      },
+      {
+        "name": "remark-github-blockquote-alert",
+        "version": "2.0.1",
+        "description": "Alerts are a Markdown extension based on the blockquote syntax that you can use to emphasize critical information.",
+        "links": {
+          "homepage": "https://jaywcjlove.github.io/remark-github-blockquote-alert",
+          "repository": "git+https://github.com/jaywcjlove/remark-github-blockquote-alert.git",
+          "bugs": "https://github.com/jaywcjlove/remark-github-blockquote-alert/issues",
+          "npm": "https://www.npmjs.com/package/remark-github-blockquote-alert"
+        },
+        "score": 2
+      },
+      {
+        "name": "rehype-rewrite",
+        "version": "4.0.4",
+        "description": "Rewrite element with rehype.",
+        "links": {
+          "homepage": "https://jaywcjlove.github.io/rehype-rewrite",
+          "repository": "git+https://github.com/jaywcjlove/rehype-rewrite.git",
+          "bugs": "https://github.com/jaywcjlove/rehype-rewrite/issues",
+          "npm": "https://www.npmjs.com/package/rehype-rewrite"
+        },
+        "score": 2
+      },
+      {
+        "name": "rehype-ignore",
+        "version": "2.0.3",
+        "description": "Ignore content display via HTML comments, Shown in GitHub readme, excluded in HTML.",
+        "links": {
+          "homepage": "https://jaywcjlove.github.io/rehype-ignore",
+          "repository": "git+https://github.com/jaywcjlove/rehype-ignore.git",
+          "bugs": "https://github.com/jaywcjlove/rehype-ignore/issues",
+          "npm": "https://www.npmjs.com/package/rehype-ignore"
+        },
+        "score": 2
+      },
+      {
+        "name": "rehype-attr",
+        "version": "4.1.1",
+        "description": "New syntax to add attributes to Markdown.",
+        "links": {
+          "homepage": "https://jaywcjlove.github.io/rehype-attr",
+          "repository": "git+https://github.com/jaywcjlove/rehype-attr.git",
+          "bugs": "https://github.com/jaywcjlove/rehype-attr/issues",
+          "npm": "https://www.npmjs.com/package/rehype-attr"
+        },
+        "score": 2
+      },
+      {
+        "name": "react-native-localize",
+        "version": "3.6.1",
+        "description": "A toolbox for your React Native app localization.",
+        "links": {
+          "homepage": "https://github.com/zoontek/react-native-localize",
+          "repository": "git+https://github.com/zoontek/react-native-localize.git",
+          "bugs": "https://github.com/zoontek/react-native-localize/issues",
+          "npm": "https://www.npmjs.com/package/react-native-localize"
+        },
+        "score": 2
+      },
+      {
+        "name": "preview-email",
+        "version": "3.1.0",
+        "description": "Automatically opens your browser and iOS Simulator to preview Node.js email messages sent with Nodemailer. Made for Forward Email and Lad. Cross-browser and cross-platform email testing.",
+        "links": {
+          "homepage": "https://github.com/forwardemail/test-preview-emails-cross-browsers-ios-simulator-nodejs-javascript",
+          "repository": "git+https://github.com/forwardemail/test-preview-emails-cross-browsers-ios-simulator-nodejs-javascript.git",
+          "bugs": "https://github.com/forwardemail/test-preview-emails-cross-browsers-ios-simulator-nodejs-javascript/issues",
+          "npm": "https://www.npmjs.com/package/preview-email"
+        },
+        "score": 2
+      },
+      {
+        "name": "pidtree",
+        "version": "0.6.0",
+        "description": "Cross platform children list of a PID",
+        "links": {
+          "homepage": "http://github.com/simonepri/pidtree#readme",
+          "repository": "git+https://github.com/simonepri/pidtree.git",
+          "bugs": "https://github.com/simonepri/pidtree/issues",
+          "npm": "https://www.npmjs.com/package/pidtree"
+        },
+        "score": 2
+      },
+      {
+        "name": "os-name",
+        "version": "6.1.0",
+        "description": "Get the name of the current operating system. Example: macOS Sierra",
+        "links": {
+          "homepage": "https://github.com/sindresorhus/os-name#readme",
+          "repository": "git+https://github.com/sindresorhus/os-name.git",
+          "bugs": "https://github.com/sindresorhus/os-name/issues",
+          "npm": "https://www.npmjs.com/package/os-name"
+        },
+        "score": 2
+      },
+      {
+        "name": "node-notifier",
+        "version": "10.0.1",
+        "description": "A Node.js module for sending notifications on native Mac, Windows (post and pre 8) and Linux (or Growl as fallback)",
+        "links": {
+          "homepage": "https://github.com/mikaelbr/node-notifier#readme",
+          "repository": "git+ssh://git@github.com/mikaelbr/node-notifier.git",
+          "bugs": "https://github.com/mikaelbr/node-notifier/issues",
+          "npm": "https://www.npmjs.com/package/node-notifier"
+        },
+        "score": 2
+      },
+      {
+        "name": "node-gyp",
+        "version": "12.1.0",
+        "description": "Node.js native addon build tool",
+        "links": {
+          "homepage": "https://github.com/nodejs/node-gyp#readme",
+          "repository": "git://github.com/nodejs/node-gyp.git",
+          "bugs": "https://github.com/nodejs/node-gyp/issues",
+          "npm": "https://www.npmjs.com/package/node-gyp"
+        },
+        "score": 2
+      },
+      {
+        "name": "macos-version",
+        "version": "6.0.0",
+        "description": "Get or check the current macOS version",
+        "links": {
+          "homepage": "https://github.com/sindresorhus/macos-version#readme",
+          "repository": "git+https://github.com/sindresorhus/macos-version.git",
+          "bugs": "https://github.com/sindresorhus/macos-version/issues",
+          "npm": "https://www.npmjs.com/package/macos-version"
+        },
+        "score": 2
+      },
+      {
+        "name": "macos-release",
+        "version": "3.4.0",
+        "description": "Get the name and version of a macOS release from the Darwin version",
+        "links": {
+          "homepage": "https://github.com/sindresorhus/macos-release#readme",
+          "repository": "git+https://github.com/sindresorhus/macos-release.git",
+          "bugs": "https://github.com/sindresorhus/macos-release/issues",
+          "npm": "https://www.npmjs.com/package/macos-release"
+        },
+        "score": 2
+      },
+      {
+        "name": "hotkeys-js",
+        "version": "4.0.0",
+        "description": "A simple micro-library for defining and dispatching keyboard shortcuts. It has no dependencies.",
+        "links": {
+          "homepage": "https://jaywcjlove.github.io/hotkeys-js",
+          "repository": "git+https://github.com/jaywcjlove/hotkeys-js.git",
+          "bugs": "https://github.com/jaywcjlove/hotkeys-js/issues",
+          "npm": "https://www.npmjs.com/package/hotkeys-js"
+        },
+        "score": 2
+      },
+      {
+        "name": "default-browser-id",
+        "version": "5.0.1",
+        "description": "Get the bundle identifier of the default browser (macOS). Example: com.apple.Safari",
+        "links": {
+          "homepage": "https://github.com/sindresorhus/default-browser-id#readme",
+          "repository": "git+https://github.com/sindresorhus/default-browser-id.git",
+          "bugs": "https://github.com/sindresorhus/default-browser-id/issues",
+          "npm": "https://www.npmjs.com/package/default-browser-id"
+        },
+        "score": 2
+      },
+      {
+        "name": "default-browser",
+        "version": "5.4.0",
+        "description": "Get the default browser",
+        "links": {
+          "homepage": "https://github.com/sindresorhus/default-browser#readme",
+          "repository": "git+https://github.com/sindresorhus/default-browser.git",
+          "bugs": "https://github.com/sindresorhus/default-browser/issues",
+          "npm": "https://www.npmjs.com/package/default-browser"
+        },
+        "score": 2
+      },
+      {
+        "name": "bundle-name",
+        "version": "4.1.0",
+        "description": "Get bundle name from a bundle identifier (macOS): `com.apple.Safari` → `Safari`",
+        "links": {
+          "homepage": "https://github.com/sindresorhus/bundle-name#readme",
+          "repository": "git+https://github.com/sindresorhus/bundle-name.git",
+          "bugs": "https://github.com/sindresorhus/bundle-name/issues",
+          "npm": "https://www.npmjs.com/package/bundle-name"
+        },
+        "score": 2
+      },
+      {
+        "name": "ajv-errors",
+        "version": "3.0.0",
+        "description": "Custom error messages in JSON Schemas for Ajv validator",
+        "links": {
+          "homepage": "https://github.com/epoberezkin/ajv-errors#readme",
+          "repository": "git+https://github.com/epoberezkin/ajv-errors.git",
+          "bugs": "https://github.com/epoberezkin/ajv-errors/issues",
+          "npm": "https://www.npmjs.com/package/ajv-errors"
+        },
+        "score": 2
+      },
+      {
+        "name": "@uiw/react-md-editor",
+        "version": "4.0.11",
+        "description": "A markdown editor with preview, implemented with React.js and TypeScript.",
+        "links": {
+          "homepage": "https://uiwjs.github.io/react-md-editor/",
+          "repository": "git+https://github.com/uiwjs/react-md-editor.git",
+          "bugs": "https://github.com/uiwjs/react-md-editor/issues",
+          "npm": "https://www.npmjs.com/package/@uiw/react-md-editor"
+        },
+        "score": 2
+      },
+      {
+        "name": "@uiw/react-markdown-preview",
+        "version": "5.1.5",
+        "description": "React component preview markdown text in web browser. The minimal amount of CSS to replicate the GitHub Markdown style.",
+        "links": {
+          "homepage": "https://uiwjs.github.io/react-markdown-preview",
+          "repository": "git+https://github.com/uiwjs/react-markdown-preview.git",
+          "bugs": "https://github.com/uiwjs/react-markdown-preview/issues",
+          "npm": "https://www.npmjs.com/package/@uiw/react-markdown-preview"
+        },
+        "score": 2
+      },
+      {
+        "name": "@uiw/react-json-view",
+        "version": "2.0.0-alpha.40",
+        "description": "JSON viewer for react.",
+        "links": {
+          "homepage": "https://uiwjs.github.io/react-json-view",
+          "repository": "git+https://github.com/uiwjs/react-json-view.git",
+          "bugs": "https://github.com/uiwjs/react-json-view/issues",
+          "npm": "https://www.npmjs.com/package/@uiw/react-json-view"
+        },
+        "score": 2
+      },
+      {
+        "name": "@uiw/react-drag-event-interactive",
+        "version": "2.9.2",
+        "description": "react drag event interactive",
+        "links": {
+          "homepage": "https://uiwjs.github.io/react-color/#/drag-event-interactive",
+          "repository": "git+https://github.com/uiwjs/react-color.git",
+          "bugs": "https://github.com/uiwjs/react-color/issues",
+          "npm": "https://www.npmjs.com/package/@uiw/react-drag-event-interactive"
+        },
+        "score": 2
+      },
+      {
+        "name": "@uiw/react-color-swatch",
+        "version": "2.9.2",
+        "description": "Color swatch component for React.",
+        "links": {
+          "homepage": "https://uiwjs.github.io/react-color/#/swatch",
+          "repository": "git+https://github.com/uiwjs/react-color.git",
+          "bugs": "https://github.com/uiwjs/react-color/issues",
+          "npm": "https://www.npmjs.com/package/@uiw/react-color-swatch"
+        },
+        "score": 2
+      },
+      {
+        "name": "@uiw/react-color-hue",
+        "version": "2.9.2",
+        "description": "Color hue",
+        "links": {
+          "homepage": "https://uiwjs.github.io/react-color/#/hue",
+          "repository": "git+https://github.com/uiwjs/react-color.git",
+          "bugs": "https://github.com/uiwjs/react-color/issues",
+          "npm": "https://www.npmjs.com/package/@uiw/react-color-hue"
+        },
+        "score": 2
+      },
+      {
+        "name": "@uiw/react-color-editable-input-rgba",
+        "version": "2.9.2",
+        "description": "Color Editable Input RGBA",
+        "links": {
+          "homepage": "https://uiwjs.github.io/react-color/#/editable-input-rgba",
+          "repository": "git+https://github.com/uiwjs/react-color.git",
+          "bugs": "https://github.com/uiwjs/react-color/issues",
+          "npm": "https://www.npmjs.com/package/@uiw/react-color-editable-input-rgba"
+        },
+        "score": 2
+      },
+      {
+        "name": "@uiw/react-color-alpha",
+        "version": "2.9.2",
+        "description": "Color alpha",
+        "links": {
+          "homepage": "https://uiwjs.github.io/react-color/#/alpha",
+          "repository": "git+https://github.com/uiwjs/react-color.git",
+          "bugs": "https://github.com/uiwjs/react-color/issues",
+          "npm": "https://www.npmjs.com/package/@uiw/react-color-alpha"
+        },
+        "score": 2
+      },
+      {
+        "name": "@uiw/react-codemirror",
+        "version": "4.25.4",
+        "description": "CodeMirror component for React.",
+        "links": {
+          "homepage": "https://uiwjs.github.io/react-codemirror",
+          "repository": "git+https://github.com/uiwjs/react-codemirror.git",
+          "bugs": "https://github.com/uiwjs/react-codemirror/issues",
+          "npm": "https://www.npmjs.com/package/@uiw/react-codemirror"
+        },
+        "score": 2
+      },
+      {
+        "name": "@uiw/copy-to-clipboard",
+        "version": "1.0.19",
+        "description": "Copy to clipboard.",
+        "links": {
+          "homepage": "https://uiwjs.github.io/copy-to-clipboard",
+          "repository": "git+https://github.com/uiwjs/copy-to-clipboard.git",
+          "bugs": "https://github.com/uiwjs/copy-to-clipboard/issues",
+          "npm": "https://www.npmjs.com/package/@uiw/copy-to-clipboard"
+        },
+        "score": 2
+      },
+      {
+        "name": "@uiw/color-convert",
+        "version": "2.9.2",
+        "description": "Color Convert",
+        "links": {
+          "homepage": "https://uiwjs.github.io/react-color/#/convert",
+          "repository": "git+https://github.com/uiwjs/react-color.git",
+          "bugs": "https://github.com/uiwjs/react-color/issues",
+          "npm": "https://www.npmjs.com/package/@uiw/color-convert"
+        },
+        "score": 2
+      },
+      {
+        "name": "@uiw/codemirror-themes-all",
+        "version": "4.25.4",
+        "description": "Themes all for CodeMirror 6.",
+        "links": {
+          "homepage": "https://uiwjs.github.io/react-codemirror/#/theme/data/abcdef",
+          "repository": "git+https://github.com/uiwjs/react-codemirror.git",
+          "bugs": "https://github.com/uiwjs/react-codemirror/issues",
+          "npm": "https://www.npmjs.com/package/@uiw/codemirror-themes-all"
+        },
+        "score": 2
+      },
+      {
+        "name": "@uiw/codemirror-themes",
+        "version": "4.25.4",
+        "description": "Themes for CodeMirror.",
+        "links": {
+          "homepage": "https://uiwjs.github.io/react-codemirror/#/theme/doc",
+          "repository": "git+https://github.com/uiwjs/react-codemirror.git",
+          "bugs": "https://github.com/uiwjs/react-codemirror/issues",
+          "npm": "https://www.npmjs.com/package/@uiw/codemirror-themes"
+        },
+        "score": 2
+      },
+      {
+        "name": "@uiw/codemirror-theme-vscode",
+        "version": "4.25.4",
+        "description": "Theme vscode for CodeMirror.",
+        "links": {
+          "homepage": "https://uiwjs.github.io/react-codemirror/#/theme/data/vscode",
+          "repository": "git+https://github.com/uiwjs/react-codemirror.git",
+          "bugs": "https://github.com/uiwjs/react-codemirror/issues",
+          "npm": "https://www.npmjs.com/package/@uiw/codemirror-theme-vscode"
+        },
+        "score": 2
+      },
+      {
+        "name": "@uiw/codemirror-theme-tokyo-night",
+        "version": "4.25.4",
+        "description": "Theme tokyo-night for CodeMirror.",
+        "links": {
+          "homepage": "https://uiwjs.github.io/react-codemirror/#/theme/data/tokyo-night",
+          "repository": "git+https://github.com/uiwjs/react-codemirror.git",
+          "bugs": "https://github.com/uiwjs/react-codemirror/issues",
+          "npm": "https://www.npmjs.com/package/@uiw/codemirror-theme-tokyo-night"
+        },
+        "score": 2
+      },
+      {
+        "name": "@uiw/codemirror-theme-material",
+        "version": "4.25.4",
+        "description": "Theme material for CodeMirror.",
+        "links": {
+          "homepage": "https://uiwjs.github.io/react-codemirror/#/theme/data/material",
+          "repository": "git+https://github.com/uiwjs/react-codemirror.git",
+          "bugs": "https://github.com/uiwjs/react-codemirror/issues",
+          "npm": "https://www.npmjs.com/package/@uiw/codemirror-theme-material"
+        },
+        "score": 2
+      },
+      {
+        "name": "@uiw/codemirror-theme-gruvbox-dark",
+        "version": "4.25.4",
+        "description": "Theme gruvbox-dark for CodeMirror.",
+        "links": {
+          "homepage": "https://uiwjs.github.io/react-codemirror/#/theme/data/gruvbox/dark",
+          "repository": "git+https://github.com/uiwjs/react-codemirror.git",
+          "bugs": "https://github.com/uiwjs/react-codemirror/issues",
+          "npm": "https://www.npmjs.com/package/@uiw/codemirror-theme-gruvbox-dark"
+        },
+        "score": 2
+      },
+      {
+        "name": "@uiw/codemirror-theme-github",
+        "version": "4.25.4",
+        "description": "Theme github for CodeMirror.",
+        "links": {
+          "homepage": "https://uiwjs.github.io/react-codemirror/#/theme/data/github/light",
+          "repository": "git+https://github.com/uiwjs/react-codemirror.git",
+          "bugs": "https://github.com/uiwjs/react-codemirror/issues",
+          "npm": "https://www.npmjs.com/package/@uiw/codemirror-theme-github"
+        },
+        "score": 2
+      },
+      {
+        "name": "@uiw/codemirror-theme-duotone",
+        "version": "4.25.4",
+        "description": "Theme duotone for CodeMirror.",
+        "links": {
+          "homepage": "https://uiwjs.github.io/react-codemirror/#/theme/data/duotone/light",
+          "repository": "git+https://github.com/uiwjs/react-codemirror.git",
+          "bugs": "https://github.com/uiwjs/react-codemirror/issues",
+          "npm": "https://www.npmjs.com/package/@uiw/codemirror-theme-duotone"
+        },
+        "score": 2
+      },
+      {
+        "name": "@uiw/codemirror-theme-darcula",
+        "version": "4.25.4",
+        "description": "Theme darcula for CodeMirror.",
+        "links": {
+          "homepage": "https://uiwjs.github.io/react-codemirror/#/theme/data/darcula",
+          "repository": "git+https://github.com/uiwjs/react-codemirror.git",
+          "bugs": "https://github.com/uiwjs/react-codemirror/issues",
+          "npm": "https://www.npmjs.com/package/@uiw/codemirror-theme-darcula"
+        },
+        "score": 2
+      },
+      {
+        "name": "@uiw/codemirror-theme-bespin",
+        "version": "4.25.4",
+        "description": "Theme bespin for CodeMirror.",
+        "links": {
+          "homepage": "https://uiwjs.github.io/react-codemirror/#/theme/data/bespin",
+          "repository": "git+https://github.com/uiwjs/react-codemirror.git",
+          "bugs": "https://github.com/uiwjs/react-codemirror/issues",
+          "npm": "https://www.npmjs.com/package/@uiw/codemirror-theme-bespin"
+        },
+        "score": 2
+      },
+      {
+        "name": "@uiw/codemirror-theme-abcdef",
+        "version": "4.25.4",
+        "description": "Theme abcdef for CodeMirror.",
+        "links": {
+          "homepage": "https://uiwjs.github.io/react-codemirror/#/theme/data/abcdef",
+          "repository": "git+https://github.com/uiwjs/react-codemirror.git",
+          "bugs": "https://github.com/uiwjs/react-codemirror/issues",
+          "npm": "https://www.npmjs.com/package/@uiw/codemirror-theme-abcdef"
+        },
+        "score": 2
+      },
+      {
+        "name": "@uiw/codemirror-extensions-basic-setup",
+        "version": "4.25.4",
+        "description": "Basic configuration for the CodeMirror6 code editor.",
+        "links": {
+          "homepage": "https://uiwjs.github.io/react-codemirror/#/extensions/basic-setup",
+          "repository": "git+https://github.com/uiwjs/react-codemirror.git",
+          "bugs": "https://github.com/uiwjs/react-codemirror/issues",
+          "npm": "https://www.npmjs.com/package/@uiw/codemirror-extensions-basic-setup"
+        },
+        "score": 2
+      },
+      {
+        "name": "@safe-global/safe-apps-sdk",
+        "version": "9.1.0",
+        "description": "SDK developed to integrate third-party apps with Safe app.",
+        "links": {
+          "homepage": "https://github.com/safe-global/safe-apps-sdk#readme",
+          "repository": "git+https://github.com/safe-global/safe-apps-sdk.git",
+          "bugs": "https://github.com/safe-global/safe-apps-sdk/issues",
+          "npm": "https://www.npmjs.com/package/@safe-global/safe-apps-sdk"
+        },
+        "score": 2
+      },
+      {
+        "name": "@react-native-community/netinfo",
+        "version": "11.4.1",
+        "description": "React Native Network Info API for iOS & Android",
+        "links": {
+          "homepage": "https://github.com/react-native-netinfo/react-native-netinfo#readme",
+          "repository": "git+https://github.com/react-native-netinfo/react-native-netinfo.git",
+          "bugs": "https://github.com/react-native-netinfo/react-native-netinfo/issues",
+          "npm": "https://www.npmjs.com/package/@react-native-community/netinfo"
+        },
+        "score": 2
+      },
+      {
+        "name": "@moonrepo/core-macos-x64",
+        "version": "1.41.7",
+        "description": "macOS x64 (Intel) binary for moon.",
+        "links": {
+          "repository": "https://github.com/moonrepo/moon",
+          "npm": "https://www.npmjs.com/package/@moonrepo/core-macos-x64"
+        },
+        "score": 2
+      },
+      {
+        "name": "@moonrepo/core-macos-arm64",
+        "version": "1.41.7",
+        "description": "macOS ARM64 (Silicon) binary for moon.",
+        "links": {
+          "repository": "https://github.com/moonrepo/moon",
+          "npm": "https://www.npmjs.com/package/@moonrepo/core-macos-arm64"
+        },
+        "score": 2
+      },
+      {
+        "name": "@esbuild/darwin-x64",
+        "version": "0.27.2",
+        "description": "The macOS 64-bit binary for esbuild, a JavaScript bundler.",
+        "links": {
+          "homepage": "https://github.com/evanw/esbuild#readme",
+          "repository": "git+https://github.com/evanw/esbuild.git",
+          "bugs": "https://github.com/evanw/esbuild/issues",
+          "npm": "https://www.npmjs.com/package/@esbuild/darwin-x64"
+        },
+        "score": 2
+      },
+      {
+        "name": "@esbuild/darwin-arm64",
+        "version": "0.27.2",
+        "description": "The macOS ARM 64-bit binary for esbuild, a JavaScript bundler.",
+        "links": {
+          "homepage": "https://github.com/evanw/esbuild#readme",
+          "repository": "git+https://github.com/evanw/esbuild.git",
+          "bugs": "https://github.com/evanw/esbuild/issues",
+          "npm": "https://www.npmjs.com/package/@esbuild/darwin-arm64"
+        },
+        "score": 2
+      },
+      {
+        "name": "@cucumber/messages",
+        "version": "31.1.0",
+        "description": "JSON schema-based messages for Cucumber's inter-process communication",
+        "links": {
+          "homepage": "https://github.com/cucumber/messages#readme",
+          "repository": "git://github.com/cucumber/messages.git",
+          "bugs": "https://github.com/cucumber/messages/issues",
+          "npm": "https://www.npmjs.com/package/@cucumber/messages"
+        },
+        "score": 2
+      },
+      {
+        "name": "@cloudflare/workerd-darwin-arm64",
+        "version": "1.20260103.0",
+        "description": "👷 workerd for macOS ARM 64-bit, Cloudflare's JavaScript/Wasm Runtime",
+        "links": {
+          "homepage": "https://github.com/cloudflare/workerd#readme",
+          "repository": "git+https://github.com/cloudflare/workerd.git",
+          "bugs": "https://github.com/cloudflare/workerd/issues",
+          "npm": "https://www.npmjs.com/package/@cloudflare/workerd-darwin-arm64"
+        },
+        "score": 2
+      },
+      {
+        "name": "@cloudflare/workerd-darwin-64",
+        "version": "1.20260103.0",
+        "description": "👷 workerd for macOS 64-bit, Cloudflare's JavaScript/Wasm Runtime",
+        "links": {
+          "homepage": "https://github.com/cloudflare/workerd#readme",
+          "repository": "git+https://github.com/cloudflare/workerd.git",
+          "bugs": "https://github.com/cloudflare/workerd/issues",
+          "npm": "https://www.npmjs.com/package/@cloudflare/workerd-darwin-64"
+        },
+        "score": 2
+      }
+    ],
+    "crates": [
+      {
+        "name": "imessage-exporter",
+        "max_version": "3.2.1",
+        "description": "Export iMessage data and run iMessage diagnostics",
+        "crates_io_url": "https://crates.io/crates/imessage-exporter",
+        "score": 13
+      },
+      {
+        "name": "imessage-database",
+        "max_version": "3.2.1",
+        "description": "Parsers and tools to interact with iMessage SQLite data",
+        "crates_io_url": "https://crates.io/crates/imessage-database",
+        "score": 12
+      },
+      {
+        "name": "xaeroflux",
+        "max_version": "1.0.0",
+        "description": "a decentralized, p2p, offline first event log built on tokio, rusqlite and iroh",
+        "crates_io_url": "https://crates.io/crates/xaeroflux",
+        "score": 10
+      },
+      {
+        "name": "sendblue",
+        "max_version": "0.5.0",
+        "description": "SendBlue is a Rust library that provides an API client for interacting with the SendBlue REST API, enabling businesses to integrate iMessage and SMS services into their applications.",
+        "crates_io_url": "https://crates.io/crates/sendblue",
+        "score": 10
+      },
+      {
+        "name": "rsiot",
+        "max_version": "0.0.86",
+        "description": "Компоненты для построения системы сбора, обработки и визуализации данных",
+        "crates_io_url": "https://crates.io/crates/rsiot",
+        "score": 10
+      },
+      {
+        "name": "pokem",
+        "max_version": "1.1.0",
+        "description": "Pok'em, a notification helper bot for Matrix.",
+        "crates_io_url": "https://crates.io/crates/pokem",
+        "score": 10
+      },
+      {
+        "name": "gf-cli",
+        "max_version": "0.1.0",
+        "description": "a cli for viewing texts from loved ones",
+        "crates_io_url": "https://crates.io/crates/gf-cli",
+        "score": 10
+      },
+      {
+        "name": "evaporate",
+        "max_version": "0.2.1",
+        "description": "A tool to extract messages and photos from iOS backups",
+        "crates_io_url": "https://crates.io/crates/evaporate",
+        "score": 10
+      },
+      {
+        "name": "crabstep",
+        "max_version": "0.3.2",
+        "description": "Cross-platform, zero-dependency Apple/NeXTSTEP typedstream deserializer",
+        "crates_io_url": "https://crates.io/crates/crabstep",
+        "score": 10
+      },
+      {
+        "name": "crabapple",
+        "max_version": "0.4.4",
+        "description": "A library for iOS backup decryption and encryption",
+        "crates_io_url": "https://crates.io/crates/crabapple",
+        "score": 10
+      },
+      {
+        "name": "chat_messages",
+        "max_version": "0.1.0",
+        "description": "chat_messages is a lightweight Rust library for creating structured messages in chat systems, including HumanMessage, AiMessage, SystemMessage, and more. It supports easy extensibility through macros, Serde-based serialization, and customizable fields, making it ideal for chatbots, AI agents, and messaging platforms.",
+        "crates_io_url": "https://crates.io/crates/chat_messages",
+        "score": 10
+      },
+      {
+        "name": "blueshim",
+        "max_version": "0.0.0",
+        "description": "An open source iMessage implementation",
+        "crates_io_url": "https://crates.io/crates/blueshim",
+        "score": 10
+      },
+      {
+        "name": "asimov-imessage-module",
+        "max_version": "0.0.0",
+        "description": "ASIMOV module for importing iMessage chats.",
+        "crates_io_url": "https://crates.io/crates/asimov-imessage-module",
+        "score": 10
+      },
+      {
+        "name": "langdb_clust",
+        "max_version": "0.9.11",
+        "description": "An unofficial Rust client for the Anthropic/Claude API.",
+        "crates_io_url": "https://crates.io/crates/langdb_clust",
+        "score": 6
+      },
+      {
+        "name": "clust",
+        "max_version": "0.9.0",
+        "description": "An unofficial Rust client for the Anthropic/Claude API.",
+        "crates_io_url": "https://crates.io/crates/clust",
+        "score": 6
+      },
+      {
+        "name": "zipora",
+        "max_version": "2.1.0",
+        "description": "High-performance Rust implementation providing advanced data structures and compression algorithms with memory safety guarantees. Features LRU page cache, sophisticated caching layer, fiber-based concurrency, real-time compression, secure memory pools, SIMD optimizations, and complete C FFI for migration from C++.",
+        "crates_io_url": "https://crates.io/crates/zipora",
+        "score": 2
+      },
+      {
+        "name": "xhs-electronic-print",
+        "max_version": "0.1.2",
+        "description": "A cross-platform printing library for Windows and macOS",
+        "crates_io_url": "https://crates.io/crates/xhs-electronic-print",
+        "score": 2
+      },
+      {
+        "name": "wef",
+        "max_version": "0.6.0",
+        "description": "Wef is a Rust library for embedding WebView functionality using Chromium Embedded Framework (CEF3) with offscreen rendering support.",
+        "crates_io_url": "https://crates.io/crates/wef",
+        "score": 2
+      },
+      {
+        "name": "tpnote",
+        "max_version": "1.25.17",
+        "description": "Minimalistic note-taking: save and edit your clipboard content as a note file",
+        "crates_io_url": "https://crates.io/crates/tpnote",
+        "score": 2
+      },
+      {
+        "name": "tp-note",
+        "max_version": "1.21.16",
+        "description": "This crate has moved to `tpnote`",
+        "crates_io_url": "https://crates.io/crates/tp-note",
+        "score": 2
+      },
+      {
+        "name": "tfd",
+        "max_version": "0.1.0",
+        "description": "Pure-Rust fork of the tinyfiledialogs C library",
+        "crates_io_url": "https://crates.io/crates/tfd",
+        "score": 2
+      },
+      {
+        "name": "ssh2-config",
+        "max_version": "0.6.2",
+        "description": "an ssh configuration parser for ssh2-rs",
+        "crates_io_url": "https://crates.io/crates/ssh2-config",
+        "score": 2
+      },
+      {
+        "name": "rusteron-archive",
+        "max_version": "0.1.160",
+        "description": "Extends the Aeron client to include archiving features, such as recording streams and handling replay capabilities. It uses the Aeron C bindings from aeron-archive module.",
+        "crates_io_url": "https://crates.io/crates/rusteron-archive",
+        "score": 2
+      },
+      {
+        "name": "run-this",
+        "max_version": "0.1.17",
+        "description": "A utility that gracefully handles missing command dependencies",
+        "crates_io_url": "https://crates.io/crates/run-this",
+        "score": 2
+      },
+      {
+        "name": "photon-messenger",
+        "max_version": "0.0.39",
+        "description": "Decentralized messenger with rolling-chain encryption",
+        "crates_io_url": "https://crates.io/crates/photon-messenger",
+        "score": 2
+      },
+      {
+        "name": "nats-spy",
+        "max_version": "0.1.1",
+        "description": "nats-spy is a terminal tool to help you to monitor NATS messages.",
+        "crates_io_url": "https://crates.io/crates/nats-spy",
+        "score": 2
+      },
+      {
+        "name": "native-dialog-fork",
+        "max_version": "0.7.0",
+        "description": "A library to display dialogs. Supports GNU/Linux, BSD Unix, macOS and Windows.",
+        "crates_io_url": "https://crates.io/crates/native-dialog-fork",
+        "score": 2
+      },
+      {
+        "name": "native-dialog",
+        "max_version": "0.9.4",
+        "description": "A library to display dialogs. Supports GNU/Linux, BSD Unix, macOS and Windows.",
+        "crates_io_url": "https://crates.io/crates/native-dialog",
+        "score": 2
+      },
+      {
+        "name": "msgpass",
+        "max_version": "0.5.0",
+        "description": "Thin wrapper to a Message Passing Interface (MPI)",
+        "crates_io_url": "https://crates.io/crates/msgpass",
+        "score": 2
+      },
+      {
+        "name": "midas_processor",
+        "max_version": "1.2.0",
+        "description": "High-performance Rust tool for converting UK Met Office MIDAS weather datasets from BADC-CSV to optimized Parquet format",
+        "crates_io_url": "https://crates.io/crates/midas_processor",
+        "score": 2
+      },
+      {
+        "name": "mf-speak",
+        "max_version": "0.3.3",
+        "description": "A spicy little command wrapper that provides audible feedback with attitude",
+        "crates_io_url": "https://crates.io/crates/mf-speak",
+        "score": 2
+      },
+      {
+        "name": "meshchat",
+        "max_version": "0.2.2",
+        "description": "A cross platform Iced Gui application for chatting on the Meshtastic LoRa MESH via connected Bluetooth LE radios",
+        "crates_io_url": "https://crates.io/crates/meshchat",
+        "score": 2
+      },
+      {
+        "name": "mayday",
+        "max_version": "0.1.0",
+        "description": "A multi-messaging-sevice aggregator into an all-in-one application (android's app beeper-like)",
+        "crates_io_url": "https://crates.io/crates/mayday",
+        "score": 2
+      },
+      {
+        "name": "macos-unifiedlogs",
+        "max_version": "0.4.2",
+        "description": "A library to help parse macOS UnifiedLogs",
+        "crates_io_url": "https://crates.io/crates/macos-unifiedlogs",
+        "score": 2
+      },
+      {
+        "name": "macos-config-check",
+        "max_version": "0.0.1-alpha.1",
+        "description": "Checks your macOS machine against various hardened configuration settings",
+        "crates_io_url": "https://crates.io/crates/macos-config-check",
+        "score": 2
+      },
+      {
+        "name": "lumen",
+        "max_version": "2.9.1",
+        "description": "lumen is a command-line tool that uses AI to generate commit messages, summarise git diffs or past commits, and more.",
+        "crates_io_url": "https://crates.io/crates/lumen",
+        "score": 2
+      },
+      {
+        "name": "irondash_run_loop",
+        "max_version": "0.6.0",
+        "description": "Consistent, platform-independent interface to system run loop.",
+        "crates_io_url": "https://crates.io/crates/irondash_run_loop",
+        "score": 2
+      },
+      {
+        "name": "gmsol-utils",
+        "max_version": "0.8.0",
+        "description": "GMX-Solana is an extension of GMX on the Solana blockchain.",
+        "crates_io_url": "https://crates.io/crates/gmsol-utils",
+        "score": 2
+      },
+      {
+        "name": "gmsol-treasury",
+        "max_version": "0.5.0",
+        "description": "GMX-Solana is an extension of GMX on the Solana blockchain.",
+        "crates_io_url": "https://crates.io/crates/gmsol-treasury",
+        "score": 2
+      },
+      {
+        "name": "gmsol-timelock",
+        "max_version": "0.5.0",
+        "description": "GMX-Solana is an extension of GMX on the Solana blockchain.",
+        "crates_io_url": "https://crates.io/crates/gmsol-timelock",
+        "score": 2
+      },
+      {
+        "name": "gmsol-store",
+        "max_version": "0.8.0",
+        "description": "GMX-Solana is an extension of GMX on the Solana blockchain.",
+        "crates_io_url": "https://crates.io/crates/gmsol-store",
+        "score": 2
+      },
+      {
+        "name": "gmsol-solana-utils",
+        "max_version": "0.8.0",
+        "description": "GMX-Solana is an extension of GMX on the Solana blockchain.",
+        "crates_io_url": "https://crates.io/crates/gmsol-solana-utils",
+        "score": 2
+      },
+      {
+        "name": "gmsol-sdk",
+        "max_version": "0.8.0",
+        "description": "GMX-Solana is an extension of GMX on the Solana blockchain.",
+        "crates_io_url": "https://crates.io/crates/gmsol-sdk",
+        "score": 2
+      },
+      {
+        "name": "gmsol-programs",
+        "max_version": "0.8.0",
+        "description": "GMX-Solana is an extension of GMX on the Solana blockchain.",
+        "crates_io_url": "https://crates.io/crates/gmsol-programs",
+        "score": 2
+      },
+      {
+        "name": "gmsol-model",
+        "max_version": "0.8.0",
+        "description": "GMX-Solana is an extension of GMX on the Solana blockchain.",
+        "crates_io_url": "https://crates.io/crates/gmsol-model",
+        "score": 2
+      },
+      {
+        "name": "gmsol-mock-chainlink-verifier",
+        "max_version": "0.8.0",
+        "description": "GMX-Solana is an extension of GMX on the Solana blockchain.",
+        "crates_io_url": "https://crates.io/crates/gmsol-mock-chainlink-verifier",
+        "score": 2
+      },
+      {
+        "name": "gmsol-decode",
+        "max_version": "0.8.0",
+        "description": "GMX-Solana is an extension of GMX on the Solana blockchain.",
+        "crates_io_url": "https://crates.io/crates/gmsol-decode",
+        "score": 2
+      },
+      {
+        "name": "gmsol-competition",
+        "max_version": "0.7.0-beta.1",
+        "description": "GMX-Solana is an extension of GMX on the Solana blockchain.",
+        "crates_io_url": "https://crates.io/crates/gmsol-competition",
+        "score": 2
+      },
+      {
+        "name": "gmsol-cli",
+        "max_version": "0.8.0",
+        "description": "GMX-Solana is an extension of GMX on the Solana blockchain.",
+        "crates_io_url": "https://crates.io/crates/gmsol-cli",
+        "score": 2
+      },
+      {
+        "name": "gmsol-chainlink-datastreams",
+        "max_version": "0.8.0",
+        "description": "GMX-Solana is an extension of GMX on the Solana blockchain.",
+        "crates_io_url": "https://crates.io/crates/gmsol-chainlink-datastreams",
+        "score": 2
+      },
+      {
+        "name": "gmsol-callback",
+        "max_version": "0.8.0",
+        "description": "GMX-Solana is an extension of GMX on the Solana blockchain.",
+        "crates_io_url": "https://crates.io/crates/gmsol-callback",
+        "score": 2
+      },
+      {
+        "name": "gmsol",
+        "max_version": "0.5.0",
+        "description": "GMX-Solana is an extension of GMX on the Solana blockchain.",
+        "crates_io_url": "https://crates.io/crates/gmsol",
+        "score": 2
+      },
+      {
+        "name": "gips",
+        "max_version": "0.2.0",
+        "description": "General inter-process solution",
+        "crates_io_url": "https://crates.io/crates/gips",
+        "score": 2
+      },
+      {
+        "name": "edgefirst-schemas",
+        "max_version": "1.4.1",
+        "description": "Message schemas for EdgeFirst Perception - ROS2 Common Interfaces, Foxglove, and custom types",
+        "crates_io_url": "https://crates.io/crates/edgefirst-schemas",
+        "score": 2
+      },
+      {
+        "name": "coursepointer",
+        "max_version": "0.3.4",
+        "description": "Converts waypoints into Garmin FIT course points",
+        "crates_io_url": "https://crates.io/crates/coursepointer",
+        "score": 2
+      },
+      {
+        "name": "confirm-pam",
+        "max_version": "0.6.0",
+        "description": "A CLI tool for biometric authentication confirmation",
+        "crates_io_url": "https://crates.io/crates/confirm-pam",
+        "score": 2
+      },
+      {
+        "name": "compo-window",
+        "max_version": "0.1.0",
+        "description": "Cross-platform window component for the Compo declarative and reactive component framework",
+        "crates_io_url": "https://crates.io/crates/compo-window",
+        "score": 2
+      },
+      {
+        "name": "compo-platform-loop",
+        "max_version": "0.1.3",
+        "description": "Cross-platform event loop implementation for the Compo declarative and reactive component framework",
+        "crates_io_url": "https://crates.io/crates/compo-platform-loop",
+        "score": 2
+      },
+      {
+        "name": "cmd-mf",
+        "max_version": "0.1.0",
+        "description": "A spicy little command wrapper that provides audible feedback with attitude",
+        "crates_io_url": "https://crates.io/crates/cmd-mf",
+        "score": 2
+      },
+      {
+        "name": "cc-check",
+        "max_version": "0.1.4",
+        "description": "Cross-platform conventional commit checker for use in pre-commit/commit-msg hooks",
+        "crates_io_url": "https://crates.io/crates/cc-check",
+        "score": 2
+      },
+      {
+        "name": "cargo-wef",
+        "max_version": "0.6.0",
+        "description": "Cargo-wef is a command line tool for wef",
+        "crates_io_url": "https://crates.io/crates/cargo-wef",
+        "score": 2
+      },
+      {
+        "name": "bevy_networking_turbulence",
+        "max_version": "0.4.1",
+        "description": "Networking plugin for Bevy engine running on naia-socket and turbulence libraries",
+        "crates_io_url": "https://crates.io/crates/bevy_networking_turbulence",
+        "score": 2
+      },
+      {
+        "name": "auto-ytdlp-rs",
+        "max_version": "1.0.51",
+        "description": "Download videos with yt-dlp automatically. You can even download multiple videos at the same time!",
+        "crates_io_url": "https://crates.io/crates/auto-ytdlp-rs",
+        "score": 2
+      },
+      {
+        "name": "wasmcloud-provider-messaging-websocket",
+        "max_version": "0.1.0",
+        "description": "A capability provider that satisfies the 'wasmcloud:messaging' contract using WebSocket as a backend.",
+        "crates_io_url": "https://crates.io/crates/wasmcloud-provider-messaging-websocket",
+        "score": 0
+      },
+      {
+        "name": "tobu",
+        "max_version": "0.0.0",
+        "description": "A protobuf data format for serde with first class support for reflection",
+        "crates_io_url": "https://crates.io/crates/tobu",
+        "score": 0
+      },
+      {
+        "name": "tlq-client",
+        "max_version": "0.2.0",
+        "description": "Rust client for TLQ (Tiny Little Queue) message queue server",
+        "crates_io_url": "https://crates.io/crates/tlq-client",
+        "score": 0
+      },
+      {
+        "name": "tightbeam-rs",
+        "max_version": "0.5.1",
+        "description": "A secure, high-performance messaging protocol library",
+        "crates_io_url": "https://crates.io/crates/tightbeam-rs",
+        "score": 0
+      },
+      {
+        "name": "tap-node",
+        "max_version": "0.4.0",
+        "description": "Transaction Authorization Protocol (TAP) node implementation for routing and processing messages",
+        "crates_io_url": "https://crates.io/crates/tap-node",
+        "score": 0
+      },
+      {
+        "name": "tap-msg",
+        "max_version": "0.4.0",
+        "description": "Core message processing library for the Transaction Authorization Protocol",
+        "crates_io_url": "https://crates.io/crates/tap-msg",
+        "score": 0
+      },
+      {
+        "name": "tap-http",
+        "max_version": "0.4.0",
+        "description": "HTTP server for the Transaction Authorization Protocol (TAP)",
+        "crates_io_url": "https://crates.io/crates/tap-http",
+        "score": 0
+      },
+      {
+        "name": "tap-agent",
+        "max_version": "0.4.0",
+        "description": "Rust implementation of the Transaction Authorization Protocol (TAP)",
+        "crates_io_url": "https://crates.io/crates/tap-agent",
+        "score": 0
+      },
+      {
+        "name": "swift-mt-message-macros",
+        "max_version": "3.1.0",
+        "description": "Derive macros for SWIFT MT message parsing library",
+        "crates_io_url": "https://crates.io/crates/swift-mt-message-macros",
+        "score": 0
+      },
+      {
+        "name": "swift-mt-message",
+        "max_version": "3.1.4",
+        "description": "A fast, type-safe Rust implementation of SWIFT MT message parsing with comprehensive field support, derive macros, and validation.",
+        "crates_io_url": "https://crates.io/crates/swift-mt-message",
+        "score": 0
+      },
+      {
+        "name": "surge-midi",
+        "max_version": "0.2.12-alpha.0",
+        "description": "surge synthesizer -- midi handling",
+        "crates_io_url": "https://crates.io/crates/surge-midi",
+        "score": 0
+      },
+      {
+        "name": "streamweave-message",
+        "max_version": "0.6.0",
+        "description": "Message envelope types for StreamWeave",
+        "crates_io_url": "https://crates.io/crates/streamweave-message",
+        "score": 0
+      },
+      {
+        "name": "sift_stream",
+        "max_version": "0.7.0",
+        "description": "A robust Sift telemetry streaming library",
+        "crates_io_url": "https://crates.io/crates/sift_stream",
+        "score": 0
+      },
+      {
+        "name": "rvoip-sip-core",
+        "max_version": "0.1.26",
+        "description": "SIP protocol implementation for the rvoip stack",
+        "crates_io_url": "https://crates.io/crates/rvoip-sip-core",
+        "score": 0
+      },
+      {
+        "name": "rustywallet-signer",
+        "max_version": "0.2.0",
+        "description": "ECDSA and Schnorr message signing and verification for Bitcoin and Ethereum",
+        "crates_io_url": "https://crates.io/crates/rustywallet-signer",
+        "score": 0
+      },
+      {
+        "name": "rafka-rs",
+        "max_version": "0.1.0",
+        "description": "Rafka - A high-performance distributed message broker written in Rust",
+        "crates_io_url": "https://crates.io/crates/rafka-rs",
+        "score": 0
+      },
+      {
+        "name": "pulsar-admin-sdk",
+        "max_version": "2.2.0",
+        "description": "This provides the REST API for admin operations",
+        "crates_io_url": "https://crates.io/crates/pulsar-admin-sdk",
+        "score": 0
+      },
+      {
+        "name": "pubky-messenger",
+        "max_version": "0.3.0",
+        "description": "A Rust library for private messaging using Pubky",
+        "crates_io_url": "https://crates.io/crates/pubky-messenger",
+        "score": 0
+      },
+      {
+        "name": "pilgrimage",
+        "max_version": "0.16.4",
+        "description": "A Kafka-like message broker in Rust",
+        "crates_io_url": "https://crates.io/crates/pilgrimage",
+        "score": 0
+      },
+      {
+        "name": "pezpallet-bridge-messages",
+        "max_version": "0.7.0",
+        "description": "Module that allows bridged chains to exchange messages using lane concept.",
+        "crates_io_url": "https://crates.io/crates/pezpallet-bridge-messages",
+        "score": 0
+      },
+      {
+        "name": "pallet-bridge-messages",
+        "max_version": "0.25.0",
+        "description": "Module that allows bridged chains to exchange messages using lane concept.",
+        "crates_io_url": "https://crates.io/crates/pallet-bridge-messages",
+        "score": 0
+      },
+      {
+        "name": "pact_consumer",
+        "max_version": "1.4.2",
+        "description": "Pact-Rust module that provides support for writing consumer pact tests",
+        "crates_io_url": "https://crates.io/crates/pact_consumer",
+        "score": 0
+      },
+      {
+        "name": "p101_sys",
+        "max_version": "0.17.1",
+        "description": "A library to build modular emulator of Olivetti Programma 101",
+        "crates_io_url": "https://crates.io/crates/p101_sys",
+        "score": 0
+      },
+      {
+        "name": "nsq-async-rs",
+        "max_version": "0.1.8",
+        "description": "An asynchronous Rust NSQ client library with support for concurrent message processing",
+        "crates_io_url": "https://crates.io/crates/nsq-async-rs",
+        "score": 0
+      },
+      {
+        "name": "nonblocking-logger",
+        "max_version": "0.3.0",
+        "description": "A high-performance library with format string support",
+        "crates_io_url": "https://crates.io/crates/nonblocking-logger",
+        "score": 0
+      },
+      {
+        "name": "mx-message",
+        "max_version": "3.1.4",
+        "description": "A fast, type-safe Rust implementation of MXMessage for parsing MX messages.",
+        "crates_io_url": "https://crates.io/crates/mx-message",
+        "score": 0
+      },
+      {
+        "name": "messages",
+        "max_version": "0.3.1",
+        "description": "Runtime-agnostic actor library.",
+        "crates_io_url": "https://crates.io/crates/messages",
+        "score": 0
+      },
+      {
+        "name": "matrix-commander",
+        "max_version": "1.0.0",
+        "description": "simple but convenient CLI-based Matrix client app for sending and receiving",
+        "crates_io_url": "https://crates.io/crates/matrix-commander",
+        "score": 0
+      },
+      {
+        "name": "log_x",
+        "max_version": "0.0.0",
+        "description": "The `Log X` library provides a flexible and extensible logging framework for Rust applications. It supports different log levels, module-specific logging, and customizable log output targets.",
+        "crates_io_url": "https://crates.io/crates/log_x",
+        "score": 0
+      },
+      {
+        "name": "kincir",
+        "max_version": "0.2.0",
+        "description": "A Rust message streaming library inspired by Watermill",
+        "crates_io_url": "https://crates.io/crates/kincir",
+        "score": 0
+      },
+      {
+        "name": "jlf",
+        "max_version": "0.2.2",
+        "description": "CLI for converting JSON logs to human-readable format",
+        "crates_io_url": "https://crates.io/crates/jlf",
+        "score": 0
+      },
+      {
+        "name": "hmip721",
+        "max_version": "0.1.0",
+        "description": "Hermit incentive contract",
+        "crates_io_url": "https://crates.io/crates/hmip721",
+        "score": 0
+      },
+      {
+        "name": "flo_scene_pipe",
+        "max_version": "0.2.0",
+        "description": "Inter-scene and inter-process communication for flo_scene",
+        "crates_io_url": "https://crates.io/crates/flo_scene_pipe",
+        "score": 0
+      },
+      {
+        "name": "flo_scene_guest",
+        "max_version": "0.2.0",
+        "description": "no_std implementation of the guest protocol for flo_scene for smaller wasm guests",
+        "crates_io_url": "https://crates.io/crates/flo_scene_guest",
+        "score": 0
+      },
+      {
+        "name": "flo_scene",
+        "max_version": "0.2.0",
+        "description": "Entity-messaging system for composing large programs from small programs",
+        "crates_io_url": "https://crates.io/crates/flo_scene",
+        "score": 0
+      },
+      {
+        "name": "didcomm-rs",
+        "max_version": "0.7.2",
+        "description": "DIDComm messaging v2 specifications implementation: https://identity.foundation/didcomm-messaging/spec/",
+        "crates_io_url": "https://crates.io/crates/didcomm-rs",
+        "score": 0
+      },
+      {
+        "name": "cull-gmail",
+        "max_version": "0.0.16",
+        "description": "Cull emails from a gmail account using the gmail API",
+        "crates_io_url": "https://crates.io/crates/cull-gmail",
+        "score": 0
+      },
+      {
+        "name": "chat-prompts",
+        "max_version": "0.35.2",
+        "description": "Chat prompt template",
+        "crates_io_url": "https://crates.io/crates/chat-prompts",
+        "score": 0
+      },
+      {
+        "name": "caryatid_sdk",
+        "max_version": "0.14.1",
+        "description": "The Caryatid framework module SDK",
+        "crates_io_url": "https://crates.io/crates/caryatid_sdk",
+        "score": 0
+      },
+      {
+        "name": "botrs",
+        "max_version": "0.2.5",
+        "description": "A Rust QQ Bot framework based on QQ Guild Bot API",
+        "crates_io_url": "https://crates.io/crates/botrs",
+        "score": 0
+      },
+      {
+        "name": "bitcoin-message",
+        "max_version": "0.1.16-alpha.0",
+        "description": "tools for verification, hashing, and signing of messages",
+        "crates_io_url": "https://crates.io/crates/bitcoin-message",
+        "score": 0
+      },
+      {
+        "name": "bilrost",
+        "max_version": "0.1014.1",
+        "description": "A compact protobuf-like serializer and deserializer for the Rust Language.",
+        "crates_io_url": "https://crates.io/crates/bilrost",
+        "score": 0
+      },
+      {
+        "name": "bbs",
+        "max_version": "0.4.1",
+        "description": "The BBS+ signature scheme",
+        "crates_io_url": "https://crates.io/crates/bbs",
+        "score": 0
+      },
+      {
+        "name": "aries-bbssignatures",
+        "max_version": "0.1.0",
+        "description": "BBS+ signature support for Hyperledger Aries",
+        "crates_io_url": "https://crates.io/crates/aries-bbssignatures",
+        "score": 0
+      },
+      {
+        "name": "affinidi-messaging-sdk",
+        "max_version": "0.14.0",
+        "description": "Affinidi Messaging SDK",
+        "crates_io_url": "https://crates.io/crates/affinidi-messaging-sdk",
+        "score": 0
+      },
+      {
+        "name": "affinidi-messaging-mediator",
+        "max_version": "0.11.3",
+        "description": "DIDComm Mediator service for Affinidi Messaging",
+        "crates_io_url": "https://crates.io/crates/affinidi-messaging-mediator",
+        "score": 0
+      },
+      {
+        "name": "actix-web-flash-messages",
+        "max_version": "0.5.0",
+        "description": "Flash messages for actix-web applications.",
+        "crates_io_url": "https://crates.io/crates/actix-web-flash-messages",
+        "score": 0
+      }
+    ]
+  },
+  "notes": [
+    "This is discovery only; candidates may be false positives.",
+    "GitHub API results are rate-limited; set GITHUB_TOKEN to improve coverage."
+  ]
+}
