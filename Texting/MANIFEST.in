@@ -1,0 +1,6 @@
+include README.md
+include LICENSE
+include CLAUDE_CODE_INTEGRATION.md
+recursive-include config *.json
+recursive-include .claude-plugin *.json *.md
+recursive-include skills *.md

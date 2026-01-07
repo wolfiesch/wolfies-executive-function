@@ -1,0 +1,48 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "wolfies-imessage-gateway"
+dynamic = ["version"]
+description = "Wolfie's iMessage Gateway - Direct CLI 19x faster than MCP alternatives"
+readme = "README.md"
+requires-python = ">=3.9"
+license = {text = "MIT"}
+authors = [
+    {name = "Wolfgang Schoenberger"}
+]
+keywords = ["imessage", "messaging", "macos", "claude-code", "gateway-pattern", "wolfies"]
+
+dependencies = [
+    "fuzzywuzzy>=0.18.0",
+    "python-Levenshtein>=0.20.0",
+    "rich>=13.0.0",
+]
+
+[project.optional-dependencies]
+rag = [
+    "chromadb>=0.4.0",
+    "sentence-transformers>=2.2.0",
+]
+dev = [
+    "pytest>=7.4.0",
+    "pytest-cov>=4.1.0",
+    "black>=23.0.0",
+    "pylint>=3.0.0",
+]
+
+[project.scripts]
+wolfies-imessage = "gateway.imessage_client:main"
+
+[project.urls]
+Homepage = "https://github.com/wolfiesch/wolfies-imessage-gateway"
+Repository = "https://github.com/wolfiesch/wolfies-imessage-gateway"
+Benchmark = "https://github.com/wolfiesch/wolfies-imessage-gateway/blob/main/PERFORMANCE_COMPARISON.md"
+
+[tool.hatch.build.targets.wheel]
+packages = ["gateway"]
+include = ["config/**", "skills/**"]
+
+[tool.hatch.version]
+path = "gateway/__version__.py"
