@@ -2,6 +2,7 @@
 
 ![macOS](https://img.shields.io/badge/macOS-only-blue?logo=apple)
 ![Python](https://img.shields.io/badge/Python-3.9+-green?logo=python)
+![PyPI](https://img.shields.io/pypi/v/wolfies-imessage-gateway)
 ![License](https://img.shields.io/badge/License-MIT-yellow)
 ![Claude Code](https://img.shields.io/badge/Claude%20Code-compatible-purple)
 
@@ -33,55 +34,51 @@
 - **Python 3.9+**
 - **Full Disk Access** permission (for reading message history)
 
-## Quick Start
+## Installation
 
-### 1. Clone and Install
+**See [INSTALLATION.md](./INSTALLATION.md) for detailed setup instructions.**
+
+### Quick Install (2 minutes)
 
 ```bash
-git clone https://github.com/yourusername/imessage-gateway.git
-cd imessage-gateway
-pip install -r requirements.txt
+# Install the package
+pip install wolfies-imessage-gateway
+
+# Optional: enable semantic search / RAG features
+pip install 'wolfies-imessage-gateway[rag]'
+
+# Verify installation
+wolfies-imessage --version
+
+# Test it
+wolfies-imessage recent --limit 5
 ```
 
-### 2. Set Up Contacts
+### Grant Full Disk Access
+
+Terminal needs access to read your iMessage database:
+
+1. Open **System Settings → Privacy & Security → Full Disk Access**
+2. Click the **+** button
+3. Add **Terminal.app** (or your terminal emulator)
+4. Restart Terminal
+
+### Basic Usage
 
 ```bash
-# Sync from macOS Contacts (recommended)
-python3 scripts/sync_contacts.py
-
-# Or manual setup
-cp config/contacts.example.json config/contacts.json
-# Edit config/contacts.json with your contacts
-```
-
-### 3. Grant Permissions
-
-1. **Full Disk Access** (for reading messages):
-   - System Settings → Privacy & Security → Full Disk Access
-   - Add Terminal.app or your Python interpreter
-
-2. **Automation** (for sending messages):
-   - Will be requested automatically on first send
-
-### 4. Test It Out
-
-```bash
-# List your contacts
-python3 gateway/imessage_client.py contacts --json
-
-# Check unread messages
-python3 gateway/imessage_client.py unread --json
-
-# Get recent messages
-python3 gateway/imessage_client.py recent --limit 20 --json
+# Check recent messages
+wolfies-imessage recent --limit 10
 
 # Send a message
-python3 gateway/imessage_client.py send "John" "Hey, are you free for coffee?"
+wolfies-imessage send "John" "Hey, are you free for coffee?"
+
+# View all commands
+wolfies-imessage --help
 ```
 
-## Command Reference (27 Commands)
+## Command Reference
 
-### Messaging (3)
+### Messaging
 
 ```bash
 # Send to contact
@@ -94,7 +91,7 @@ python3 gateway/imessage_client.py send-by-phone "+14155551234" "Hi there!"
 python3 gateway/imessage_client.py add-contact "Jane Doe" "+14155559876"
 ```
 
-### Reading (12)
+### Reading
 
 ```bash
 # Messages with a contact
@@ -102,6 +99,12 @@ python3 gateway/imessage_client.py messages "John" --limit 20 --json
 
 # Find messages (keyword search)
 python3 gateway/imessage_client.py find "John" --query "meeting" --json
+
+# Fast global text search across all messages (no embeddings)
+python3 gateway/imessage_client.py text-search "meeting" --limit 50 --json
+
+# Canonical bundle (single call for common LLM reads)
+python3 gateway/imessage_client.py bundle --json --compact --query "http" --search-limit 20
 
 # Recent across all contacts
 python3 gateway/imessage_client.py recent --limit 50 --json
@@ -134,7 +137,25 @@ python3 gateway/imessage_client.py scheduled --json
 python3 gateway/imessage_client.py summary "John" --days 7 --json
 ```
 
-### Groups (2)
+### LLM-Friendly Output Controls
+
+For most read commands that support `--json`, you can reduce token cost with:
+
+```bash
+# Minified JSON + fewer fields
+python3 gateway/imessage_client.py unread --json --compact
+
+# LLM-minimal preset (compact + date/phone/is_from_me/text, truncated)
+python3 gateway/imessage_client.py bundle --json --minimal --query "http"
+
+# Truncate large text fields
+python3 gateway/imessage_client.py text-search "http" --json --compact --max-text-chars 120
+
+# Choose exact fields
+python3 gateway/imessage_client.py recent --json --fields date,phone,text
+```
+
+### Groups
 
 ```bash
 # List group chats
@@ -144,7 +165,7 @@ python3 gateway/imessage_client.py groups --json
 python3 gateway/imessage_client.py group-messages --group-id "chat123456" --json
 ```
 
-### Analytics (3)
+### Analytics
 
 ```bash
 # Conversation analytics
@@ -157,16 +178,19 @@ python3 gateway/imessage_client.py followup --days 7 --json
 python3 gateway/imessage_client.py reactions "John" --json
 ```
 
-### Contacts (1)
+### Contacts
 
 ```bash
 # List all contacts
 python3 gateway/imessage_client.py contacts --json
 ```
 
-### Semantic Search / RAG (6)
+### Semantic Search / RAG
 
 ```bash
+# Optional dependencies required:
+#   pip install 'wolfies-imessage-gateway[rag]'
+#
 # Index iMessages for semantic search
 python3 gateway/imessage_client.py index --source=imessage --days 30
 
@@ -283,7 +307,7 @@ Phone numbers can be in any format - they're normalized automatically.
 pytest tests/ -v
 
 # Run performance benchmarks
-python3 -m Texting.benchmarks.run_benchmarks
+python3 benchmarks/run_benchmarks.py
 
 # Sync contacts
 python3 scripts/sync_contacts.py

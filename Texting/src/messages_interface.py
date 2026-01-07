@@ -14,13 +14,13 @@ import logging
 import plistlib
 import re
 from pathlib import Path
-from typing import Optional, List, Dict, Tuple
+from typing import Any
 from datetime import datetime, timedelta
 
 logger = logging.getLogger(__name__)
 
 
-def escape_applescript_string(s: str) -> str:
+def escape_applescript_string(s: str | None) -> str:
     r"""
     Escape a string for safe use in AppleScript.
 
@@ -43,7 +43,7 @@ def escape_applescript_string(s: str) -> str:
     return s.replace('\\', '\\\\').replace('"', '\\"')
 
 
-def is_group_chat_identifier(chat_identifier: Optional[str]) -> bool:
+def is_group_chat_identifier(chat_identifier: str | None) -> bool:
     """
     Check if a chat_identifier indicates a group chat.
 
@@ -71,7 +71,7 @@ def is_group_chat_identifier(chat_identifier: Optional[str]) -> bool:
     return False
 
 
-def sanitize_like_pattern(value: str) -> str:
+def sanitize_like_pattern(value: str | None) -> str:
     """
     Escape SQL LIKE wildcards in user input to prevent pattern injection.
 
@@ -90,12 +90,12 @@ def sanitize_like_pattern(value: str) -> str:
         'test\\%value'
     """
     if not value:
-        return value
+        return ""
     # Escape backslashes first, then LIKE wildcards
     return value.replace('\\', '\\\\').replace('%', '\\%').replace('_', '\\_')
 
 
-def parse_attributed_body(blob: bytes) -> Optional[str]:
+def parse_attributed_body(blob: bytes) -> str | None:
     """
     Parse the attributedBody column from macOS Messages database.
 
@@ -157,7 +157,7 @@ def parse_attributed_body(blob: bytes) -> Optional[str]:
 
         # Fallback: try to find readable text in plist
         if isinstance(plist, dict):
-            for key, value in plist.items():
+            for _, value in plist.items():
                 if isinstance(value, str) and len(value) > 0 and not value.startswith('NS'):
                     return value
 
@@ -168,7 +168,7 @@ def parse_attributed_body(blob: bytes) -> Optional[str]:
         return None
 
 
-def extract_text_from_blob(blob: bytes) -> Optional[str]:
+def extract_text_from_blob(blob: bytes) -> str | None:
     """
     Extract readable text from a binary blob (attributedBody format).
 
@@ -269,6 +269,8 @@ def extract_text_from_blob(blob: bytes) -> Optional[str]:
 class MessagesInterface:
     """Interface to macOS Messages app."""
 
+    messages_db_path: Path
+
     def __init__(self, messages_db_path: str = "~/Library/Messages/chat.db"):
         """
         Initialize Messages interface.
@@ -279,7 +281,7 @@ class MessagesInterface:
         self.messages_db_path = Path(messages_db_path).expanduser()
         logger.info(f"Initialized MessagesInterface with DB: {self.messages_db_path}")
 
-    def send_message(self, phone: str, message: str) -> dict:
+    def send_message(self, phone: str, message: str) -> dict[str, Any]:
         """
         Send an iMessage using AppleScript.
 
@@ -288,7 +290,7 @@ class MessagesInterface:
             message: Message text to send
 
         Returns:
-            dict: {"success": bool, "error": Optional[str]}
+            dict: {"success": bool, "error": str | None}
 
         Example:
             result = interface.send_message("+14155551234", "Hello!")
@@ -343,7 +345,7 @@ class MessagesInterface:
         phone: str,
         limit: int = 20,
         offset: int = 0
-    ) -> List[Dict]:
+    ) -> list[dict[str, Any]]:
         """
         Retrieve recent messages with a contact from Messages database.
 
@@ -353,7 +355,7 @@ class MessagesInterface:
             offset: Number of messages to skip (for pagination)
 
         Returns:
-            List[Dict]: List of message dicts with keys:
+            list[dict[str, Any]]: List of message dicts with keys:
                 - text: Message content
                 - date: Timestamp
                 - is_from_me: Boolean (sent vs received)
@@ -397,7 +399,7 @@ class MessagesInterface:
             """
 
             # macOS Messages uses time since 2001-01-01 (Cocoa reference date)
-            cursor.execute(query, (f"%{phone}%", limit, offset))
+            _ = cursor.execute(query, (f"%{phone}%", limit, offset))
             rows = cursor.fetchall()
 
             messages = []
@@ -441,7 +443,7 @@ class MessagesInterface:
             logger.error(f"Error retrieving messages: {e}")
             return []
 
-    def check_permissions(self) -> dict:
+    def check_permissions(self) -> dict[str, Any]:
         """
         Check if required permissions are granted.
 
@@ -455,13 +457,12 @@ class MessagesInterface:
 
         if not permissions["messages_db_accessible"]:
             logger.warning(
-                "Messages database not accessible. "
-                "Grant Full Disk Access: System Settings → Privacy & Security"
+                "Messages database not accessible. Grant Full Disk Access: System Settings → Privacy & Security"
             )
 
         return permissions
 
-    def get_all_recent_conversations(self, limit: int = 20) -> List[Dict]:
+    def get_all_recent_conversations(self, limit: int = 20) -> list[dict[str, Any]]:
         """
         Get recent messages from ALL conversations (not filtered by contact).
 
@@ -472,7 +473,7 @@ class MessagesInterface:
             limit: Number of recent messages to retrieve
 
         Returns:
-            List[Dict]: List of message dicts with keys:
+            list[dict[str, Any]]: List of message dicts with keys:
                 - text: Message content
                 - date: Timestamp
                 - is_from_me: Boolean (sent vs received)
@@ -507,7 +508,7 @@ class MessagesInterface:
                 LIMIT ?
             """
 
-            cursor.execute(query, (limit,))
+            _ = cursor.execute(query, (limit,))
             rows = cursor.fetchall()
 
             messages = []
@@ -554,8 +555,8 @@ class MessagesInterface:
     def get_messages_since(
         self,
         since: datetime,
-        limit: Optional[int] = None
-    ) -> List[Dict]:
+        limit: int | None = None
+    ) -> list[dict[str, Any]]:
         """
         Get messages modified since a specific timestamp.
 
@@ -567,7 +568,7 @@ class MessagesInterface:
             limit: Optional maximum number of messages to fetch
 
         Returns:
-            List[Dict]: List of message dicts sorted by date ascending
+            list[dict[str, Any]]: List of message dicts sorted by date ascending
                 (oldest first, for chronological processing)
 
         Example:
@@ -605,12 +606,12 @@ class MessagesInterface:
                 ORDER BY message.date ASC
             """
 
-            params = [cocoa_timestamp]
+            params: list[Any] = [cocoa_timestamp]
             if limit:
                 query += " LIMIT ?"
                 params.append(limit)
 
-            cursor.execute(query, params)
+            _ = cursor.execute(query, params)
             rows = cursor.fetchall()
 
             messages = []
@@ -656,9 +657,10 @@ class MessagesInterface:
     def search_messages(
         self,
         query: str,
-        phone: Optional[str] = None,
-        limit: int = 50
-    ) -> List[Dict]:
+        phone: str | None = None,
+        limit: int = 50,
+        since: datetime | None = None
+    ) -> list[dict[str, Any]]:
         """
         Search messages by content/keyword.
 
@@ -668,9 +670,10 @@ class MessagesInterface:
             query: Search query (keyword or phrase)
             phone: Optional phone number to filter by specific contact
             limit: Maximum number of results
+            since: Optional lower bound for message date (inclusive)
 
         Returns:
-            List[Dict]: List of matching message dicts with keys:
+            list[dict[str, Any]]: List of matching message dicts with keys:
                 - text: Message content
                 - date: Timestamp
                 - is_from_me: Boolean
@@ -695,9 +698,32 @@ class MessagesInterface:
             conn = sqlite3.connect(f"file:{self.messages_db_path}?mode=ro", uri=True)
             cursor = conn.cursor()
 
-            # Build query based on whether we're filtering by phone
+            # Build query dynamically with parameterization.
+            #
+            # Important performance detail:
+            # - message.attributedBody can exist for many messages.
+            # - Pulling every attributedBody row is expensive.
+            # - We only need attributedBody parsing when message.text is NULL.
+            where_clauses: list[str] = [
+                "(message.text LIKE ? OR (message.text IS NULL AND message.attributedBody IS NOT NULL))"
+            ]
+            params: list[Any] = [f"%{query}%"]
+
+            # Optional contact filter.
             if phone:
-                sql_query = """
+                where_clauses.append("handle.id LIKE ?")
+                params.append(f"%{phone}%")
+
+            # Optional time filter.
+            if since:
+                cocoa_epoch = datetime(2001, 1, 1)
+                delta = since - cocoa_epoch
+                cocoa_timestamp = int(delta.total_seconds() * 1_000_000_000)
+                where_clauses.append("message.date >= ?")
+                params.append(cocoa_timestamp)
+
+            if phone:
+                sql_query = f"""
                     SELECT
                         message.text,
                         message.attributedBody,
@@ -707,14 +733,12 @@ class MessagesInterface:
                         message.cache_roomnames
                     FROM message
                     JOIN handle ON message.handle_id = handle.ROWID
-                    WHERE (message.text LIKE ? OR message.attributedBody IS NOT NULL)
-                        AND handle.id LIKE ?
+                    WHERE {' AND '.join(where_clauses)}
                     ORDER BY message.date DESC
                     LIMIT ?
                 """
-                cursor.execute(sql_query, (f"%{query}%", f"%{phone}%", limit))
             else:
-                sql_query = """
+                sql_query = f"""
                     SELECT
                         message.text,
                         message.attributedBody,
@@ -724,11 +748,13 @@ class MessagesInterface:
                         message.cache_roomnames
                     FROM message
                     LEFT JOIN handle ON message.handle_id = handle.ROWID
-                    WHERE message.text LIKE ? OR message.attributedBody IS NOT NULL
+                    WHERE {' AND '.join(where_clauses)}
                     ORDER BY message.date DESC
                     LIMIT ?
                 """
-                cursor.execute(sql_query, (f"%{query}%", limit))
+
+            params.append(limit)
+            _ = cursor.execute(sql_query, params)
 
             rows = cursor.fetchall()
 
@@ -783,7 +809,7 @@ class MessagesInterface:
             logger.error(f"Error searching messages: {e}")
             return []
 
-    def list_group_chats(self, limit: int = 50) -> List[Dict]:
+    def list_group_chats(self, limit: int = 50) -> list[dict[str, Any]]:
         """
         List all group chats with participant information.
 
@@ -794,7 +820,7 @@ class MessagesInterface:
             limit: Maximum number of group chats to return
 
         Returns:
-            List[Dict]: List of group chat dicts with keys:
+            list[dict[str, Any]]: List of group chat dicts with keys:
                 - group_id: Unique identifier for the group (chat_identifier)
                 - display_name: The group name if set
                 - participants: List of participant handles
@@ -835,7 +861,7 @@ class MessagesInterface:
                 LIMIT ?
             """
 
-            cursor.execute(query, (limit,))
+            _ = cursor.execute(query, (limit,))
             chat_rows = cursor.fetchall()
 
             groups = []
@@ -843,7 +869,7 @@ class MessagesInterface:
                 chat_rowid, chat_identifier, display_name, last_date_cocoa, msg_count = row
 
                 # Get participants for this chat
-                cursor.execute("""
+                _ = cursor.execute("""
                     SELECT h.id
                     FROM handle h
                     JOIN chat_handle_join chj ON h.ROWID = chj.handle_id
@@ -884,10 +910,10 @@ class MessagesInterface:
 
     def get_group_messages(
         self,
-        group_id: Optional[str] = None,
-        participant_filter: Optional[str] = None,
+        group_id: str | None = None,
+        participant_filter: str | None = None,
         limit: int = 50
-    ) -> List[Dict]:
+    ) -> list[dict[str, Any]]:
         """
         Get messages from a specific group chat.
 
@@ -900,7 +926,7 @@ class MessagesInterface:
             limit: Maximum number of messages to return
 
         Returns:
-            List[Dict]: List of message dicts with keys:
+            list[dict[str, Any]]: List of message dicts with keys:
                 - text: Message content
                 - date: Timestamp
                 - is_from_me: Boolean (sent vs received)
@@ -932,14 +958,14 @@ class MessagesInterface:
 
             # First, find the chat(s) that match
             if group_id:
-                cursor.execute("""
+                _ = cursor.execute("""
                     SELECT c.ROWID, c.chat_identifier, c.display_name
                     FROM chat c
                     WHERE c.chat_identifier = ?
                 """, (group_id,))
             else:
                 # Find groups containing this participant
-                cursor.execute("""
+                _ = cursor.execute("""
                     SELECT DISTINCT c.ROWID, c.chat_identifier, c.display_name
                     FROM chat c
                     JOIN chat_handle_join chj ON c.ROWID = chj.chat_id
@@ -958,7 +984,7 @@ class MessagesInterface:
             messages = []
             for chat_rowid, chat_identifier, display_name in chats:
                 # Get participants for this chat
-                cursor.execute("""
+                _ = cursor.execute("""
                     SELECT h.id
                     FROM handle h
                     JOIN chat_handle_join chj ON h.ROWID = chj.handle_id
@@ -967,7 +993,7 @@ class MessagesInterface:
                 participants = [p[0] for p in cursor.fetchall()]
 
                 # Get messages
-                cursor.execute("""
+                _ = cursor.execute("""
                     SELECT
                         m.text,
                         m.attributedBody,
@@ -1066,7 +1092,7 @@ class MessagesInterface:
     # ===== T0 FEATURES =====
 
     # Reaction type mappings for iMessage tapbacks
-    REACTION_TYPES = {
+    REACTION_TYPES: dict[int, str] = {
         2000: "love",      # ❤️
         2001: "like",      # 👍
         2002: "dislike",   # 👎
@@ -1084,10 +1110,10 @@ class MessagesInterface:
 
     def get_attachments(
         self,
-        phone: Optional[str] = None,
-        mime_type_filter: Optional[str] = None,
+        phone: str | None = None,
+        mime_type_filter: str | None = None,
         limit: int = 50
-    ) -> List[Dict]:
+    ) -> list[dict[str, Any]]:
         """
         Get attachments from messages, optionally filtered by contact or type.
 
@@ -1099,7 +1125,7 @@ class MessagesInterface:
             limit: Maximum number of attachments to return
 
         Returns:
-            List[Dict]: Attachment information including:
+            list[dict[str, Any]]: Attachment information including:
                 - attachment_id: Unique ID
                 - filename: Full path to the attachment file
                 - mime_type: MIME type (e.g., "image/jpeg")
@@ -1150,7 +1176,7 @@ class MessagesInterface:
                 LEFT JOIN handle h ON m.handle_id = h.ROWID
                 WHERE 1=1
             """
-            params = []
+            params: list[Any] = []
 
             if phone:
                 query += " AND h.id LIKE ?"
@@ -1163,7 +1189,7 @@ class MessagesInterface:
             query += " ORDER BY m.date DESC LIMIT ?"
             params.append(limit)
 
-            cursor.execute(query, params)
+            _ = cursor.execute(query, params)
             rows = cursor.fetchall()
 
             attachments = []
@@ -1209,7 +1235,7 @@ class MessagesInterface:
             logger.error(f"Error getting attachments: {e}")
             return []
 
-    def get_unread_messages(self, limit: int = 50) -> List[Dict]:
+    def get_unread_messages(self, limit: int = 50) -> list[dict[str, Any]]:
         """
         Get unread messages that are awaiting response.
 
@@ -1219,7 +1245,7 @@ class MessagesInterface:
             limit: Maximum number of unread messages to return
 
         Returns:
-            List[Dict]: List of unread message dicts with keys:
+            list[dict[str, Any]]: List of unread message dicts with keys:
                 - text: Message content
                 - date: Timestamp
                 - phone: Sender's phone/handle
@@ -1265,7 +1291,7 @@ class MessagesInterface:
                 LIMIT ?
             """
 
-            cursor.execute(query, (limit,))
+            _ = cursor.execute(query, (limit,))
             rows = cursor.fetchall()
 
             now = datetime.now()
@@ -1311,11 +1337,54 @@ class MessagesInterface:
             logger.error(f"Error getting unread messages: {e}")
             return []
 
+    def get_unread_count(self) -> int:
+        """
+        Get the total count of unread incoming messages (fast).
+
+        This is a lightweight companion to `get_unread_messages()` for
+        LLM workflows where you want:
+        - unread_count (cheap)
+        - unread_messages (bounded list)
+        """
+        logger.info("Getting unread message count")
+
+        if not self.messages_db_path.exists():
+            logger.error(f"Messages database not found: {self.messages_db_path}")
+            return 0
+
+        try:
+            conn = sqlite3.connect(f"file:{self.messages_db_path}?mode=ro", uri=True)
+            cursor = conn.cursor()
+
+            query = """
+                SELECT COUNT(*)
+                FROM message m
+                WHERE m.is_read = 0
+                    AND m.is_from_me = 0
+                    AND m.is_finished = 1
+                    AND m.is_system_message = 0
+                    AND m.item_type = 0
+            """
+            cursor.execute(query)
+            row = cursor.fetchone()
+            conn.close()
+
+            if not row:
+                return 0
+            return int(row[0] or 0)
+
+        except sqlite3.Error as e:
+            logger.error(f"Database error: {e}")
+            return 0
+        except Exception as e:
+            logger.error(f"Error getting unread count: {e}")
+            return 0
+
     def get_reactions(
         self,
-        phone: Optional[str] = None,
+        phone: str | None = None,
         limit: int = 100
-    ) -> List[Dict]:
+    ) -> list[dict[str, Any]]:
         """
         Get reactions/tapbacks from messages.
 
@@ -1326,7 +1395,7 @@ class MessagesInterface:
             limit: Maximum number of reactions to return
 
         Returns:
-            List[Dict]: Reaction information including:
+            list[dict[str, Any]]: Reaction information including:
                 - reaction_type: Type of reaction (love, like, dislike, laugh, emphasis, question)
                 - reaction_emoji: Associated emoji if custom
                 - reactor_handle: Who added the reaction
@@ -1367,7 +1436,7 @@ class MessagesInterface:
                 LEFT JOIN message orig ON r.associated_message_guid = orig.guid
                 WHERE r.associated_message_type BETWEEN 2000 AND 3005
             """
-            params = []
+            params: list[Any] = []
 
             if phone:
                 query += " AND h.id LIKE ?"
@@ -1376,7 +1445,7 @@ class MessagesInterface:
             query += " ORDER BY r.date DESC LIMIT ?"
             params.append(limit)
 
-            cursor.execute(query, params)
+            _ = cursor.execute(query, params)
             rows = cursor.fetchall()
 
             reactions = []
@@ -1426,9 +1495,9 @@ class MessagesInterface:
 
     def get_conversation_analytics(
         self,
-        phone: Optional[str] = None,
+        phone: str | None = None,
         days: int = 30
-    ) -> Dict:
+    ) -> dict[str, Any]:
         """
         Get analytics about message patterns and frequency.
 
@@ -1471,14 +1540,14 @@ class MessagesInterface:
             cutoff_cocoa = int((cutoff_date - cocoa_epoch).total_seconds() * 1_000_000_000)
 
             base_filter = "WHERE m.date >= ?"
-            params = [cutoff_cocoa]
+            params: list[Any] = [cutoff_cocoa]
 
             if phone:
                 base_filter += " AND h.id LIKE ?"
                 params.append(f"%{sanitize_like_pattern(phone)}%")
 
             # Get total counts
-            cursor.execute(f"""
+            _ = cursor.execute(f"""
                 SELECT
                     COUNT(*) as total,
                     SUM(CASE WHEN m.is_from_me = 1 THEN 1 ELSE 0 END) as sent,
@@ -1492,7 +1561,7 @@ class MessagesInterface:
             total, sent, received = row if row else (0, 0, 0)
 
             # Get messages by hour (for busiest hour)
-            cursor.execute(f"""
+            _ = cursor.execute(f"""
                 SELECT
                     CAST((m.date / 1000000000 / 3600) % 24 AS INTEGER) as hour,
                     COUNT(*) as count
@@ -1507,7 +1576,7 @@ class MessagesInterface:
             busiest_hour = hour_row[0] if hour_row else None
 
             # Get messages by day of week
-            cursor.execute(f"""
+            _ = cursor.execute(f"""
                 SELECT
                     CAST((m.date / 1000000000 / 86400 + 1) % 7 AS INTEGER) as dow,
                     COUNT(*) as count
@@ -1525,7 +1594,7 @@ class MessagesInterface:
             # Get top contacts (only if not filtering by phone)
             top_contacts = []
             if not phone:
-                cursor.execute(f"""
+                _ = cursor.execute("""
                     SELECT
                         h.id,
                         COUNT(*) as msg_count
@@ -1540,7 +1609,7 @@ class MessagesInterface:
                 top_contacts = [{"phone": row[0], "message_count": row[1]} for row in cursor.fetchall()]
 
             # Get attachment count
-            cursor.execute(f"""
+            _ = cursor.execute(f"""
                 SELECT COUNT(DISTINCT a.ROWID)
                 FROM attachment a
                 JOIN message_attachment_join maj ON a.ROWID = maj.attachment_id
@@ -1551,7 +1620,7 @@ class MessagesInterface:
             attachment_count = cursor.fetchone()[0] or 0
 
             # Get reaction count
-            cursor.execute(f"""
+            _ = cursor.execute(f"""
                 SELECT COUNT(*)
                 FROM message m
                 LEFT JOIN handle h ON m.handle_id = h.ROWID
@@ -1589,10 +1658,10 @@ class MessagesInterface:
 
     def get_message_thread(
         self,
-        message_guid: Optional[str] = None,
-        thread_originator_guid: Optional[str] = None,
+        message_guid: str | None = None,
+        thread_originator_guid: str | None = None,
         limit: int = 50
-    ) -> List[Dict]:
+    ) -> list[dict[str, Any]]:
         """
         Get messages in a reply thread.
 
@@ -1604,7 +1673,7 @@ class MessagesInterface:
             limit: Maximum messages to return
 
         Returns:
-            List[Dict]: Messages in the thread, chronologically ordered:
+            list[dict[str, Any]]: Messages in the thread, chronologically ordered:
                 - text: Message content
                 - date: Timestamp
                 - is_from_me: Boolean
@@ -1634,7 +1703,7 @@ class MessagesInterface:
 
             # If we have message_guid but not thread_originator, find the originator
             if message_guid and not thread_originator_guid:
-                cursor.execute("""
+                _ = cursor.execute("""
                     SELECT thread_originator_guid, guid
                     FROM message
                     WHERE guid = ?
@@ -1648,7 +1717,7 @@ class MessagesInterface:
                 return []
 
             # Get all messages in this thread
-            cursor.execute("""
+            _ = cursor.execute("""
                 SELECT
                     m.guid,
                     m.text,
@@ -1708,10 +1777,10 @@ class MessagesInterface:
 
     def extract_links(
         self,
-        phone: Optional[str] = None,
-        days: Optional[int] = None,
+        phone: str | None = None,
+        days: int | None = None,
         limit: int = 100
-    ) -> List[Dict]:
+    ) -> list[dict[str, Any]]:
         """
         Extract URLs shared in conversations.
 
@@ -1723,7 +1792,7 @@ class MessagesInterface:
             limit: Maximum links to return
 
         Returns:
-            List[Dict]: Link information including:
+            list[dict[str, Any]]: Link information including:
                 - url: The extracted URL
                 - message_text: Context from the message
                 - date: When shared
@@ -1766,9 +1835,9 @@ class MessagesInterface:
                 params_base.append(cutoff_cocoa)
             filter_sql = (" AND " + " AND ".join(filters)) if filters else ""
 
-            links: List[Dict] = []
+            links: list[dict[str, Any]] = []
 
-            def add_links_from_text(message_text: str, date_cocoa: Optional[int], is_from_me: int, sender_handle: Optional[str]):
+            def add_links_from_text(message_text: str, date_cocoa: int | None, is_from_me: int, sender_handle: str | None):
                 """Extract URLs from a message and append to the links list.
 
                 Args:
@@ -1801,7 +1870,7 @@ class MessagesInterface:
                         return
 
             # Pass 1 (fast): only messages with plain text containing "http".
-            cursor.execute(
+            _ = cursor.execute(
                 f"""
                 SELECT
                     m.text,
@@ -1826,7 +1895,7 @@ class MessagesInterface:
             # Pass 2 (slower): messages with null text but data-detected; parse attributedBody.
             remaining = limit - len(links)
             if remaining > 0:
-                cursor.execute(
+                _ = cursor.execute(
                     f"""
                     SELECT
                         m.attributedBody,
@@ -1864,9 +1933,9 @@ class MessagesInterface:
 
     def get_voice_messages(
         self,
-        phone: Optional[str] = None,
+        phone: str | None = None,
         limit: int = 50
-    ) -> List[Dict]:
+    ) -> list[dict[str, Any]]:
         """
         Get voice/audio messages with file paths for transcription.
 
@@ -1877,7 +1946,7 @@ class MessagesInterface:
             limit: Maximum messages to return
 
         Returns:
-            List[Dict]: Voice message information including:
+            list[dict[str, Any]]: Voice message information including:
                 - attachment_path: Path to the audio file
                 - mime_type: Audio format
                 - duration_seconds: Length if available
@@ -1920,7 +1989,7 @@ class MessagesInterface:
                     OR a.mime_type LIKE 'audio/%'
                     OR a.uti LIKE '%audio%')
             """
-            params = []
+            params: list[Any] = []
 
             if phone:
                 query += " AND h.id LIKE ?"
@@ -1929,7 +1998,7 @@ class MessagesInterface:
             query += " ORDER BY m.date DESC LIMIT ?"
             params.append(limit)
 
-            cursor.execute(query, params)
+            _ = cursor.execute(query, params)
             rows = cursor.fetchall()
 
             voice_messages = []
@@ -1965,7 +2034,7 @@ class MessagesInterface:
             logger.error(f"Error getting voice messages: {e}")
             return []
 
-    def get_scheduled_messages(self) -> List[Dict]:
+    def get_scheduled_messages(self) -> list[dict[str, Any]]:
         """
         Get scheduled messages that are pending send.
 
@@ -1975,7 +2044,7 @@ class MessagesInterface:
         the Messages app UI, not programmatically.
 
         Returns:
-            List[Dict]: Scheduled message information including:
+            list[dict[str, Any]]: Scheduled message information including:
                 - text: Message content
                 - scheduled_date: When it will be sent
                 - recipient_handle: Who it's being sent to
@@ -1997,7 +2066,7 @@ class MessagesInterface:
             cursor = conn.cursor()
 
             # Query for scheduled messages (schedule_type = 2)
-            cursor.execute("""
+            _ = cursor.execute("""
                 SELECT
                     m.text,
                     m.attributedBody,
@@ -2046,7 +2115,7 @@ class MessagesInterface:
             logger.error(f"Error getting scheduled messages: {e}")
             return []
 
-    def get_messages_by_phone(self, phone: str, limit: int = 20) -> List[Dict]:
+    def get_messages_by_phone(self, phone: str, limit: int = 20) -> list[dict[str, Any]]:
         """
         Get messages by phone number (without needing contact to be configured).
 
@@ -2057,7 +2126,7 @@ class MessagesInterface:
             limit: Number of recent messages to retrieve
 
         Returns:
-            List[Dict]: Messages with that phone number
+            list[dict[str, Any]]: Messages with that phone number
         """
         # This is essentially the same as get_recent_messages but with
         # a clearer interface for the MCP tool
@@ -2068,13 +2137,13 @@ class MessagesInterface:
     def get_conversation_for_summary(
         self,
         phone: str,
-        days: Optional[int] = None,
+        days: int | None = None,
         limit: int = 200,
         offset: int = 0,
         order: str = "asc",
-        start_date: Optional[datetime] = None,
-        end_date: Optional[datetime] = None
-    ) -> Dict:
+        start_date: datetime | None = None,
+        end_date: datetime | None = None
+    ) -> dict[str, Any]:
         """
         Get conversation data formatted for AI summarization.
 
@@ -2157,7 +2226,7 @@ class MessagesInterface:
             params.append(limit)
             params.append(max(0, offset))
 
-            cursor.execute(query, params)
+            _ = cursor.execute(query, params)
             rows = cursor.fetchall()
 
             if not rows:
@@ -2273,7 +2342,7 @@ class MessagesInterface:
             return {"error": str(e)}
 
     # Follow-up detection patterns
-    FOLLOW_UP_PATTERNS = {
+    FOLLOW_UP_PATTERNS: dict[str, list[str]] = {
         "question": [
             r'\?$',  # Ends with question mark
             r'\bwhat\b.*\?',
@@ -2288,7 +2357,7 @@ class MessagesInterface:
         "promise": [
             r'\bi\'ll\b',
             r'\bi will\b',
-            r'\blet me\b',
+            r'\blet me\b(?! know)',
             r'\bgonna\b',
             r'\bgoing to\b',
             r'\bwill do\b',
@@ -2328,7 +2397,7 @@ class MessagesInterface:
         days: int = 7,
         min_stale_days: int = 3,
         limit: int = 50
-    ) -> Dict:
+    ) -> dict[str, Any]:
         """
         Detect conversations that may need follow-up.
 
@@ -2367,9 +2436,8 @@ class MessagesInterface:
             stale_date = datetime.now() - timedelta(days=min_stale_days)
             cocoa_epoch = datetime(2001, 1, 1)
             cutoff_cocoa = int((cutoff_date - cocoa_epoch).total_seconds() * 1_000_000_000)
-            stale_cocoa = int((stale_date - cocoa_epoch).total_seconds() * 1_000_000_000)
 
-            results = {
+            results: dict[str, Any] = {
                 "unanswered_questions": [],
                 "pending_promises": [],
                 "waiting_on_them": [],
@@ -2382,7 +2450,7 @@ class MessagesInterface:
             # Windowed query: only keep the most recent N messages per handle.
             # This avoids scanning/processing every message within the time range for high-volume users.
             per_contact_limit = max(50, limit)
-            cursor.execute(
+            _ = cursor.execute(
                 """
                 WITH recent AS (
                     SELECT
@@ -2552,7 +2620,7 @@ class MessagesInterface:
             logger.error(f"Error detecting follow-ups: {e}")
             return {"error": str(e)}
 
-    def list_recent_handles(self, days: int = 30, limit: int = 100) -> List[Dict]:
+    def list_recent_handles(self, days: int = 30, limit: int = 100) -> list[dict[str, Any]]:
         """
         List all unique phone numbers/email handles from recent messages.
 
@@ -2563,7 +2631,7 @@ class MessagesInterface:
             limit: Maximum number of handles to return
 
         Returns:
-            List[Dict]: List of handle dicts with keys:
+            list[dict[str, Any]]: List of handle dicts with keys:
                 - handle: Phone number or email
                 - message_count: Number of messages with this handle
                 - last_message_date: Date of most recent message
@@ -2600,7 +2668,7 @@ class MessagesInterface:
                 LIMIT ?
             """
 
-            cursor.execute(query, (cutoff_cocoa, limit))
+            _ = cursor.execute(query, (cutoff_cocoa, limit))
             rows = cursor.fetchall()
 
             handles = []
@@ -2634,10 +2702,10 @@ class MessagesInterface:
 
     def search_unknown_senders(
         self,
-        known_phones: List[str],
+        known_phones: list[str],
         days: int = 30,
         limit: int = 100
-    ) -> List[Dict]:
+    ) -> list[dict[str, Any]]:
         """
         Find messages from senders not in contacts.
 
@@ -2651,7 +2719,7 @@ class MessagesInterface:
             limit: Maximum messages to return
 
         Returns:
-            List[Dict]: Unknown senders with their messages, keys:
+            list[dict[str, Any]]: Unknown senders with their messages, keys:
                 - handle: Phone number or email
                 - message_count: Total messages with this handle
                 - messages: List of recent messages from this sender
@@ -2695,7 +2763,7 @@ class MessagesInterface:
                 ORDER BY last_message_date DESC
             """
 
-            cursor.execute(handles_query, (cutoff_cocoa,))
+            _ = cursor.execute(handles_query, (cutoff_cocoa,))
             all_handles = cursor.fetchall()
 
             # Filter to unknown handles
@@ -2743,7 +2811,7 @@ class MessagesInterface:
                     LIMIT ?
                 """
 
-                cursor.execute(msg_query, (handle, cutoff_cocoa, messages_per_handle))
+                _ = cursor.execute(msg_query, (handle, cutoff_cocoa, messages_per_handle))
                 msg_rows = cursor.fetchall()
 
                 messages = []
@@ -2798,7 +2866,7 @@ class MessagesInterface:
         days: int = 90,
         limit: int = 50,
         min_messages: int = 5
-    ) -> List[Dict]:
+    ) -> list[dict[str, Any]]:
         """
         Discover frequently-messaged phone numbers from Messages.db.
 
@@ -2829,7 +2897,7 @@ class MessagesInterface:
             cutoff_cocoa = int((cutoff_date - cocoa_epoch).total_seconds() * 1_000_000_000)
 
             # Get handles with message counts
-            cursor.execute("""
+            _ = cursor.execute("""
                 SELECT
                     h.id as handle,
                     COUNT(*) as total_count,
@@ -2856,7 +2924,7 @@ class MessagesInterface:
                     continue
 
                 # Get sample messages
-                cursor.execute("""
+                _ = cursor.execute("""
                     SELECT m.text, m.attributedBody, m.is_from_me, m.date
                     FROM message m
                     JOIN handle h ON m.handle_id = h.ROWID
@@ -2869,7 +2937,7 @@ class MessagesInterface:
 
                 sample_messages = []
                 for msg_row in cursor.fetchall():
-                    text, attributed_body, is_from_me, date_cocoa = msg_row
+                    text, attributed_body, is_from_me, _ = msg_row
                     msg_text = text
                     if not msg_text and attributed_body:
                         msg_text = extract_text_from_blob(attributed_body)
