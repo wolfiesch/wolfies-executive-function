@@ -124,6 +124,23 @@ def run_external_command(cmd: List[str], timeout: int = 30) -> tuple[float, bool
         return elapsed, False, str(e)
 
 
+def _percentile(sorted_values: List[float], p: float) -> float | None:
+    if not sorted_values:
+        return None
+    if p <= 0:
+        return sorted_values[0]
+    if p >= 100:
+        return sorted_values[-1]
+    k = (len(sorted_values) - 1) * (p / 100.0)
+    f = math.floor(k)
+    c = math.ceil(k)
+    if f == c:
+        return sorted_values[int(k)]
+    d0 = sorted_values[f] * (c - k)
+    d1 = sorted_values[c] * (k - f)
+    return d0 + d1
+
+
 def benchmark_command(
     name: str,
     description: str,
@@ -159,9 +176,7 @@ def benchmark_command(
 
     success_rate = (successes / iterations) * 100
 
-    sorted_timings = sorted(timings)
-    p95_idx = int(math.ceil(0.95 * len(sorted_timings))) - 1 if sorted_timings else 0
-    p95_ms = sorted_timings[max(0, min(p95_idx, len(sorted_timings) - 1))] if sorted_timings else 0.0
+    p95_ms = _percentile(sorted(timings), 95.0) or 0.0
     stdout_bytes_mean = statistics.mean(stdout_sizes) if stdout_sizes else None
     approx_tokens_mean = math.ceil(stdout_bytes_mean / 4.0) if stdout_bytes_mean is not None else None
 
@@ -310,7 +325,7 @@ def benchmark_command_quiet(
         iterations=iterations,
         mean_ms=statistics.mean(timings),
         median_ms=statistics.median(timings),
-        p95_ms=sorted(timings)[max(0, min(int(math.ceil(0.95 * len(timings))) - 1, len(timings) - 1))] if timings else 0.0,
+        p95_ms=_percentile(sorted(timings), 95.0) or 0.0,
         min_ms=min(timings),
         max_ms=max(timings),
         std_dev_ms=statistics.stdev(timings) if len(timings) > 1 else 0,
@@ -493,9 +508,7 @@ def benchmark_daemon_bundle(iterations: int = 10) -> List[BenchmarkResult]:
                 stdout_sizes.append(len((output or "").encode("utf-8", errors="ignore")))
 
         success_rate = (successes / iterations) * 100 if iterations > 0 else 0.0
-        sorted_timings = sorted(timings)
-        p95_idx = int(math.ceil(0.95 * len(sorted_timings))) - 1 if sorted_timings else 0
-        p95_ms = sorted_timings[max(0, min(p95_idx, len(sorted_timings) - 1))] if sorted_timings else 0.0
+        p95_ms = _percentile(sorted(timings), 95.0) or 0.0
         stdout_bytes_mean = statistics.mean(stdout_sizes) if stdout_sizes else None
         approx_tokens_mean = math.ceil(stdout_bytes_mean / 4.0) if stdout_bytes_mean is not None else None
 
@@ -764,7 +777,7 @@ def benchmark_mcp_server_startup(iterations: int = 10) -> BenchmarkResult:
         iterations=iterations,
         mean_ms=statistics.mean(timings) if timings else 0,
         median_ms=statistics.median(timings) if timings else 0,
-        p95_ms=sorted(timings)[max(0, min(int(math.ceil(0.95 * len(timings))) - 1, len(timings) - 1))] if timings else 0.0,
+        p95_ms=_percentile(sorted(timings), 95.0) or 0.0,
         min_ms=min(timings) if timings else 0,
         max_ms=max(timings) if timings else 0,
         std_dev_ms=statistics.stdev(timings) if len(timings) > 1 else 0,

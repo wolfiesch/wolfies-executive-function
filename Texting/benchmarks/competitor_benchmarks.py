@@ -245,18 +245,18 @@ def _benchmark_command_with_display(
     successes = 0
     error: Optional[str] = None
     stdout_sizes: List[int] = []
-    capture_timings: List[float] = []
     display = cmd_display if cmd_display is not None else spec.cmd
 
     # First run is a validation; if it fails, skip to avoid wasted time.
     print(f"[{_ts()}]    iter 1/{iterations} ...", end=" ", flush=True)
     if spec.ready_regex:
-        elapsed, ok, err, _ = _run_command_until_ready(cmd, spec.timeout_s, spec.ready_regex)
+        elapsed, ok, err, stdout_len = _run_command_until_ready(cmd, spec.timeout_s, spec.ready_regex)
     else:
-        elapsed, ok, err = _run_command(cmd, spec.timeout_s)
+        elapsed, ok, err, stdout_len = _run_command_capture(cmd, spec.timeout_s)
     timings.append(elapsed)
     if ok:
         successes += 1
+        stdout_sizes.append(stdout_len)
         print(f"ok ({elapsed:.2f}ms)")
     else:
         error = err
@@ -279,33 +279,18 @@ def _benchmark_command_with_display(
     for _ in range(iterations - 1):
         print(f"[{_ts()}]    iter {len(timings)+1}/{iterations} ...", end=" ", flush=True)
         if spec.ready_regex:
-            elapsed, ok, err, _ = _run_command_until_ready(cmd, spec.timeout_s, spec.ready_regex)
+            elapsed, ok, err, stdout_len = _run_command_until_ready(cmd, spec.timeout_s, spec.ready_regex)
         else:
-            elapsed, ok, err = _run_command(cmd, spec.timeout_s)
+            elapsed, ok, err, stdout_len = _run_command_capture(cmd, spec.timeout_s)
         timings.append(elapsed)
         if ok:
             successes += 1
+            stdout_sizes.append(stdout_len)
             print(f"ok ({elapsed:.2f}ms)")
         else:
             error = err
             print(f"FAIL ({elapsed:.2f}ms) {err}")
             break
-
-    # Separately measure stdout size (and its overhead) once per iteration on success.
-    # This is closer to “LLM end-to-end” because tool runners must capture output.
-    # For long-lived servers (ready_regex), we skip capture measurement (it would hang).
-    if spec.ready_regex:
-        stdout_sizes = []
-        capture_timings = []
-    else:
-        for _ in range(len(timings)):
-            elapsed_c, ok_c, err_c, stdout_len = _run_command_capture(cmd, spec.timeout_s)
-            capture_timings.append(elapsed_c)
-            if ok_c:
-                stdout_sizes.append(stdout_len)
-            else:
-                # Don’t fail the whole benchmark if capture-only measurement fails.
-                error = error or f"capture_failed: {err_c}"
 
     success_rate = (successes / len(timings)) * 100 if timings else 0.0
     mean_ms = statistics.mean(timings) if timings else None

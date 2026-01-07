@@ -627,7 +627,7 @@ def _summarize_phase(results: List[IterationResult], phase_key: str) -> dict:
             ok += 1
             vals.append(phase.ms)
     vals_sorted = sorted(vals)
-    p95 = vals_sorted[int(0.95 * (len(vals_sorted) - 1))] if len(vals_sorted) >= 2 else (vals_sorted[0] if vals_sorted else None)
+    p95 = _percentile(vals_sorted, 95.0)
     mean = sum(vals) / len(vals) if vals else None
     return {
         "ok": ok,
@@ -635,6 +635,23 @@ def _summarize_phase(results: List[IterationResult], phase_key: str) -> dict:
         "mean_ms": mean,
         "p95_ms": p95,
     }
+
+
+def _percentile(sorted_values: List[float], p: float) -> float | None:
+    if not sorted_values:
+        return None
+    if p <= 0:
+        return sorted_values[0]
+    if p >= 100:
+        return sorted_values[-1]
+    k = (len(sorted_values) - 1) * (p / 100.0)
+    f = math.floor(k)
+    c = math.ceil(k)
+    if f == c:
+        return sorted_values[int(k)]
+    d0 = sorted_values[f] * (c - k)
+    d1 = sorted_values[c] * (k - f)
+    return d0 + d1
 
 
 def _load_completed_iterations(output_path: Path, server_name: str) -> set[int]:
