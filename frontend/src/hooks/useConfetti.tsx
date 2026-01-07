@@ -1,4 +1,5 @@
 import { useCallback, useState } from 'react'
+import { motion, AnimatePresence } from 'framer-motion'
 
 interface ConfettiPiece {
   id: number
@@ -45,28 +46,43 @@ export function useConfetti() {
     }, 2000)
   }, [])
 
-  const ConfettiContainer = isActive ? (
+  const ConfettiContainer = (
     <div className="pointer-events-none fixed inset-0 z-[100] overflow-hidden">
-      {pieces.map((piece) => (
-        <div
-          key={piece.id}
-          className="absolute top-0 animate-confetti-fall"
-          style={{
-            left: `${piece.x}%`,
-            animationDelay: `${piece.delay}s`
-          }}
-        >
-          <div
-            className="h-3 w-2 animate-confetti-spin"
-            style={{
-              backgroundColor: piece.color,
-              borderRadius: '2px',
+      <AnimatePresence>
+        {isActive && pieces.map((piece) => (
+          <motion.div
+            key={piece.id}
+            initial={{ y: -20, opacity: 1, x: `${piece.x}%`, rotate: 0 }}
+            animate={{
+              y: '100vh',
+              opacity: 0,
+              rotate: 720
             }}
-          />
-        </div>
-      ))}
+            transition={{
+              duration: 2,
+              ease: "easeOut",
+              delay: piece.delay
+            }}
+            className="absolute top-0"
+          >
+            <motion.div
+              animate={{
+                rotateX: [0, 90, 180, 270, 360],
+                rotateY: [0, 45, 90, 135, 180]
+              }}
+              transition={{
+                duration: 0.6,
+                repeat: Infinity,
+                ease: "linear"
+              }}
+              style={{ backgroundColor: piece.color }}
+              className="h-3 w-2 rounded-[2px]"
+            />
+          </motion.div>
+        ))}
+      </AnimatePresence>
     </div>
-  ) : null
+  )
 
   return { trigger, ConfettiContainer }
 }
