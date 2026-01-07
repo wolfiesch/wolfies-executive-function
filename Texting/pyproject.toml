@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "wolfies-imessage-gateway"
-version = "4.0.0"
+dynamic = ["version"]
 description = "Wolfie's iMessage Gateway - Direct CLI 19x faster than MCP alternatives"
 readme = "README.md"
 requires-python = ">=3.9"
@@ -43,3 +43,6 @@ Benchmark = "https://github.com/wolfiesch/wolfies-imessage-gateway/blob/main/PER
 [tool.hatch.build.targets.wheel]
 packages = ["gateway", "src"]
 include = ["config/**", "skills/**"]
+
+[tool.hatch.version]
+path = "gateway/__version__.py"
