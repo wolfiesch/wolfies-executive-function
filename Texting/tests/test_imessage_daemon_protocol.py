@@ -1,13 +1,10 @@
 import json
-import os
+import shutil
 import tempfile
 import threading
-import time
 from pathlib import Path
 
 import socket
-
-import pytest
 
 
 from gateway.imessage_daemon import DaemonServer
@@ -51,14 +48,14 @@ def _call(socket_path: Path, payload: dict) -> dict:
         line = bytes(buf).split(b"\n", 1)[0]
         return json.loads(line.decode("utf-8"))
 
-def _short_socket_path() -> Path:
+def _short_socket_path() -> tuple[Path, Path]:
     # macOS AF_UNIX has a short path length limit; pytest tmp_path can exceed it.
     d = Path(tempfile.mkdtemp(prefix="wolfies-imsgd-", dir="/tmp"))
-    return d / "daemon.sock"
+    return d / "daemon.sock", d
 
 
-def test_daemon_unknown_method(tmp_path: Path):
-    sock = _short_socket_path()
+def test_daemon_unknown_method():
+    sock, root = _short_socket_path()
     server = DaemonServer(sock, FakeService())
     t = threading.Thread(target=server.serve_forever, daemon=True)
     t.start()
@@ -70,14 +67,11 @@ def test_daemon_unknown_method(tmp_path: Path):
     finally:
         server.shutdown()
         server.server_close()
-        try:
-            sock.parent.rmdir()
-        except Exception:
-            pass
+        shutil.rmtree(root, ignore_errors=True)
 
 
-def test_daemon_text_search_requires_query(tmp_path: Path):
-    sock = _short_socket_path()
+def test_daemon_text_search_requires_query():
+    sock, root = _short_socket_path()
     server = DaemonServer(sock, FakeService())
     t = threading.Thread(target=server.serve_forever, daemon=True)
     t.start()
@@ -88,14 +82,11 @@ def test_daemon_text_search_requires_query(tmp_path: Path):
     finally:
         server.shutdown()
         server.server_close()
-        try:
-            sock.parent.rmdir()
-        except Exception:
-            pass
+        shutil.rmtree(root, ignore_errors=True)
 
 
-def test_daemon_health_ok(tmp_path: Path):
-    sock = _short_socket_path()
+def test_daemon_health_ok():
+    sock, root = _short_socket_path()
     server = DaemonServer(sock, FakeService())
     t = threading.Thread(target=server.serve_forever, daemon=True)
     t.start()
@@ -107,7 +98,4 @@ def test_daemon_health_ok(tmp_path: Path):
     finally:
         server.shutdown()
         server.server_close()
-        try:
-            sock.parent.rmdir()
-        except Exception:
-            pass
+        shutil.rmtree(root, ignore_errors=True)

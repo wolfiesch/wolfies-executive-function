@@ -29,6 +29,8 @@ from typing import List, Optional
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 GATEWAY_CLI = REPO_ROOT / "gateway" / "imessage_client.py"
+MAX_READINESS_BUFFER_SIZE = 65536
+BYTES_PER_TOKEN_ESTIMATE = 4.0
 
 def _ts() -> str:
     return time.strftime("%Y-%m-%d %H:%M:%S")
@@ -199,8 +201,8 @@ def _run_command_until_ready(
                 total_bytes += len(chunk)
                 captured.extend(chunk)
                 # Keep buffer bounded; we only need to detect readiness.
-                if len(captured) > 65536:
-                    captured = captured[-65536:]
+                if len(captured) > MAX_READINESS_BUFFER_SIZE:
+                    captured = captured[-MAX_READINESS_BUFFER_SIZE:]
                 # Strip ANSI escape sequences before matching.
                 text = captured.decode("utf-8", errors="ignore")
                 # ANSI CSI sequences: ESC [ ... <final>
@@ -300,7 +302,7 @@ def _benchmark_command_with_display(
     max_ms = max(timings) if timings else None
     std_dev_ms = statistics.stdev(timings) if len(timings) > 1 else 0.0
     stdout_bytes_mean = statistics.mean(stdout_sizes) if stdout_sizes else None
-    approx_tokens_mean = math.ceil(stdout_bytes_mean / 4.0) if stdout_bytes_mean is not None else None
+    approx_tokens_mean = math.ceil(stdout_bytes_mean / BYTES_PER_TOKEN_ESTIMATE) if stdout_bytes_mean is not None else None
 
     return CommandResult(
         label=spec.label,

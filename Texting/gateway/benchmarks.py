@@ -38,6 +38,7 @@ sys.path.insert(0, str(REPO_ROOT))
 CLI_PATH = SCRIPT_DIR / "imessage_client.py"
 DAEMON_PATH = SCRIPT_DIR / "imessage_daemon.py"
 DAEMON_CLIENT_PATH = SCRIPT_DIR / "imessage_daemon_client.py"
+BYTES_PER_TOKEN_ESTIMATE = 4.0
 
 
 @dataclass
@@ -178,7 +179,7 @@ def benchmark_command(
 
     p95_ms = _percentile(sorted(timings), 95.0) or 0.0
     stdout_bytes_mean = statistics.mean(stdout_sizes) if stdout_sizes else None
-    approx_tokens_mean = math.ceil(stdout_bytes_mean / 4.0) if stdout_bytes_mean is not None else None
+    approx_tokens_mean = math.ceil(stdout_bytes_mean / BYTES_PER_TOKEN_ESTIMATE) if stdout_bytes_mean is not None else None
 
     result = BenchmarkResult(
         name=name,
@@ -510,7 +511,7 @@ def benchmark_daemon_bundle(iterations: int = 10) -> List[BenchmarkResult]:
         success_rate = (successes / iterations) * 100 if iterations > 0 else 0.0
         p95_ms = _percentile(sorted(timings), 95.0) or 0.0
         stdout_bytes_mean = statistics.mean(stdout_sizes) if stdout_sizes else None
-        approx_tokens_mean = math.ceil(stdout_bytes_mean / 4.0) if stdout_bytes_mean is not None else None
+        approx_tokens_mean = math.ceil(stdout_bytes_mean / BYTES_PER_TOKEN_ESTIMATE) if stdout_bytes_mean is not None else None
 
         result = BenchmarkResult(
             name=name,

@@ -36,6 +36,8 @@ from mcp import types
 REPO_ROOT = Path(__file__).resolve().parents[1]
 GATEWAY_CLI = REPO_ROOT / "gateway" / "imessage_client.py"
 COMPETITOR_VENV_BIN = REPO_ROOT / "benchmarks" / ".venv_competitors" / "bin"
+SAFE_PLACEHOLDER_PHONE = "+10000000000"
+BYTES_PER_TOKEN_ESTIMATE = 4.0
 
 
 def _ts() -> str:
@@ -45,7 +47,7 @@ def _ts() -> str:
 def _approx_tokens_from_bytes(byte_count: int | None) -> int | None:
     if byte_count is None:
         return None
-    return int(math.ceil(byte_count / 4.0))
+    return int(math.ceil(byte_count / BYTES_PER_TOKEN_ESTIMATE))
 
 
 def _ensure_parent(path: Path) -> None:
@@ -199,7 +201,7 @@ def _pick_readonly_tool(
                 # Prefer a safe, non-PII placeholder for phone-like fields.
                 lk = str(key).lower()
                 if "phone" in lk or "recipient" in lk:
-                    args[key] = "+10000000000"
+                    args[key] = SAFE_PLACEHOLDER_PHONE
                 else:
                     args[key] = "a"
             elif tpe == "integer" or tpe == "number":
@@ -242,6 +244,8 @@ def _redact_stderr_text(text: str) -> str:
 
     # Email addresses
     text = re.sub(r"[\w.+-]+@[\w-]+\.[\w.-]+", "[REDACTED_EMAIL]", text)
+    # Local hostnames (often include user/device names)
+    text = re.sub(r"\b[A-Za-z0-9._-]+\.local\b", "[REDACTED_HOST]", text)
 
     # Phone numbers (prefer precision to avoid mangling timestamps/log prefixes).
     # - E.164: +14155552671
@@ -827,7 +831,7 @@ def main() -> int:
             args=["-u", "imessage-query-server.py"],
             cwd=str(REPO_ROOT / "benchmarks" / "vendor" / "github_mcp" / "imessage-query-fastmcp-mcp-server"),
             preferred_tool_names=["get_chat_transcript"],
-            preferred_tool_args={"get_chat_transcript": {"phone_number": "+10000000000"}},
+            preferred_tool_args={"get_chat_transcript": {"phone_number": SAFE_PLACEHOLDER_PHONE}},
         ),
         McpServerSpec(
             name="github MCP: jonmmease/jons-mcp-imessage (python fastmcp stdio)",
@@ -910,7 +914,7 @@ def main() -> int:
             cwd=str(REPO_ROOT / "benchmarks" / "vendor" / "github_mcp" / "iMCP"),
             install_hint="Build iMCP.app (Xcode) and ensure the iMCP app is running and Messages service activated.",
             preferred_tool_names=["messages_fetch"],
-            preferred_tool_args={"messages_fetch": {"participants": ["+10000000000"], "limit": 1}},
+            preferred_tool_args={"messages_fetch": {"participants": [SAFE_PLACEHOLDER_PHONE], "limit": 1}},
         ),
     ]
 
