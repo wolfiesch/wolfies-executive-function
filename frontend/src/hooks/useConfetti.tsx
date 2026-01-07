@@ -7,6 +7,14 @@ interface ConfettiPiece {
   delay: number
 }
 
+const COLORS = [
+  'var(--color-accent-green)',
+  'var(--color-accent-blue)',
+  'var(--color-accent-purple)',
+  'var(--color-accent-orange)',
+  'var(--color-accent-yellow)',
+]
+
 /**
  * Hook to trigger confetti celebration animation
  * 
@@ -17,20 +25,13 @@ export function useConfetti() {
   const [pieces, setPieces] = useState<ConfettiPiece[]>([])
   const [isActive, setIsActive] = useState(false)
 
-  const colors = [
-    'var(--color-accent-green)',
-    'var(--color-accent-blue)',
-    'var(--color-accent-purple)',
-    'var(--color-accent-orange)',
-    'var(--color-accent-yellow)',
-  ]
 
   const trigger = useCallback(() => {
     // Generate random confetti pieces
     const newPieces: ConfettiPiece[] = Array.from({ length: 30 }, (_, i) => ({
       id: Date.now() + i,
       x: 20 + Math.random() * 60, // 20-80% horizontal spread
-      color: colors[Math.floor(Math.random() * colors.length)],
+      color: COLORS[Math.floor(Math.random() * COLORS.length)],
       delay: Math.random() * 0.3,
     }))
 
