@@ -1,0 +1,11 @@
+tool	ops (mean ms)
+Wolfies iMessage Gateway (CLI)	startup_help=51ms, recent_10=52ms, unread=50ms
+imessage-conversation-analyzer	startup_help=294ms
+imessage-exporter	startup_help=30ms, list_chats=138ms, search_http=73ms
+imessage-monitor	import_module=68ms
+imessage-reader	import_module=25ms
+imessage-wrapped	startup_help=148ms
+imessage-year-wrapped	startup_help=80ms (fail)
+imessagedb	import_module=90ms
+jean-claude (iMessage)	startup_help=756ms, chats=1031ms, unread=955ms
+mcp-server-imessage (import)	import_module=197ms

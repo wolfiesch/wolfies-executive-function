@@ -1,0 +1,191 @@
+{
+  "suite_name": "competitor_tier_a",
+  "timestamp": "2026-01-07 03:08:53",
+  "metadata": {
+    "iterations": 10,
+    "python_version": "2026-01-07 (py Python 3.13.2)",
+    "tier": "a"
+  },
+  "tool_results": [
+    {
+      "name": "Wolfies iMessage Gateway (CLI)",
+      "tool_type": "cli",
+      "commands": [
+        {
+          "label": "startup_help",
+          "cmd": "python3 /Users/wolfgangschoenberger/LIFE-PLANNER/Texting/gateway/imessage_client.py --help",
+          "iterations": 10,
+          "mean_ms": 50.790750099986326,
+          "median_ms": 49.839062499813735,
+          "min_ms": 48.59991699777311,
+          "max_ms": 54.45437500020489,
+          "std_dev_ms": 2.1674771152390138,
+          "success_rate": 100.0,
+          "error": null
+        },
+        {
+          "label": "recent_10",
+          "cmd": "python3 /Users/wolfgangschoenberger/LIFE-PLANNER/Texting/gateway/imessage_client.py recent --limit 10 --json",
+          "iterations": 10,
+          "mean_ms": 51.52809170103865,
+          "median_ms": 50.98185349925188,
+          "min_ms": 48.7256670021452,
+          "max_ms": 56.66370900144102,
+          "std_dev_ms": 2.5710213723238997,
+          "success_rate": 100.0,
+          "error": null
+        },
+        {
+          "label": "unread",
+          "cmd": "python3 /Users/wolfgangschoenberger/LIFE-PLANNER/Texting/gateway/imessage_client.py unread --json",
+          "iterations": 10,
+          "mean_ms": 49.741633200028446,
+          "median_ms": 48.60595799982548,
+          "min_ms": 46.628707998024765,
+          "max_ms": 55.984874998102896,
+          "std_dev_ms": 2.9703679572205286,
+          "success_rate": 100.0,
+          "error": null
+        },
+        {
+          "label": "search_http_contact",
+          "cmd": "python3 /Users/wolfgangschoenberger/LIFE-PLANNER/Texting/gateway/imessage_client.py find 'AJ K' --query http --limit 20 --json",
+          "iterations": 10,
+          "mean_ms": 49.05081250035437,
+          "median_ms": 48.53731250113924,
+          "min_ms": 47.78300000180025,
+          "max_ms": 52.0582499957527,
+          "std_dev_ms": 1.2371847924478554,
+          "success_rate": 100.0,
+          "error": null
+        }
+      ]
+    },
+    {
+      "name": "jean-claude (iMessage)",
+      "tool_type": "cli",
+      "commands": [
+        {
+          "label": "startup_help",
+          "cmd": "jean-claude imessage --help",
+          "iterations": 10,
+          "mean_ms": 755.9429250009998,
+          "median_ms": 725.7896250011981,
+          "min_ms": 694.9017079969053,
+          "max_ms": 1084.0702500063344,
+          "std_dev_ms": 116.93414070644884,
+          "success_rate": 100.0,
+          "error": null
+        },
+        {
+          "label": "chats",
+          "cmd": "jean-claude imessage chats",
+          "iterations": 10,
+          "mean_ms": 1031.3151250004012,
+          "median_ms": 1027.3859999979322,
+          "min_ms": 973.297457996523,
+          "max_ms": 1139.6226249999017,
+          "std_dev_ms": 54.81570551111052,
+          "success_rate": 100.0,
+          "error": null
+        },
+        {
+          "label": "unread",
+          "cmd": "jean-claude imessage unread",
+          "iterations": 10,
+          "mean_ms": 954.8230998014333,
+          "median_ms": 940.5803535009909,
+          "min_ms": 924.9454160017194,
+          "max_ms": 1046.0104999947362,
+          "std_dev_ms": 38.716312826617795,
+          "success_rate": 100.0,
+          "error": null
+        },
+        {
+          "label": "search_http",
+          "cmd": "jean-claude imessage search http",
+          "iterations": 10,
+          "mean_ms": 1006.5137791003508,
+          "median_ms": 1009.3374374991981,
+          "min_ms": 969.8765830034972,
+          "max_ms": 1031.6442499970435,
+          "std_dev_ms": 21.262535541194456,
+          "success_rate": 100.0,
+          "error": null
+        },
+        {
+          "label": "history_contact_10",
+          "cmd": "jean-claude imessage history --name 'AJ K' -n 10",
+          "iterations": 10,
+          "mean_ms": 1646.3044874013576,
+          "median_ms": 1646.2826670031063,
+          "min_ms": 1541.467791001196,
+          "max_ms": 1736.585874998127,
+          "std_dev_ms": 58.8367968792329,
+          "success_rate": 100.0,
+          "error": null
+        }
+      ]
+    },
+    {
+      "name": "imessage-exporter",
+      "tool_type": "cli",
+      "commands": [
+        {
+          "label": "startup_help",
+          "cmd": "imessage-exporter --help",
+          "iterations": 10,
+          "mean_ms": 29.692733400588622,
+          "median_ms": 29.933791502116947,
+          "min_ms": 27.523708005901426,
+          "max_ms": 31.043625000165775,
+          "std_dev_ms": 1.2292112656414933,
+          "success_rate": 100.0,
+          "error": null
+        },
+        {
+          "label": "list_chats",
+          "cmd": "imessage-exporter --list-chats",
+          "iterations": 10,
+          "mean_ms": 138.41869160241913,
+          "median_ms": 81.68714550265577,
+          "min_ms": 76.70545900327852,
+          "max_ms": 644.7752080057398,
+          "std_dev_ms": 177.96418907122643,
+          "success_rate": 100.0,
+          "error": null
+        },
+        {
+          "label": "search_http",
+          "cmd": "imessage-exporter --search http",
+          "iterations": 10,
+          "mean_ms": 73.11649990006117,
+          "median_ms": 59.542083501582965,
+          "min_ms": 56.47470799885923,
+          "max_ms": 154.18987500015646,
+          "std_dev_ms": 30.27619219871371,
+          "success_rate": 100.0,
+          "error": null
+        }
+      ]
+    },
+    {
+      "name": "mcp-server-imessage (import)",
+      "tool_type": "import",
+      "commands": [
+        {
+          "label": "import_module",
+          "cmd": "python3 -c \"import mcp_server_imessage; print('ok')\"",
+          "iterations": 10,
+          "mean_ms": 197.47517059950042,
+          "median_ms": 189.54370800202014,
+          "min_ms": 183.44254099793034,
+          "max_ms": 269.5495829975698,
+          "std_dev_ms": 25.756173056536234,
+          "success_rate": 100.0,
+          "error": null
+        }
+      ]
+    }
+  ]
+}

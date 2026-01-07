@@ -61,6 +61,9 @@ htmlcov/
 # Logs (keep example log format)
 *.log
 
+# Local benchmark vendor clones (large, reproducible via scripts)
+benchmarks/vendor/
+
 # Local development
 *.local.json
 .env.local
