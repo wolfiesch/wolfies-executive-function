@@ -1,12 +1,12 @@
 {
   "name": "imessage-gateway",
-  "version": "1.0.0",
+  "version": "4.0.0",
   "description": "Access iMessages from Claude Code without MCP overhead. 19x faster than MCP tools - zero startup latency, direct SQLite queries.",
   "author": {
     "name": "Wolfgang Schoenberger",
     "url": "https://github.com/wolfiesch"
   },
-  "repository": "https://github.com/wolfiesch/imessage-mcp",
+  "repository": "https://github.com/wolfiesch/wolfies-imessage-gateway",
   "license": "MIT",
   "keywords": ["imessage", "messaging", "macos", "privacy", "claude-code", "gateway-pattern"],
   "commands": "./commands/",
