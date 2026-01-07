@@ -24,6 +24,8 @@ from datetime import datetime
 from pathlib import Path
 from typing import Any, Optional
 
+from gateway.output_utils import apply_output_controls, parse_fields
+
 
 SCRIPT_DIR = Path(__file__).parent
 REPO_ROOT = SCRIPT_DIR.parent
@@ -33,15 +35,6 @@ sys.path.insert(0, str(REPO_ROOT))
 DEFAULT_STATE_DIR = Path.home() / ".wolfies-imessage"
 DEFAULT_SOCKET_PATH = DEFAULT_STATE_DIR / "daemon.sock"
 DEFAULT_PID_PATH = DEFAULT_STATE_DIR / "daemon.pid"
-
-_DEFAULT_TRUNCATE_KEYS = (
-    "text",
-    "match_snippet",
-    "last_message",
-    "message_preview",
-    "conversation_text",
-)
-
 
 def _now_iso() -> str:
     return datetime.now().isoformat()
@@ -68,81 +61,11 @@ def _is_socket_listening(socket_path: Path, timeout_s: float = 0.15) -> bool:
         return False
 
 
-def _parse_fields(fields: Any) -> list[str] | None:
-    if fields is None:
-        return None
-    if isinstance(fields, list):
-        items = [str(x).strip() for x in fields if str(x).strip()]
-        return items or None
-    if isinstance(fields, str):
-        items = [s.strip() for s in fields.split(",")]
-        items = [s for s in items if s]
-        return items or None
-    return None
-
-
-def _truncate(value: str, max_chars: int) -> str:
-    if max_chars <= 0:
-        return ""
-    if len(value) <= max_chars:
-        return value
-    return value[:max_chars].rstrip() + "..."
-
-
-def _apply_output_controls(
-    data: Any,
-    *,
-    fields: list[str] | None,
-    max_text_chars: int | None,
-    compact: bool,
-    minimal: bool,
-    default_fields: list[str] | None = None,
-    truncate_keys: tuple[str, ...] = _DEFAULT_TRUNCATE_KEYS,
-) -> Any:
-    """
-    Filter/truncate JSON output to reduce LLM token overhead.
-
-    Mirrors gateway CLI behavior closely, but is daemon-local to avoid importing the full CLI.
-    """
-    if (compact or minimal) and max_text_chars is None:
-        max_text_chars = 200 if compact else 120
-
-    if minimal:
-        base_fields = ["date", "phone", "is_from_me", "text"]
-        if default_fields and "match_snippet" in default_fields:
-            base_fields.append("match_snippet")
-        if fields is None:
-            fields = base_fields
-
-    effective_fields = fields or (default_fields if compact else None)
-
-    def transform_record(rec: dict[str, Any]) -> dict[str, Any]:
-        if effective_fields:
-            out = {k: rec.get(k) for k in effective_fields if k in rec}
-        else:
-            out = dict(rec)
-
-        if max_text_chars is not None:
-            for k in truncate_keys:
-                v = out.get(k)
-                if isinstance(v, str):
-                    out[k] = _truncate(v, max_text_chars)
-        return out
-
-    if isinstance(data, list):
-        return [transform_record(x) if isinstance(x, dict) else x for x in data]
-    if isinstance(data, dict):
-        if effective_fields or any(k in data for k in truncate_keys):
-            return transform_record(data)  # type: ignore[arg-type]
-        return data
-    return data
-
-
 def _extract_controls(params: dict[str, Any]) -> dict[str, Any]:
     return {
         "compact": bool(params.get("compact", False)),
         "minimal": bool(params.get("minimal", False)),
-        "fields": _parse_fields(params.get("fields")),
+        "fields": parse_fields(params.get("fields")),
         "max_text_chars": int(params["max_text_chars"]) if params.get("max_text_chars") is not None else None,
     }
 
@@ -323,7 +246,7 @@ class DaemonServer(socketserver.UnixStreamServer):
             elif method == "unread_messages":
                 controls = _extract_controls(params)
                 msgs = self.service.unread_messages(limit=int(params.get("limit") or 20)).get("messages") or []
-                shaped = _apply_output_controls(
+                shaped = apply_output_controls(
                     msgs,
                     fields=controls["fields"],
                     max_text_chars=controls["max_text_chars"],
@@ -335,7 +258,7 @@ class DaemonServer(socketserver.UnixStreamServer):
             elif method == "recent":
                 controls = _extract_controls(params)
                 msgs = self.service.recent(limit=int(params.get("limit") or 10)).get("messages") or []
-                shaped = _apply_output_controls(
+                shaped = apply_output_controls(
                     msgs,
                     fields=controls["fields"],
                     max_text_chars=controls["max_text_chars"],
@@ -354,7 +277,7 @@ class DaemonServer(socketserver.UnixStreamServer):
                     limit=int(params.get("limit") or 20),
                     since=params.get("since"),
                 ).get("results") or []
-                shaped = _apply_output_controls(
+                shaped = apply_output_controls(
                     results,
                     fields=controls["fields"],
                     max_text_chars=controls["max_text_chars"],
@@ -369,7 +292,7 @@ class DaemonServer(socketserver.UnixStreamServer):
                     raise ValueError("phone is required")
                 controls = _extract_controls(params)
                 msgs = self.service.messages_by_phone(phone=phone, limit=int(params.get("limit") or 20)).get("messages") or []
-                shaped = _apply_output_controls(
+                shaped = apply_output_controls(
                     msgs,
                     fields=controls["fields"],
                     max_text_chars=controls["max_text_chars"],
@@ -385,7 +308,7 @@ class DaemonServer(socketserver.UnixStreamServer):
                 if isinstance(bundle, dict):
                     unread = bundle.get("unread")
                     if isinstance(unread, dict) and isinstance(unread.get("messages"), list):
-                        unread["messages"] = _apply_output_controls(
+                        unread["messages"] = apply_output_controls(
                             unread["messages"],
                             fields=controls["fields"],
                             max_text_chars=controls["max_text_chars"],
@@ -394,7 +317,7 @@ class DaemonServer(socketserver.UnixStreamServer):
                             default_fields=["date", "phone", "text", "days_old", "group_id", "group_name"],
                         )
                     if isinstance(bundle.get("recent"), list):
-                        bundle["recent"] = _apply_output_controls(
+                        bundle["recent"] = apply_output_controls(
                             bundle["recent"],
                             fields=controls["fields"],
                             max_text_chars=controls["max_text_chars"],
@@ -404,7 +327,7 @@ class DaemonServer(socketserver.UnixStreamServer):
                         )
                     search = bundle.get("search")
                     if isinstance(search, dict) and isinstance(search.get("results"), list):
-                        search["results"] = _apply_output_controls(
+                        search["results"] = apply_output_controls(
                             search["results"],
                             fields=controls["fields"],
                             max_text_chars=controls["max_text_chars"],
@@ -414,7 +337,7 @@ class DaemonServer(socketserver.UnixStreamServer):
                         )
                     cm = bundle.get("contact_messages")
                     if isinstance(cm, dict) and isinstance(cm.get("messages"), list):
-                        cm["messages"] = _apply_output_controls(
+                        cm["messages"] = apply_output_controls(
                             cm["messages"],
                             fields=controls["fields"],
                             max_text_chars=controls["max_text_chars"],

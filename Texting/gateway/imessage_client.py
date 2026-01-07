@@ -55,89 +55,16 @@ CONTACTS_CONFIG = REPO_ROOT / "config" / "contacts.json"
 # Valid RAG sources (single source of truth)
 VALID_RAG_SOURCES = ['imessage', 'superwhisper', 'notes', 'local', 'gmail', 'slack', 'calendar']
 
-_DEFAULT_TRUNCATE_KEYS = (
-    "text",
-    "match_snippet",
-    "last_message",
-    "message_preview",
-    "conversation_text",
-)
-
-
-def _parse_fields_arg(fields: str | None) -> list[str] | None:
-    if not fields:
-        return None
-    items = [f.strip() for f in fields.split(",")]
-    items = [f for f in items if f]
-    return items or None
-
-
-def _truncate(value: str, max_chars: int) -> str:
-    if max_chars <= 0:
-        return ""
-    if len(value) <= max_chars:
-        return value
-    # Keep it ASCII-friendly; avoids unicode ellipsis weirdness in some terminals.
-    return value[:max_chars].rstrip() + "..."
-
-
-def _apply_output_controls(
-    data: Any,
-    *,
-    fields: list[str] | None,
-    max_text_chars: int | None,
-    compact: bool,
-    minimal: bool = False,
-    default_fields: list[str] | None = None,
-    truncate_keys: tuple[str, ...] = _DEFAULT_TRUNCATE_KEYS,
-) -> Any:
-    """Filter/truncate JSON output to reduce LLM token overhead."""
-    if (compact or minimal) and max_text_chars is None:
-        max_text_chars = 200 if compact else 120
-
-    if minimal:
-        base_fields = ["date", "phone", "is_from_me", "text"]
-        # Allow a small, explicit exception for search-style outputs.
-        if default_fields and "match_snippet" in default_fields:
-            base_fields.append("match_snippet")
-        if fields is None:
-            fields = base_fields
-
-    if compact and max_text_chars is None:
-        max_text_chars = 200
-
-    effective_fields = fields or (default_fields if compact else None)
-
-    def transform_record(rec: dict[str, Any]) -> dict[str, Any]:
-        if effective_fields:
-            out = {k: rec.get(k) for k in effective_fields if k in rec}
-        else:
-            out = dict(rec)
-
-        if max_text_chars is not None:
-            for k in truncate_keys:
-                v = out.get(k)
-                if isinstance(v, str):
-                    out[k] = _truncate(v, max_text_chars)
-        return out
-
-    if isinstance(data, list):
-        return [transform_record(x) if isinstance(x, dict) else x for x in data]
-    if isinstance(data, dict):
-        # Apply record transform only if it looks like a record; otherwise truncate string-ish fields.
-        if effective_fields or any(k in data for k in truncate_keys):
-            return transform_record(data)  # type: ignore[arg-type]
-        return data
-    return data
+from gateway.output_utils import apply_output_controls, parse_fields
 
 
 def _emit_json(data: Any, args, *, default_fields: list[str] | None = None) -> None:
-    fields = _parse_fields_arg(getattr(args, "fields", None))
+    fields = parse_fields(getattr(args, "fields", None))
     max_text_chars = getattr(args, "max_text_chars", None)
     compact = bool(getattr(args, "compact", False))
     minimal = bool(getattr(args, "minimal", False))
 
-    payload = _apply_output_controls(
+    payload = apply_output_controls(
         data,
         fields=fields,
         max_text_chars=max_text_chars,
@@ -490,7 +417,7 @@ def cmd_bundle(args):
     if phone and args.messages_limit and (include is None or "contact_messages" in include):
         contact_messages = mi.get_messages_by_phone(phone, limit=args.messages_limit)
 
-    fields = _parse_fields_arg(getattr(args, "fields", None))
+    fields = parse_fields(getattr(args, "fields", None))
     max_text_chars = getattr(args, "max_text_chars", None)
     compact = bool(getattr(args, "compact", False))
     minimal = bool(getattr(args, "minimal", False))
@@ -516,7 +443,7 @@ def cmd_bundle(args):
         if unread_count is not None:
             payload["unread"]["count"] = unread_count
         if unread_messages is not None:
-            payload["unread"]["messages"] = _apply_output_controls(
+            payload["unread"]["messages"] = apply_output_controls(
                 unread_messages,
                 fields=fields,
                 max_text_chars=max_text_chars,
@@ -526,7 +453,7 @@ def cmd_bundle(args):
             )
 
     if recent is not None:
-        payload["recent"] = _apply_output_controls(
+        payload["recent"] = apply_output_controls(
             recent,
             fields=fields,
             max_text_chars=max_text_chars,
@@ -537,7 +464,7 @@ def cmd_bundle(args):
 
     if search_results is not None:
         payload["search"] = {
-            "results": _apply_output_controls(
+            "results": apply_output_controls(
                 search_results,
                 fields=fields,
                 max_text_chars=max_text_chars,
@@ -549,7 +476,7 @@ def cmd_bundle(args):
 
     if phone and contact_messages is not None:
         payload["contact_messages"] = {
-            "messages": _apply_output_controls(
+            "messages": apply_output_controls(
                 contact_messages,
                 fields=fields,
                 max_text_chars=max_text_chars,
