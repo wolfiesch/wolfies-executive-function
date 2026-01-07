@@ -171,56 +171,23 @@ Specialized agents provide better context management and more focused capabiliti
 
 **⚠️ IMPORTANT: This project has OVERLAPPING integrations. Always check which integration to use!**
 
-Some services have MULTIPLE integration paths:
+Default integration paths for this repo:
 
-#### Gmail Integration - USE RUBE, NOT LOCAL MCP
+- **Gmail:** Local Gmail MCP (`src/integrations/gmail/`) → `mcp__gmail__*`
+- **Google Calendar:** Local Calendar MCP (`src/integrations/google_calendar/`) → `mcp__google-calendar__*`
+- **Reminders:** Local Reminders MCP (`Reminders/`) → `mcp__reminders-life-planner__*`
+- **iMessage:** Local iMessage Gateway CLI (`Texting/`)
+- **Slack:** Rube/Composio only
+- **Twitter/X:** TwitterAPI.io for reads, Rube for writes (see `SocialMedia/skills/twitter-manager/`)
 
-**Two Gmail integrations exist:**
+**Local MCP checklist:**
+- Register servers with `claude mcp add`
+- Configure OAuth credentials in `config/google_credentials/`
+- If tools fail but show “Connected,” check logs under `logs/`
 
-1. **Local Gmail MCP** (`src/integrations/gmail/server.py`)
-   - Status: Registered but **NOT CONFIGURED**
-   - Shows "✓ Connected" in `claude mcp list` (misleading!)
-   - Requires Google Cloud credentials at `config/google_credentials/credentials.json`
-   - **DO NOT USE** unless explicitly setting up local Gmail MCP
-
-2. **Rube/Composio Gmail** (via `rube` MCP server)
-   - Status: **FULLY CONFIGURED AND WORKING**
-   - Connected account: `wolfgangs2000@gmail.com`
-   - Access via: `RUBE_SEARCH_TOOLS` → `RUBE_MULTI_EXECUTE_TOOL`
-   - Tools: `GMAIL_FETCH_EMAILS`, `GMAIL_SEND_EMAIL`, `GMAIL_SEARCH_EMAILS`, etc.
-   - **USE THIS FOR ALL GMAIL OPERATIONS**
-
-**How to use Rube Gmail:**
-```python
-# 1. Search for Gmail tools (first time or to check available tools)
-RUBE_SEARCH_TOOLS(queries=[{"use_case": "fetch emails from gmail"}])
-
-# 2. Execute Gmail operations
-RUBE_MULTI_EXECUTE_TOOL(
-    tools=[{
-        "tool_slug": "GMAIL_FETCH_EMAILS",
-        "arguments": {"max_results": 20, "user_id": "me"}
-    }],
-    sync_response_to_workbench=False
-)
-```
-
-**Why Rube over Local MCP?**
-- Already authenticated (no credential setup needed)
-- Supports 500+ apps beyond Gmail
-- Unified memory/session tracking
-- No token refresh management required
-
-**Pattern Recognition:**
-If you see "client not initialized" errors from a local MCP but the service is in your requirements, **check if Rube/Composio has that integration** before trying to configure the local MCP.
-
-**Other Integrations Available via Rube:**
-- Gmail ✅ (USE RUBE)
-- Slack ✅ (USE RUBE)
-- Google Calendar ✅ (USE RUBE)
-- Google Sheets ✅ (USE RUBE)
-- GitHub ✅ (USE RUBE)
-- Twitter/X ✅ (USE RUBE)
+**Rube/Composio (optional) usage:**
+1. `RUBE_SEARCH_TOOLS` to discover tools
+2. `RUBE_MULTI_EXECUTE_TOOL` to execute requests
 
 ### MCP Server Development
 
@@ -230,7 +197,7 @@ When building MCP integrations:
 3. Handle authentication securely (never commit credentials)
 4. Implement bi-directional sync where appropriate
 5. Provide fallback for when external service is unavailable
-6. **Check if Rube/Composio already provides this integration first!**
+6. **Check existing local MCPs and Rube/Composio before duplicating work**
 
 ### External Calendar Sync
 

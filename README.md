@@ -30,6 +30,12 @@ python3 -c "from src.core import Database, Config; print('✓ Core modules loade
 # Add a task
 python3 planner.py add "Call John about project" --due tomorrow --priority 4
 
+# Natural language request
+python3 planner.py ask "Remind me to send the report by Friday"
+
+# Start an interactive chat session
+python3 planner.py chat
+
 # View today's tasks
 python3 planner.py today
 
@@ -100,7 +106,9 @@ Completed:
 - ✅ Configuration management
 - ✅ Core data models
 - ✅ Basic CRUD operations
-- ✅ **CLI interface with 5 commands**
+- ✅ **CLI task + dashboard commands**
+- ✅ **Natural language `ask` + interactive `chat`**
+- ✅ **Calendar event subcommands**
 
 **Ready to use!** The system is now functional for daily task management.
 
@@ -109,11 +117,26 @@ Planned:
 - Project management commands
 - Note capture and search
 - Daily dashboard improvements
-- Calendar integration
+- External calendar/email integrations
 
 ## CLI Usage
 
 The planner supports the following commands:
+
+### `ask` - Natural language command router
+```bash
+python3 planner.py ask "Add a task to call John tomorrow at 2pm"
+python3 planner.py ask "What's on my calendar this week?"
+```
+
+Routes requests to the task, calendar, note, or goal agents and formats the response.
+
+### `chat` - Interactive natural language session
+```bash
+python3 planner.py chat
+```
+
+Starts an interactive shell for ongoing requests. Type `exit` to quit.
 
 ### `add` - Create a new task
 ```bash
@@ -125,14 +148,14 @@ python3 planner.py add "Call client" --due tomorrow --priority 5
 python3 planner.py add "Write tests" -d monday -p 4
 ```
 
-**Supported date formats**: `today`, `tomorrow`, `monday`, `tuesday`, etc.
+**Supported date formats**: `today`, `tomorrow`, `yesterday`, and day names like `monday`.
 
 ### `today` - View today's schedule
 ```bash
-python3 planner.py today
+python3 planner.py today [--verbose]
 ```
 
-Shows tasks due today, overdue tasks, and high-priority items.
+Shows the unified daily dashboard: priorities, calendar timeline, overdue tasks, and progress stats.
 
 ### `list` - List all tasks
 ```bash
@@ -143,6 +166,8 @@ python3 planner.py list                    # Active tasks only
 python3 planner.py list --status todo      # Only todo tasks
 python3 planner.py list --all              # Including completed
 ```
+
+**Status values**: `todo`, `in_progress`, `waiting`, `done`, `cancelled`
 
 ### `done` - Mark task as complete
 ```bash
@@ -158,6 +183,22 @@ python3 planner.py stats
 ```
 
 Shows total, completed, and in-progress task counts with completion rate.
+
+### `event add` - Create a calendar event
+```bash
+python3 planner.py event add "Team Sync" --start "tomorrow 2pm" --duration 60
+python3 planner.py event add "Deep Work" --start "monday 9am" --all-day
+```
+
+### `event list` - List upcoming events
+```bash
+python3 planner.py event list --days 7
+```
+
+### `event delete` - Delete an event
+```bash
+python3 planner.py event delete 5
+```
 
 ## Configuration
 
