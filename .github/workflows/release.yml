@@ -12,8 +12,9 @@ env:
   CARGO_TERM_COLOR: always
 
 jobs:
-  build:
-    name: Build ${{ matrix.target }}
+  # Build iMessage (Rust binary + Python daemon)
+  build-imessage:
+    name: Build iMessage ${{ matrix.target }}
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
@@ -91,9 +92,116 @@ jobs:
           name: wolfies-imessage-${{ matrix.target }}
           path: dist/*.tar.gz*
 
+  # Build Python MCP modules (no architecture-specific builds needed)
+  build-python-modules:
+    name: Build Python MCP modules
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Get version from tag
+        id: version
+        run: echo "VERSION=${GITHUB_REF#refs/tags/v}" >> $GITHUB_OUTPUT
+
+      - name: Package Gmail MCP
+        run: |
+          VERSION=${{ steps.version.outputs.VERSION }}
+          PACKAGE_NAME="wolfies-gmail-${VERSION}"
+
+          mkdir -p "dist/${PACKAGE_NAME}"
+
+          # Copy Gmail MCP server files
+          cp src/integrations/gmail/server.py "dist/${PACKAGE_NAME}/"
+          cp src/integrations/gmail/gmail_client.py "dist/${PACKAGE_NAME}/"
+          cp src/integrations/gmail/requirements.txt "dist/${PACKAGE_NAME}/"
+
+          # Create tarball
+          cd dist
+          tar -czvf "${PACKAGE_NAME}.tar.gz" "${PACKAGE_NAME}"
+          shasum -a 256 "${PACKAGE_NAME}.tar.gz" > "${PACKAGE_NAME}.tar.gz.sha256"
+
+          echo "Package created: ${PACKAGE_NAME}.tar.gz"
+
+      - name: Package Calendar MCP
+        run: |
+          VERSION=${{ steps.version.outputs.VERSION }}
+          PACKAGE_NAME="wolfies-calendar-${VERSION}"
+
+          mkdir -p "dist/${PACKAGE_NAME}"
+
+          # Copy Calendar MCP server files
+          cp src/integrations/google_calendar/server.py "dist/${PACKAGE_NAME}/"
+          cp src/integrations/google_calendar/calendar_client.py "dist/${PACKAGE_NAME}/"
+          cp src/integrations/google_calendar/requirements.txt "dist/${PACKAGE_NAME}/"
+
+          # Create tarball
+          cd dist
+          tar -czvf "${PACKAGE_NAME}.tar.gz" "${PACKAGE_NAME}"
+          shasum -a 256 "${PACKAGE_NAME}.tar.gz" > "${PACKAGE_NAME}.tar.gz.sha256"
+
+          echo "Package created: ${PACKAGE_NAME}.tar.gz"
+
+      - name: Package Reminders MCP
+        run: |
+          VERSION=${{ steps.version.outputs.VERSION }}
+          PACKAGE_NAME="wolfies-reminders-${VERSION}"
+
+          mkdir -p "dist/${PACKAGE_NAME}/src"
+
+          # Copy Reminders MCP server files
+          cp Reminders/mcp_server/server.py "dist/${PACKAGE_NAME}/"
+          cp Reminders/requirements.txt "dist/${PACKAGE_NAME}/"
+          cp Reminders/src/__init__.py "dist/${PACKAGE_NAME}/src/"
+          cp Reminders/src/reminders_interface.py "dist/${PACKAGE_NAME}/src/"
+          cp Reminders/src/reminder_manager.py "dist/${PACKAGE_NAME}/src/"
+          cp Reminders/src/reminder_sync.py "dist/${PACKAGE_NAME}/src/"
+
+          # Create tarball
+          cd dist
+          tar -czvf "${PACKAGE_NAME}.tar.gz" "${PACKAGE_NAME}"
+          shasum -a 256 "${PACKAGE_NAME}.tar.gz" > "${PACKAGE_NAME}.tar.gz.sha256"
+
+          echo "Package created: ${PACKAGE_NAME}.tar.gz"
+
+      - name: Package executive-function meta
+        run: |
+          VERSION=${{ steps.version.outputs.VERSION }}
+          PACKAGE_NAME="executive-function-${VERSION}"
+
+          mkdir -p "dist/${PACKAGE_NAME}"
+
+          # Create a simple README for the meta-package
+          cat > "dist/${PACKAGE_NAME}/README.md" << 'EOF'
+          # Executive Function
+
+          Meta-package for the Wolfies tool suite.
+
+          Installs: wolfies-imessage, wolfies-gmail, wolfies-calendar, wolfies-reminders
+
+          See: https://github.com/wolfiesch/wolfies-executive-function
+          EOF
+
+          # Create tarball
+          cd dist
+          tar -czvf "${PACKAGE_NAME}.tar.gz" "${PACKAGE_NAME}"
+          shasum -a 256 "${PACKAGE_NAME}.tar.gz" > "${PACKAGE_NAME}.tar.gz.sha256"
+
+          echo "Package created: ${PACKAGE_NAME}.tar.gz"
+
+      - name: List all packages
+        run: ls -lh dist/
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: python-mcp-modules
+          path: dist/*.tar.gz*
+
   release:
     name: Create Release
-    needs: build
+    needs: [build-imessage, build-python-modules]
     runs-on: ubuntu-latest
 
     steps:
@@ -127,25 +235,36 @@ jobs:
         with:
           name: v${{ steps.version.outputs.VERSION }}
           body: |
-            ## Wolfies iMessage CLI v${{ steps.version.outputs.VERSION }}
+            ## Executive Function v${{ steps.version.outputs.VERSION }}
 
-            ### Installation
+            High-performance CLI tools for personal productivity.
+
+            ### Quick Install
 
             ```bash
             brew tap wolfiesch/executive-function
+            brew install executive-function  # All tools
+            # Or individual tools:
             brew install wolfies-imessage
+            brew install wolfies-gmail
+            brew install wolfies-calendar
+            brew install wolfies-reminders
             ```
-
-            ### Manual Installation
-
-            Download the appropriate archive for your system:
-            - **Apple Silicon (M1/M2)**: `wolfies-imessage-${{ steps.version.outputs.VERSION }}-aarch64-apple-darwin.tar.gz`
-            - **Intel Mac**: `wolfies-imessage-${{ steps.version.outputs.VERSION }}-x86_64-apple-darwin.tar.gz`
 
             ### What's Included
 
-            - `wolfies-imessage` - Rust CLI binary (fast ~3ms spawn)
-            - `daemon/` - Python daemon files
+            | Package | Description |
+            |---------|-------------|
+            | `wolfies-imessage` | iMessage CLI with daemon (Rust + Python) |
+            | `wolfies-gmail` | Gmail MCP server for Claude Code |
+            | `wolfies-calendar` | Google Calendar MCP server for Claude Code |
+            | `wolfies-reminders` | Apple Reminders MCP server for Claude Code |
+            | `executive-function` | Meta-package: installs all above |
+
+            ### iMessage Binaries
+
+            - **Apple Silicon (M1/M2)**: `wolfies-imessage-${{ steps.version.outputs.VERSION }}-aarch64-apple-darwin.tar.gz`
+            - **Intel Mac**: `wolfies-imessage-${{ steps.version.outputs.VERSION }}-x86_64-apple-darwin.tar.gz`
 
             ### Checksums
 
@@ -178,29 +297,74 @@ jobs:
           curl -L "https://github.com/wolfiesch/wolfies-executive-function/releases/download/v${VERSION}/checksums.txt" -o checksums.txt
           cat checksums.txt
 
-      - name: Update formula
+      - name: Update wolfies-imessage formula
         run: |
           VERSION=${{ steps.version.outputs.VERSION }}
           FORMULA="homebrew-tap/Formula/wolfies-imessage.rb"
 
-          # Extract SHAs
-          ARM64_SHA=$(grep "aarch64-apple-darwin" checksums.txt | awk '{print $1}')
-          X64_SHA=$(grep "x86_64-apple-darwin" checksums.txt | awk '{print $1}')
+          # Extract SHAs for iMessage (architecture-specific)
+          ARM64_SHA=$(grep "wolfies-imessage.*aarch64-apple-darwin" checksums.txt | awk '{print $1}')
+          X64_SHA=$(grep "wolfies-imessage.*x86_64-apple-darwin" checksums.txt | awk '{print $1}')
 
-          echo "ARM64 SHA: $ARM64_SHA"
-          echo "x64 SHA: $X64_SHA"
+          echo "iMessage ARM64 SHA: $ARM64_SHA"
+          echo "iMessage x64 SHA: $X64_SHA"
 
-          # Update formula
+          # Update formula version
           sed -i "s/version \".*\"/version \"${VERSION}\"/" "$FORMULA"
+
+          # Update SHAs (handle both placeholder and existing)
           sed -i "s/PLACEHOLDER_ARM64_SHA256/${ARM64_SHA}/" "$FORMULA"
           sed -i "s/PLACEHOLDER_X64_SHA256/${X64_SHA}/" "$FORMULA"
-
-          # Also update any existing SHA (for subsequent releases)
           sed -i "/on_arm/,/sha256/{s/sha256 \"[a-f0-9]\{64\}\"/sha256 \"${ARM64_SHA}\"/}" "$FORMULA"
           sed -i "/on_intel/,/sha256/{s/sha256 \"[a-f0-9]\{64\}\"/sha256 \"${X64_SHA}\"/}" "$FORMULA"
 
-          echo "Updated formula:"
-          head -30 "$FORMULA"
+      - name: Update wolfies-gmail formula
+        run: |
+          VERSION=${{ steps.version.outputs.VERSION }}
+          FORMULA="homebrew-tap/Formula/wolfies-gmail.rb"
+
+          GMAIL_SHA=$(grep "wolfies-gmail-${VERSION}.tar.gz" checksums.txt | awk '{print $1}')
+          echo "Gmail SHA: $GMAIL_SHA"
+
+          sed -i "s/version \".*\"/version \"${VERSION}\"/" "$FORMULA"
+          sed -i "s/PLACEHOLDER_SHA256/${GMAIL_SHA}/" "$FORMULA"
+          sed -i "s/sha256 \"[a-f0-9]\{64\}\"/sha256 \"${GMAIL_SHA}\"/" "$FORMULA"
+
+      - name: Update wolfies-calendar formula
+        run: |
+          VERSION=${{ steps.version.outputs.VERSION }}
+          FORMULA="homebrew-tap/Formula/wolfies-calendar.rb"
+
+          CALENDAR_SHA=$(grep "wolfies-calendar-${VERSION}.tar.gz" checksums.txt | awk '{print $1}')
+          echo "Calendar SHA: $CALENDAR_SHA"
+
+          sed -i "s/version \".*\"/version \"${VERSION}\"/" "$FORMULA"
+          sed -i "s/PLACEHOLDER_SHA256/${CALENDAR_SHA}/" "$FORMULA"
+          sed -i "s/sha256 \"[a-f0-9]\{64\}\"/sha256 \"${CALENDAR_SHA}\"/" "$FORMULA"
+
+      - name: Update wolfies-reminders formula
+        run: |
+          VERSION=${{ steps.version.outputs.VERSION }}
+          FORMULA="homebrew-tap/Formula/wolfies-reminders.rb"
+
+          REMINDERS_SHA=$(grep "wolfies-reminders-${VERSION}.tar.gz" checksums.txt | awk '{print $1}')
+          echo "Reminders SHA: $REMINDERS_SHA"
+
+          sed -i "s/version \".*\"/version \"${VERSION}\"/" "$FORMULA"
+          sed -i "s/PLACEHOLDER_SHA256/${REMINDERS_SHA}/" "$FORMULA"
+          sed -i "s/sha256 \"[a-f0-9]\{64\}\"/sha256 \"${REMINDERS_SHA}\"/" "$FORMULA"
+
+      - name: Update executive-function formula
+        run: |
+          VERSION=${{ steps.version.outputs.VERSION }}
+          FORMULA="homebrew-tap/Formula/executive-function.rb"
+
+          EF_SHA=$(grep "executive-function-${VERSION}.tar.gz" checksums.txt | awk '{print $1}')
+          echo "Executive Function SHA: $EF_SHA"
+
+          sed -i "s/version \".*\"/version \"${VERSION}\"/" "$FORMULA"
+          sed -i "s/PLACEHOLDER_SHA256/${EF_SHA}/" "$FORMULA"
+          sed -i "s/sha256 \"[a-f0-9]\{64\}\"/sha256 \"${EF_SHA}\"/" "$FORMULA"
 
       - name: Commit and push
         working-directory: homebrew-tap
@@ -208,6 +372,6 @@ jobs:
           VERSION=${{ steps.version.outputs.VERSION }}
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add Formula/wolfies-imessage.rb
-          git commit -m "Update wolfies-imessage to v${VERSION}" || echo "No changes to commit"
+          git add Formula/
+          git commit -m "Update all formulas to v${VERSION}" || echo "No changes to commit"
           git push
