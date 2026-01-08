@@ -278,24 +278,10 @@ def _extract_daemon_result_count(payload: dict[str, Any], method: str) -> int | 
             return len(results) if isinstance(results, list) else None
         if method == "bundle":
             total = 0
-            unread = result.get("unread")
-            if isinstance(unread, dict):
-                msgs = unread.get("messages")
-                if isinstance(msgs, list):
-                    total += len(msgs)
-            recent = result.get("recent")
-            if isinstance(recent, list):
-                total += len(recent)
-            search = result.get("search")
-            if isinstance(search, dict):
-                results = search.get("results")
-                if isinstance(results, list):
-                    total += len(results)
-            contact_messages = result.get("contact_messages")
-            if isinstance(contact_messages, dict):
-                msgs = contact_messages.get("messages")
-                if isinstance(msgs, list):
-                    total += len(msgs)
+            total += len(result.get("unread", {}).get("messages", []))
+            total += len(result.get("recent", []))
+            total += len(result.get("search", {}).get("results", []))
+            total += len(result.get("contact_messages", {}).get("messages", []))
             return total
     except Exception:
         return None
@@ -830,7 +816,6 @@ def benchmark_daemon_bundle(
                             "http",
                             "--search-limit",
                             "20",
-                            "--text-only-search",
                         ],
                         request={
                             "id": "bench",
@@ -1541,7 +1526,10 @@ def main():
     args = parser.parse_args()
 
     # Run benchmarks
+    results: list[BenchmarkResult] = []
+
     if args.llm:
+        # --llm mode handles daemon internally via include_daemon parameter
         results = run_llm_canonical_benchmarks(iterations=args.iterations or 5, include_daemon=bool(args.include_daemon))
     elif args.comprehensive:
         results = run_comprehensive_benchmarks(
@@ -1551,7 +1539,16 @@ def main():
         )
     elif args.quick:
         results = run_quick_benchmarks(iterations=args.iterations or 5)
-    if args.include_daemon:
+    elif args.compare_mcp:
+        results = run_comparison_benchmarks()
+    elif args.include_daemon:
+        # Standalone daemon-only mode (no other suite selected)
+        pass  # Results will be added below
+    else:
+        results = run_full_benchmarks()
+
+    # Add daemon benchmarks for non-llm modes (llm mode handles it internally)
+    if args.include_daemon and not args.llm:
         results.extend(
             benchmark_daemon_bundle(
                 iterations=args.iterations or 5,
@@ -1578,10 +1575,6 @@ def main():
                         include_text_only_search=bool(args.daemon_text_only_search),
                     )
                 )
-    elif args.compare_mcp:
-        results = run_comparison_benchmarks()
-    else:
-        results = run_full_benchmarks()
 
     # Create suite
     suite = BenchmarkSuite(
