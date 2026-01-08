@@ -1,0 +1,56 @@
+{
+  "version": "1.0.0",
+  "description": "Wolfies Executive Function skill registry",
+  "skills": {
+    "wolfies-imessage": {
+      "name": "iMessage Gateway",
+      "description": "High-performance iMessage CLI (19x faster than MCP). Send, read, search messages with contact intelligence.",
+      "homebrew_formula": "wolfiesch/executive-function/wolfies-imessage",
+      "skill_source": "Texting/skills/imessage-gateway",
+      "requires_daemon": true,
+      "platform": ["darwin"],
+      "post_install": [
+        "brew services start wolfies-imessage",
+        "Grant Full Disk Access to python3.11 in System Settings"
+      ]
+    },
+    "wolfies-gmail": {
+      "name": "Gmail MCP",
+      "description": "Gmail MCP server for Claude Code. List, search, read, and send emails.",
+      "homebrew_formula": "wolfiesch/executive-function/wolfies-gmail",
+      "skill_source": null,
+      "requires_daemon": false,
+      "platform": ["darwin", "linux"],
+      "post_install": [
+        "Set up Google OAuth credentials",
+        "claude mcp add -t stdio gmail -- wolfies-gmail-mcp"
+      ]
+    },
+    "wolfies-calendar": {
+      "name": "Google Calendar MCP",
+      "description": "Google Calendar MCP server for Claude Code. List events, find free time, create events.",
+      "homebrew_formula": "wolfiesch/executive-function/wolfies-calendar",
+      "skill_source": ".claude/skills/managing-google-calendar",
+      "requires_daemon": false,
+      "platform": ["darwin", "linux"],
+      "post_install": [
+        "Set up Google OAuth credentials",
+        "claude mcp add -t stdio google-calendar -- wolfies-calendar-mcp"
+      ]
+    },
+    "wolfies-reminders": {
+      "name": "Apple Reminders MCP",
+      "description": "Apple Reminders MCP server for Claude Code. Create, list, complete reminders.",
+      "homebrew_formula": "wolfiesch/executive-function/wolfies-reminders",
+      "skill_source": null,
+      "skill_external": "task-capture",
+      "requires_daemon": false,
+      "platform": ["darwin"],
+      "post_install": [
+        "Grant Reminders access in System Settings",
+        "Grant Automation access in System Settings",
+        "claude mcp add -t stdio reminders -- wolfies-reminders-mcp"
+      ]
+    }
+  }
+}
