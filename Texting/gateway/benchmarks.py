@@ -38,6 +38,8 @@ sys.path.insert(0, str(REPO_ROOT))
 CLI_PATH = SCRIPT_DIR / "imessage_client.py"
 DAEMON_PATH = SCRIPT_DIR / "imessage_daemon.py"
 DAEMON_CLIENT_PATH = SCRIPT_DIR / "imessage_daemon_client.py"
+DAEMON_CLIENT_FAST_PATH = SCRIPT_DIR / "daemon_client_fast.sh"
+RUST_DAEMON_CLIENT_PATH = SCRIPT_DIR / "wolfies-daemon-client"
 BYTES_PER_TOKEN_ESTIMATE = 4.0
 
 
@@ -56,6 +58,22 @@ class BenchmarkResult:
     success_rate: float
     stdout_bytes_mean: Optional[float] = None
     approx_tokens_mean: Optional[float] = None
+    server_ms_mean: Optional[float] = None
+    server_ms_median: Optional[float] = None
+    server_ms_p95: Optional[float] = None
+    server_ms_min: Optional[float] = None
+    server_ms_max: Optional[float] = None
+    server_sqlite_ms_mean: Optional[float] = None
+    server_build_ms_mean: Optional[float] = None
+    server_resolve_ms_mean: Optional[float] = None
+    server_serialize_ms_mean: Optional[float] = None
+    inproc_ms_mean: Optional[float] = None
+    inproc_ms_median: Optional[float] = None
+    inproc_ms_p95: Optional[float] = None
+    inproc_ms_min: Optional[float] = None
+    inproc_ms_max: Optional[float] = None
+    spawn_overhead_ms_mean: Optional[float] = None
+    result_count_mean: Optional[float] = None
 
 
 @dataclass
@@ -219,6 +237,55 @@ def _daemon_probe_health(socket_path: Path, timeout_s: float = 0.2) -> bool:
         return bool(resp.get("ok"))
     except Exception:
         return False
+
+
+def _daemon_request(socket_path: Path, request: dict[str, Any], timeout_s: float = 0.5) -> dict[str, Any] | None:
+    try:
+        with socket.socket(socket.AF_UNIX, socket.SOCK_STREAM) as s:
+            s.settimeout(timeout_s)
+            s.connect(str(socket_path))
+            payload = (json.dumps(request, separators=(",", ":"), default=str) + "\n").encode("utf-8")
+            s.sendall(payload)
+            buf = bytearray()
+            while True:
+                chunk = s.recv(4096)
+                if not chunk:
+                    break
+                buf.extend(chunk)
+                if b"\n" in chunk:
+                    break
+        line = bytes(buf).split(b"\n", 1)[0]
+        if not line:
+            return None
+        return json.loads(line.decode("utf-8"))
+    except Exception:
+        return None
+
+
+def _extract_daemon_result_count(payload: dict[str, Any], method: str) -> int | None:
+    try:
+        if "ok" in payload and payload.get("ok") is False:
+            return None
+        result = payload.get("result", payload)
+        if method == "unread_count":
+            count = result.get("count")
+            return int(count) if isinstance(count, (int, float)) else None
+        if method in {"unread_messages", "recent"}:
+            messages = result.get("messages")
+            return len(messages) if isinstance(messages, list) else None
+        if method == "text_search":
+            results = result.get("results")
+            return len(results) if isinstance(results, list) else None
+        if method == "bundle":
+            total = 0
+            total += len(result.get("unread", {}).get("messages", []))
+            total += len(result.get("recent", []))
+            total += len(result.get("search", {}).get("results", []))
+            total += len(result.get("contact_messages", {}).get("messages", []))
+            return total
+    except Exception:
+        return None
+    return None
 
 
 def _start_daemon_for_bench(*, socket_path: Path, pidfile_path: Path, timeout_s: float = 5.0) -> float:
@@ -479,7 +546,13 @@ def benchmark_bundle(iterations: int = 10) -> BenchmarkResult:
     )
 
 
-def benchmark_daemon_bundle(iterations: int = 10) -> List[BenchmarkResult]:
+def benchmark_daemon_bundle(
+    iterations: int = 10,
+    *,
+    use_fast_client: bool = False,
+    use_rust_client: bool = False,
+    include_text_only_search: bool = False,
+) -> List[BenchmarkResult]:
     """
     Benchmark canonical read workloads via the daemon.
 
@@ -493,6 +566,8 @@ def benchmark_daemon_bundle(iterations: int = 10) -> List[BenchmarkResult]:
         name: str,
         description: str,
         cmd: List[str],
+        request: dict[str, Any] | None,
+        method: str | None,
         iterations: int,
         timeout: int = 30,
     ) -> BenchmarkResult:
@@ -500,6 +575,13 @@ def benchmark_daemon_bundle(iterations: int = 10) -> List[BenchmarkResult]:
         timings: List[float] = []
         successes = 0
         stdout_sizes: List[int] = []
+        server_ms: List[float] = []
+        server_sqlite_ms: List[float] = []
+        server_build_ms: List[float] = []
+        server_resolve_ms: List[float] = []
+        server_serialize_ms: List[float] = []
+        inproc_ms: List[float] = []
+        result_counts: List[int] = []
 
         for _ in range(iterations):
             elapsed, ok, output = run_external_command(cmd, timeout=timeout)
@@ -507,12 +589,45 @@ def benchmark_daemon_bundle(iterations: int = 10) -> List[BenchmarkResult]:
             if ok:
                 successes += 1
                 stdout_sizes.append(len((output or "").encode("utf-8", errors="ignore")))
+                if method:
+                    try:
+                        parsed = json.loads(output)
+                    except Exception:
+                        parsed = None
+                    if isinstance(parsed, dict):
+                        count = _extract_daemon_result_count(parsed, method)
+                        if count is not None:
+                            result_counts.append(count)
+                if request is not None:
+                    inproc_start = time.perf_counter()
+                    resp = _daemon_request(socket_path, request, timeout_s=timeout)
+                    inproc_ms.append((time.perf_counter() - inproc_start) * 1000)
+                    if isinstance(resp, dict):
+                        meta = resp.get("meta")
+                        if isinstance(meta, dict):
+                            if isinstance(meta.get("server_ms"), (float, int)):
+                                server_ms.append(float(meta["server_ms"]))
+                            if isinstance(meta.get("serialize_ms"), (float, int)):
+                                server_serialize_ms.append(float(meta["serialize_ms"]))
+                            profile = meta.get("profile")
+                            if isinstance(profile, dict):
+                                if isinstance(profile.get("sqlite_ms"), (float, int)):
+                                    server_sqlite_ms.append(float(profile["sqlite_ms"]))
+                                if isinstance(profile.get("build_ms"), (float, int)):
+                                    server_build_ms.append(float(profile["build_ms"]))
+                                if isinstance(profile.get("resolve_ms"), (float, int)):
+                                    server_resolve_ms.append(float(profile["resolve_ms"]))
 
         success_rate = (successes / iterations) * 100 if iterations > 0 else 0.0
         p95_ms = _percentile(sorted(timings), 95.0) or 0.0
         stdout_bytes_mean = statistics.mean(stdout_sizes) if stdout_sizes else None
         approx_tokens_mean = math.ceil(stdout_bytes_mean / BYTES_PER_TOKEN_ESTIMATE) if stdout_bytes_mean is not None else None
 
+        server_p95_ms = _percentile(sorted(server_ms), 95.0) if server_ms else None
+        inproc_p95_ms = _percentile(sorted(inproc_ms), 95.0) if inproc_ms else None
+        spawn_overhead = None
+        if inproc_ms and timings:
+            spawn_overhead = statistics.mean(timings) - statistics.mean(inproc_ms)
         result = BenchmarkResult(
             name=name,
             description=description,
@@ -526,6 +641,22 @@ def benchmark_daemon_bundle(iterations: int = 10) -> List[BenchmarkResult]:
             success_rate=success_rate,
             stdout_bytes_mean=stdout_bytes_mean,
             approx_tokens_mean=approx_tokens_mean,
+            server_ms_mean=statistics.mean(server_ms) if server_ms else None,
+            server_ms_median=statistics.median(server_ms) if server_ms else None,
+            server_ms_p95=server_p95_ms,
+            server_ms_min=min(server_ms) if server_ms else None,
+            server_ms_max=max(server_ms) if server_ms else None,
+            server_sqlite_ms_mean=statistics.mean(server_sqlite_ms) if server_sqlite_ms else None,
+            server_build_ms_mean=statistics.mean(server_build_ms) if server_build_ms else None,
+            server_resolve_ms_mean=statistics.mean(server_resolve_ms) if server_resolve_ms else None,
+            server_serialize_ms_mean=statistics.mean(server_serialize_ms) if server_serialize_ms else None,
+            inproc_ms_mean=statistics.mean(inproc_ms) if inproc_ms else None,
+            inproc_ms_median=statistics.median(inproc_ms) if inproc_ms else None,
+            inproc_ms_p95=inproc_p95_ms,
+            inproc_ms_min=min(inproc_ms) if inproc_ms else None,
+            inproc_ms_max=max(inproc_ms) if inproc_ms else None,
+            spawn_overhead_ms_mean=spawn_overhead,
+            result_count_mean=statistics.mean(result_counts) if result_counts else None,
         )
         print(f"✓ (mean: {result.mean_ms:.2f}ms, success: {success_rate:.0f}%)")
         return result
@@ -551,50 +682,94 @@ def benchmark_daemon_bundle(iterations: int = 10) -> List[BenchmarkResult]:
                 success_rate=100.0,
             )
 
-            base = [
-                "python3",
-                str(DAEMON_CLIENT_PATH),
-                "--socket",
-                str(socket_path),
-                "--minimal",
-            ]
+            if use_rust_client:
+                name_prefix = "daemon_rustclient_"
+                client_path = RUST_DAEMON_CLIENT_PATH
+                base = [str(client_path), "--socket", str(socket_path), "--minimal"]
+            elif use_fast_client:
+                name_prefix = "daemon_fastclient_"
+                client_path = DAEMON_CLIENT_FAST_PATH
+                base = [str(client_path), "--socket", str(socket_path), "--minimal"]
+            else:
+                name_prefix = "daemon_"
+                client_path = DAEMON_CLIENT_PATH
+                base = ["python3", str(client_path), "--socket", str(socket_path), "--minimal"]
 
             warm_results: List[BenchmarkResult] = []
             warm_results.append(
                 _benchmark_daemon_client_cmd(
-                    name="daemon_unread_count",
+                    name=f"{name_prefix}unread_count",
                     description="Unread count via daemon (thin client, warm daemon)",
                     cmd=base + ["unread-count"],
+                    request={"id": "bench", "v": 1, "method": "unread_count", "params": {}},
+                    method="unread_count",
                     iterations=iterations,
                 )
             )
             warm_results.append(
                 _benchmark_daemon_client_cmd(
-                    name="daemon_unread_messages_20",
+                    name=f"{name_prefix}unread_messages_20",
                     description="Unread messages via daemon (limit 20, thin client, warm daemon)",
                     cmd=base + ["unread", "--limit", "20"],
+                    request={
+                        "id": "bench",
+                        "v": 1,
+                        "method": "unread_messages",
+                        "params": {"limit": 20, "minimal": True},
+                    },
+                    method="unread_messages",
                     iterations=iterations,
                 )
             )
             warm_results.append(
                 _benchmark_daemon_client_cmd(
-                    name="daemon_recent_10",
+                    name=f"{name_prefix}recent_10",
                     description="Recent messages via daemon (limit 10, thin client, warm daemon)",
                     cmd=base + ["recent", "--limit", "10"],
+                    request={
+                        "id": "bench",
+                        "v": 1,
+                        "method": "recent",
+                        "params": {"limit": 10, "minimal": True},
+                    },
+                    method="recent",
                     iterations=iterations,
                 )
             )
             warm_results.append(
                 _benchmark_daemon_client_cmd(
-                    name="daemon_text_search_http_20",
+                    name=f"{name_prefix}text_search_http_20",
                     description="Text search via daemon (query=http, limit 20, thin client, warm daemon)",
                     cmd=base + ["text-search", "http", "--limit", "20"],
+                    request={
+                        "id": "bench",
+                        "v": 1,
+                        "method": "text_search",
+                        "params": {"query": "http", "limit": 20, "minimal": True},
+                    },
+                    method="text_search",
                     iterations=iterations,
                 )
             )
+            if include_text_only_search:
+                warm_results.append(
+                    _benchmark_daemon_client_cmd(
+                        name=f"{name_prefix}text_search_http_20_text_only",
+                        description="Text search via daemon (text-only, query=http, limit 20, warm daemon)",
+                        cmd=base + ["--text-only-search", "text-search", "http", "--limit", "20"],
+                        request={
+                            "id": "bench",
+                            "v": 1,
+                            "method": "text_search",
+                            "params": {"query": "http", "limit": 20, "minimal": True, "text_only": True},
+                        },
+                        method="text_search",
+                        iterations=iterations,
+                    )
+                )
             warm_results.append(
                 _benchmark_daemon_client_cmd(
-                    name="daemon_bundle",
+                    name=f"{name_prefix}bundle",
                     description="Bundle via daemon (thin client, warm daemon)",
                     cmd=base
                     + [
@@ -608,9 +783,57 @@ def benchmark_daemon_bundle(iterations: int = 10) -> List[BenchmarkResult]:
                         "--search-limit",
                         "20",
                     ],
+                    request={
+                        "id": "bench",
+                        "v": 1,
+                        "method": "bundle",
+                        "params": {
+                            "unread_limit": 20,
+                            "recent_limit": 10,
+                            "query": "http",
+                            "search_limit": 20,
+                            "minimal": True,
+                        },
+                    },
+                    method="bundle",
                     iterations=iterations,
                 )
             )
+            if include_text_only_search:
+                warm_results.append(
+                    _benchmark_daemon_client_cmd(
+                        name=f"{name_prefix}bundle_text_only_search",
+                        description="Bundle via daemon (text-only search, warm daemon)",
+                        cmd=base
+                        + [
+                            "--text-only-search",
+                            "bundle",
+                            "--unread-limit",
+                            "20",
+                            "--recent-limit",
+                            "10",
+                            "--query",
+                            "http",
+                            "--search-limit",
+                            "20",
+                        ],
+                        request={
+                            "id": "bench",
+                            "v": 1,
+                            "method": "bundle",
+                            "params": {
+                                "unread_limit": 20,
+                                "recent_limit": 10,
+                                "query": "http",
+                                "search_limit": 20,
+                                "minimal": True,
+                                "text_only": True,
+                            },
+                        },
+                        method="bundle",
+                        iterations=iterations,
+                    )
+                )
 
             return [startup_result, *warm_results]
         finally:
@@ -1159,6 +1382,29 @@ def run_comprehensive_benchmarks(
     return results
 
 
+def print_daemon_overhead_summary(results: List[BenchmarkResult]) -> None:
+    """Print end-to-end vs in-process daemon timing + spawn overhead."""
+    rows = []
+    for r in results:
+        if not r.name.startswith("daemon_"):
+            continue
+        if r.inproc_ms_mean is None and r.server_ms_mean is None:
+            continue
+        rows.append(r)
+
+    if not rows:
+        return
+
+    print("\n=== Daemon Overhead Summary (end-to-end vs in-proc) ===")
+    print("name\tmean_ms\tinproc_ms\tspawn_overhead_ms\tserver_ms")
+    for r in rows:
+        mean_ms = f"{r.mean_ms:.2f}" if r.mean_ms is not None else "-"
+        inproc_ms = f"{r.inproc_ms_mean:.2f}" if r.inproc_ms_mean is not None else "-"
+        overhead = f"{r.spawn_overhead_ms_mean:.2f}" if r.spawn_overhead_ms_mean is not None else "-"
+        server_ms = f"{r.server_ms_mean:.2f}" if r.server_ms_mean is not None else "-"
+        print(f"{r.name}\t{mean_ms}\t{inproc_ms}\t{overhead}\t{server_ms}")
+
+
 def print_summary(results: List[BenchmarkResult]):
     """Print a human-readable summary of benchmark results."""
     print("\n" + "=" * 80)
@@ -1247,6 +1493,21 @@ def main():
         help="Include daemon warm-path benchmarks (requires daemon to access chat.db)",
     )
     parser.add_argument(
+        "--daemon-fast-client",
+        action="store_true",
+        help="Also benchmark daemon with fast client wrapper (python3 -S)",
+    )
+    parser.add_argument(
+        "--daemon-text-only-search",
+        action="store_true",
+        help="Also benchmark daemon with text-only search (explicit flag)",
+    )
+    parser.add_argument(
+        "--daemon-rust-client",
+        action="store_true",
+        help="Also benchmark daemon with Rust client (requires pre-built binary)",
+    )
+    parser.add_argument(
         "--llm",
         action="store_true",
         help="Run canonical LLM-facing benchmarks (JSON minimal), optionally including daemon warm-path",
@@ -1265,7 +1526,10 @@ def main():
     args = parser.parse_args()
 
     # Run benchmarks
+    results: list[BenchmarkResult] = []
+
     if args.llm:
+        # --llm mode handles daemon internally via include_daemon parameter
         results = run_llm_canonical_benchmarks(iterations=args.iterations or 5, include_daemon=bool(args.include_daemon))
     elif args.comprehensive:
         results = run_comprehensive_benchmarks(
@@ -1275,12 +1539,42 @@ def main():
         )
     elif args.quick:
         results = run_quick_benchmarks(iterations=args.iterations or 5)
-        if args.include_daemon:
-            results.extend(benchmark_daemon_bundle(iterations=args.iterations or 5))
     elif args.compare_mcp:
         results = run_comparison_benchmarks()
+    elif args.include_daemon:
+        # Standalone daemon-only mode (no other suite selected)
+        pass  # Results will be added below
     else:
         results = run_full_benchmarks()
+
+    # Add daemon benchmarks for non-llm modes (llm mode handles it internally)
+    if args.include_daemon and not args.llm:
+        results.extend(
+            benchmark_daemon_bundle(
+                iterations=args.iterations or 5,
+                include_text_only_search=bool(args.daemon_text_only_search),
+            )
+        )
+        if args.daemon_fast_client:
+            results.extend(
+                benchmark_daemon_bundle(
+                    iterations=args.iterations or 5,
+                    use_fast_client=True,
+                    include_text_only_search=bool(args.daemon_text_only_search),
+                )
+            )
+        if args.daemon_rust_client:
+            if not RUST_DAEMON_CLIENT_PATH.exists():
+                print(f"Warning: Rust client not found at {RUST_DAEMON_CLIENT_PATH}")
+                print("  Build with: ./Texting/gateway/build_rust_client.sh")
+            else:
+                results.extend(
+                    benchmark_daemon_bundle(
+                        iterations=args.iterations or 5,
+                        use_rust_client=True,
+                        include_text_only_search=bool(args.daemon_text_only_search),
+                    )
+                )
 
     # Create suite
     suite = BenchmarkSuite(
@@ -1296,6 +1590,8 @@ def main():
             "iterations_override": args.iterations
         }
     )
+
+    print_daemon_overhead_summary(results)
 
     # Output results
     if args.json or args.output:

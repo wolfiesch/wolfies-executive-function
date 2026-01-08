@@ -1,0 +1,33 @@
+{
+  "benchmark_file": "benchmarks_rust_client_20iter.json",
+  "timestamp": "2026-01-08T01:45:00Z",
+  "git_hash": "47ef3891952a1d3180425035031ab8cccddf5c4e",
+  "environment": {
+    "os": "macOS Darwin 25.2.0",
+    "arch": "arm64 (Apple Silicon)",
+    "kernel": "Darwin Kernel Version 25.2.0",
+    "python_version": "3.13.2",
+    "rust_version": "1.92.0 (ded5c06cf 2025-12-08)",
+    "node_version": "v25.2.1"
+  },
+  "benchmark_params": {
+    "iterations": 20,
+    "timeout_s": 30,
+    "suite": "quick",
+    "flags": ["--include-daemon", "--daemon-rust-client"]
+  },
+  "binary_info": {
+    "rust_client_path": "Texting/gateway/wolfies-daemon-client",
+    "rust_client_size_bytes": 816592,
+    "rust_client_size_human": "798K"
+  },
+  "key_results": {
+    "spawn_overhead_python_ms": 35.0,
+    "spawn_overhead_rust_ms": 2.8,
+    "spawn_overhead_reduction": "12x",
+    "daemon_unread_count_python_ms": 36.95,
+    "daemon_unread_count_rust_ms": 2.64,
+    "daemon_bundle_python_ms": 41.83,
+    "daemon_bundle_rust_ms": 10.27
+  }
+}
