@@ -1,0 +1,215 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: write
+
+env:
+  CARGO_TERM_COLOR: always
+
+jobs:
+  build:
+    name: Build ${{ matrix.target }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - target: aarch64-apple-darwin
+            os: macos-14
+            arch: arm64
+          - target: x86_64-apple-darwin
+            os: macos-13
+            arch: x64
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install Rust
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: ${{ matrix.target }}
+
+      - name: Cache cargo
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.cargo/bin/
+            ~/.cargo/registry/index/
+            ~/.cargo/registry/cache/
+            ~/.cargo/git/db/
+            Texting/gateway/wolfies-client/target/
+          key: ${{ runner.os }}-${{ matrix.target }}-cargo-${{ hashFiles('**/Cargo.lock') }}
+
+      - name: Build Rust binary
+        working-directory: Texting/gateway/wolfies-client
+        run: |
+          cargo build --release --target ${{ matrix.target }}
+          ls -lh target/${{ matrix.target }}/release/
+
+      - name: Get version from tag
+        id: version
+        run: echo "VERSION=${GITHUB_REF#refs/tags/v}" >> $GITHUB_OUTPUT
+
+      - name: Package release
+        run: |
+          VERSION=${{ steps.version.outputs.VERSION }}
+          TARGET=${{ matrix.target }}
+          PACKAGE_NAME="wolfies-imessage-${VERSION}-${TARGET}"
+
+          mkdir -p "dist/${PACKAGE_NAME}/daemon/src"
+          mkdir -p "dist/${PACKAGE_NAME}/daemon/gateway"
+
+          # Copy Rust binary (rename from wolfies-daemon-client to wolfies-imessage)
+          BINARY_NAME="wolfies-daemon-client"
+          cp "Texting/gateway/wolfies-client/target/${TARGET}/release/${BINARY_NAME}" \
+             "dist/${PACKAGE_NAME}/wolfies-imessage"
+          chmod +x "dist/${PACKAGE_NAME}/wolfies-imessage"
+
+          # Copy Python daemon files
+          cp Texting/gateway/imessage_daemon.py "dist/${PACKAGE_NAME}/daemon/"
+          cp Texting/gateway/output_utils.py "dist/${PACKAGE_NAME}/daemon/"
+          cp -r Texting/src/* "dist/${PACKAGE_NAME}/daemon/src/"
+          cp -r Texting/gateway/*.py "dist/${PACKAGE_NAME}/daemon/gateway/" 2>/dev/null || true
+
+          # Create tarball
+          cd dist
+          tar -czvf "${PACKAGE_NAME}.tar.gz" "${PACKAGE_NAME}"
+
+          # Generate checksum
+          shasum -a 256 "${PACKAGE_NAME}.tar.gz" > "${PACKAGE_NAME}.tar.gz.sha256"
+
+          echo "Package created: ${PACKAGE_NAME}.tar.gz"
+          ls -lh "${PACKAGE_NAME}.tar.gz"
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: wolfies-imessage-${{ matrix.target }}
+          path: dist/*.tar.gz*
+
+  release:
+    name: Create Release
+    needs: build
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Download all artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: artifacts
+
+      - name: Prepare release files
+        run: |
+          mkdir -p release
+          find artifacts -name "*.tar.gz*" -exec mv {} release/ \;
+
+          # Combine checksums
+          cd release
+          cat *.sha256 > checksums.txt
+          rm -f *.sha256
+
+          echo "Release files:"
+          ls -lh
+
+      - name: Get version from tag
+        id: version
+        run: echo "VERSION=${GITHUB_REF#refs/tags/v}" >> $GITHUB_OUTPUT
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          name: v${{ steps.version.outputs.VERSION }}
+          body: |
+            ## Wolfies iMessage CLI v${{ steps.version.outputs.VERSION }}
+
+            ### Installation
+
+            ```bash
+            brew tap wolfiesch/executive-function
+            brew install wolfies-imessage
+            ```
+
+            ### Manual Installation
+
+            Download the appropriate archive for your system:
+            - **Apple Silicon (M1/M2)**: `wolfies-imessage-${{ steps.version.outputs.VERSION }}-aarch64-apple-darwin.tar.gz`
+            - **Intel Mac**: `wolfies-imessage-${{ steps.version.outputs.VERSION }}-x86_64-apple-darwin.tar.gz`
+
+            ### What's Included
+
+            - `wolfies-imessage` - Rust CLI binary (fast ~3ms spawn)
+            - `daemon/` - Python daemon files
+
+            ### Checksums
+
+            See `checksums.txt` for SHA256 verification.
+          files: |
+            release/*.tar.gz
+            release/checksums.txt
+          generate_release_notes: true
+
+  update-homebrew:
+    name: Update Homebrew Tap
+    needs: release
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Get version from tag
+        id: version
+        run: echo "VERSION=${GITHUB_REF#refs/tags/v}" >> $GITHUB_OUTPUT
+
+      - name: Checkout Homebrew tap
+        uses: actions/checkout@v4
+        with:
+          repository: wolfiesch/homebrew-executive-function
+          token: ${{ secrets.HOMEBREW_TAP_TOKEN }}
+          path: homebrew-tap
+
+      - name: Download checksums
+        run: |
+          VERSION=${{ steps.version.outputs.VERSION }}
+          curl -L "https://github.com/wolfiesch/LIFE-PLANNER/releases/download/v${VERSION}/checksums.txt" -o checksums.txt
+          cat checksums.txt
+
+      - name: Update formula
+        run: |
+          VERSION=${{ steps.version.outputs.VERSION }}
+          FORMULA="homebrew-tap/Formula/wolfies-imessage.rb"
+
+          # Extract SHAs
+          ARM64_SHA=$(grep "aarch64-apple-darwin" checksums.txt | awk '{print $1}')
+          X64_SHA=$(grep "x86_64-apple-darwin" checksums.txt | awk '{print $1}')
+
+          echo "ARM64 SHA: $ARM64_SHA"
+          echo "x64 SHA: $X64_SHA"
+
+          # Update formula
+          sed -i "s/version \".*\"/version \"${VERSION}\"/" "$FORMULA"
+          sed -i "s/PLACEHOLDER_ARM64_SHA256/${ARM64_SHA}/" "$FORMULA"
+          sed -i "s/PLACEHOLDER_X64_SHA256/${X64_SHA}/" "$FORMULA"
+
+          # Also update any existing SHA (for subsequent releases)
+          sed -i "/on_arm/,/sha256/{s/sha256 \"[a-f0-9]\{64\}\"/sha256 \"${ARM64_SHA}\"/}" "$FORMULA"
+          sed -i "/on_intel/,/sha256/{s/sha256 \"[a-f0-9]\{64\}\"/sha256 \"${X64_SHA}\"/}" "$FORMULA"
+
+          echo "Updated formula:"
+          head -30 "$FORMULA"
+
+      - name: Commit and push
+        working-directory: homebrew-tap
+        run: |
+          VERSION=${{ steps.version.outputs.VERSION }}
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add Formula/wolfies-imessage.rb
+          git commit -m "Update wolfies-imessage to v${VERSION}" || echo "No changes to commit"
+          git push
