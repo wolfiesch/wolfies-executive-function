@@ -1,0 +1,14 @@
+[package]
+name = "wolfies-imessage"
+version.workspace = true
+edition.workspace = true
+description = "Fast Rust client for the Wolfies iMessage daemon"
+
+[[bin]]
+name = "wolfies-daemon-client"
+path = "src/main.rs"
+
+[dependencies]
+wolfies-core = { path = "../wolfies-core" }
+clap.workspace = true
+serde_json.workspace = true
