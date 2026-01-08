@@ -175,7 +175,7 @@ jobs:
       - name: Download checksums
         run: |
           VERSION=${{ steps.version.outputs.VERSION }}
-          curl -L "https://github.com/wolfiesch/LIFE-PLANNER/releases/download/v${VERSION}/checksums.txt" -o checksums.txt
+          curl -L "https://github.com/wolfiesch/wolfies-executive-function/releases/download/v${VERSION}/checksums.txt" -o checksums.txt
           cat checksums.txt
 
       - name: Update formula
