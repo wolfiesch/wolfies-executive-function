@@ -163,9 +163,7 @@ Texting/gateway/wolfies-client/
 │   │   └── src/
 │   │       ├── lib.rs
 │   │       ├── protocol.rs    # Request/Response types
-│   │       ├── client.rs      # DaemonClient (socket communication)
-│   │       ├── output.rs      # Output formatting (emit_response)
-│   │       └── error.rs       # ClientError enum
+│   │       └── client.rs      # DaemonClient, ClientError, emit_response
 │   │
 │   ├── wolfies-imessage/      # iMessage-specific commands
 │   │   ├── Cargo.toml
@@ -201,11 +199,13 @@ The `wolfies-core` crate contains:
 
 ```rust
 // protocol.rs - Shared request/response types
+// NOTE: `service` field is added in Phase 5 (Unified Daemon Consolidation).
+// Phase 1 implementation uses service-specific binaries without service field.
 #[derive(Serialize)]
 pub struct Request {
     pub id: String,
     pub v: u8,
-    pub service: String,  // "imessage", "gmail", "calendar", "reminders"
+    pub service: String,  // "imessage", "gmail", "calendar", "reminders" (Phase 5+)
     pub method: String,
     pub params: serde_json::Value,
 }
@@ -570,5 +570,6 @@ Response:
 
 | Date | Change |
 |------|--------|
+| 01/08/2026 03:24 AM PST | Updated plan doc per PR review: fixed file structure (client.rs contains emit_response/ClientError), clarified service field is Phase 5 |
 | 01/08/2026 02:30 AM PST | Initial plan created |
 
