@@ -128,12 +128,49 @@ The most defensible claim directionally supported by the data:
   (tens of KB → ~10k+ tokens), and its CLI lacks output limiting flags (fairness issue for LLM cost).
 
 Important caveat:
-- Any search benchmark that returns “no matches” will look artificially good on output cost.
-  For fair “end-to-end LLM” claims, ensure the search query returns a consistent, bounded result set.
+- Any search benchmark that returns "no matches" will look artificially good on output cost.
+  For fair "end-to-end LLM" claims, ensure the search query returns a consistent, bounded result set.
 
 ---
 
-## Installation reality (part of “end-to-end”)
+## Rust Client Optimization (spawn overhead reduction)
+
+The Wolfies daemon architecture splits work into:
+1. **Daemon server** (warm, holds SQLite connection, ~1-7ms for most queries)
+2. **Thin client** (spawns per call, sends NDJSON request, captures stdout)
+
+The Python thin client adds ~35ms spawn overhead per call. We built a **Rust client**
+(`wolfies-daemon-client`) that reduces this to ~2.8ms — a **12x improvement**.
+
+### Benchmark comparison (20 iterations, arm64 macOS)
+
+| Workload | Python Client | Rust Client | Improvement |
+|----------|--------------|-------------|-------------|
+| spawn_overhead | 35.0ms | 2.8ms | **12x** |
+| daemon_unread_count | 36.95ms | 2.64ms | **14x** |
+| daemon_unread_messages_20 | 35.91ms | 2.89ms | **12x** |
+| daemon_recent_10 | 35.42ms | 2.94ms | **12x** |
+| daemon_text_search_http_20 | 41.44ms | 9.50ms | **4.4x** |
+| daemon_bundle | 41.83ms | 10.27ms | **4.1x** |
+
+For simple operations (unread count, recent messages), the Rust client achieves
+**sub-3ms end-to-end latency**. For complex operations (search, bundle), the
+improvement is 4x because server-side SQLite work dominates.
+
+### Binary details
+
+- **Size**: 798K (optimized, LTO, stripped)
+- **Path**: `Texting/gateway/wolfies-daemon-client`
+- **Build**: `./Texting/gateway/build_rust_client.sh`
+
+### Raw data
+
+- Benchmark JSON: `Texting/gateway/benchmarks_rust_client_20iter.json`
+- Manifest (versions, git hash): `Texting/gateway/benchmarks_rust_client_20iter_manifest.json`
+
+---
+
+## Installation reality (part of "end-to-end")
 
 From `Texting/benchmarks/results/install_report_pip_all_score10.json`:
 - Most “imessage-named” PyPI candidates installed successfully.
