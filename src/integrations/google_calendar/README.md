@@ -266,6 +266,55 @@ See the main Life Planner documentation for full integration details.
 - OAuth2 standard with automatic token refresh
 - Read/write access to your calendar only
 
+## High-Performance CLI Alternative
+
+For performance-critical use cases, a CLI gateway with daemon support is available that provides **9x faster** access compared to the MCP server.
+
+### Performance Comparison
+
+| Operation | MCP Server | CLI + Daemon | Speedup |
+|-----------|------------|--------------|---------:|
+| Today's events | ~1,130ms | ~126ms | **9.0x** |
+| Week's events | ~1,028ms | ~115ms | **8.9x** |
+| Find 30-min slots | ~1,003ms | ~111ms | **9.0x** |
+| Find 60-min slots | ~1,049ms | ~116ms | **9.0x** |
+
+### CLI Usage
+
+```bash
+# Basic operations
+python3 src/integrations/google_calendar/calendar_cli.py today --json
+python3 src/integrations/google_calendar/calendar_cli.py week --json
+python3 src/integrations/google_calendar/calendar_cli.py free 30 --json
+
+# With daemon for maximum speed (requires daemon running)
+python3 src/integrations/google_calendar/calendar_cli.py --use-daemon today --json
+python3 src/integrations/google_calendar/calendar_cli.py --use-daemon week --json
+python3 src/integrations/google_calendar/calendar_cli.py --use-daemon free 60 --json
+```
+
+### Starting the Daemon
+
+```bash
+# Start shared Google daemon (Gmail + Calendar)
+python3 src/integrations/google_daemon/server.py start
+
+# Check status
+python3 src/integrations/google_daemon/server.py status
+```
+
+### When to Use CLI vs MCP
+
+| Use Case | Recommended |
+|----------|-------------|
+| Integration with Claude Code tools | MCP Server |
+| Quick terminal checks | CLI |
+| High-frequency operations | CLI + Daemon |
+| Scripting/automation | CLI |
+| Complex AI workflows | MCP Server |
+
+See `src/integrations/google_daemon/README.md` for full daemon documentation.
+
 ## Future Enhancements
 
 Planned features:
@@ -301,4 +350,4 @@ For issues or questions:
 
 ---
 
-*Last Updated: 12/15/2025*
+*Last Updated: 01/08/2026*

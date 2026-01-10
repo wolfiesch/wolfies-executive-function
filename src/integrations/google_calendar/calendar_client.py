@@ -4,11 +4,16 @@ Google Calendar API wrapper for Life Planner.
 
 Provides authenticated access to Google Calendar API with helper methods
 for common calendar operations.
+
+CHANGELOG (recent first, max 5 entries):
+01/08/2026 - Added timing instrumentation for performance profiling (Claude)
 """
 
 import os
 import json
 import logging
+import sys
+import time
 from pathlib import Path
 from datetime import datetime, timedelta, timezone
 from typing import Optional, List, Dict, Any
@@ -21,6 +26,36 @@ from googleapiclient.discovery import build
 from googleapiclient.errors import HttpError
 
 logger = logging.getLogger(__name__)
+
+
+# =============================================================================
+# TIMING INSTRUMENTATION (for profiling)
+# =============================================================================
+
+class TimingContext:
+    """
+    Context manager that logs timing to stderr for benchmark capture.
+
+    Timing markers are in format: [TIMING] phase_name=XX.XXms
+    These are parsed by the benchmark runner to capture server-side timing.
+    """
+
+    def __init__(self, phase_name: str):
+        self.phase = phase_name
+        self.start: float = 0
+
+    def __enter__(self) -> "TimingContext":
+        self.start = time.perf_counter()
+        return self
+
+    def __exit__(self, *args: Any) -> None:
+        elapsed_ms = (time.perf_counter() - self.start) * 1000
+        print(f"[TIMING] {self.phase}={elapsed_ms:.2f}ms", file=sys.stderr)
+
+
+def _timing(phase: str) -> TimingContext:
+    """Convenience function to create a timing context."""
+    return TimingContext(phase)
 
 # If modifying these scopes, delete the file token.json
 SCOPES = ['https://www.googleapis.com/auth/calendar']
@@ -63,7 +98,8 @@ class GoogleCalendarClient:
         # Load existing token
         if self.token_file.exists():
             try:
-                creds = Credentials.from_authorized_user_file(str(self.token_file), SCOPES)
+                with _timing("oauth_load"):
+                    creds = Credentials.from_authorized_user_file(str(self.token_file), SCOPES)
                 logger.info("Loaded existing credentials from token.json")
             except Exception as e:
                 logger.warning(f"Failed to load token.json: {e}")
@@ -72,7 +108,8 @@ class GoogleCalendarClient:
         if not creds or not creds.valid:
             if creds and creds.expired and creds.refresh_token:
                 try:
-                    creds.refresh(Request())
+                    with _timing("oauth_refresh"):
+                        creds.refresh(Request())
                     logger.info("Refreshed expired credentials")
                 except Exception as e:
                     logger.error(f"Failed to refresh credentials: {e}")
@@ -86,10 +123,11 @@ class GoogleCalendarClient:
                     return False
 
                 try:
-                    flow = InstalledAppFlow.from_client_secrets_file(
-                        str(self.credentials_file), SCOPES
-                    )
-                    creds = flow.run_local_server(port=0)
+                    with _timing("oauth_flow"):
+                        flow = InstalledAppFlow.from_client_secrets_file(
+                            str(self.credentials_file), SCOPES
+                        )
+                        creds = flow.run_local_server(port=0)
                     logger.info("Completed OAuth flow, obtained new credentials")
                 except Exception as e:
                     logger.error(f"OAuth flow failed: {e}")
@@ -97,15 +135,17 @@ class GoogleCalendarClient:
 
             # Save credentials for next run
             try:
-                with open(self.token_file, 'w') as token:
-                    token.write(creds.to_json())
+                with _timing("oauth_save"):
+                    with open(self.token_file, 'w') as token:
+                        token.write(creds.to_json())
                 logger.info(f"Saved credentials to {self.token_file}")
             except Exception as e:
                 logger.warning(f"Failed to save token: {e}")
 
         # Build service
         try:
-            self.service = build('calendar', 'v3', credentials=creds)
+            with _timing("api_discovery"):
+                self.service = build('calendar', 'v3', credentials=creds)
             logger.info("Successfully built Google Calendar service")
             return True
         except Exception as e:
@@ -154,7 +194,8 @@ class GoogleCalendarClient:
             if time_max:
                 params['timeMax'] = time_max.isoformat() + 'Z'
 
-            events_result = self.service.events().list(**params).execute()
+            with _timing("api_list_events"):
+                events_result = self.service.events().list(**params).execute()
             events = events_result.get('items', [])
 
             logger.info(f"Retrieved {len(events)} events")
@@ -183,10 +224,11 @@ class GoogleCalendarClient:
             return None
 
         try:
-            event = self.service.events().get(
-                calendarId=calendar_id,
-                eventId=event_id
-            ).execute()
+            with _timing("api_get_event"):
+                event = self.service.events().get(
+                    calendarId=calendar_id,
+                    eventId=event_id
+                ).execute()
 
             logger.info(f"Retrieved event: {event.get('summary', 'No title')}")
             return event
@@ -301,97 +343,100 @@ class GoogleCalendarClient:
         if time_max is None:
             time_max = time_min + timedelta(days=7)
 
-        # Get all events in the time range
-        events = self.list_events(
-            calendar_id=calendar_id,
-            time_min=time_min,
-            time_max=time_max,
-            max_results=250,
-            order_by='startTime'
-        )
+        # Get all events in the time range (note: list_events has its own timing)
+        with _timing("free_time_fetch_events"):
+            events = self.list_events(
+                calendar_id=calendar_id,
+                time_min=time_min,
+                time_max=time_max,
+                max_results=250,
+                order_by='startTime'
+            )
 
         # Extract busy periods
-        busy_periods = []
-        for event in events:
-            start = event.get('start', {})
-            end = event.get('end', {})
+        with _timing("free_time_parse_events"):
+            busy_periods = []
+            for event in events:
+                start = event.get('start', {})
+                end = event.get('end', {})
 
-            # Parse start/end times
-            start_dt = date_parser.parse(start.get('dateTime', start.get('date')))
-            end_dt = date_parser.parse(end.get('dateTime', end.get('date')))
+                # Parse start/end times
+                start_dt = date_parser.parse(start.get('dateTime', start.get('date')))
+                end_dt = date_parser.parse(end.get('dateTime', end.get('date')))
 
-            busy_periods.append({
-                'start': start_dt,
-                'end': end_dt
-            })
+                busy_periods.append({
+                    'start': start_dt,
+                    'end': end_dt
+                })
 
         # Find free slots
-        free_slots = []
-        current_time = time_min
+        with _timing("free_time_algorithm"):
+            free_slots = []
+            current_time = time_min
 
-        while current_time < time_max:
-            # Skip to next working day/hour if outside working hours
-            if current_time.hour < working_hours_start:
-                current_time = current_time.replace(
-                    hour=working_hours_start,
-                    minute=0,
-                    second=0
-                )
-            elif current_time.hour >= working_hours_end:
-                # Move to next day
-                current_time = (current_time + timedelta(days=1)).replace(
-                    hour=working_hours_start,
-                    minute=0,
-                    second=0
-                )
-                continue
+            while current_time < time_max:
+                # Skip to next working day/hour if outside working hours
+                if current_time.hour < working_hours_start:
+                    current_time = current_time.replace(
+                        hour=working_hours_start,
+                        minute=0,
+                        second=0
+                    )
+                elif current_time.hour >= working_hours_end:
+                    # Move to next day
+                    current_time = (current_time + timedelta(days=1)).replace(
+                        hour=working_hours_start,
+                        minute=0,
+                        second=0
+                    )
+                    continue
 
-            # Skip weekends
-            if current_time.weekday() >= 5:  # Saturday=5, Sunday=6
-                # Move to Monday
-                days_to_add = 7 - current_time.weekday() + 1
-                current_time = (current_time + timedelta(days=days_to_add)).replace(
-                    hour=working_hours_start,
-                    minute=0,
-                    second=0
-                )
-                continue
+                # Skip weekends
+                if current_time.weekday() >= 5:  # Saturday=5, Sunday=6
+                    # Move to Monday
+                    days_to_add = 7 - current_time.weekday() + 1
+                    current_time = (current_time + timedelta(days=days_to_add)).replace(
+                        hour=working_hours_start,
+                        minute=0,
+                        second=0
+                    )
+                    continue
 
-            # Check if this time slot is free
-            slot_end = current_time + timedelta(minutes=duration_minutes)
+                # Check if this time slot is free
+                slot_end = current_time + timedelta(minutes=duration_minutes)
 
-            # Make sure slot doesn't extend past working hours
-            if slot_end.hour > working_hours_end or (
-                slot_end.hour == working_hours_end and slot_end.minute > 0
-            ):
-                # Move to next day
-                current_time = (current_time + timedelta(days=1)).replace(
-                    hour=working_hours_start,
-                    minute=0,
-                    second=0
-                )
-                continue
+                # Make sure slot doesn't extend past working hours
+                if slot_end.hour > working_hours_end or (
+                    slot_end.hour == working_hours_end and slot_end.minute > 0
+                ):
+                    # Move to next day
+                    current_time = (current_time + timedelta(days=1)).replace(
+                        hour=working_hours_start,
+                        minute=0,
+                        second=0
+                    )
+                    continue
 
-            # Check if slot conflicts with any busy period
-            is_free = True
-            for busy in busy_periods:
-                if (current_time < busy['end'] and slot_end > busy['start']):
-                    # Conflict found, move past this busy period
-                    current_time = busy['end']
-                    is_free = False
+                # Check if slot conflicts with any busy period
+                is_free = True
+                for busy in busy_periods:
+                    if (current_time < busy['end'] and slot_end > busy['start']):
+                        # Conflict found, move past this busy period
+                        current_time = busy['end']
+                        is_free = False
+                        break
+
+                if is_free:
+                    free_slots.append({
+                        'start': current_time,
+                        'end': slot_end
+                    })
+                    # Move to next potential slot (15 min increments)
+                    current_time = current_time + timedelta(minutes=15)
+
+                # Limit results
+                if len(free_slots) >= 20:
                     break
-
-            if is_free:
-                free_slots.append({
-                    'start': current_time,
-                    'end': slot_end
-                })
-                # Move to next potential slot (15 min increments)
-                current_time = current_time + timedelta(minutes=15)
-
-            # Limit results
-            if len(free_slots) >= 20:
-                break
 
         logger.info(f"Found {len(free_slots)} free time slots")
         return free_slots
