@@ -1,0 +1,30 @@
+{
+  "W1_RECENT": {
+    "status": "ok_empty",
+    "notes": [],
+    "validation_summary": {
+      "counts": {
+        "ok_empty": 5
+      },
+      "top_reasons": [
+        "payload_bytes_below_min(189<200)"
+      ]
+    },
+    "min_bytes": 200,
+    "min_items": 1
+  },
+  "W2_SEARCH": {
+    "status": "ok_empty",
+    "notes": [],
+    "validation_summary": {
+      "counts": {
+        "ok_empty": 5
+      },
+      "top_reasons": [
+        "payload_bytes_below_min(186<200)"
+      ]
+    },
+    "min_bytes": 200,
+    "min_items": 1
+  }
+}

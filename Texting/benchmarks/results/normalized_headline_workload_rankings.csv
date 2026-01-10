@@ -1,0 +1,20 @@
+workload,rank,server,run,node,mean_ms,p95_ms,tool
+W0_UNREAD,1,github MCP: imessage-mcp-improved (node stdio),full_node25,v25.2.1,30.93006679264363,36.06249998847488,get_unread_imessages
+W0_UNREAD,2,github MCP: TextFly/photon-imsg-mcp (node stdio),full_node25,v25.2.1,31.2888917978853,31.565375000354834,photon_read_messages
+W0_UNREAD,3,github MCP: sameelarif/imessage-mcp (node tsx),full_node25,v25.2.1,673.8841998012504,676.5544999943813,get-unread-messages
+W1_RECENT,1,github MCP: TextFly/photon-imsg-mcp (node stdio),full_node25,v25.2.1,0.34591660369187593,0.3958750021411106,photon_get_conversations
+W1_RECENT,2,github MCP: sameelarif/imessage-mcp (node tsx),full_node25,v25.2.1,0.3494250006042421,0.4065839893883094,get-messages
+W1_RECENT,3,brew MCP: cardmagic/messages (messages --mcp),full_node25,v25.2.1,0.44281659938860685,0.44275000982452184,recent_messages
+W1_RECENT,4,github MCP: jonmmease/jons-mcp-imessage (python fastmcp stdio),full_node25,v25.2.1,1.4462413935689256,1.4052079932298511,get_recent_messages
+W1_RECENT,5,github MCP: wyattjoh/imessage-mcp (deno stdio),full_node25,v25.2.1,9.270508401095867,9.35816700803116,get_recent_messages
+W1_RECENT,6,github MCP: mattt/iMCP (swift stdio proxy),imcp_only,,33.672833401942626,35.67241699784063,messages_fetch
+W2_SEARCH,1,github MCP: wyattjoh/imessage-mcp (deno stdio),full_node25,v25.2.1,23.25356679793913,23.821916998713277,search_messages
+W2_SEARCH,2,github MCP: mattt/iMCP (swift stdio proxy),imcp_only,,34.414191998075694,35.08108400274068,messages_fetch
+W2_SEARCH,3,github MCP: sameelarif/imessage-mcp (node tsx),full_node25,v25.2.1,308.52461640315596,339.98445799807087,search-messages
+W2_SEARCH,4,brew MCP: cardmagic/messages (messages --mcp),full_node25,v25.2.1,451.36305800115224,450.93508300487883,search_messages
+W3_THREAD,1,github MCP: TextFly/photon-imsg-mcp (node stdio),full_node25,v25.2.1,0.1563251978950575,0.16137499187607318,photon_read_messages
+W3_THREAD,2,github MCP: sameelarif/imessage-mcp (node tsx),full_node25,v25.2.1,0.17579140258021653,0.19845800125040114,get-conversation
+W3_THREAD,3,github MCP: mcp-imessage (node stdio),mcp_imessage_node22,v22.21.1,1.0322582063963637,1.1916250077774748,get-recent-chat-messages
+W3_THREAD,4,github MCP: imessage-query-fastmcp-mcp-server (uv script),full_node25,v25.2.1,2.2416834020987153,2.320500003406778,get_chat_transcript
+W3_THREAD,5,brew MCP: cardmagic/messages (messages --mcp),full_node25,v25.2.1,9.472299795015715,9.498374987742864,get_thread
+W3_THREAD,6,github MCP: wyattjoh/imessage-mcp (deno stdio),full_node25,v25.2.1,18.617525399895385,18.84250000875909,get_messages_from_chat

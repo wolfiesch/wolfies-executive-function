@@ -1,0 +1,50 @@
+{
+  "W1_RECENT": {
+    "status": "ok_empty",
+    "notes": [
+      "suspicious: identical payload across workloads W1_RECENT, W2_SEARCH, W3_THREAD"
+    ],
+    "validation_summary": {
+      "counts": {
+        "ok_empty": 5
+      },
+      "top_reasons": [
+        "duplicate_payload"
+      ]
+    },
+    "min_bytes": 200,
+    "min_items": 1
+  },
+  "W2_SEARCH": {
+    "status": "ok_empty",
+    "notes": [
+      "suspicious: identical payload across workloads W1_RECENT, W2_SEARCH, W3_THREAD"
+    ],
+    "validation_summary": {
+      "counts": {
+        "ok_empty": 5
+      },
+      "top_reasons": [
+        "duplicate_payload"
+      ]
+    },
+    "min_bytes": 200,
+    "min_items": 1
+  },
+  "W3_THREAD": {
+    "status": "ok_empty",
+    "notes": [
+      "suspicious: identical payload across workloads W1_RECENT, W2_SEARCH, W3_THREAD"
+    ],
+    "validation_summary": {
+      "counts": {
+        "ok_empty": 5
+      },
+      "top_reasons": [
+        "duplicate_payload"
+      ]
+    },
+    "min_bytes": 150,
+    "min_items": 1
+  }
+}

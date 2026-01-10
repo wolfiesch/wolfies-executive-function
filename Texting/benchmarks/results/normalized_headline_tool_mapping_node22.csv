@@ -1,0 +1,37 @@
+table,server,run,node,workload,tool,status,ok,mean_ms,p95_ms,error,notes,init_ok,init_ms,list_ok,list_ms
+tool_mapping,brew MCP: cardmagic/messages (messages --mcp),full_node22,v22.21.1,W0_UNREAD,,unsupported,0/0,,,,unsupported workload (no tool mapping),True,1027.1294169942848,True,2.7782919933088124
+tool_mapping,brew MCP: cardmagic/messages (messages --mcp),full_node22,v22.21.1,W1_RECENT,recent_messages,ok,5/5,2.334342000540346,2.558209002017975,,,True,1027.1294169942848,True,2.7782919933088124
+tool_mapping,brew MCP: cardmagic/messages (messages --mcp),full_node22,v22.21.1,W2_SEARCH,search_messages,ok,5/5,1.6458252037409693,1.7271249962504953,,,True,1027.1294169942848,True,2.7782919933088124
+tool_mapping,brew MCP: cardmagic/messages (messages --mcp),full_node22,v22.21.1,W3_THREAD,get_thread,ok,5/5,1.2461495964089409,1.3373330002650619,,,True,1027.1294169942848,True,2.7782919933088124
+tool_mapping,github MCP: TextFly/photon-imsg-mcp (node stdio),full_node22,v22.21.1,W0_UNREAD,photon_read_messages,ok,5/5,32.402524998178706,32.70945799886249,,,True,1018.1528329994762,True,3.9102910086512566
+tool_mapping,github MCP: TextFly/photon-imsg-mcp (node stdio),full_node22,v22.21.1,W1_RECENT,photon_get_conversations,ok,5/5,0.3414916020119563,0.3885830083163455,,,True,1018.1528329994762,True,3.9102910086512566
+tool_mapping,github MCP: TextFly/photon-imsg-mcp (node stdio),full_node22,v22.21.1,W2_SEARCH,,unsupported,0/0,,,,unsupported workload (no tool mapping),True,1018.1528329994762,True,3.9102910086512566
+tool_mapping,github MCP: TextFly/photon-imsg-mcp (node stdio),full_node22,v22.21.1,W3_THREAD,photon_read_messages,ok,5/5,0.12470019573811442,0.13049998960923404,,,True,1018.1528329994762,True,3.9102910086512566
+tool_mapping,github MCP: imessage-mcp-improved (node stdio),full_node22,v22.21.1,W0_UNREAD,get_unread_imessages,ok,5/5,24.303658597636968,26.705166994361207,,,True,1061.700334001216,True,3.2641249999869615
+tool_mapping,github MCP: imessage-mcp-improved (node stdio),full_node22,v22.21.1,W1_RECENT,,unsupported,0/0,,,,unsupported workload (no tool mapping),True,1061.700334001216,True,3.2641249999869615
+tool_mapping,github MCP: imessage-mcp-improved (node stdio),full_node22,v22.21.1,W2_SEARCH,,unsupported,0/0,,,,unsupported workload (no tool mapping),True,1061.700334001216,True,3.2641249999869615
+tool_mapping,github MCP: imessage-mcp-improved (node stdio),full_node22,v22.21.1,W3_THREAD,,unsupported,0/0,,,,unsupported workload (no tool mapping),True,1061.700334001216,True,3.2641249999869615
+tool_mapping,github MCP: imessage-query-fastmcp-mcp-server (uv script),full_node22,v22.21.1,W0_UNREAD,,unsupported,0/0,,,,unsupported workload (no tool mapping),True,1015.8970420015976,True,1.5443750016856939
+tool_mapping,github MCP: imessage-query-fastmcp-mcp-server (uv script),full_node22,v22.21.1,W1_RECENT,,unsupported,0/0,,,,unsupported workload (no tool mapping),True,1015.8970420015976,True,1.5443750016856939
+tool_mapping,github MCP: imessage-query-fastmcp-mcp-server (uv script),full_node22,v22.21.1,W2_SEARCH,,unsupported,0/0,,,,unsupported workload (no tool mapping),True,1015.8970420015976,True,1.5443750016856939
+tool_mapping,github MCP: imessage-query-fastmcp-mcp-server (uv script),full_node22,v22.21.1,W3_THREAD,get_chat_transcript,ok,5/5,2.4827248009387404,2.5472499983152375,,,True,1015.8970420015976,True,1.5443750016856939
+tool_mapping,github MCP: jonmmease/jons-mcp-imessage (python fastmcp stdio),full_node22,v22.21.1,W0_UNREAD,,unsupported,0/0,,,,unsupported workload (no tool mapping),True,1041.3370419992134,True,1.31870798941236
+tool_mapping,github MCP: jonmmease/jons-mcp-imessage (python fastmcp stdio),full_node22,v22.21.1,W1_RECENT,get_recent_messages,ok,5/5,1.4585834025638178,1.4782500074943528,,,True,1041.3370419992134,True,1.31870798941236
+tool_mapping,github MCP: jonmmease/jons-mcp-imessage (python fastmcp stdio),full_node22,v22.21.1,W2_SEARCH,search_messages,fail,0/5,,,TIMEOUT,,True,1041.3370419992134,True,1.31870798941236
+tool_mapping,github MCP: jonmmease/jons-mcp-imessage (python fastmcp stdio),full_node22,v22.21.1,W3_THREAD,get_conversation_messages,fail,0/5,,,TIMEOUT,,True,1041.3370419992134,True,1.31870798941236
+tool_mapping,github MCP: mattt/iMCP (swift stdio proxy),full_node22,v22.21.1,W0_UNREAD,,unsupported,0/0,,,,unsupported workload (no tool mapping),True,1025.0249169912422,True,28.737041997374035
+tool_mapping,github MCP: mattt/iMCP (swift stdio proxy),full_node22,v22.21.1,W1_RECENT,messages_fetch,ok,5/5,33.41829999699257,35.20633399602957,,,True,1025.0249169912422,True,28.737041997374035
+tool_mapping,github MCP: mattt/iMCP (swift stdio proxy),full_node22,v22.21.1,W2_SEARCH,messages_fetch,ok,5/5,35.202183402725495,36.85824999411125,,,True,1025.0249169912422,True,28.737041997374035
+tool_mapping,github MCP: mattt/iMCP (swift stdio proxy),full_node22,v22.21.1,W3_THREAD,messages_fetch,ok,5/5,11.150483600795269,12.083041001460515,,,True,1025.0249169912422,True,28.737041997374035
+tool_mapping,github MCP: mcp-imessage (node stdio),full_node22,v22.21.1,W0_UNREAD,,unsupported,0/0,,,,unsupported workload (no tool mapping),True,1014.8546249984065,True,1.3170410093152896
+tool_mapping,github MCP: mcp-imessage (node stdio),full_node22,v22.21.1,W1_RECENT,,unsupported,0/0,,,,unsupported workload (no tool mapping),True,1014.8546249984065,True,1.3170410093152896
+tool_mapping,github MCP: mcp-imessage (node stdio),full_node22,v22.21.1,W2_SEARCH,,unsupported,0/0,,,,unsupported workload (no tool mapping),True,1014.8546249984065,True,1.3170410093152896
+tool_mapping,github MCP: mcp-imessage (node stdio),full_node22,v22.21.1,W3_THREAD,get-recent-chat-messages,ok,5/5,0.5448498006444424,0.5751249991590157,,,True,1014.8546249984065,True,1.3170410093152896
+tool_mapping,github MCP: sameelarif/imessage-mcp (node tsx),full_node22,v22.21.1,W0_UNREAD,get-unread-messages,ok,5/5,698.7932415999239,703.2675829977961,,,True,1025.6952089985134,True,6.444917002227157
+tool_mapping,github MCP: sameelarif/imessage-mcp (node tsx),full_node22,v22.21.1,W1_RECENT,get-messages,ok,5/5,0.3266251995228231,0.4243339935783297,,,True,1025.6952089985134,True,6.444917002227157
+tool_mapping,github MCP: sameelarif/imessage-mcp (node tsx),full_node22,v22.21.1,W2_SEARCH,search-messages,ok,5/5,279.4545915996423,287.78029199747834,,,True,1025.6952089985134,True,6.444917002227157
+tool_mapping,github MCP: sameelarif/imessage-mcp (node tsx),full_node22,v22.21.1,W3_THREAD,get-conversation,ok,5/5,0.17976699746213853,0.21212499996181577,,,True,1025.6952089985134,True,6.444917002227157
+tool_mapping,github MCP: wyattjoh/imessage-mcp (deno stdio),full_node22,v22.21.1,W0_UNREAD,,unsupported,0/0,,,,unsupported workload (no tool mapping),True,1015.092707995791,True,2.874958998290822
+tool_mapping,github MCP: wyattjoh/imessage-mcp (deno stdio),full_node22,v22.21.1,W1_RECENT,get_recent_messages,ok,5/5,9.003075005603023,8.956875011790544,,,True,1015.092707995791,True,2.874958998290822
+tool_mapping,github MCP: wyattjoh/imessage-mcp (deno stdio),full_node22,v22.21.1,W2_SEARCH,search_messages,ok,5/5,26.19894979870878,25.404041007277556,,,True,1015.092707995791,True,2.874958998290822
+tool_mapping,github MCP: wyattjoh/imessage-mcp (deno stdio),full_node22,v22.21.1,W3_THREAD,get_messages_from_chat,ok,5/5,19.938325003022328,20.05200000712648,,,True,1015.092707995791,True,2.874958998290822

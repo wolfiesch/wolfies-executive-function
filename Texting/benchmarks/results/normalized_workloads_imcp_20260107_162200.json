@@ -1,0 +1,34 @@
+{
+  "generated_at": "2026-01-07 16:20:56",
+  "metadata": {
+    "mode": "session",
+    "iterations": 5,
+    "warmup": 1,
+    "phase_timeout_s": 30,
+    "call_timeout_s": 10,
+    "workloads": [
+      "W0_UNREAD",
+      "W1_RECENT",
+      "W2_SEARCH",
+      "W3_THREAD"
+    ]
+  },
+  "servers": [
+    {
+      "name": "github MCP: mattt/iMCP (swift stdio proxy)",
+      "command": "/Users/wolfgangschoenberger/LIFE-PLANNER/Texting/benchmarks/vendor/github_mcp/iMCP/.derived/Build/Products/Release/iMCP.app/Contents/MacOS/imcp-server",
+      "args": [],
+      "mode": "session",
+      "session_initialize": {
+        "ok": false,
+        "ms": 61090.480124999885,
+        "error": "TIMEOUT",
+        "stdout_bytes": 0,
+        "approx_tokens": 0
+      },
+      "session_list_tools": null,
+      "workloads": [],
+      "notes": []
+    }
+  ]
+}

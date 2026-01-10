@@ -1,0 +1,34 @@
+{
+  "W0_UNREAD": {
+    "status": "ok_empty",
+    "notes": [
+      "suspicious: identical payload across workloads W0_UNREAD, W3_THREAD"
+    ],
+    "validation_summary": {
+      "counts": {
+        "ok_empty": 5
+      },
+      "top_reasons": [
+        "duplicate_payload"
+      ]
+    },
+    "min_bytes": 150,
+    "min_items": 0
+  },
+  "W3_THREAD": {
+    "status": "ok_empty",
+    "notes": [
+      "suspicious: identical payload across workloads W0_UNREAD, W3_THREAD"
+    ],
+    "validation_summary": {
+      "counts": {
+        "ok_empty": 5
+      },
+      "top_reasons": [
+        "duplicate_payload"
+      ]
+    },
+    "min_bytes": 150,
+    "min_items": 1
+  }
+}
