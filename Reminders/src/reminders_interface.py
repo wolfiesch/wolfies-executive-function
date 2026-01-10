@@ -7,6 +7,9 @@ via EventKit framework (PyObjC).
 Hybrid approach:
 - AppleScript for creating reminders (simple, reliable)
 - EventKit for reading, completing, deleting (robust querying)
+
+CHANGELOG (recent first, max 5 entries):
+01/09/2026 - Increased timeouts from 10s to 15s to reduce intermittent failures (Claude)
 """
 
 import subprocess
@@ -309,7 +312,7 @@ end tell
                 ['osascript', '-e', script],
                 capture_output=True,
                 text=True,
-                timeout=10
+                timeout=15  # Increased from 10s to handle Reminders.app latency
             )
 
             if result.returncode == 0:
@@ -579,7 +582,8 @@ end tell
         )
 
         # Wait for callback to complete (with timeout)
-        fetch_complete.wait(timeout=10.0)
+        # Increased from 10s to 15s to handle EventKit async latency
+        fetch_complete.wait(timeout=15.0)
 
         if not fetch_complete.is_set():
             logger.error("EventKit fetch timed out")
