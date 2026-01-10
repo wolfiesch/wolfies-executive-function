@@ -22,6 +22,7 @@ Usage:
 """
 
 import sys
+import os
 import argparse
 import json
 import atexit
@@ -104,10 +105,140 @@ def _add_output_args(parser: argparse.ArgumentParser) -> None:
     )
 
 
-def get_interfaces():
-    """Initialize MessagesInterface and ContactsManager."""
+# Lazy contacts sync configuration
+SYNC_CACHE_PATH = Path("/tmp/imessage_contacts_sync_ts")
+SYNC_TTL_MINUTES = 30
+SYNC_SCRIPT = REPO_ROOT / "scripts" / "sync_contacts.py"
+RUST_DAEMON_PID = Path.home() / ".wolfies-imessage" / "contacts-daemon.pid"
+RUST_CLI_BINARY = SCRIPT_DIR / "wolfies-contacts" / "target" / "release" / "wolfies-contacts"
+
+
+def _is_daemon_running() -> bool:
+    """Check if the Rust contacts daemon is running."""
+    if not RUST_DAEMON_PID.exists():
+        return False
+    try:
+        pid = int(RUST_DAEMON_PID.read_text().strip())
+        os.kill(pid, 0)  # Check if process exists (signal 0 = no signal, just check)
+        return True
+    except (OSError, ValueError):
+        return False
+
+
+def _maybe_sync_contacts() -> None:
+    """
+    Ensure contacts are fresh using tiered approach:
+    1. If daemon is running → skip (daemon keeps contacts.json fresh)
+    2. If Rust CLI available → use Rust sync (~500ms)
+    3. Fallback to Python sync (~700ms)
+
+    Uses TTL check to avoid re-syncing within SYNC_TTL_MINUTES.
+    """
+    import subprocess
+
+    # If daemon is running, contacts.json is always fresh (60s polling)
+    if _is_daemon_running():
+        return  # Daemon handles freshness
+
+    # Check if sync is fresh enough (TTL check)
+    if SYNC_CACHE_PATH.exists():
+        last_sync = datetime.fromtimestamp(SYNC_CACHE_PATH.stat().st_mtime)
+        if datetime.now() - last_sync < timedelta(minutes=SYNC_TTL_MINUTES):
+            return  # Fresh enough, skip sync
+
+    # Try Rust CLI first (faster: ~500ms vs ~700ms Python)
+    if RUST_CLI_BINARY.exists():
+        try:
+            subprocess.run(
+                [str(RUST_CLI_BINARY), "-o", str(CONTACTS_CONFIG), "sync"],
+                check=True,
+                capture_output=True,
+                timeout=10
+            )
+            SYNC_CACHE_PATH.touch()  # Update timestamp
+            return  # Success with Rust CLI
+        except (subprocess.CalledProcessError, subprocess.TimeoutExpired, OSError):
+            pass  # Fall through to Python sync
+
+    # Fallback to Python sync script
+    if SYNC_SCRIPT.exists():
+        try:
+            subprocess.run(
+                [sys.executable, str(SYNC_SCRIPT)],
+                check=True,
+                capture_output=True,
+                timeout=30
+            )
+            SYNC_CACHE_PATH.touch()  # Update timestamp
+        except (subprocess.CalledProcessError, subprocess.TimeoutExpired, OSError):
+            pass  # Sync failed, continue with stale contacts
+
+
+def _is_interactive() -> bool:
+    """Check if running in an interactive terminal (for auto-prompting)."""
+    return sys.stdin.isatty() and sys.stdout.isatty()
+
+
+def get_interfaces(require_db: bool = True, auto_prompt: bool = True):
+    """Initialize MessagesInterface and ContactsManager.
+
+    Args:
+        require_db: If True, check database access and potentially prompt/error.
+        auto_prompt: If True and require_db=True and no access, prompt user interactively.
+    """
+    # Lazy sync contacts if stale
+    _maybe_sync_contacts()
+
     mi = MessagesInterface()
     cm = ContactsManager(str(CONTACTS_CONFIG))
+
+    # Check database access when required
+    if require_db:
+        perms = mi.check_permissions()
+        if perms["setup_needed"]:
+            # Database not accessible - need to prompt or error
+
+            # Check for headless environment first
+            try:
+                from src.db_access import is_headless_environment
+                is_headless = is_headless_environment()
+            except ImportError:
+                is_headless = False
+
+            if is_headless:
+                # Can't prompt in headless mode
+                print("Error: Messages database not accessible.", file=sys.stderr)
+                print("Run 'setup' command from a local terminal to configure access.", file=sys.stderr)
+                sys.exit(1)
+
+            if auto_prompt and _is_interactive():
+                # Interactive mode - offer to configure access
+                print("\n" + "=" * 60, file=sys.stderr)
+                print("Messages database access not configured.", file=sys.stderr)
+                print("=" * 60, file=sys.stderr)
+                print("\nWould you like to configure access now?", file=sys.stderr)
+                print("This will open a file picker to grant access to your Messages database.", file=sys.stderr)
+
+                try:
+                    response = input("\nConfigure now? [Y/n]: ").strip().lower()
+                    if response != 'n':
+                        if mi.ensure_access():
+                            print("\n[SUCCESS] Database access configured!\n", file=sys.stderr)
+                        else:
+                            print("\nSetup cancelled. You can run 'setup' command later.", file=sys.stderr)
+                            print("Or grant Full Disk Access in System Settings.", file=sys.stderr)
+                            sys.exit(1)
+                    else:
+                        print("\nSkipped. Run 'setup' command or grant Full Disk Access.", file=sys.stderr)
+                        sys.exit(1)
+                except (EOFError, KeyboardInterrupt):
+                    print("\nSetup cancelled.", file=sys.stderr)
+                    sys.exit(1)
+            else:
+                # Non-interactive mode (piped input/output) - just error
+                print("Error: Messages database not accessible.", file=sys.stderr)
+                print("Run: python3 gateway/imessage_client.py setup", file=sys.stderr)
+                sys.exit(1)
 
     # Register cleanup to close database connections on exit
     # This prevents subprocess hanging due to unclosed SQLite connections
@@ -167,12 +298,82 @@ def handle_contact_not_found(name: str, cm: ContactsManager) -> int:
 def handle_db_access_error() -> int:
     """Handle Messages.db access errors with actionable guidance."""
     print("Error: Cannot access Messages database.", file=sys.stderr)
-    print("\nThis usually means Full Disk Access is not enabled.", file=sys.stderr)
-    print("\nTo fix:", file=sys.stderr)
+    print("\nOption 1 (Recommended): Run 'setup' command for guided setup", file=sys.stderr)
+    print("  python3 gateway/imessage_client.py setup", file=sys.stderr)
+    print("\nOption 2: Grant Full Disk Access manually", file=sys.stderr)
     print("  1. Open System Settings > Privacy & Security > Full Disk Access", file=sys.stderr)
     print("  2. Enable access for Terminal (or your terminal app)", file=sys.stderr)
     print("  3. Restart your terminal", file=sys.stderr)
     return 1
+
+
+def cmd_setup(args):
+    """Configure Messages database access (one-time setup)."""
+    try:
+        from src.db_access import DatabaseAccess, is_headless_environment
+    except ImportError as e:
+        print(f"Error: db_access module not available: {e}", file=sys.stderr)
+        return 1
+
+    # Check for headless environment
+    if is_headless_environment():
+        print("Detected headless/SSH environment.", file=sys.stderr)
+        print("File picker requires a GUI. Please either:", file=sys.stderr)
+        print("  1. Run setup from a local terminal session", file=sys.stderr)
+        print("  2. Grant Full Disk Access in System Settings", file=sys.stderr)
+        return 1
+
+    db = DatabaseAccess()
+
+    print("\niMessage Gateway - Database Setup")
+    print("=" * 50)
+
+    # Check current status
+    perms = {"has_bookmark": db._bookmark_data is not None, "bookmark_valid": db.has_access()}
+
+    if perms["has_bookmark"] and perms["bookmark_valid"]:
+        print("\n[OK] Database access already configured!")
+        print(f"  Path: {db.get_db_path()}")
+
+        if not args.force:
+            response = input("\nReconfigure? [y/N]: ").strip().lower()
+            if response != 'y':
+                print("Keeping existing configuration.")
+                return 0
+
+        # Clear existing bookmark
+        db.clear_bookmark()
+        print("\nCleared existing configuration.")
+
+    print("\nThis will open a file picker to grant access to your Messages database.")
+    print("Navigate to: ~/Library/Messages/chat.db")
+    print("\nTip: Press Cmd+Shift+G in the file picker to enter the path directly")
+
+    if not args.yes:
+        response = input("\nReady to continue? [Y/n]: ").strip().lower()
+        if response == 'n':
+            print("Setup cancelled.")
+            return 1
+
+    # Request access via file picker
+    if db.request_access():
+        print("\n[SUCCESS] Database access configured!")
+        print(f"  Path: {db.get_db_path()}")
+        print("\nYou can now use all iMessage commands without Full Disk Access.")
+
+        if args.json:
+            result = {
+                "success": True,
+                "db_path": str(db.get_db_path()),
+                "bookmark_configured": True
+            }
+            print(json.dumps(result, indent=2))
+
+        return 0
+    else:
+        print("\n[FAILED] Setup was cancelled or failed.", file=sys.stderr)
+        print("\nAlternative: Grant Full Disk Access in System Settings", file=sys.stderr)
+        return 1
 
 
 def parse_date_arg(value: str) -> datetime | None:
@@ -247,15 +448,18 @@ def cmd_messages(args):
 
 def cmd_recent(args):
     """Get recent conversations across all contacts."""
-    mi, _ = get_interfaces()
+    mi, cm = get_interfaces()
 
-    conversations = mi.get_all_recent_conversations(limit=args.limit)
+    conversations = mi.get_all_recent_conversations(
+        limit=args.limit,
+        contacts_manager=cm
+    )
 
     if args.json:
         _emit_json(
             conversations,
             args,
-            default_fields=["date", "is_from_me", "phone", "text", "group_id"],
+            default_fields=["date", "is_from_me", "phone", "text", "group_id", "group_participants"],
         )
     else:
         if not conversations:
@@ -275,9 +479,9 @@ def cmd_recent(args):
 
 def cmd_unread(args):
     """Get unread messages."""
-    mi, _ = get_interfaces()
+    mi, cm = get_interfaces()
 
-    messages = mi.get_unread_messages(limit=args.limit)
+    messages = mi.get_unread_messages(limit=args.limit, contacts_manager=cm)
     # Guard against time-skew producing negative values.
     for m in messages:
         if isinstance(m, dict) and isinstance(m.get("days_old"), int) and m["days_old"] < 0:
@@ -287,7 +491,7 @@ def cmd_unread(args):
         _emit_json(
             messages,
             args,
-            default_fields=["date", "phone", "text", "days_old", "group_id", "group_name"],
+            default_fields=["date", "phone", "text", "days_old", "group_id", "group_name", "group_participants"],
         )
     else:
         if not messages:
@@ -512,7 +716,7 @@ def cmd_bundle(args):
 
 def cmd_send(args):
     """Send a message to a contact."""
-    mi, cm = get_interfaces()
+    mi, cm = get_interfaces(require_db=False)  # AppleScript send doesn't need DB
     contact = resolve_contact(cm, args.contact)
 
     if not contact:
@@ -540,7 +744,7 @@ def cmd_send(args):
 
 def cmd_send_by_phone(args):
     """Send a message directly to a phone number (no contact lookup)."""
-    mi, cm = get_interfaces()
+    mi, cm = get_interfaces(require_db=False)  # AppleScript send doesn't need DB
 
     # Normalize phone number (strip formatting characters)
     phone = args.phone.strip().translate(str.maketrans('', '', ' ()-.'))
@@ -574,7 +778,7 @@ def cmd_send_by_phone(args):
 
 def cmd_contacts(args):
     """List all contacts."""
-    _, cm = get_interfaces()
+    _, cm = get_interfaces(require_db=False)  # Just reads contacts.json
 
     if args.json:
         print(json.dumps([c.to_dict() for c in cm.contacts], indent=2))
@@ -758,7 +962,7 @@ def cmd_attachments(args):
 
 def cmd_add_contact(args):
     """Add a new contact."""
-    _, cm = get_interfaces()
+    _, cm = get_interfaces(require_db=False)  # Just updates contacts.json
 
     try:
         cm.add_contact(
@@ -2398,6 +2602,19 @@ Examples:
     p_sources = subparsers.add_parser('sources', help='List available and indexed sources')
     p_sources.add_argument('--json', action='store_true', help='Output as JSON')
     p_sources.set_defaults(func=cmd_sources)
+
+    # =========================================================================
+    # SETUP COMMAND - First-time database access configuration
+    # =========================================================================
+
+    # setup command
+    p_setup = subparsers.add_parser('setup', help='Configure Messages database access (one-time)')
+    p_setup.add_argument('--force', '-f', action='store_true',
+                         help='Reconfigure even if already set up')
+    p_setup.add_argument('--yes', '-y', action='store_true',
+                         help='Skip confirmation prompts')
+    p_setup.add_argument('--json', action='store_true', help='Output as JSON')
+    p_setup.set_defaults(func=cmd_setup)
 
     args = parser.parse_args()
 

@@ -6,6 +6,9 @@ from the Messages database (chat.db).
 
 Sprint 1: Basic AppleScript sending
 Sprint 1.5: Message history reading with attributedBody parsing (macOS Ventura+)
+
+CHANGELOG:
+- 01/09/2026 - Added security-scoped bookmark support for FDA-free access (Claude)
 """
 
 import subprocess
@@ -14,8 +17,11 @@ import logging
 import plistlib
 import re
 from pathlib import Path
-from typing import Any
+from typing import Any, TYPE_CHECKING
 from datetime import datetime, timedelta
+
+if TYPE_CHECKING:
+    from src.db_access import DatabaseAccess
 
 logger = logging.getLogger(__name__)
 
@@ -269,17 +275,157 @@ def extract_text_from_blob(blob: bytes) -> str | None:
 class MessagesInterface:
     """Interface to macOS Messages app."""
 
-    messages_db_path: Path
+    messages_db_path: Path | None
+    _db_access: "DatabaseAccess | None"
 
-    def __init__(self, messages_db_path: str = "~/Library/Messages/chat.db"):
+    def __init__(
+        self,
+        messages_db_path: str | None = None,
+        use_bookmark: bool = True
+    ):
         """
         Initialize Messages interface.
 
         Args:
-            messages_db_path: Path to Messages database (default: standard location)
+            messages_db_path: Explicit path to Messages database (legacy mode).
+                            If None and use_bookmark=True, uses security-scoped bookmark.
+            use_bookmark: If True and no explicit path, try to use stored bookmark.
+                         This enables FDA-free access via file picker.
         """
-        self.messages_db_path = Path(messages_db_path).expanduser()
-        logger.info(f"Initialized MessagesInterface with DB: {self.messages_db_path}")
+        self._db_access = None
+        self.messages_db_path = None
+
+        if messages_db_path:
+            # Legacy mode: explicit path provided
+            self.messages_db_path = Path(messages_db_path).expanduser()
+            logger.info(f"Initialized MessagesInterface with explicit DB: {self.messages_db_path}")
+        elif use_bookmark:
+            # Try to use security-scoped bookmark
+            try:
+                from src.db_access import DatabaseAccess
+                self._db_access = DatabaseAccess()
+
+                if self._db_access.has_access():
+                    self.messages_db_path = self._db_access.get_db_path()
+                    logger.info(f"Initialized MessagesInterface with bookmark: {self.messages_db_path}")
+                else:
+                    # Fall back to default path (requires FDA)
+                    self.messages_db_path = Path("~/Library/Messages/chat.db").expanduser()
+                    logger.info("No bookmark access, using default path (requires FDA)")
+            except ImportError:
+                # db_access module not available, use default
+                self.messages_db_path = Path("~/Library/Messages/chat.db").expanduser()
+                logger.debug("db_access module not available, using default path")
+        else:
+            # No bookmark, use default path
+            self.messages_db_path = Path("~/Library/Messages/chat.db").expanduser()
+            logger.info(f"Initialized MessagesInterface with default DB: {self.messages_db_path}")
+
+    def check_permissions(self) -> dict[str, Any]:
+        """Check if required permissions are granted.
+
+        Returns:
+            dict with:
+                - messages_db_accessible: bool - Can we access the database?
+                - has_bookmark: bool - Is a security-scoped bookmark configured?
+                - bookmark_valid: bool - Is the bookmark still valid (not stale)?
+                - applescript_ready: bool - Can we send via AppleScript?
+                - setup_needed: bool - Does user need to run setup?
+        """
+        result = {
+            "messages_db_accessible": False,
+            "has_bookmark": False,
+            "bookmark_valid": False,
+            "applescript_ready": True,  # Assume ready, hard to check
+            "setup_needed": True,
+            "db_path": str(self.messages_db_path) if self.messages_db_path else None
+        }
+
+        # Check bookmark status
+        if self._db_access:
+            result["has_bookmark"] = self._db_access._bookmark_data is not None
+            result["bookmark_valid"] = self._db_access.has_access()
+
+        # Check database accessibility
+        if self.messages_db_path and self.messages_db_path.exists():
+            # Try to actually open the database
+            try:
+                conn = sqlite3.connect(
+                    f"file:{self.messages_db_path}?mode=ro",
+                    uri=True,
+                    timeout=2
+                )
+                cursor = conn.cursor()
+                cursor.execute("SELECT COUNT(*) FROM message LIMIT 1")
+                conn.close()
+                result["messages_db_accessible"] = True
+                result["setup_needed"] = False
+            except sqlite3.Error as e:
+                logger.debug(f"Database access check failed: {e}")
+                result["messages_db_accessible"] = False
+
+        if not result["messages_db_accessible"]:
+            logger.warning(
+                "Messages database not accessible. "
+                "Run 'setup' command or grant Full Disk Access in System Settings."
+            )
+
+        return result
+
+    def ensure_access(self) -> bool:
+        """Ensure database access is available, prompting if needed.
+
+        Returns:
+            True if access is available, False if user cancelled or failed.
+        """
+        # Already have access?
+        perms = self.check_permissions()
+        if perms["messages_db_accessible"]:
+            return True
+
+        # Try to request access via file picker
+        if self._db_access:
+            if self._db_access.request_access():
+                self.messages_db_path = self._db_access.get_db_path()
+                return True
+
+        return False
+
+    def _get_group_participants(
+        self,
+        cursor: sqlite3.Cursor,
+        group_id: str,
+        contacts_manager: Any | None = None
+    ) -> list[dict[str, str | None]]:
+        """
+        Fetch participant handles for a group chat with optional name resolution.
+
+        Args:
+            cursor: Active database cursor
+            group_id: The chat_identifier (e.g., 'chat123456789')
+            contacts_manager: Optional ContactsManager for name resolution
+
+        Returns:
+            List of participant dicts: [{"phone": str, "name": str|None}, ...]
+        """
+        cursor.execute("""
+            SELECT DISTINCT h.id
+            FROM handle h
+            JOIN chat_handle_join chj ON h.ROWID = chj.handle_id
+            JOIN chat c ON chj.chat_id = c.ROWID
+            WHERE c.chat_identifier = ?
+        """, (group_id,))
+
+        participants = []
+        for (phone,) in cursor.fetchall():
+            name = None
+            if contacts_manager:
+                contact = contacts_manager.get_contact_by_phone(phone)
+                if contact:
+                    name = contact.name
+            participants.append({"phone": phone, "name": name})
+
+        return participants
 
     def send_message(self, phone: str, message: str) -> dict[str, Any]:
         """
@@ -344,7 +490,8 @@ class MessagesInterface:
         self,
         phone: str,
         limit: int = 20,
-        offset: int = 0
+        offset: int = 0,
+        contacts_manager: Any | None = None
     ) -> list[dict[str, Any]]:
         """
         Retrieve recent messages with a contact from Messages database.
@@ -353,12 +500,14 @@ class MessagesInterface:
             phone: Phone number or iMessage handle
             limit: Number of recent messages to retrieve
             offset: Number of messages to skip (for pagination)
+            contacts_manager: Optional ContactsManager for resolving participant names
 
         Returns:
             list[dict[str, Any]]: List of message dicts with keys:
                 - text: Message content
                 - date: Timestamp
                 - is_from_me: Boolean (sent vs received)
+                - group_participants: List of participant dicts for group chats
 
         Note:
             Requires Full Disk Access permission for ~/Library/Messages/chat.db
@@ -403,6 +552,9 @@ class MessagesInterface:
             rows = cursor.fetchall()
 
             messages = []
+            # Cache group participants to avoid repeated queries
+            group_participants_cache: dict[str, list[dict[str, str | None]]] = {}
+
             for row in rows:
                 text, attributed_body, date_cocoa, is_from_me, cache_roomnames = row
 
@@ -424,12 +576,22 @@ class MessagesInterface:
                 # Check if this is a group chat
                 is_group_chat = is_group_chat_identifier(cache_roomnames)
 
+                # Get group participants (with caching)
+                group_participants = None
+                if is_group_chat and cache_roomnames:
+                    if cache_roomnames not in group_participants_cache:
+                        group_participants_cache[cache_roomnames] = self._get_group_participants(
+                            cursor, cache_roomnames, contacts_manager
+                        )
+                    group_participants = group_participants_cache[cache_roomnames]
+
                 messages.append({
                     "text": message_text or "[message content not available]",
                     "date": date.isoformat() if date else None,
                     "is_from_me": bool(is_from_me),
                     "is_group_chat": is_group_chat,
-                    "group_id": cache_roomnames if is_group_chat else None
+                    "group_id": cache_roomnames if is_group_chat else None,
+                    "group_participants": group_participants
                 })
 
             conn.close()
@@ -443,26 +605,11 @@ class MessagesInterface:
             logger.error(f"Error retrieving messages: {e}")
             return []
 
-    def check_permissions(self) -> dict[str, Any]:
-        """
-        Check if required permissions are granted.
-
-        Returns:
-            dict: {"messages_db_accessible": bool, "applescript_ready": bool}
-        """
-        permissions = {
-            "messages_db_accessible": self.messages_db_path.exists(),
-            "applescript_ready": True  # Will fail on first send if not granted
-        }
-
-        if not permissions["messages_db_accessible"]:
-            logger.warning(
-                "Messages database not accessible. Grant Full Disk Access: System Settings → Privacy & Security"
-            )
-
-        return permissions
-
-    def get_all_recent_conversations(self, limit: int = 20) -> list[dict[str, Any]]:
+    def get_all_recent_conversations(
+        self,
+        limit: int = 20,
+        contacts_manager: Any | None = None
+    ) -> list[dict[str, Any]]:
         """
         Get recent messages from ALL conversations (not filtered by contact).
 
@@ -471,6 +618,7 @@ class MessagesInterface:
 
         Args:
             limit: Number of recent messages to retrieve
+            contacts_manager: Optional ContactsManager for resolving participant names
 
         Returns:
             list[dict[str, Any]]: List of message dicts with keys:
@@ -479,6 +627,7 @@ class MessagesInterface:
                 - is_from_me: Boolean (sent vs received)
                 - phone: Phone number or handle of sender/recipient
                 - contact_name: Contact name if available, otherwise phone/handle
+                - group_participants: List of participant dicts for group chats
 
         Example:
             messages = interface.get_all_recent_conversations(limit=50)
@@ -512,6 +661,9 @@ class MessagesInterface:
             rows = cursor.fetchall()
 
             messages = []
+            # Cache group participants to avoid repeated queries
+            group_participants_cache: dict[str, list[dict[str, str | None]]] = {}
+
             for row in rows:
                 text, attributed_body, date_cocoa, is_from_me, handle_id, cache_roomnames = row
 
@@ -530,6 +682,15 @@ class MessagesInterface:
                 # Check if this is a group chat
                 is_group_chat = is_group_chat_identifier(cache_roomnames)
 
+                # Get group participants (with caching)
+                group_participants = None
+                if is_group_chat and cache_roomnames:
+                    if cache_roomnames not in group_participants_cache:
+                        group_participants_cache[cache_roomnames] = self._get_group_participants(
+                            cursor, cache_roomnames, contacts_manager
+                        )
+                    group_participants = group_participants_cache[cache_roomnames]
+
                 messages.append({
                     "text": message_text or "[message content not available]",
                     "date": date.isoformat() if date else None,
@@ -538,6 +699,7 @@ class MessagesInterface:
                     "contact_name": None,  # Will be populated by MCP tool if contact exists
                     "is_group_chat": is_group_chat,
                     "group_id": cache_roomnames if is_group_chat else None,
+                    "group_participants": group_participants,
                     "sender_handle": handle_id  # For group chats, identifies who sent this message
                 })
 
@@ -1235,7 +1397,11 @@ class MessagesInterface:
             logger.error(f"Error getting attachments: {e}")
             return []
 
-    def get_unread_messages(self, limit: int = 50) -> list[dict[str, Any]]:
+    def get_unread_messages(
+        self,
+        limit: int = 50,
+        contacts_manager: Any | None = None
+    ) -> list[dict[str, Any]]:
         """
         Get unread messages that are awaiting response.
 
@@ -1243,6 +1409,7 @@ class MessagesInterface:
 
         Args:
             limit: Maximum number of unread messages to return
+            contacts_manager: Optional ContactsManager for resolving participant names
 
         Returns:
             list[dict[str, Any]]: List of unread message dicts with keys:
@@ -1251,6 +1418,7 @@ class MessagesInterface:
                 - phone: Sender's phone/handle
                 - is_group_chat: Whether from a group
                 - group_id: Group identifier if applicable
+                - group_participants: List of participant dicts for group chats
                 - days_old: How many days since the message
 
         Example:
@@ -1296,6 +1464,9 @@ class MessagesInterface:
 
             now = datetime.now()
             messages = []
+            # Cache group participants to avoid repeated queries
+            group_participants_cache: dict[str, list[dict[str, str | None]]] = {}
+
             for row in rows:
                 text, attributed_body, date_cocoa, sender_handle, cache_roomnames, display_name = row
 
@@ -1316,6 +1487,15 @@ class MessagesInterface:
                 # Check if group chat
                 is_group_chat = is_group_chat_identifier(cache_roomnames)
 
+                # Get group participants (with caching)
+                group_participants = None
+                if is_group_chat and cache_roomnames:
+                    if cache_roomnames not in group_participants_cache:
+                        group_participants_cache[cache_roomnames] = self._get_group_participants(
+                            cursor, cache_roomnames, contacts_manager
+                        )
+                    group_participants = group_participants_cache[cache_roomnames]
+
                 messages.append({
                     "text": message_text or "[message content not available]",
                     "date": date.isoformat() if date else None,
@@ -1323,6 +1503,7 @@ class MessagesInterface:
                     "is_group_chat": is_group_chat,
                     "group_id": cache_roomnames if is_group_chat else None,
                     "group_name": display_name if is_group_chat else None,
+                    "group_participants": group_participants,
                     "days_old": days_old
                 })
 
