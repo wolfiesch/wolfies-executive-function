@@ -160,20 +160,20 @@ pub fn query_top_contacts(conn: &Connection, cutoff_cocoa: i64) -> Result<Vec<To
         .collect())
 }
 
-/// Query attachment count.
+/// Query attachment count (optimized - skips attachment table join).
 pub fn query_attachments(
     conn: &Connection,
     cutoff_cocoa: i64,
     phone: Option<&str>,
 ) -> Result<i64> {
     if let Some(p) = phone {
-        let mut stmt = conn.prepare(queries::ANALYTICS_ATTACHMENTS_PHONE)?;
+        let mut stmt = conn.prepare(queries::ANALYTICS_ATTACHMENTS_FAST_PHONE)?;
         let params: &[&dyn rusqlite::ToSql] = &[&cutoff_cocoa, &p];
         Ok(stmt
             .query_row(params, |row: &rusqlite::Row| row.get::<_, i64>(0))
             .unwrap_or(0))
     } else {
-        let mut stmt = conn.prepare(queries::ANALYTICS_ATTACHMENTS)?;
+        let mut stmt = conn.prepare(queries::ANALYTICS_ATTACHMENTS_FAST)?;
         Ok(stmt
             .query_row(&[&cutoff_cocoa], |row: &rusqlite::Row| row.get::<_, i64>(0))
             .unwrap_or(0))
@@ -215,6 +215,63 @@ pub fn day_number_to_name(day: i64) -> Option<&'static str> {
 }
 
 // ============================================================================
+// Optimized Combined Analytics (Single Query)
+// ============================================================================
+
+/// Combined analytics result - all stats from single query.
+/// Includes attachment count (uses cache_has_attachments column).
+#[derive(Debug, Clone)]
+pub struct CombinedAnalytics {
+    pub total: i64,
+    pub sent: i64,
+    pub received: i64,
+    pub reactions: i64,
+    pub attachments: i64,
+    pub busiest_hour: Option<i64>,
+    pub busiest_day: Option<i64>,
+}
+
+/// Query all analytics stats in a single optimized query.
+/// Combines: message_counts, reactions, attachments, busiest_hour, busiest_day.
+/// Reduces from 3 queries to 1 for faster performance.
+pub fn query_analytics_combined(
+    conn: &Connection,
+    cutoff_cocoa: i64,
+    phone: Option<&str>,
+) -> Result<CombinedAnalytics> {
+    if let Some(p) = phone {
+        let mut stmt = conn.prepare(queries::ANALYTICS_COMBINED_PHONE)?;
+        let params: &[&dyn rusqlite::ToSql] = &[&cutoff_cocoa, &p];
+        stmt.query_row(params, |row| {
+            Ok(CombinedAnalytics {
+                total: row.get::<_, Option<i64>>(0)?.unwrap_or(0),
+                sent: row.get::<_, Option<i64>>(1)?.unwrap_or(0),
+                received: row.get::<_, Option<i64>>(2)?.unwrap_or(0),
+                reactions: row.get::<_, Option<i64>>(3)?.unwrap_or(0),
+                attachments: row.get::<_, Option<i64>>(4)?.unwrap_or(0),
+                busiest_hour: row.get(5)?,
+                busiest_day: row.get(6)?,
+            })
+        })
+        .map_err(|e| anyhow::anyhow!("Combined analytics query failed: {}", e))
+    } else {
+        let mut stmt = conn.prepare(queries::ANALYTICS_COMBINED)?;
+        stmt.query_row([&cutoff_cocoa], |row| {
+            Ok(CombinedAnalytics {
+                total: row.get::<_, Option<i64>>(0)?.unwrap_or(0),
+                sent: row.get::<_, Option<i64>>(1)?.unwrap_or(0),
+                received: row.get::<_, Option<i64>>(2)?.unwrap_or(0),
+                reactions: row.get::<_, Option<i64>>(3)?.unwrap_or(0),
+                attachments: row.get::<_, Option<i64>>(4)?.unwrap_or(0),
+                busiest_hour: row.get(5)?,
+                busiest_day: row.get(6)?,
+            })
+        })
+        .map_err(|e| anyhow::anyhow!("Combined analytics query failed: {}", e))
+    }
+}
+
+// ============================================================================
 // Reading Query Helpers
 // ============================================================================
 
@@ -224,22 +281,7 @@ pub fn query_recent_messages(
     cutoff_cocoa: i64,
     limit: u32,
 ) -> Result<Vec<RecentMessage>> {
-    let mut stmt = conn.prepare(
-        r#"
-        SELECT
-            m.text,
-            m.date,
-            m.is_from_me,
-            h.id as handle
-        FROM message m
-        LEFT JOIN handle h ON m.handle_id = h.ROWID
-        WHERE m.date >= ?1
-          AND (m.associated_message_type IS NULL OR m.associated_message_type = 0)
-          AND m.text IS NOT NULL
-        ORDER BY m.date DESC
-        LIMIT ?2
-        "#,
-    )?;
+    let mut stmt = conn.prepare(queries::RECENT_MESSAGES)?;
 
     let rows = stmt.query_map([&cutoff_cocoa, &(limit as i64)], |row: &rusqlite::Row| {
         let date_cocoa: i64 = row.get(1)?;
@@ -387,16 +429,19 @@ pub fn cocoa_to_iso(cocoa_ns: i64) -> String {
 }
 
 /// Calculate days ago from Cocoa timestamp.
+/// Handles clock adjustments gracefully instead of panicking.
 pub fn days_ago_from_cocoa(cocoa_ns: i64) -> i64 {
     use std::time::{SystemTime, UNIX_EPOCH};
 
+    // Handle potential clock adjustment gracefully
     let now = SystemTime::now()
         .duration_since(UNIX_EPOCH)
-        .expect("Time went backwards")
+        .unwrap_or_default()
         .as_secs() as i64;
 
     let msg_unix = queries::cocoa_to_unix(cocoa_ns);
-    (now - msg_unix) / 86400
+    // Ensure non-negative result even if clock is adjusted
+    ((now - msg_unix) / 86400).max(0)
 }
 
 #[cfg(test)]
