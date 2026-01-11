@@ -1,0 +1,167 @@
+{
+  "generated_at": "2026-01-08 05:16:05",
+  "metadata": {
+    "iterations": 5,
+    "warmup": 1,
+    "phase_timeout_s": 30,
+    "call_timeout_s": 60
+  },
+  "servers": [
+    {
+      "name": "Gmail MCP",
+      "error": "[Errno 32] Broken pipe"
+    },
+    {
+      "name": "Calendar MCP",
+      "error": "[Errno 32] Broken pipe"
+    },
+    {
+      "name": "Reminders MCP",
+      "command": "python3",
+      "args": [
+        "/Users/wolfgangschoenberger/LIFE-PLANNER/Reminders/mcp_server/server.py"
+      ],
+      "session_initialize": {
+        "ok": true,
+        "ms": 1037.764499997138,
+        "error": null,
+        "stdout_bytes": 198
+      },
+      "session_list_tools": {
+        "ok": true,
+        "ms": 1.1024170089513063,
+        "error": null,
+        "stdout_bytes": 2440
+      },
+      "workloads": [
+        {
+          "workload_id": "REMINDERS_LIST_LISTS",
+          "tool_name": "list_reminder_lists",
+          "read_only": true,
+          "results": [
+            {
+              "iteration": 1,
+              "ok": true,
+              "ms": 1.3641249970532954,
+              "error": null,
+              "payload_bytes": 1622
+            },
+            {
+              "iteration": 2,
+              "ok": true,
+              "ms": 1.2325829884503037,
+              "error": null,
+              "payload_bytes": 1622
+            },
+            {
+              "iteration": 3,
+              "ok": true,
+              "ms": 1.5775419888086617,
+              "error": null,
+              "payload_bytes": 1622
+            },
+            {
+              "iteration": 4,
+              "ok": true,
+              "ms": 0.9827909962041304,
+              "error": null,
+              "payload_bytes": 1622
+            },
+            {
+              "iteration": 5,
+              "ok": true,
+              "ms": 0.9677500056568533,
+              "error": null,
+              "payload_bytes": 1622
+            }
+          ],
+          "warmup_results": [
+            {
+              "iteration": 1001,
+              "ok": true,
+              "ms": 409.96445799828507,
+              "error": null,
+              "payload_bytes": 1622
+            }
+          ],
+          "summary": {
+            "total": 5,
+            "ok": 5,
+            "failed": 0,
+            "mean_ms": 1.2249581952346489,
+            "p50_ms": 1.2325829884503037,
+            "p95_ms": 1.3641249970532954,
+            "p99_ms": 1.3641249970532954,
+            "min_ms": 0.9677500056568533,
+            "max_ms": 1.5775419888086617,
+            "mean_payload_bytes": 1622.0
+          }
+        },
+        {
+          "workload_id": "REMINDERS_LIST_REMINDERS",
+          "tool_name": "list_reminders",
+          "read_only": true,
+          "results": [
+            {
+              "iteration": 1,
+              "ok": true,
+              "ms": 86.69925000867806,
+              "error": null,
+              "payload_bytes": 6155
+            },
+            {
+              "iteration": 2,
+              "ok": true,
+              "ms": 87.44245799607597,
+              "error": null,
+              "payload_bytes": 6155
+            },
+            {
+              "iteration": 3,
+              "ok": true,
+              "ms": 81.6241670108866,
+              "error": null,
+              "payload_bytes": 6155
+            },
+            {
+              "iteration": 4,
+              "ok": true,
+              "ms": 84.24774999730289,
+              "error": null,
+              "payload_bytes": 6155
+            },
+            {
+              "iteration": 5,
+              "ok": true,
+              "ms": 89.16741599387024,
+              "error": null,
+              "payload_bytes": 6155
+            }
+          ],
+          "warmup_results": [
+            {
+              "iteration": 1007,
+              "ok": true,
+              "ms": 158.43695901276078,
+              "error": null,
+              "payload_bytes": 6155
+            }
+          ],
+          "summary": {
+            "total": 5,
+            "ok": 5,
+            "failed": 0,
+            "mean_ms": 85.83620820136275,
+            "p50_ms": 86.69925000867806,
+            "p95_ms": 87.44245799607597,
+            "p99_ms": 87.44245799607597,
+            "min_ms": 81.6241670108866,
+            "max_ms": 89.16741599387024,
+            "mean_payload_bytes": 6155.0
+          }
+        }
+      ],
+      "notes": []
+    }
+  ]
+}

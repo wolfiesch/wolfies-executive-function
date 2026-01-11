@@ -1,6 +1,7 @@
 //! Discovery commands: handles, unknown, discover, scheduled.
 //!
 //! CHANGELOG:
+//! - 01/10/2026 - Added contact caching (Phase 4A) - accepts Arc<ContactsManager> (Claude)
 //! - 01/10/2026 - Initial stub implementation (Claude)
 //! - 01/10/2026 - Implemented handles discovery command (Claude)
 //! - 01/10/2026 - Implemented unknown senders command (Claude)
@@ -10,6 +11,7 @@
 use anyhow::Result;
 use rusqlite;
 use serde::Serialize;
+use std::sync::Arc;
 
 use crate::contacts::manager::ContactsManager;
 use crate::db::{connection::open_db, queries};
@@ -78,12 +80,9 @@ pub fn handles(days: u32, limit: u32, json: bool) -> Result<()> {
 }
 
 /// Find messages from senders not in contacts.
-pub fn unknown(days: u32, limit: u32, json: bool) -> Result<()> {
+pub fn unknown(days: u32, limit: u32, json: bool, contacts: &Arc<ContactsManager>) -> Result<()> {
     let conn = open_db()?;
     let cutoff_cocoa = queries::days_ago_cocoa(days);
-
-    // Load contacts to filter out known senders
-    let contacts = ContactsManager::load_default().unwrap_or_else(|_| ContactsManager::empty());
 
     // Query all handles with recent messages
     let mut stmt = conn.prepare(queries::DISCOVERY_UNKNOWN)?;
@@ -142,12 +141,9 @@ pub fn unknown(days: u32, limit: u32, json: bool) -> Result<()> {
 }
 
 /// Discover frequent texters not in contacts.
-pub fn discover(days: u32, limit: u32, min_messages: u32, json: bool) -> Result<()> {
+pub fn discover(days: u32, limit: u32, min_messages: u32, json: bool, contacts: &Arc<ContactsManager>) -> Result<()> {
     let conn = open_db()?;
     let cutoff_cocoa = queries::days_ago_cocoa(days);
-
-    // Load contacts to filter out known senders
-    let contacts = ContactsManager::load_default().unwrap_or_else(|_| ContactsManager::empty());
 
     // Query all handles with recent messages
     let mut stmt = conn.prepare(queries::DISCOVERY_UNKNOWN)?;

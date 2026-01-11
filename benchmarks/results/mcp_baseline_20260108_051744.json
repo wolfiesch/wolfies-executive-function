@@ -1,0 +1,518 @@
+{
+  "generated_at": "2026-01-08 05:17:45",
+  "metadata": {
+    "iterations": 5,
+    "warmup": 1,
+    "phase_timeout_s": 30,
+    "call_timeout_s": 60
+  },
+  "servers": [
+    {
+      "name": "Gmail MCP",
+      "command": "python3",
+      "args": [
+        "/Users/wolfgangschoenberger/LIFE-PLANNER/src/integrations/gmail/server.py"
+      ],
+      "session_initialize": {
+        "ok": true,
+        "ms": 1694.0575000044191,
+        "error": null,
+        "stdout_bytes": 181
+      },
+      "session_list_tools": {
+        "ok": true,
+        "ms": 0.8934999932534993,
+        "error": null,
+        "stdout_bytes": 2030
+      },
+      "workloads": [
+        {
+          "workload_id": "GMAIL_UNREAD_COUNT",
+          "tool_name": "get_unread_count",
+          "read_only": true,
+          "results": [
+            {
+              "iteration": 1,
+              "ok": true,
+              "ms": 142.72420799534302,
+              "error": null,
+              "payload_bytes": 79
+            },
+            {
+              "iteration": 2,
+              "ok": true,
+              "ms": 136.7712909996044,
+              "error": null,
+              "payload_bytes": 79
+            },
+            {
+              "iteration": 3,
+              "ok": true,
+              "ms": 121.52679200517014,
+              "error": null,
+              "payload_bytes": 79
+            },
+            {
+              "iteration": 4,
+              "ok": true,
+              "ms": 138.30741599667817,
+              "error": null,
+              "payload_bytes": 79
+            },
+            {
+              "iteration": 5,
+              "ok": true,
+              "ms": 170.82087500602938,
+              "error": null,
+              "payload_bytes": 79
+            }
+          ],
+          "warmup_results": [
+            {
+              "iteration": 1001,
+              "ok": true,
+              "ms": 212.81362499576062,
+              "error": null,
+              "payload_bytes": 79
+            }
+          ],
+          "summary": {
+            "total": 5,
+            "ok": 5,
+            "failed": 0,
+            "mean_ms": 142.03011640056502,
+            "p50_ms": 138.30741599667817,
+            "p95_ms": 142.72420799534302,
+            "p99_ms": 142.72420799534302,
+            "min_ms": 121.52679200517014,
+            "max_ms": 170.82087500602938,
+            "mean_payload_bytes": 79.0
+          }
+        },
+        {
+          "workload_id": "GMAIL_LIST_EMAILS",
+          "tool_name": "list_emails",
+          "read_only": true,
+          "results": [
+            {
+              "iteration": 1,
+              "ok": true,
+              "ms": 1268.7200419895817,
+              "error": null,
+              "payload_bytes": 3344
+            },
+            {
+              "iteration": 2,
+              "ok": true,
+              "ms": 1287.2157919919118,
+              "error": null,
+              "payload_bytes": 3344
+            },
+            {
+              "iteration": 3,
+              "ok": true,
+              "ms": 1261.658458999591,
+              "error": null,
+              "payload_bytes": 3344
+            },
+            {
+              "iteration": 4,
+              "ok": true,
+              "ms": 1234.9653330020374,
+              "error": null,
+              "payload_bytes": 3344
+            },
+            {
+              "iteration": 5,
+              "ok": true,
+              "ms": 1246.2863749969983,
+              "error": null,
+              "payload_bytes": 3344
+            }
+          ],
+          "warmup_results": [
+            {
+              "iteration": 1007,
+              "ok": true,
+              "ms": 1347.4295000050915,
+              "error": null,
+              "payload_bytes": 3344
+            }
+          ],
+          "summary": {
+            "total": 5,
+            "ok": 5,
+            "failed": 0,
+            "mean_ms": 1259.769200196024,
+            "p50_ms": 1261.658458999591,
+            "p95_ms": 1268.7200419895817,
+            "p99_ms": 1268.7200419895817,
+            "min_ms": 1234.9653330020374,
+            "max_ms": 1287.2157919919118,
+            "mean_payload_bytes": 3344.0
+          }
+        },
+        {
+          "workload_id": "GMAIL_SEARCH",
+          "tool_name": "search_emails",
+          "read_only": true,
+          "results": [
+            {
+              "iteration": 1,
+              "ok": true,
+              "ms": 726.1828749906272,
+              "error": null,
+              "payload_bytes": 1529
+            },
+            {
+              "iteration": 2,
+              "ok": true,
+              "ms": 648.2429160096217,
+              "error": null,
+              "payload_bytes": 1529
+            },
+            {
+              "iteration": 3,
+              "ok": true,
+              "ms": 683.4092920034891,
+              "error": null,
+              "payload_bytes": 1529
+            },
+            {
+              "iteration": 4,
+              "ok": true,
+              "ms": 651.0029999917606,
+              "error": null,
+              "payload_bytes": 1529
+            },
+            {
+              "iteration": 5,
+              "ok": true,
+              "ms": 623.949458997231,
+              "error": null,
+              "payload_bytes": 1529
+            }
+          ],
+          "warmup_results": [
+            {
+              "iteration": 1013,
+              "ok": true,
+              "ms": 1114.8693329887465,
+              "error": null,
+              "payload_bytes": 1529
+            }
+          ],
+          "summary": {
+            "total": 5,
+            "ok": 5,
+            "failed": 0,
+            "mean_ms": 666.5575083985459,
+            "p50_ms": 651.0029999917606,
+            "p95_ms": 683.4092920034891,
+            "p99_ms": 683.4092920034891,
+            "min_ms": 623.949458997231,
+            "max_ms": 726.1828749906272,
+            "mean_payload_bytes": 1529.0
+          }
+        }
+      ],
+      "notes": []
+    },
+    {
+      "name": "Calendar MCP",
+      "command": "python3",
+      "args": [
+        "/Users/wolfgangschoenberger/LIFE-PLANNER/src/integrations/google_calendar/server.py"
+      ],
+      "session_initialize": {
+        "ok": true,
+        "ms": 2136.7359580035554,
+        "error": null,
+        "stdout_bytes": 191
+      },
+      "session_list_tools": {
+        "ok": true,
+        "ms": 0.9057500137714669,
+        "error": null,
+        "stdout_bytes": 2528
+      },
+      "workloads": [
+        {
+          "workload_id": "CALENDAR_LIST_EVENTS",
+          "tool_name": "list_events",
+          "read_only": true,
+          "results": [
+            {
+              "iteration": 1,
+              "ok": true,
+              "ms": 82.09258399438113,
+              "error": null,
+              "payload_bytes": 105
+            },
+            {
+              "iteration": 2,
+              "ok": true,
+              "ms": 81.11012500012293,
+              "error": null,
+              "payload_bytes": 105
+            },
+            {
+              "iteration": 3,
+              "ok": true,
+              "ms": 74.9899169895798,
+              "error": null,
+              "payload_bytes": 105
+            },
+            {
+              "iteration": 4,
+              "ok": true,
+              "ms": 75.1401660090778,
+              "error": null,
+              "payload_bytes": 105
+            },
+            {
+              "iteration": 5,
+              "ok": true,
+              "ms": 68.84045799961314,
+              "error": null,
+              "payload_bytes": 105
+            }
+          ],
+          "warmup_results": [
+            {
+              "iteration": 1001,
+              "ok": true,
+              "ms": 142.59358300478198,
+              "error": null,
+              "payload_bytes": 105
+            }
+          ],
+          "summary": {
+            "total": 5,
+            "ok": 5,
+            "failed": 0,
+            "mean_ms": 76.43464999855496,
+            "p50_ms": 75.1401660090778,
+            "p95_ms": 81.11012500012293,
+            "p99_ms": 81.11012500012293,
+            "min_ms": 68.84045799961314,
+            "max_ms": 82.09258399438113,
+            "mean_payload_bytes": 105.0
+          }
+        },
+        {
+          "workload_id": "CALENDAR_FIND_FREE_TIME",
+          "tool_name": "find_free_time",
+          "read_only": true,
+          "results": [
+            {
+              "iteration": 1,
+              "ok": true,
+              "ms": 87.18649999354966,
+              "error": null,
+              "payload_bytes": 623
+            },
+            {
+              "iteration": 2,
+              "ok": true,
+              "ms": 86.21704099641647,
+              "error": null,
+              "payload_bytes": 623
+            },
+            {
+              "iteration": 3,
+              "ok": true,
+              "ms": 79.79395799338818,
+              "error": null,
+              "payload_bytes": 623
+            },
+            {
+              "iteration": 4,
+              "ok": true,
+              "ms": 78.57562499702908,
+              "error": null,
+              "payload_bytes": 623
+            },
+            {
+              "iteration": 5,
+              "ok": true,
+              "ms": 78.91537499381229,
+              "error": null,
+              "payload_bytes": 623
+            }
+          ],
+          "warmup_results": [
+            {
+              "iteration": 1007,
+              "ok": true,
+              "ms": 78.28579199849628,
+              "error": null,
+              "payload_bytes": 623
+            }
+          ],
+          "summary": {
+            "total": 5,
+            "ok": 5,
+            "failed": 0,
+            "mean_ms": 82.13769979483914,
+            "p50_ms": 79.79395799338818,
+            "p95_ms": 86.21704099641647,
+            "p99_ms": 86.21704099641647,
+            "min_ms": 78.57562499702908,
+            "max_ms": 87.18649999354966,
+            "mean_payload_bytes": 623.0
+          }
+        }
+      ],
+      "notes": []
+    },
+    {
+      "name": "Reminders MCP",
+      "command": "python3",
+      "args": [
+        "/Users/wolfgangschoenberger/LIFE-PLANNER/Reminders/mcp_server/server.py"
+      ],
+      "session_initialize": {
+        "ok": true,
+        "ms": 1042.1531659958418,
+        "error": null,
+        "stdout_bytes": 198
+      },
+      "session_list_tools": {
+        "ok": true,
+        "ms": 1.4464580017374828,
+        "error": null,
+        "stdout_bytes": 2440
+      },
+      "workloads": [
+        {
+          "workload_id": "REMINDERS_LIST_LISTS",
+          "tool_name": "list_reminder_lists",
+          "read_only": true,
+          "results": [
+            {
+              "iteration": 1,
+              "ok": true,
+              "ms": 1.3725829921895638,
+              "error": null,
+              "payload_bytes": 1622
+            },
+            {
+              "iteration": 2,
+              "ok": true,
+              "ms": 0.9742080001160502,
+              "error": null,
+              "payload_bytes": 1622
+            },
+            {
+              "iteration": 3,
+              "ok": true,
+              "ms": 0.8106669993139803,
+              "error": null,
+              "payload_bytes": 1622
+            },
+            {
+              "iteration": 4,
+              "ok": true,
+              "ms": 0.909624999621883,
+              "error": null,
+              "payload_bytes": 1622
+            },
+            {
+              "iteration": 5,
+              "ok": true,
+              "ms": 0.7676669920329005,
+              "error": null,
+              "payload_bytes": 1622
+            }
+          ],
+          "warmup_results": [
+            {
+              "iteration": 1001,
+              "ok": true,
+              "ms": 262.9689169989433,
+              "error": null,
+              "payload_bytes": 1622
+            }
+          ],
+          "summary": {
+            "total": 5,
+            "ok": 5,
+            "failed": 0,
+            "mean_ms": 0.9669499966548756,
+            "p50_ms": 0.909624999621883,
+            "p95_ms": 0.9742080001160502,
+            "p99_ms": 0.9742080001160502,
+            "min_ms": 0.7676669920329005,
+            "max_ms": 1.3725829921895638,
+            "mean_payload_bytes": 1622.0
+          }
+        },
+        {
+          "workload_id": "REMINDERS_LIST_REMINDERS",
+          "tool_name": "list_reminders",
+          "read_only": true,
+          "results": [
+            {
+              "iteration": 1,
+              "ok": true,
+              "ms": 80.07174999511335,
+              "error": null,
+              "payload_bytes": 6155
+            },
+            {
+              "iteration": 2,
+              "ok": true,
+              "ms": 80.6226249987958,
+              "error": null,
+              "payload_bytes": 6155
+            },
+            {
+              "iteration": 3,
+              "ok": true,
+              "ms": 79.17479099705815,
+              "error": null,
+              "payload_bytes": 6155
+            },
+            {
+              "iteration": 4,
+              "ok": true,
+              "ms": 92.68287500890438,
+              "error": null,
+              "payload_bytes": 6155
+            },
+            {
+              "iteration": 5,
+              "ok": true,
+              "ms": 84.10312500200234,
+              "error": null,
+              "payload_bytes": 6155
+            }
+          ],
+          "warmup_results": [
+            {
+              "iteration": 1007,
+              "ok": true,
+              "ms": 101.14358300052118,
+              "error": null,
+              "payload_bytes": 6155
+            }
+          ],
+          "summary": {
+            "total": 5,
+            "ok": 5,
+            "failed": 0,
+            "mean_ms": 83.3310332003748,
+            "p50_ms": 80.6226249987958,
+            "p95_ms": 84.10312500200234,
+            "p99_ms": 84.10312500200234,
+            "min_ms": 79.17479099705815,
+            "max_ms": 92.68287500890438,
+            "mean_payload_bytes": 6155.0
+          }
+        }
+      ],
+      "notes": []
+    }
+  ]
+}

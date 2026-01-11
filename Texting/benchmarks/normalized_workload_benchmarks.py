@@ -168,7 +168,8 @@ def _read_jsonrpc_response(
         bytes_read += len(line)
         try:
             obj = json.loads(line.decode("utf-8", errors="ignore"))
-        except Exception:
+        except json.JSONDecodeError:
+            # Non-JSON output from server (stderr bleed, debug logs, etc.) - skip silently
             continue
         if isinstance(obj, dict) and obj.get("id") == expected_id:
             return obj, None, bytes_read
@@ -392,7 +393,8 @@ def _extract_json_payload(resp: Optional[dict]) -> Optional[Any]:
                     if stripped.startswith("{") or stripped.startswith("["):
                         try:
                             return json.loads(stripped)
-                        except Exception:
+                        except json.JSONDecodeError:
+                            # Text looked like JSON but failed to parse - try next item
                             continue
         return result
     return resp
@@ -476,6 +478,44 @@ def _find_first_key(obj: Any, keys: Tuple[str, ...]) -> Optional[Any]:
 
 
 def _extract_target_from_response(kind: str, resp: Optional[dict]) -> Optional[str]:
+    """Extract a target identifier from a tool response for use in subsequent calls.
+
+    This function uses format-specific parsing to extract identifiers from various
+    MCP server responses. The parsing logic is tightly coupled to each server's
+    output format and may need updating if server output formats change.
+
+    Supported target kinds and their expected formats:
+
+    - "cardmagic_contact": Human-readable text output with contact names.
+      Expected format: Lines with "Name (details)" pattern, skipping "Top X" headers.
+      Example: "John Doe (+1 555-1234)" → extracts "John Doe"
+
+    - "chat_guid": JSON payload with chat/conversation list.
+      Expected keys: payload.chats[].guid/chatGuid/chat_guid
+      Fallback: Searches for first occurrence of guid/chatGuid/chat_guid anywhere.
+
+    - "photon_chat_id": Text output with "chat id: XXX" lines, or JSON conversations.
+      Expected text format: "chat id: <id>" (case-insensitive)
+      Expected JSON: payload.conversations[].chatId/chat_id/id
+
+    - "chat_id": JSON payload with conversations list.
+      Expected keys: payload.conversations[].chat_id/chatId
+
+    - "imcp_sender": JSON payload with hasPart array of messages.
+      Expected keys: payload.hasPart[].sender (string or object with @id/id)
+      Filters out "me" and "unknown" values.
+
+    - "phone_number": JSON or text containing phone/email.
+      Expected JSON keys: phone, phoneNumber, number, contact
+      Fallback: Regex search for email or phone number patterns.
+
+    Args:
+        kind: Target type identifier (see above)
+        resp: Raw JSON-RPC response dict
+
+    Returns:
+        Extracted target string, or None if extraction fails
+    """
     payload = _extract_json_payload(resp)
     texts = _extract_text_blocks(resp)
 

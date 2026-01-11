@@ -9,6 +9,7 @@ Combines Gmail and Calendar into a single daemon since they share OAuth credenti
 eliminating redundant token refreshes and API discovery calls.
 
 CHANGELOG (recent first, max 5 entries):
+01/10/2026 - Fixed stale pidfile safety issue - validate socket before signaling (PR #7 review) (Claude)
 01/08/2026 - Initial daemon implementation following iMessage pattern (Claude)
 """
 
@@ -635,6 +636,22 @@ def cmd_stop(args: argparse.Namespace) -> int:
     except ValueError:
         print("invalid pidfile", file=sys.stderr)
         return 2
+
+    # Safety check: verify daemon is actually listening on socket before signaling
+    # This prevents killing an unrelated process that reused the PID
+    socket_listening = socket_path.exists() and _is_socket_listening(socket_path)
+    if not socket_listening:
+        print("socket not listening; cleaning stale pidfile (daemon may have crashed)", file=sys.stderr)
+        try:
+            pid_path.unlink()
+        except Exception:
+            pass
+        try:
+            if socket_path.exists():
+                socket_path.unlink()
+        except Exception:
+            pass
+        return 0
 
     try:
         os.kill(pid, signal.SIGTERM)

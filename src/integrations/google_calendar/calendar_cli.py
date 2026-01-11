@@ -27,6 +27,7 @@ Usage:
   python3 calendar_cli.py today --json --use-daemon
 
 CHANGELOG (recent first, max 5 entries):
+01/10/2026 - Fixed --use-daemon for events/get/create/delete commands (PR #7 review) (Claude)
 01/08/2026 - Made GoogleCalendarClient import lazy for daemon mode (~2s faster) (Claude)
 01/08/2026 - Added --use-daemon flag for warm performance (Claude)
 01/08/2026 - Initial CLI gateway implementation (Claude)
@@ -218,18 +219,24 @@ def cmd_week(args: argparse.Namespace, client: GoogleCalendarClient) -> int:
 def cmd_events(args: argparse.Namespace, client: GoogleCalendarClient) -> int:
     """List upcoming events."""
     try:
-        now = datetime.now(timezone.utc)
+        # Use daemon if requested
+        if getattr(args, 'use_daemon', False):
+            daemon = get_daemon_client()
+            result = daemon.calendar_events(count=args.count, days=args.days or 7)
+            events = result.get("events", [])
+        else:
+            now = datetime.now(timezone.utc)
 
-        # Build time range
-        time_max = None
-        if args.days:
-            time_max = now + timedelta(days=args.days)
+            # Build time range
+            time_max = None
+            if args.days:
+                time_max = now + timedelta(days=args.days)
 
-        events = client.list_events(
-            time_min=now,
-            time_max=time_max,
-            max_results=args.count
-        )
+            events = client.list_events(
+                time_min=now,
+                time_max=time_max,
+                max_results=args.count
+            )
 
         # Parse fields if provided
         fields = args.fields.split(',') if args.fields else None
@@ -259,7 +266,13 @@ def cmd_events(args: argparse.Namespace, client: GoogleCalendarClient) -> int:
 def cmd_get(args: argparse.Namespace, client: GoogleCalendarClient) -> int:
     """Get event details by ID."""
     try:
-        event = client.get_event(args.event_id)
+        # Use daemon if requested
+        if getattr(args, 'use_daemon', False):
+            daemon = get_daemon_client()
+            result = daemon.calendar_get(event_id=args.event_id)
+            event = result.get("event")
+        else:
+            event = client.get_event(args.event_id)
 
         if not event:
             if args.json:
@@ -363,6 +376,35 @@ def cmd_free(args: argparse.Namespace, client: GoogleCalendarClient) -> int:
 def cmd_create(args: argparse.Namespace, client: GoogleCalendarClient) -> int:
     """Create a new event."""
     try:
+        # Use daemon if requested
+        if getattr(args, 'use_daemon', False):
+            daemon = get_daemon_client()
+            result = daemon.calendar_create(
+                title=args.summary,
+                start=args.start,
+                end=args.end,
+                description=args.description,
+                location=args.location,
+                attendees=args.attendees.split(',') if args.attendees else None
+            )
+            # Daemon returns {"event_id": "..."} on success
+            if result.get("event_id"):
+                formatted = {"id": result["event_id"], "summary": args.summary, "start": args.start, "end": args.end}
+                if args.json:
+                    emit_json({"success": True, "event": formatted}, compact=args.compact)
+                else:
+                    print(f"Created event: {args.summary}")
+                    print(f"  ID: {result['event_id']}")
+                    print(f"  Start: {args.start}")
+                    print(f"  End: {args.end}")
+                return 0
+            else:
+                if args.json:
+                    emit_json({"success": False, "error": result.get("error", "Failed to create event")}, compact=args.compact)
+                else:
+                    print(f"Failed to create event: {result.get('error', 'unknown error')}", file=sys.stderr)
+                return 1
+
         # Parse dates
         from dateutil import parser as date_parser
         start_time = date_parser.parse(args.start)
@@ -410,7 +452,13 @@ def cmd_create(args: argparse.Namespace, client: GoogleCalendarClient) -> int:
 def cmd_delete(args: argparse.Namespace, client: GoogleCalendarClient) -> int:
     """Delete an event."""
     try:
-        success = client.delete_event(args.event_id)
+        # Use daemon if requested
+        if getattr(args, 'use_daemon', False):
+            daemon = get_daemon_client()
+            result = daemon.calendar_delete(event_id=args.event_id)
+            success = result.get("success", False)
+        else:
+            success = client.delete_event(args.event_id)
 
         if args.json:
             emit_json({"success": success, "event_id": args.event_id}, compact=args.compact)

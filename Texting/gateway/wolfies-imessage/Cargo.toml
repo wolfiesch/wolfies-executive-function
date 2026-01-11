@@ -9,6 +9,14 @@ authors = ["Wolfgang Schoenberger"]
 name = "wolfies-imessage"
 path = "src/main.rs"
 
+[[bin]]
+name = "wolfies-imessage-daemon"
+path = "src/bin/wolfies-imessage-daemon.rs"
+
+[[bin]]
+name = "wolfies-imessage-client"
+path = "src/bin/wolfies-imessage-client.rs"
+
 [dependencies]
 # CLI parsing
 clap = { version = "4", features = ["derive"] }
@@ -43,7 +51,16 @@ dirs = "6.0"
 # Regex for URL extraction
 regex = "1"
 
-# Async runtime (for daemon client)
+# Parallel execution (Phase 4B)
+rayon = "1.8"
+
+# Daemon mode (Phase 4C)
+uuid = { version = "1.7", features = ["v4", "serde"] }
+daemonize = "0.5"
+shellexpand = "3.1"
+libc = "0.2"
+
+# Async runtime (for daemon client - optional, not used yet)
 tokio = { version = "1", features = ["rt", "net", "io-util", "time", "sync"] }
 
 [profile.release]

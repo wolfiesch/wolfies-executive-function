@@ -1,13 +1,17 @@
 //! Analytics commands: analytics, followup.
 //!
 //! CHANGELOG:
+//! - 01/10/2026 - Added parallel query execution (Phase 4B) with rayon (Claude)
+//! - 01/10/2026 - Added contact caching (Phase 4A) - accepts Arc<ContactsManager> (Claude)
 //! - 01/10/2026 - Initial stub implementation (Claude)
 //! - 01/10/2026 - Implemented analytics command (Claude)
 //! - 01/10/2026 - Implemented follow-up detection command (Claude)
 
 use anyhow::{Context, Result};
-use rusqlite;
+use rayon::prelude::*;
+use rusqlite::{self, Connection};
 use serde::Serialize;
+use std::sync::Arc;
 
 use crate::contacts::manager::ContactsManager;
 use crate::db::{connection::open_db, queries};
@@ -57,27 +61,15 @@ struct FollowUpReport {
     total_items: usize,
 }
 
-/// Get conversation analytics.
-pub fn analytics(contact: Option<&str>, days: u32, json: bool) -> Result<()> {
-    let conn = open_db()?;
-    let cutoff_cocoa = queries::days_ago_cocoa(days);
+// ============================================================================
+// Helper functions for parallel query execution (Phase 4B)
+// ============================================================================
 
-    // Resolve contact to phone if provided
-    let phone = if let Some(contact_name) = contact {
-        let cm = ContactsManager::load_default()
-            .context("Failed to load contacts")?;
-        let contact = cm.find_by_name(contact_name)
-            .ok_or_else(|| anyhow::anyhow!("Contact '{}' not found", contact_name))?;
-        Some(contact.phone.clone())
-    } else {
-        None
-    };
-
-    // Query 1: Message counts
-    let (total, sent, received) = if let Some(p) = &phone {
+/// Query message counts (total, sent, received).
+fn query_message_counts(conn: &Connection, cutoff_cocoa: i64, phone: Option<&str>) -> Result<(i64, i64, i64)> {
+    if let Some(p) = phone {
         let mut stmt = conn.prepare(queries::ANALYTICS_MESSAGE_COUNTS_PHONE)?;
-        let phone_str: &str = p.as_str();
-        let params: &[&dyn rusqlite::ToSql] = &[&cutoff_cocoa, &phone_str];
+        let params: &[&dyn rusqlite::ToSql] = &[&cutoff_cocoa, &p];
         let row = stmt.query_row(params, |row: &rusqlite::Row| {
             Ok((
                 row.get::<_, i64>(0).unwrap_or(0),
@@ -85,7 +77,7 @@ pub fn analytics(contact: Option<&str>, days: u32, json: bool) -> Result<()> {
                 row.get::<_, i64>(2).unwrap_or(0),
             ))
         }).unwrap_or((0, 0, 0));
-        row
+        Ok(row)
     } else {
         let mut stmt = conn.prepare(queries::ANALYTICS_MESSAGE_COUNTS)?;
         let row = stmt.query_row(&[&cutoff_cocoa], |row: &rusqlite::Row| {
@@ -95,31 +87,137 @@ pub fn analytics(contact: Option<&str>, days: u32, json: bool) -> Result<()> {
                 row.get::<_, i64>(2).unwrap_or(0),
             ))
         }).unwrap_or((0, 0, 0));
-        row
-    };
+        Ok(row)
+    }
+}
 
-    // Query 2: Busiest hour
-    let busiest_hour = if let Some(ref p) = phone {
+/// Query busiest hour of day.
+fn query_busiest_hour(conn: &Connection, cutoff_cocoa: i64, phone: Option<&str>) -> Result<Option<i64>> {
+    if let Some(p) = phone {
         let mut stmt = conn.prepare(queries::ANALYTICS_BUSIEST_HOUR_PHONE)?;
-        let phone_str: &str = p.as_str();
-        let params: &[&dyn rusqlite::ToSql] = &[&cutoff_cocoa, &phone_str];
-        stmt.query_row(params, |row: &rusqlite::Row| row.get::<_, i64>(0)).ok()
+        let params: &[&dyn rusqlite::ToSql] = &[&cutoff_cocoa, &p];
+        Ok(stmt.query_row(params, |row: &rusqlite::Row| row.get::<_, i64>(0)).ok())
     } else {
         let mut stmt = conn.prepare(queries::ANALYTICS_BUSIEST_HOUR)?;
-        stmt.query_row(&[&cutoff_cocoa], |row: &rusqlite::Row| row.get::<_, i64>(0)).ok()
-    };
+        Ok(stmt.query_row(&[&cutoff_cocoa], |row: &rusqlite::Row| row.get::<_, i64>(0)).ok())
+    }
+}
 
-    // Query 3: Busiest day
-    let busiest_day = if let Some(ref p) = phone {
+/// Query busiest day of week.
+fn query_busiest_day(conn: &Connection, cutoff_cocoa: i64, phone: Option<&str>) -> Result<Option<i64>> {
+    if let Some(p) = phone {
         let mut stmt = conn.prepare(queries::ANALYTICS_BUSIEST_DAY_PHONE)?;
-        let phone_str: &str = p.as_str();
-        let params: &[&dyn rusqlite::ToSql] = &[&cutoff_cocoa, &phone_str];
-        stmt.query_row(params, |row: &rusqlite::Row| row.get::<_, i64>(0)).ok()
+        let params: &[&dyn rusqlite::ToSql] = &[&cutoff_cocoa, &p];
+        Ok(stmt.query_row(params, |row: &rusqlite::Row| row.get::<_, i64>(0)).ok())
     } else {
         let mut stmt = conn.prepare(queries::ANALYTICS_BUSIEST_DAY)?;
-        stmt.query_row(&[&cutoff_cocoa], |row: &rusqlite::Row| row.get::<_, i64>(0)).ok()
+        Ok(stmt.query_row(&[&cutoff_cocoa], |row: &rusqlite::Row| row.get::<_, i64>(0)).ok())
+    }
+}
+
+/// Query top contacts (only for global analytics).
+fn query_top_contacts(conn: &Connection, cutoff_cocoa: i64) -> Result<Vec<TopContact>> {
+    let mut stmt = conn.prepare(queries::ANALYTICS_TOP_CONTACTS)?;
+    let rows = stmt.query_map(&[&cutoff_cocoa], |row: &rusqlite::Row| {
+        Ok(TopContact {
+            phone: row.get(0)?,
+            message_count: row.get(1)?,
+        })
+    })?;
+    Ok(rows.filter_map(|r: rusqlite::Result<TopContact>| r.ok()).collect())
+}
+
+/// Query attachment count.
+fn query_attachments(conn: &Connection, cutoff_cocoa: i64, phone: Option<&str>) -> Result<i64> {
+    if let Some(p) = phone {
+        let mut stmt = conn.prepare(queries::ANALYTICS_ATTACHMENTS_PHONE)?;
+        let params: &[&dyn rusqlite::ToSql] = &[&cutoff_cocoa, &p];
+        Ok(stmt.query_row(params, |row: &rusqlite::Row| row.get::<_, i64>(0)).unwrap_or(0))
+    } else {
+        let mut stmt = conn.prepare(queries::ANALYTICS_ATTACHMENTS)?;
+        Ok(stmt.query_row(&[&cutoff_cocoa], |row: &rusqlite::Row| row.get::<_, i64>(0)).unwrap_or(0))
+    }
+}
+
+/// Query reaction count.
+fn query_reactions(conn: &Connection, cutoff_cocoa: i64, phone: Option<&str>) -> Result<i64> {
+    if let Some(p) = phone {
+        let mut stmt = conn.prepare(queries::ANALYTICS_REACTIONS_PHONE)?;
+        let params: &[&dyn rusqlite::ToSql] = &[&cutoff_cocoa, &p];
+        Ok(stmt.query_row(params, |row: &rusqlite::Row| row.get::<_, i64>(0)).unwrap_or(0))
+    } else {
+        let mut stmt = conn.prepare(queries::ANALYTICS_REACTIONS)?;
+        Ok(stmt.query_row(&[&cutoff_cocoa], |row: &rusqlite::Row| row.get::<_, i64>(0)).unwrap_or(0))
+    }
+}
+
+// ============================================================================
+// Main analytics command with parallel execution
+// ============================================================================
+
+/// Get conversation analytics.
+pub fn analytics(contact: Option<&str>, days: u32, json: bool, contacts: &Arc<ContactsManager>) -> Result<()> {
+    let cutoff_cocoa = queries::days_ago_cocoa(days);
+
+    // Resolve contact to phone if provided
+    let phone = if let Some(contact_name) = contact {
+        let contact = contacts.find_by_name(contact_name)
+            .ok_or_else(|| anyhow::anyhow!("Contact '{}' not found", contact_name))?;
+        Some(contact.phone.clone())
+    } else {
+        None
     };
 
+    // Execute 6 queries in parallel using rayon
+    // Each query opens its own connection (simple approach)
+    let phone_ref = phone.as_deref();
+
+    let ((total, sent, received), ((busiest_hour, busiest_day), (top_contacts, (attachment_count, reaction_count)))) = rayon::join(
+        || {
+            // Query 1: Message counts
+            let conn = open_db().expect("Failed to open DB");
+            query_message_counts(&conn, cutoff_cocoa, phone_ref).expect("Query failed")
+        },
+        || rayon::join(
+            || rayon::join(
+                || {
+                    // Query 2: Busiest hour
+                    let conn = open_db().expect("Failed to open DB");
+                    query_busiest_hour(&conn, cutoff_cocoa, phone_ref).expect("Query failed")
+                },
+                || {
+                    // Query 3: Busiest day
+                    let conn = open_db().expect("Failed to open DB");
+                    query_busiest_day(&conn, cutoff_cocoa, phone_ref).expect("Query failed")
+                }
+            ),
+            || rayon::join(
+                || {
+                    // Query 4: Top contacts (only if no phone filter)
+                    if phone_ref.is_none() {
+                        let conn = open_db().expect("Failed to open DB");
+                        query_top_contacts(&conn, cutoff_cocoa).expect("Query failed")
+                    } else {
+                        Vec::new()
+                    }
+                },
+                || rayon::join(
+                    || {
+                        // Query 5: Attachments
+                        let conn = open_db().expect("Failed to open DB");
+                        query_attachments(&conn, cutoff_cocoa, phone_ref).expect("Query failed")
+                    },
+                    || {
+                        // Query 6: Reactions
+                        let conn = open_db().expect("Failed to open DB");
+                        query_reactions(&conn, cutoff_cocoa, phone_ref).expect("Query failed")
+                    }
+                )
+            )
+        )
+    );
+
+    // Convert busiest day number to name
     let days_of_week = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
     let busiest_day_name = busiest_day.and_then(|d| {
         if d >= 0 && d < 7 {
@@ -128,43 +226,6 @@ pub fn analytics(contact: Option<&str>, days: u32, json: bool) -> Result<()> {
             None
         }
     });
-
-    // Query 4: Top contacts (only if not filtering by phone)
-    let top_contacts = if phone.is_none() {
-        let mut stmt = conn.prepare(queries::ANALYTICS_TOP_CONTACTS)?;
-        let rows = stmt.query_map(&[&cutoff_cocoa], |row: &rusqlite::Row| {
-            Ok(TopContact {
-                phone: row.get(0)?,
-                message_count: row.get(1)?,
-            })
-        })?;
-
-        rows.filter_map(|r: rusqlite::Result<TopContact>| r.ok()).collect()
-    } else {
-        Vec::new()
-    };
-
-    // Query 5: Attachment count
-    let attachment_count = if let Some(ref p) = phone {
-        let mut stmt = conn.prepare(queries::ANALYTICS_ATTACHMENTS_PHONE)?;
-        let phone_str: &str = p.as_str();
-        let params: &[&dyn rusqlite::ToSql] = &[&cutoff_cocoa, &phone_str];
-        stmt.query_row(params, |row: &rusqlite::Row| row.get::<_, i64>(0)).unwrap_or(0)
-    } else {
-        let mut stmt = conn.prepare(queries::ANALYTICS_ATTACHMENTS)?;
-        stmt.query_row(&[&cutoff_cocoa], |row: &rusqlite::Row| row.get::<_, i64>(0)).unwrap_or(0)
-    };
-
-    // Query 6: Reaction count
-    let reaction_count = if let Some(ref p) = phone {
-        let mut stmt = conn.prepare(queries::ANALYTICS_REACTIONS_PHONE)?;
-        let phone_str: &str = p.as_str();
-        let params: &[&dyn rusqlite::ToSql] = &[&cutoff_cocoa, &phone_str];
-        stmt.query_row(params, |row: &rusqlite::Row| row.get::<_, i64>(0)).unwrap_or(0)
-    } else {
-        let mut stmt = conn.prepare(queries::ANALYTICS_REACTIONS)?;
-        stmt.query_row(&[&cutoff_cocoa], |row: &rusqlite::Row| row.get::<_, i64>(0)).unwrap_or(0)
-    };
 
     // Build analytics struct
     let avg_daily = if days > 0 {
@@ -217,13 +278,9 @@ pub fn analytics(contact: Option<&str>, days: u32, json: bool) -> Result<()> {
 }
 
 /// Detect messages needing follow-up.
-pub fn followup(days: u32, stale: u32, json: bool) -> Result<()> {
-    let conn = open_db()?;
+pub fn followup(days: u32, stale: u32, json: bool, contacts: &Arc<ContactsManager>) -> Result<()> {
     let cutoff_cocoa = queries::days_ago_cocoa(days);
     let stale_threshold_ns = (stale as i64) * 24 * 3600 * 1_000_000_000; // Convert days to nanoseconds
-
-    // Load contacts for name resolution
-    let contacts = ContactsManager::load_default().unwrap_or_else(|_| ContactsManager::empty());
 
     // Helper to calculate days ago from Cocoa timestamp
     let days_ago_from_cocoa = |cocoa_ns: i64| -> i64 {
@@ -236,77 +293,90 @@ pub fn followup(days: u32, stale: u32, json: bool) -> Result<()> {
         (now - msg_unix) / 86400
     };
 
-    // Query 1: Unanswered questions
-    let mut stmt = conn.prepare(queries::FOLLOWUP_UNANSWERED_QUESTIONS)?;
-    let question_rows = stmt.query_map([cutoff_cocoa, stale_threshold_ns], |row: &rusqlite::Row| {
-        let _rowid: i64 = row.get(0)?;
-        let text: Option<String> = row.get(1)?;
-        let date_cocoa: i64 = row.get(2)?;
-        let phone: Option<String> = row.get(3)?;
+    // Clone contacts for parallel execution
+    let contacts_clone = Arc::clone(contacts);
 
-        // Convert Cocoa timestamp to ISO string
-        let unix_ts = queries::cocoa_to_unix(date_cocoa);
-        use std::time::{UNIX_EPOCH, Duration};
-        let system_time = UNIX_EPOCH + Duration::from_secs(unix_ts as u64);
-        let datetime: chrono::DateTime<chrono::Utc> = system_time.into();
+    // Execute 2 queries in parallel using rayon
+    let (unanswered_questions, stale_conversations) = rayon::join(
+        || {
+            // Query 1: Unanswered questions
+            let conn = open_db().expect("Failed to open DB");
+            let mut stmt = conn.prepare(queries::FOLLOWUP_UNANSWERED_QUESTIONS)
+                .expect("Failed to prepare query");
+            let question_rows = stmt.query_map([cutoff_cocoa, stale_threshold_ns], |row: &rusqlite::Row| {
+                let _rowid: i64 = row.get(0)?;
+                let text: Option<String> = row.get(1)?;
+                let date_cocoa: i64 = row.get(2)?;
+                let phone: Option<String> = row.get(3)?;
 
-        Ok((
-            phone.unwrap_or_else(|| "Unknown".to_string()),
-            text.unwrap_or_else(|| "[no text]".to_string()),
-            datetime.to_rfc3339(),
-            days_ago_from_cocoa(date_cocoa),
-        ))
-    })?;
+                // Convert Cocoa timestamp to ISO string
+                let unix_ts = queries::cocoa_to_unix(date_cocoa);
+                use std::time::{UNIX_EPOCH, Duration};
+                let system_time = UNIX_EPOCH + Duration::from_secs(unix_ts as u64);
+                let datetime: chrono::DateTime<chrono::Utc> = system_time.into();
 
-    let unanswered_questions: Vec<UnansweredQuestion> = question_rows
-        .filter_map(|r: rusqlite::Result<(String, String, String, i64)>| r.ok())
-        .map(|(phone, text, date, days_ago)| {
-            let contact_name = contacts.find_by_phone(&phone).map(|c| c.name.clone());
-            UnansweredQuestion {
-                phone,
-                contact_name,
-                text,
-                date,
-                days_ago,
-            }
-        })
-        .collect();
+                Ok((
+                    phone.unwrap_or_else(|| "Unknown".to_string()),
+                    text.unwrap_or_else(|| "[no text]".to_string()),
+                    datetime.to_rfc3339(),
+                    days_ago_from_cocoa(date_cocoa),
+                ))
+            }).expect("Query failed");
 
-    // Query 2: Stale conversations
-    let mut stmt = conn.prepare(queries::FOLLOWUP_STALE_CONVERSATIONS)?;
-    let stale_rows = stmt.query_map([cutoff_cocoa, stale_threshold_ns], |row: &rusqlite::Row| {
-        let phone: Option<String> = row.get(0)?;
-        let last_date_cocoa: i64 = row.get(1)?;
-        let last_text: Option<String> = row.get(2)?;
-        let _last_from_me: bool = row.get(3)?;
+            question_rows
+                .filter_map(|r: rusqlite::Result<(String, String, String, i64)>| r.ok())
+                .map(|(phone, text, date, days_ago)| {
+                    let contact_name = contacts.find_by_phone(&phone).map(|c| c.name.clone());
+                    UnansweredQuestion {
+                        phone,
+                        contact_name,
+                        text,
+                        date,
+                        days_ago,
+                    }
+                })
+                .collect::<Vec<_>>()
+        },
+        || {
+            // Query 2: Stale conversations
+            let conn = open_db().expect("Failed to open DB");
+            let mut stmt = conn.prepare(queries::FOLLOWUP_STALE_CONVERSATIONS)
+                .expect("Failed to prepare query");
+            let stale_rows = stmt.query_map([cutoff_cocoa, stale_threshold_ns], |row: &rusqlite::Row| {
+                let phone: Option<String> = row.get(0)?;
+                let last_date_cocoa: i64 = row.get(1)?;
+                let last_text: Option<String> = row.get(2)?;
+                let _last_from_me: bool = row.get(3)?;
 
-        // Convert Cocoa timestamp to ISO string
-        let unix_ts = queries::cocoa_to_unix(last_date_cocoa);
-        use std::time::{UNIX_EPOCH, Duration};
-        let system_time = UNIX_EPOCH + Duration::from_secs(unix_ts as u64);
-        let datetime: chrono::DateTime<chrono::Utc> = system_time.into();
+                // Convert Cocoa timestamp to ISO string
+                let unix_ts = queries::cocoa_to_unix(last_date_cocoa);
+                use std::time::{UNIX_EPOCH, Duration};
+                let system_time = UNIX_EPOCH + Duration::from_secs(unix_ts as u64);
+                let datetime: chrono::DateTime<chrono::Utc> = system_time.into();
 
-        Ok((
-            phone.unwrap_or_else(|| "Unknown".to_string()),
-            last_text,
-            datetime.to_rfc3339(),
-            days_ago_from_cocoa(last_date_cocoa),
-        ))
-    })?;
+                Ok((
+                    phone.unwrap_or_else(|| "Unknown".to_string()),
+                    last_text,
+                    datetime.to_rfc3339(),
+                    days_ago_from_cocoa(last_date_cocoa),
+                ))
+            }).expect("Query failed");
 
-    let stale_conversations: Vec<StaleConversation> = stale_rows
-        .filter_map(|r: rusqlite::Result<(String, Option<String>, String, i64)>| r.ok())
-        .map(|(phone, last_text, last_date, days_ago)| {
-            let contact_name = contacts.find_by_phone(&phone).map(|c| c.name.clone());
-            StaleConversation {
-                phone,
-                contact_name,
-                last_text,
-                last_date,
-                days_ago,
-            }
-        })
-        .collect();
+            stale_rows
+                .filter_map(|r: rusqlite::Result<(String, Option<String>, String, i64)>| r.ok())
+                .map(|(phone, last_text, last_date, days_ago)| {
+                    let contact_name = contacts_clone.find_by_phone(&phone).map(|c| c.name.clone());
+                    StaleConversation {
+                        phone,
+                        contact_name,
+                        last_text,
+                        last_date,
+                        days_ago,
+                    }
+                })
+                .collect::<Vec<_>>()
+        }
+    );
 
     let report = FollowUpReport {
         unanswered_questions: unanswered_questions.clone(),

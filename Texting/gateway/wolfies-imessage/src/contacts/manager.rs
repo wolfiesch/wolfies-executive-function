@@ -61,6 +61,7 @@ struct ContactsFile {
 }
 
 /// Manages contacts loaded from JSON file.
+#[derive(Debug, Clone)]
 pub struct ContactsManager {
     contacts: Vec<Contact>,
 }

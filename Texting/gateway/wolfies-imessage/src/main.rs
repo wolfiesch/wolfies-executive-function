@@ -8,6 +8,7 @@
 
 use clap::{Parser, Subcommand};
 use std::process::ExitCode;
+use std::sync::Arc;
 
 mod applescript;
 mod commands;
@@ -502,6 +503,12 @@ fn main() -> ExitCode {
         max_text_chars: cli.max_text_chars,
     };
 
+    // Load contacts once (shared across commands)
+    let contacts = Arc::new(
+        contacts::manager::ContactsManager::load_default()
+            .unwrap_or_else(|_| contacts::manager::ContactsManager::empty())
+    );
+
     let result = match cli.command {
         // Core reading commands
         Command::Find { contact, query, limit } => {
@@ -545,10 +552,10 @@ fn main() -> ExitCode {
 
         // Analytics commands
         Command::Analytics { contact, days } => {
-            commands::analytics::analytics(contact.as_deref(), days, cli.json)
+            commands::analytics::analytics(contact.as_deref(), days, cli.json, &contacts)
         }
         Command::Followup { days, stale } => {
-            commands::analytics::followup(days, stale, cli.json)
+            commands::analytics::followup(days, stale, cli.json, &contacts)
         }
 
         // Group commands
@@ -581,10 +588,10 @@ fn main() -> ExitCode {
             commands::discovery::handles(days, limit, cli.json)
         }
         Command::Unknown { days, limit } => {
-            commands::discovery::unknown(days, limit, cli.json)
+            commands::discovery::unknown(days, limit, cli.json, &contacts)
         }
         Command::Discover { days, limit, min_messages } => {
-            commands::discovery::discover(days, limit, min_messages, cli.json)
+            commands::discovery::discover(days, limit, min_messages, cli.json, &contacts)
         }
         Command::Scheduled => {
             commands::discovery::scheduled(cli.json)
