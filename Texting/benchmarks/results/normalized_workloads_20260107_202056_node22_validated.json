@@ -1,0 +1,2870 @@
+{
+  "generated_at": "2026-01-07 20:20:57",
+  "metadata": {
+    "mode": "session",
+    "iterations": 5,
+    "warmup": 1,
+    "phase_timeout_s": 40,
+    "call_timeout_s": 30,
+    "workloads": [
+      "W0_UNREAD",
+      "W1_RECENT",
+      "W2_SEARCH",
+      "W3_THREAD"
+    ],
+    "run_label": "20260107_202056_node22_validated",
+    "node_version": "v22.21.1",
+    "validation": {
+      "strict_validity": true,
+      "min_bytes": {
+        "W0_UNREAD": 150,
+        "W1_RECENT": 200,
+        "W2_SEARCH": 200,
+        "W3_THREAD": 150
+      },
+      "min_items": {
+        "W0_UNREAD": 0,
+        "W1_RECENT": 1,
+        "W2_SEARCH": 1,
+        "W3_THREAD": 1
+      },
+      "max_payload_bytes": 10000000,
+      "max_payload_tokens": 2500000
+    }
+  },
+  "servers": [
+    {
+      "name": "brew MCP: cardmagic/messages (messages --mcp)",
+      "command": "messages",
+      "args": [
+        "--mcp"
+      ],
+      "mode": "session",
+      "session_initialize": {
+        "ok": true,
+        "ms": 1021.5078750043176,
+        "error": null,
+        "stdout_bytes": 146,
+        "approx_tokens": 37
+      },
+      "session_list_tools": {
+        "ok": true,
+        "ms": 1.5237500047078356,
+        "error": null,
+        "stdout_bytes": 2625,
+        "approx_tokens": 657
+      },
+      "workloads": [
+        {
+          "workload_id": "W0_UNREAD",
+          "tool_name": null,
+          "read_only": true,
+          "status": "unsupported",
+          "summary": {
+            "ok": 0,
+            "total": 0,
+            "mean_ms": null,
+            "p95_ms": null,
+            "mean_payload_bytes": null,
+            "mean_payload_tokens": null
+          },
+          "valid_summary": {
+            "ok": 0,
+            "total": 0,
+            "mean_ms": null,
+            "p95_ms": null,
+            "mean_payload_bytes": null,
+            "mean_payload_tokens": null
+          },
+          "validation_summary": {
+            "counts": {},
+            "top_reasons": []
+          },
+          "warmup_results": [],
+          "results": [],
+          "notes": [
+            "unsupported workload (no tool mapping)"
+          ]
+        },
+        {
+          "workload_id": "W1_RECENT",
+          "tool_name": "recent_messages",
+          "read_only": true,
+          "status": "ok_empty",
+          "summary": {
+            "ok": 5,
+            "total": 5,
+            "mean_ms": 1.9004249974386767,
+            "p95_ms": 1.9951669964939356,
+            "mean_payload_bytes": 440.0,
+            "mean_payload_tokens": 110.0
+          },
+          "valid_summary": {
+            "ok": 0,
+            "total": 5,
+            "mean_ms": null,
+            "p95_ms": null,
+            "mean_payload_bytes": null,
+            "mean_payload_tokens": null
+          },
+          "validation_summary": {
+            "counts": {
+              "ok_empty": 5
+            },
+            "top_reasons": [
+              "duplicate_payload"
+            ]
+          },
+          "warmup_results": [
+            {
+              "iteration": 1001,
+              "ok": true,
+              "ms": 26.559167003142647,
+              "error": null,
+              "stdout_bytes": 472,
+              "approx_tokens": 118,
+              "payload_bytes": 440,
+              "payload_tokens_est": 110,
+              "payload_fingerprint": "fc808cef6c54752cbba9edbc8ad28e59bc390bc4c29043f6d29b82d7f288897f",
+              "payload_item_count": 1,
+              "validation_status": "ok_valid",
+              "validation_reason": null
+            }
+          ],
+          "results": [
+            {
+              "iteration": 1,
+              "ok": true,
+              "ms": 2.215000000433065,
+              "error": null,
+              "stdout_bytes": 472,
+              "approx_tokens": 118,
+              "payload_bytes": 440,
+              "payload_tokens_est": 110,
+              "payload_fingerprint": "fc808cef6c54752cbba9edbc8ad28e59bc390bc4c29043f6d29b82d7f288897f",
+              "payload_item_count": 1,
+              "validation_status": "ok_empty",
+              "validation_reason": "duplicate_payload"
+            },
+            {
+              "iteration": 2,
+              "ok": true,
+              "ms": 1.9951669964939356,
+              "error": null,
+              "stdout_bytes": 472,
+              "approx_tokens": 118,
+              "payload_bytes": 440,
+              "payload_tokens_est": 110,
+              "payload_fingerprint": "fc808cef6c54752cbba9edbc8ad28e59bc390bc4c29043f6d29b82d7f288897f",
+              "payload_item_count": 1,
+              "validation_status": "ok_empty",
+              "validation_reason": "duplicate_payload"
+            },
+            {
+              "iteration": 3,
+              "ok": true,
+              "ms": 1.8038749985862523,
+              "error": null,
+              "stdout_bytes": 472,
+              "approx_tokens": 118,
+              "payload_bytes": 440,
+              "payload_tokens_est": 110,
+              "payload_fingerprint": "fc808cef6c54752cbba9edbc8ad28e59bc390bc4c29043f6d29b82d7f288897f",
+              "payload_item_count": 1,
+              "validation_status": "ok_empty",
+              "validation_reason": "duplicate_payload"
+            },
+            {
+              "iteration": 4,
+              "ok": true,
+              "ms": 1.7437499918742105,
+              "error": null,
+              "stdout_bytes": 472,
+              "approx_tokens": 118,
+              "payload_bytes": 440,
+              "payload_tokens_est": 110,
+              "payload_fingerprint": "fc808cef6c54752cbba9edbc8ad28e59bc390bc4c29043f6d29b82d7f288897f",
+              "payload_item_count": 1,
+              "validation_status": "ok_empty",
+              "validation_reason": "duplicate_payload"
+            },
+            {
+              "iteration": 5,
+              "ok": true,
+              "ms": 1.7443329998059198,
+              "error": null,
+              "stdout_bytes": 472,
+              "approx_tokens": 118,
+              "payload_bytes": 440,
+              "payload_tokens_est": 110,
+              "payload_fingerprint": "fc808cef6c54752cbba9edbc8ad28e59bc390bc4c29043f6d29b82d7f288897f",
+              "payload_item_count": 1,
+              "validation_status": "ok_empty",
+              "validation_reason": "duplicate_payload"
+            }
+          ],
+          "notes": [
+            "suspicious: identical payload across workloads W1_RECENT, W2_SEARCH, W3_THREAD"
+          ]
+        },
+        {
+          "workload_id": "W2_SEARCH",
+          "tool_name": "search_messages",
+          "read_only": true,
+          "status": "ok_empty",
+          "summary": {
+            "ok": 5,
+            "total": 5,
+            "mean_ms": 1.5057334006996825,
+            "p95_ms": 1.4680830063298345,
+            "mean_payload_bytes": 440.0,
+            "mean_payload_tokens": 110.0
+          },
+          "valid_summary": {
+            "ok": 0,
+            "total": 5,
+            "mean_ms": null,
+            "p95_ms": null,
+            "mean_payload_bytes": null,
+            "mean_payload_tokens": null
+          },
+          "validation_summary": {
+            "counts": {
+              "ok_empty": 5
+            },
+            "top_reasons": [
+              "duplicate_payload"
+            ]
+          },
+          "warmup_results": [
+            {
+              "iteration": 1007,
+              "ok": true,
+              "ms": 1.6540840006200597,
+              "error": null,
+              "stdout_bytes": 472,
+              "approx_tokens": 118,
+              "payload_bytes": 440,
+              "payload_tokens_est": 110,
+              "payload_fingerprint": "fc808cef6c54752cbba9edbc8ad28e59bc390bc4c29043f6d29b82d7f288897f",
+              "payload_item_count": 1,
+              "validation_status": "ok_valid",
+              "validation_reason": null
+            }
+          ],
+          "results": [
+            {
+              "iteration": 1,
+              "ok": true,
+              "ms": 1.4048750017536804,
+              "error": null,
+              "stdout_bytes": 472,
+              "approx_tokens": 118,
+              "payload_bytes": 440,
+              "payload_tokens_est": 110,
+              "payload_fingerprint": "fc808cef6c54752cbba9edbc8ad28e59bc390bc4c29043f6d29b82d7f288897f",
+              "payload_item_count": 1,
+              "validation_status": "ok_empty",
+              "validation_reason": "duplicate_payload"
+            },
+            {
+              "iteration": 2,
+              "ok": true,
+              "ms": 1.9118749914923683,
+              "error": null,
+              "stdout_bytes": 472,
+              "approx_tokens": 118,
+              "payload_bytes": 440,
+              "payload_tokens_est": 110,
+              "payload_fingerprint": "fc808cef6c54752cbba9edbc8ad28e59bc390bc4c29043f6d29b82d7f288897f",
+              "payload_item_count": 1,
+              "validation_status": "ok_empty",
+              "validation_reason": "duplicate_payload"
+            },
+            {
+              "iteration": 3,
+              "ok": true,
+              "ms": 1.438125007553026,
+              "error": null,
+              "stdout_bytes": 472,
+              "approx_tokens": 118,
+              "payload_bytes": 440,
+              "payload_tokens_est": 110,
+              "payload_fingerprint": "fc808cef6c54752cbba9edbc8ad28e59bc390bc4c29043f6d29b82d7f288897f",
+              "payload_item_count": 1,
+              "validation_status": "ok_empty",
+              "validation_reason": "duplicate_payload"
+            },
+            {
+              "iteration": 4,
+              "ok": true,
+              "ms": 1.4680830063298345,
+              "error": null,
+              "stdout_bytes": 472,
+              "approx_tokens": 118,
+              "payload_bytes": 440,
+              "payload_tokens_est": 110,
+              "payload_fingerprint": "fc808cef6c54752cbba9edbc8ad28e59bc390bc4c29043f6d29b82d7f288897f",
+              "payload_item_count": 1,
+              "validation_status": "ok_empty",
+              "validation_reason": "duplicate_payload"
+            },
+            {
+              "iteration": 5,
+              "ok": true,
+              "ms": 1.3057089963695034,
+              "error": null,
+              "stdout_bytes": 472,
+              "approx_tokens": 118,
+              "payload_bytes": 440,
+              "payload_tokens_est": 110,
+              "payload_fingerprint": "fc808cef6c54752cbba9edbc8ad28e59bc390bc4c29043f6d29b82d7f288897f",
+              "payload_item_count": 1,
+              "validation_status": "ok_empty",
+              "validation_reason": "duplicate_payload"
+            }
+          ],
+          "notes": [
+            "suspicious: identical payload across workloads W1_RECENT, W2_SEARCH, W3_THREAD"
+          ]
+        },
+        {
+          "workload_id": "W3_THREAD",
+          "tool_name": "get_thread",
+          "read_only": true,
+          "status": "ok_empty",
+          "summary": {
+            "ok": 5,
+            "total": 5,
+            "mean_ms": 1.364799597649835,
+            "p95_ms": 1.5842080028960481,
+            "mean_payload_bytes": 440.0,
+            "mean_payload_tokens": 110.0
+          },
+          "valid_summary": {
+            "ok": 0,
+            "total": 5,
+            "mean_ms": null,
+            "p95_ms": null,
+            "mean_payload_bytes": null,
+            "mean_payload_tokens": null
+          },
+          "validation_summary": {
+            "counts": {
+              "ok_empty": 5
+            },
+            "top_reasons": [
+              "duplicate_payload"
+            ]
+          },
+          "warmup_results": [
+            {
+              "iteration": 1014,
+              "ok": true,
+              "ms": 1.4270840038079768,
+              "error": null,
+              "stdout_bytes": 472,
+              "approx_tokens": 118,
+              "payload_bytes": 440,
+              "payload_tokens_est": 110,
+              "payload_fingerprint": "fc808cef6c54752cbba9edbc8ad28e59bc390bc4c29043f6d29b82d7f288897f",
+              "payload_item_count": 1,
+              "validation_status": "ok_valid",
+              "validation_reason": null
+            }
+          ],
+          "results": [
+            {
+              "iteration": 1,
+              "ok": true,
+              "ms": 1.6059579938882962,
+              "error": null,
+              "stdout_bytes": 472,
+              "approx_tokens": 118,
+              "payload_bytes": 440,
+              "payload_tokens_est": 110,
+              "payload_fingerprint": "fc808cef6c54752cbba9edbc8ad28e59bc390bc4c29043f6d29b82d7f288897f",
+              "payload_item_count": 1,
+              "validation_status": "ok_empty",
+              "validation_reason": "duplicate_payload"
+            },
+            {
+              "iteration": 2,
+              "ok": true,
+              "ms": 1.2373329955153167,
+              "error": null,
+              "stdout_bytes": 472,
+              "approx_tokens": 118,
+              "payload_bytes": 440,
+              "payload_tokens_est": 110,
+              "payload_fingerprint": "fc808cef6c54752cbba9edbc8ad28e59bc390bc4c29043f6d29b82d7f288897f",
+              "payload_item_count": 1,
+              "validation_status": "ok_empty",
+              "validation_reason": "duplicate_payload"
+            },
+            {
+              "iteration": 3,
+              "ok": true,
+              "ms": 1.118165993830189,
+              "error": null,
+              "stdout_bytes": 472,
+              "approx_tokens": 118,
+              "payload_bytes": 440,
+              "payload_tokens_est": 110,
+              "payload_fingerprint": "fc808cef6c54752cbba9edbc8ad28e59bc390bc4c29043f6d29b82d7f288897f",
+              "payload_item_count": 1,
+              "validation_status": "ok_empty",
+              "validation_reason": "duplicate_payload"
+            },
+            {
+              "iteration": 4,
+              "ok": true,
+              "ms": 1.5842080028960481,
+              "error": null,
+              "stdout_bytes": 472,
+              "approx_tokens": 118,
+              "payload_bytes": 440,
+              "payload_tokens_est": 110,
+              "payload_fingerprint": "fc808cef6c54752cbba9edbc8ad28e59bc390bc4c29043f6d29b82d7f288897f",
+              "payload_item_count": 1,
+              "validation_status": "ok_empty",
+              "validation_reason": "duplicate_payload"
+            },
+            {
+              "iteration": 5,
+              "ok": true,
+              "ms": 1.278333002119325,
+              "error": null,
+              "stdout_bytes": 472,
+              "approx_tokens": 118,
+              "payload_bytes": 440,
+              "payload_tokens_est": 110,
+              "payload_fingerprint": "fc808cef6c54752cbba9edbc8ad28e59bc390bc4c29043f6d29b82d7f288897f",
+              "payload_item_count": 1,
+              "validation_status": "ok_empty",
+              "validation_reason": "duplicate_payload"
+            }
+          ],
+          "notes": [
+            "suspicious: identical payload across workloads W1_RECENT, W2_SEARCH, W3_THREAD"
+          ]
+        }
+      ],
+      "notes": []
+    },
+    {
+      "name": "github MCP: wyattjoh/imessage-mcp (deno stdio)",
+      "command": "deno",
+      "args": [
+        "run",
+        "--allow-read",
+        "--allow-env",
+        "--allow-sys",
+        "--allow-run",
+        "--allow-ffi",
+        "packages/imessage-mcp/mod.ts"
+      ],
+      "mode": "session",
+      "session_initialize": {
+        "ok": true,
+        "ms": 1056.552082998678,
+        "error": null,
+        "stdout_bytes": 207,
+        "approx_tokens": 52
+      },
+      "session_list_tools": {
+        "ok": true,
+        "ms": 3.4052080009132624,
+        "error": null,
+        "stdout_bytes": 6134,
+        "approx_tokens": 1534
+      },
+      "workloads": [
+        {
+          "workload_id": "W0_UNREAD",
+          "tool_name": null,
+          "read_only": true,
+          "status": "unsupported",
+          "summary": {
+            "ok": 0,
+            "total": 0,
+            "mean_ms": null,
+            "p95_ms": null,
+            "mean_payload_bytes": null,
+            "mean_payload_tokens": null
+          },
+          "valid_summary": {
+            "ok": 0,
+            "total": 0,
+            "mean_ms": null,
+            "p95_ms": null,
+            "mean_payload_bytes": null,
+            "mean_payload_tokens": null
+          },
+          "validation_summary": {
+            "counts": {},
+            "top_reasons": []
+          },
+          "warmup_results": [],
+          "results": [],
+          "notes": [
+            "unsupported workload (no tool mapping)"
+          ]
+        },
+        {
+          "workload_id": "W1_RECENT",
+          "tool_name": "get_recent_messages",
+          "read_only": true,
+          "status": "ok_valid",
+          "summary": {
+            "ok": 5,
+            "total": 5,
+            "mean_ms": 10.018591803964227,
+            "p95_ms": 10.353959005442448,
+            "mean_payload_bytes": 839.0,
+            "mean_payload_tokens": 210.0
+          },
+          "valid_summary": {
+            "ok": 5,
+            "total": 5,
+            "mean_ms": 10.018591803964227,
+            "p95_ms": 10.353959005442448,
+            "mean_payload_bytes": 839.0,
+            "mean_payload_tokens": 210.0
+          },
+          "validation_summary": {
+            "counts": {
+              "ok_valid": 5
+            },
+            "top_reasons": []
+          },
+          "warmup_results": [
+            {
+              "iteration": 1001,
+              "ok": true,
+              "ms": 16.54558299924247,
+              "error": null,
+              "stdout_bytes": 873,
+              "approx_tokens": 219,
+              "payload_bytes": 839,
+              "payload_tokens_est": 210,
+              "payload_fingerprint": "e1228d14048b98b7722a74a00efe047d0ccf60c66d3a40b77cbe7d9dd8b1a9d1",
+              "payload_item_count": 1,
+              "validation_status": "ok_valid",
+              "validation_reason": null
+            }
+          ],
+          "results": [
+            {
+              "iteration": 1,
+              "ok": true,
+              "ms": 11.687707999954,
+              "error": null,
+              "stdout_bytes": 873,
+              "approx_tokens": 219,
+              "payload_bytes": 839,
+              "payload_tokens_est": 210,
+              "payload_fingerprint": "e1228d14048b98b7722a74a00efe047d0ccf60c66d3a40b77cbe7d9dd8b1a9d1",
+              "payload_item_count": 1,
+              "validation_status": "ok_valid",
+              "validation_reason": null
+            },
+            {
+              "iteration": 2,
+              "ok": true,
+              "ms": 10.353959005442448,
+              "error": null,
+              "stdout_bytes": 873,
+              "approx_tokens": 219,
+              "payload_bytes": 839,
+              "payload_tokens_est": 210,
+              "payload_fingerprint": "e1228d14048b98b7722a74a00efe047d0ccf60c66d3a40b77cbe7d9dd8b1a9d1",
+              "payload_item_count": 1,
+              "validation_status": "ok_valid",
+              "validation_reason": null
+            },
+            {
+              "iteration": 3,
+              "ok": true,
+              "ms": 9.63462500658352,
+              "error": null,
+              "stdout_bytes": 873,
+              "approx_tokens": 219,
+              "payload_bytes": 839,
+              "payload_tokens_est": 210,
+              "payload_fingerprint": "e1228d14048b98b7722a74a00efe047d0ccf60c66d3a40b77cbe7d9dd8b1a9d1",
+              "payload_item_count": 1,
+              "validation_status": "ok_valid",
+              "validation_reason": null
+            },
+            {
+              "iteration": 4,
+              "ok": true,
+              "ms": 9.350084001198411,
+              "error": null,
+              "stdout_bytes": 873,
+              "approx_tokens": 219,
+              "payload_bytes": 839,
+              "payload_tokens_est": 210,
+              "payload_fingerprint": "e1228d14048b98b7722a74a00efe047d0ccf60c66d3a40b77cbe7d9dd8b1a9d1",
+              "payload_item_count": 1,
+              "validation_status": "ok_valid",
+              "validation_reason": null
+            },
+            {
+              "iteration": 5,
+              "ok": true,
+              "ms": 9.066583006642759,
+              "error": null,
+              "stdout_bytes": 873,
+              "approx_tokens": 219,
+              "payload_bytes": 839,
+              "payload_tokens_est": 210,
+              "payload_fingerprint": "e1228d14048b98b7722a74a00efe047d0ccf60c66d3a40b77cbe7d9dd8b1a9d1",
+              "payload_item_count": 1,
+              "validation_status": "ok_valid",
+              "validation_reason": null
+            }
+          ],
+          "notes": []
+        },
+        {
+          "workload_id": "W2_SEARCH",
+          "tool_name": "search_messages",
+          "read_only": true,
+          "status": "ok_valid",
+          "summary": {
+            "ok": 5,
+            "total": 5,
+            "mean_ms": 26.77979160216637,
+            "p95_ms": 29.756875010207295,
+            "mean_payload_bytes": 833.0,
+            "mean_payload_tokens": 209.0
+          },
+          "valid_summary": {
+            "ok": 5,
+            "total": 5,
+            "mean_ms": 26.77979160216637,
+            "p95_ms": 29.756875010207295,
+            "mean_payload_bytes": 833.0,
+            "mean_payload_tokens": 209.0
+          },
+          "validation_summary": {
+            "counts": {
+              "ok_valid": 5
+            },
+            "top_reasons": []
+          },
+          "warmup_results": [
+            {
+              "iteration": 1007,
+              "ok": true,
+              "ms": 183.96941600076389,
+              "error": null,
+              "stdout_bytes": 867,
+              "approx_tokens": 217,
+              "payload_bytes": 833,
+              "payload_tokens_est": 209,
+              "payload_fingerprint": "9a558f8a13a56e110258017608f3124ea16d8cbbe74decf3f177e1771a76272f",
+              "payload_item_count": 1,
+              "validation_status": "ok_valid",
+              "validation_reason": null
+            }
+          ],
+          "results": [
+            {
+              "iteration": 1,
+              "ok": true,
+              "ms": 24.321082993992604,
+              "error": null,
+              "stdout_bytes": 867,
+              "approx_tokens": 217,
+              "payload_bytes": 833,
+              "payload_tokens_est": 209,
+              "payload_fingerprint": "9a558f8a13a56e110258017608f3124ea16d8cbbe74decf3f177e1771a76272f",
+              "payload_item_count": 1,
+              "validation_status": "ok_valid",
+              "validation_reason": null
+            },
+            {
+              "iteration": 2,
+              "ok": true,
+              "ms": 23.957542012794875,
+              "error": null,
+              "stdout_bytes": 867,
+              "approx_tokens": 217,
+              "payload_bytes": 833,
+              "payload_tokens_est": 209,
+              "payload_fingerprint": "9a558f8a13a56e110258017608f3124ea16d8cbbe74decf3f177e1771a76272f",
+              "payload_item_count": 1,
+              "validation_status": "ok_valid",
+              "validation_reason": null
+            },
+            {
+              "iteration": 3,
+              "ok": true,
+              "ms": 30.36608299589716,
+              "error": null,
+              "stdout_bytes": 867,
+              "approx_tokens": 217,
+              "payload_bytes": 833,
+              "payload_tokens_est": 209,
+              "payload_fingerprint": "9a558f8a13a56e110258017608f3124ea16d8cbbe74decf3f177e1771a76272f",
+              "payload_item_count": 1,
+              "validation_status": "ok_valid",
+              "validation_reason": null
+            },
+            {
+              "iteration": 4,
+              "ok": true,
+              "ms": 29.756875010207295,
+              "error": null,
+              "stdout_bytes": 867,
+              "approx_tokens": 217,
+              "payload_bytes": 833,
+              "payload_tokens_est": 209,
+              "payload_fingerprint": "9a558f8a13a56e110258017608f3124ea16d8cbbe74decf3f177e1771a76272f",
+              "payload_item_count": 1,
+              "validation_status": "ok_valid",
+              "validation_reason": null
+            },
+            {
+              "iteration": 5,
+              "ok": true,
+              "ms": 25.497374997939914,
+              "error": null,
+              "stdout_bytes": 867,
+              "approx_tokens": 217,
+              "payload_bytes": 833,
+              "payload_tokens_est": 209,
+              "payload_fingerprint": "9a558f8a13a56e110258017608f3124ea16d8cbbe74decf3f177e1771a76272f",
+              "payload_item_count": 1,
+              "validation_status": "ok_valid",
+              "validation_reason": null
+            }
+          ],
+          "notes": []
+        },
+        {
+          "workload_id": "W3_THREAD",
+          "tool_name": "get_messages_from_chat",
+          "read_only": true,
+          "status": "ok_valid",
+          "summary": {
+            "ok": 5,
+            "total": 5,
+            "mean_ms": 1.725233596516773,
+            "p95_ms": 1.766291999956593,
+            "mean_payload_bytes": 888.0,
+            "mean_payload_tokens": 222.0
+          },
+          "valid_summary": {
+            "ok": 5,
+            "total": 5,
+            "mean_ms": 1.725233596516773,
+            "p95_ms": 1.766291999956593,
+            "mean_payload_bytes": 888.0,
+            "mean_payload_tokens": 222.0
+          },
+          "validation_summary": {
+            "counts": {
+              "ok_valid": 5
+            },
+            "top_reasons": []
+          },
+          "warmup_results": [
+            {
+              "iteration": 1014,
+              "ok": true,
+              "ms": 3.516416996717453,
+              "error": null,
+              "stdout_bytes": 922,
+              "approx_tokens": 231,
+              "payload_bytes": 888,
+              "payload_tokens_est": 222,
+              "payload_fingerprint": "e791315f3f086f6ac3644418c1d5fa6db7a8b9be5a18f37034040674ea8c7a34",
+              "payload_item_count": 1,
+              "validation_status": "ok_valid",
+              "validation_reason": null
+            }
+          ],
+          "results": [
+            {
+              "iteration": 1,
+              "ok": true,
+              "ms": 1.6561669908696786,
+              "error": null,
+              "stdout_bytes": 922,
+              "approx_tokens": 231,
+              "payload_bytes": 888,
+              "payload_tokens_est": 222,
+              "payload_fingerprint": "e791315f3f086f6ac3644418c1d5fa6db7a8b9be5a18f37034040674ea8c7a34",
+              "payload_item_count": 1,
+              "validation_status": "ok_valid",
+              "validation_reason": null
+            },
+            {
+              "iteration": 2,
+              "ok": true,
+              "ms": 1.7768750112736598,
+              "error": null,
+              "stdout_bytes": 922,
+              "approx_tokens": 231,
+              "payload_bytes": 888,
+              "payload_tokens_est": 222,
+              "payload_fingerprint": "e791315f3f086f6ac3644418c1d5fa6db7a8b9be5a18f37034040674ea8c7a34",
+              "payload_item_count": 1,
+              "validation_status": "ok_valid",
+              "validation_reason": null
+            },
+            {
+              "iteration": 3,
+              "ok": true,
+              "ms": 1.7359999910695478,
+              "error": null,
+              "stdout_bytes": 922,
+              "approx_tokens": 231,
+              "payload_bytes": 888,
+              "payload_tokens_est": 222,
+              "payload_fingerprint": "e791315f3f086f6ac3644418c1d5fa6db7a8b9be5a18f37034040674ea8c7a34",
+              "payload_item_count": 1,
+              "validation_status": "ok_valid",
+              "validation_reason": null
+            },
+            {
+              "iteration": 4,
+              "ok": true,
+              "ms": 1.766291999956593,
+              "error": null,
+              "stdout_bytes": 922,
+              "approx_tokens": 231,
+              "payload_bytes": 888,
+              "payload_tokens_est": 222,
+              "payload_fingerprint": "e791315f3f086f6ac3644418c1d5fa6db7a8b9be5a18f37034040674ea8c7a34",
+              "payload_item_count": 1,
+              "validation_status": "ok_valid",
+              "validation_reason": null
+            },
+            {
+              "iteration": 5,
+              "ok": true,
+              "ms": 1.6908339894143865,
+              "error": null,
+              "stdout_bytes": 922,
+              "approx_tokens": 231,
+              "payload_bytes": 888,
+              "payload_tokens_est": 222,
+              "payload_fingerprint": "e791315f3f086f6ac3644418c1d5fa6db7a8b9be5a18f37034040674ea8c7a34",
+              "payload_item_count": 1,
+              "validation_status": "ok_valid",
+              "validation_reason": null
+            }
+          ],
+          "notes": []
+        }
+      ],
+      "notes": []
+    },
+    {
+      "name": "github MCP: jonmmease/jons-mcp-imessage (python fastmcp stdio)",
+      "command": "/Users/wolfgangschoenberger/LIFE-PLANNER/Texting/benchmarks/vendor/github_mcp/jons-mcp-imessage/.venv/bin/jons-mcp-imessage",
+      "args": [],
+      "mode": "session",
+      "session_initialize": {
+        "ok": true,
+        "ms": 1024.047208004049,
+        "error": null,
+        "stdout_bytes": 2411,
+        "approx_tokens": 603
+      },
+      "session_list_tools": {
+        "ok": true,
+        "ms": 1.3586669956566766,
+        "error": null,
+        "stdout_bytes": 11316,
+        "approx_tokens": 2829
+      },
+      "workloads": [
+        {
+          "workload_id": "W0_UNREAD",
+          "tool_name": null,
+          "read_only": true,
+          "status": "unsupported",
+          "summary": {
+            "ok": 0,
+            "total": 0,
+            "mean_ms": null,
+            "p95_ms": null,
+            "mean_payload_bytes": null,
+            "mean_payload_tokens": null
+          },
+          "valid_summary": {
+            "ok": 0,
+            "total": 0,
+            "mean_ms": null,
+            "p95_ms": null,
+            "mean_payload_bytes": null,
+            "mean_payload_tokens": null
+          },
+          "validation_summary": {
+            "counts": {},
+            "top_reasons": []
+          },
+          "warmup_results": [],
+          "results": [],
+          "notes": [
+            "unsupported workload (no tool mapping)"
+          ]
+        },
+        {
+          "workload_id": "W1_RECENT",
+          "tool_name": "get_recent_messages",
+          "read_only": true,
+          "status": "ok_valid",
+          "summary": {
+            "ok": 5,
+            "total": 5,
+            "mean_ms": 1.5942997997626662,
+            "p95_ms": 1.6483749932376668,
+            "mean_payload_bytes": 1119.0,
+            "mean_payload_tokens": 280.0
+          },
+          "valid_summary": {
+            "ok": 5,
+            "total": 5,
+            "mean_ms": 1.5942997997626662,
+            "p95_ms": 1.6483749932376668,
+            "mean_payload_bytes": 1119.0,
+            "mean_payload_tokens": 280.0
+          },
+          "validation_summary": {
+            "counts": {
+              "ok_valid": 5
+            },
+            "top_reasons": []
+          },
+          "warmup_results": [
+            {
+              "iteration": 1001,
+              "ok": true,
+              "ms": 40.70708301151171,
+              "error": null,
+              "stdout_bytes": 1114,
+              "approx_tokens": 279,
+              "payload_bytes": 1119,
+              "payload_tokens_est": 280,
+              "payload_fingerprint": "012bb051681fdf1e46bc55978db83fb197dcd2e86dde2090caf607a7b61cc6b5",
+              "payload_item_count": 1,
+              "validation_status": "ok_valid",
+              "validation_reason": null
+            }
+          ],
+          "results": [
+            {
+              "iteration": 1,
+              "ok": true,
+              "ms": 1.8654580053407699,
+              "error": null,
+              "stdout_bytes": 1114,
+              "approx_tokens": 279,
+              "payload_bytes": 1119,
+              "payload_tokens_est": 280,
+              "payload_fingerprint": "012bb051681fdf1e46bc55978db83fb197dcd2e86dde2090caf607a7b61cc6b5",
+              "payload_item_count": 1,
+              "validation_status": "ok_valid",
+              "validation_reason": null
+            },
+            {
+              "iteration": 2,
+              "ok": true,
+              "ms": 1.6483749932376668,
+              "error": null,
+              "stdout_bytes": 1114,
+              "approx_tokens": 279,
+              "payload_bytes": 1119,
+              "payload_tokens_est": 280,
+              "payload_fingerprint": "012bb051681fdf1e46bc55978db83fb197dcd2e86dde2090caf607a7b61cc6b5",
+              "payload_item_count": 1,
+              "validation_status": "ok_valid",
+              "validation_reason": null
+            },
+            {
+              "iteration": 3,
+              "ok": true,
+              "ms": 1.4626250049332157,
+              "error": null,
+              "stdout_bytes": 1114,
+              "approx_tokens": 279,
+              "payload_bytes": 1119,
+              "payload_tokens_est": 280,
+              "payload_fingerprint": "012bb051681fdf1e46bc55978db83fb197dcd2e86dde2090caf607a7b61cc6b5",
+              "payload_item_count": 1,
+              "validation_status": "ok_valid",
+              "validation_reason": null
+            },
+            {
+              "iteration": 4,
+              "ok": true,
+              "ms": 1.5058749995660037,
+              "error": null,
+              "stdout_bytes": 1114,
+              "approx_tokens": 279,
+              "payload_bytes": 1119,
+              "payload_tokens_est": 280,
+              "payload_fingerprint": "012bb051681fdf1e46bc55978db83fb197dcd2e86dde2090caf607a7b61cc6b5",
+              "payload_item_count": 1,
+              "validation_status": "ok_valid",
+              "validation_reason": null
+            },
+            {
+              "iteration": 5,
+              "ok": true,
+              "ms": 1.489165995735675,
+              "error": null,
+              "stdout_bytes": 1114,
+              "approx_tokens": 279,
+              "payload_bytes": 1119,
+              "payload_tokens_est": 280,
+              "payload_fingerprint": "012bb051681fdf1e46bc55978db83fb197dcd2e86dde2090caf607a7b61cc6b5",
+              "payload_item_count": 1,
+              "validation_status": "ok_valid",
+              "validation_reason": null
+            }
+          ],
+          "notes": []
+        },
+        {
+          "workload_id": "W2_SEARCH",
+          "tool_name": "search_messages",
+          "read_only": true,
+          "status": "fail_timeout",
+          "summary": {
+            "ok": 0,
+            "total": 5,
+            "mean_ms": null,
+            "p95_ms": null,
+            "mean_payload_bytes": null,
+            "mean_payload_tokens": null
+          },
+          "valid_summary": {
+            "ok": 0,
+            "total": 5,
+            "mean_ms": null,
+            "p95_ms": null,
+            "mean_payload_bytes": null,
+            "mean_payload_tokens": null
+          },
+          "validation_summary": {
+            "counts": {
+              "fail_timeout": 5
+            },
+            "top_reasons": [
+              "TIMEOUT"
+            ]
+          },
+          "warmup_results": [
+            {
+              "iteration": 1007,
+              "ok": false,
+              "ms": 30012.844416996813,
+              "error": "TIMEOUT",
+              "stdout_bytes": 0,
+              "approx_tokens": 0,
+              "payload_bytes": null,
+              "payload_tokens_est": null,
+              "payload_fingerprint": null,
+              "payload_item_count": null,
+              "validation_status": "fail_timeout",
+              "validation_reason": "TIMEOUT"
+            }
+          ],
+          "results": [
+            {
+              "iteration": 1,
+              "ok": false,
+              "ms": 30054.393792001065,
+              "error": "TIMEOUT",
+              "stdout_bytes": 0,
+              "approx_tokens": 0,
+              "payload_bytes": null,
+              "payload_tokens_est": null,
+              "payload_fingerprint": null,
+              "payload_item_count": null,
+              "validation_status": "fail_timeout",
+              "validation_reason": "TIMEOUT"
+            },
+            {
+              "iteration": 2,
+              "ok": false,
+              "ms": 30061.346750007942,
+              "error": "TIMEOUT",
+              "stdout_bytes": 0,
+              "approx_tokens": 0,
+              "payload_bytes": null,
+              "payload_tokens_est": null,
+              "payload_fingerprint": null,
+              "payload_item_count": null,
+              "validation_status": "fail_timeout",
+              "validation_reason": "TIMEOUT"
+            },
+            {
+              "iteration": 3,
+              "ok": false,
+              "ms": 30003.267791005783,
+              "error": "TIMEOUT",
+              "stdout_bytes": 0,
+              "approx_tokens": 0,
+              "payload_bytes": null,
+              "payload_tokens_est": null,
+              "payload_fingerprint": null,
+              "payload_item_count": null,
+              "validation_status": "fail_timeout",
+              "validation_reason": "TIMEOUT"
+            },
+            {
+              "iteration": 4,
+              "ok": false,
+              "ms": 30046.899082997697,
+              "error": "TIMEOUT",
+              "stdout_bytes": 0,
+              "approx_tokens": 0,
+              "payload_bytes": null,
+              "payload_tokens_est": null,
+              "payload_fingerprint": null,
+              "payload_item_count": null,
+              "validation_status": "fail_timeout",
+              "validation_reason": "TIMEOUT"
+            },
+            {
+              "iteration": 5,
+              "ok": false,
+              "ms": 30096.63475000707,
+              "error": "TIMEOUT",
+              "stdout_bytes": 0,
+              "approx_tokens": 0,
+              "payload_bytes": null,
+              "payload_tokens_est": null,
+              "payload_fingerprint": null,
+              "payload_item_count": null,
+              "validation_status": "fail_timeout",
+              "validation_reason": "TIMEOUT"
+            }
+          ],
+          "notes": []
+        },
+        {
+          "workload_id": "W3_THREAD",
+          "tool_name": "get_conversation_messages",
+          "read_only": true,
+          "status": "fail",
+          "summary": {
+            "ok": 0,
+            "total": 0,
+            "mean_ms": null,
+            "p95_ms": null,
+            "mean_payload_bytes": null,
+            "mean_payload_tokens": null
+          },
+          "valid_summary": {
+            "ok": 0,
+            "total": 0,
+            "mean_ms": null,
+            "p95_ms": null,
+            "mean_payload_bytes": null,
+            "mean_payload_tokens": null
+          },
+          "validation_summary": {
+            "counts": {},
+            "top_reasons": []
+          },
+          "warmup_results": [],
+          "results": [],
+          "notes": [
+            "target selection failed: TIMEOUT"
+          ]
+        }
+      ],
+      "notes": []
+    },
+    {
+      "name": "github MCP: mattt/iMCP (swift stdio proxy)",
+      "command": "/Users/wolfgangschoenberger/LIFE-PLANNER/Texting/benchmarks/vendor/github_mcp/iMCP/.derived/Build/Products/Release/iMCP.app/Contents/MacOS/imcp-server",
+      "args": [],
+      "mode": "session",
+      "session_initialize": {
+        "ok": true,
+        "ms": 2370.655416001682,
+        "error": null,
+        "stdout_bytes": 160,
+        "approx_tokens": 40
+      },
+      "session_list_tools": {
+        "ok": true,
+        "ms": 15.286333000403829,
+        "error": null,
+        "stdout_bytes": 4468,
+        "approx_tokens": 1117
+      },
+      "workloads": [
+        {
+          "workload_id": "W0_UNREAD",
+          "tool_name": null,
+          "read_only": true,
+          "status": "unsupported",
+          "summary": {
+            "ok": 0,
+            "total": 0,
+            "mean_ms": null,
+            "p95_ms": null,
+            "mean_payload_bytes": null,
+            "mean_payload_tokens": null
+          },
+          "valid_summary": {
+            "ok": 0,
+            "total": 0,
+            "mean_ms": null,
+            "p95_ms": null,
+            "mean_payload_bytes": null,
+            "mean_payload_tokens": null
+          },
+          "validation_summary": {
+            "counts": {},
+            "top_reasons": []
+          },
+          "warmup_results": [],
+          "results": [],
+          "notes": [
+            "unsupported workload (no tool mapping)"
+          ]
+        },
+        {
+          "workload_id": "W1_RECENT",
+          "tool_name": "messages_fetch",
+          "read_only": true,
+          "status": "ok_valid",
+          "summary": {
+            "ok": 5,
+            "total": 5,
+            "mean_ms": 33.32898360094987,
+            "p95_ms": 35.02604199456982,
+            "mean_payload_bytes": 381.0,
+            "mean_payload_tokens": 96.0
+          },
+          "valid_summary": {
+            "ok": 5,
+            "total": 5,
+            "mean_ms": 33.32898360094987,
+            "p95_ms": 35.02604199456982,
+            "mean_payload_bytes": 381.0,
+            "mean_payload_tokens": 96.0
+          },
+          "validation_summary": {
+            "counts": {
+              "ok_valid": 5
+            },
+            "top_reasons": []
+          },
+          "warmup_results": [
+            {
+              "iteration": 1001,
+              "ok": true,
+              "ms": 64.00104099884629,
+              "error": null,
+              "stdout_bytes": 413,
+              "approx_tokens": 104,
+              "payload_bytes": 381,
+              "payload_tokens_est": 96,
+              "payload_fingerprint": "4ef368521f8f9e2a36938098b181143eecdd6ce43c96bac12d3dd0fc63b334c0",
+              "payload_item_count": 1,
+              "validation_status": "ok_valid",
+              "validation_reason": null
+            }
+          ],
+          "results": [
+            {
+              "iteration": 1,
+              "ok": true,
+              "ms": 30.104875011602417,
+              "error": null,
+              "stdout_bytes": 413,
+              "approx_tokens": 104,
+              "payload_bytes": 381,
+              "payload_tokens_est": 96,
+              "payload_fingerprint": "4ef368521f8f9e2a36938098b181143eecdd6ce43c96bac12d3dd0fc63b334c0",
+              "payload_item_count": 1,
+              "validation_status": "ok_valid",
+              "validation_reason": null
+            },
+            {
+              "iteration": 2,
+              "ok": true,
+              "ms": 32.180499998503365,
+              "error": null,
+              "stdout_bytes": 413,
+              "approx_tokens": 104,
+              "payload_bytes": 381,
+              "payload_tokens_est": 96,
+              "payload_fingerprint": "4ef368521f8f9e2a36938098b181143eecdd6ce43c96bac12d3dd0fc63b334c0",
+              "payload_item_count": 1,
+              "validation_status": "ok_valid",
+              "validation_reason": null
+            },
+            {
+              "iteration": 3,
+              "ok": true,
+              "ms": 31.316708991653286,
+              "error": null,
+              "stdout_bytes": 413,
+              "approx_tokens": 104,
+              "payload_bytes": 381,
+              "payload_tokens_est": 96,
+              "payload_fingerprint": "4ef368521f8f9e2a36938098b181143eecdd6ce43c96bac12d3dd0fc63b334c0",
+              "payload_item_count": 1,
+              "validation_status": "ok_valid",
+              "validation_reason": null
+            },
+            {
+              "iteration": 4,
+              "ok": true,
+              "ms": 38.01679200842045,
+              "error": null,
+              "stdout_bytes": 413,
+              "approx_tokens": 104,
+              "payload_bytes": 381,
+              "payload_tokens_est": 96,
+              "payload_fingerprint": "4ef368521f8f9e2a36938098b181143eecdd6ce43c96bac12d3dd0fc63b334c0",
+              "payload_item_count": 1,
+              "validation_status": "ok_valid",
+              "validation_reason": null
+            },
+            {
+              "iteration": 5,
+              "ok": true,
+              "ms": 35.02604199456982,
+              "error": null,
+              "stdout_bytes": 413,
+              "approx_tokens": 104,
+              "payload_bytes": 381,
+              "payload_tokens_est": 96,
+              "payload_fingerprint": "4ef368521f8f9e2a36938098b181143eecdd6ce43c96bac12d3dd0fc63b334c0",
+              "payload_item_count": 1,
+              "validation_status": "ok_valid",
+              "validation_reason": null
+            }
+          ],
+          "notes": []
+        },
+        {
+          "workload_id": "W2_SEARCH",
+          "tool_name": "messages_fetch",
+          "read_only": true,
+          "status": "ok_valid",
+          "summary": {
+            "ok": 5,
+            "total": 5,
+            "mean_ms": 30.771008401643485,
+            "p95_ms": 32.52249999786727,
+            "mean_payload_bytes": 401.0,
+            "mean_payload_tokens": 101.0
+          },
+          "valid_summary": {
+            "ok": 5,
+            "total": 5,
+            "mean_ms": 30.771008401643485,
+            "p95_ms": 32.52249999786727,
+            "mean_payload_bytes": 401.0,
+            "mean_payload_tokens": 101.0
+          },
+          "validation_summary": {
+            "counts": {
+              "ok_valid": 5
+            },
+            "top_reasons": []
+          },
+          "warmup_results": [
+            {
+              "iteration": 1007,
+              "ok": true,
+              "ms": 32.3607079917565,
+              "error": null,
+              "stdout_bytes": 433,
+              "approx_tokens": 109,
+              "payload_bytes": 401,
+              "payload_tokens_est": 101,
+              "payload_fingerprint": "857f03ff8a5e721a2a163666b7b04a6a65a8e0f09062fd4f3e98e1e55e1588df",
+              "payload_item_count": 1,
+              "validation_status": "ok_valid",
+              "validation_reason": null
+            }
+          ],
+          "results": [
+            {
+              "iteration": 1,
+              "ok": true,
+              "ms": 30.979542003478855,
+              "error": null,
+              "stdout_bytes": 433,
+              "approx_tokens": 109,
+              "payload_bytes": 401,
+              "payload_tokens_est": 101,
+              "payload_fingerprint": "857f03ff8a5e721a2a163666b7b04a6a65a8e0f09062fd4f3e98e1e55e1588df",
+              "payload_item_count": 1,
+              "validation_status": "ok_valid",
+              "validation_reason": null
+            },
+            {
+              "iteration": 2,
+              "ok": true,
+              "ms": 34.469167003408074,
+              "error": null,
+              "stdout_bytes": 433,
+              "approx_tokens": 109,
+              "payload_bytes": 401,
+              "payload_tokens_est": 101,
+              "payload_fingerprint": "857f03ff8a5e721a2a163666b7b04a6a65a8e0f09062fd4f3e98e1e55e1588df",
+              "payload_item_count": 1,
+              "validation_status": "ok_valid",
+              "validation_reason": null
+            },
+            {
+              "iteration": 3,
+              "ok": true,
+              "ms": 31.31283300172072,
+              "error": null,
+              "stdout_bytes": 433,
+              "approx_tokens": 109,
+              "payload_bytes": 401,
+              "payload_tokens_est": 101,
+              "payload_fingerprint": "857f03ff8a5e721a2a163666b7b04a6a65a8e0f09062fd4f3e98e1e55e1588df",
+              "payload_item_count": 1,
+              "validation_status": "ok_valid",
+              "validation_reason": null
+            },
+            {
+              "iteration": 4,
+              "ok": true,
+              "ms": 24.571000001742505,
+              "error": null,
+              "stdout_bytes": 433,
+              "approx_tokens": 109,
+              "payload_bytes": 401,
+              "payload_tokens_est": 101,
+              "payload_fingerprint": "857f03ff8a5e721a2a163666b7b04a6a65a8e0f09062fd4f3e98e1e55e1588df",
+              "payload_item_count": 1,
+              "validation_status": "ok_valid",
+              "validation_reason": null
+            },
+            {
+              "iteration": 5,
+              "ok": true,
+              "ms": 32.52249999786727,
+              "error": null,
+              "stdout_bytes": 433,
+              "approx_tokens": 109,
+              "payload_bytes": 401,
+              "payload_tokens_est": 101,
+              "payload_fingerprint": "857f03ff8a5e721a2a163666b7b04a6a65a8e0f09062fd4f3e98e1e55e1588df",
+              "payload_item_count": 1,
+              "validation_status": "ok_valid",
+              "validation_reason": null
+            }
+          ],
+          "notes": []
+        },
+        {
+          "workload_id": "W3_THREAD",
+          "tool_name": "messages_fetch",
+          "read_only": true,
+          "status": "fail",
+          "summary": {
+            "ok": 0,
+            "total": 0,
+            "mean_ms": null,
+            "p95_ms": null,
+            "mean_payload_bytes": null,
+            "mean_payload_tokens": null
+          },
+          "valid_summary": {
+            "ok": 0,
+            "total": 0,
+            "mean_ms": null,
+            "p95_ms": null,
+            "mean_payload_bytes": null,
+            "mean_payload_tokens": null
+          },
+          "validation_summary": {
+            "counts": {},
+            "top_reasons": []
+          },
+          "warmup_results": [],
+          "results": [],
+          "notes": [
+            "target selection returned no candidate"
+          ]
+        }
+      ],
+      "notes": []
+    },
+    {
+      "name": "github MCP: TextFly/photon-imsg-mcp (node stdio)",
+      "command": "node",
+      "args": [
+        "/Users/wolfgangschoenberger/LIFE-PLANNER/Texting/benchmarks/vendor/github_mcp/photon-imsg-mcp/dist/index.js"
+      ],
+      "mode": "session",
+      "session_initialize": {
+        "ok": true,
+        "ms": 1024.5354999933625,
+        "error": null,
+        "stdout_bytes": 153,
+        "approx_tokens": 39
+      },
+      "session_list_tools": {
+        "ok": true,
+        "ms": 3.0104170000413433,
+        "error": null,
+        "stdout_bytes": 2054,
+        "approx_tokens": 514
+      },
+      "workloads": [
+        {
+          "workload_id": "W0_UNREAD",
+          "tool_name": "photon_read_messages",
+          "read_only": true,
+          "status": "ok_empty",
+          "summary": {
+            "ok": 5,
+            "total": 5,
+            "mean_ms": 32.71115860261489,
+            "p95_ms": 32.08220899978187,
+            "mean_payload_bytes": 166.0,
+            "mean_payload_tokens": 42.0
+          },
+          "valid_summary": {
+            "ok": 0,
+            "total": 5,
+            "mean_ms": null,
+            "p95_ms": null,
+            "mean_payload_bytes": null,
+            "mean_payload_tokens": null
+          },
+          "validation_summary": {
+            "counts": {
+              "ok_empty": 5
+            },
+            "top_reasons": [
+              "duplicate_payload"
+            ]
+          },
+          "warmup_results": [
+            {
+              "iteration": 1001,
+              "ok": true,
+              "ms": 425.124749992392,
+              "error": null,
+              "stdout_bytes": 198,
+              "approx_tokens": 50,
+              "payload_bytes": 166,
+              "payload_tokens_est": 42,
+              "payload_fingerprint": "c8acc4f31ae599f078696a8ca3a03a04506ca49f147547487b0b1193e66b10f8",
+              "payload_item_count": 1,
+              "validation_status": "ok_valid",
+              "validation_reason": null
+            }
+          ],
+          "results": [
+            {
+              "iteration": 1,
+              "ok": true,
+              "ms": 37.31237500323914,
+              "error": null,
+              "stdout_bytes": 198,
+              "approx_tokens": 50,
+              "payload_bytes": 166,
+              "payload_tokens_est": 42,
+              "payload_fingerprint": "c8acc4f31ae599f078696a8ca3a03a04506ca49f147547487b0b1193e66b10f8",
+              "payload_item_count": 1,
+              "validation_status": "ok_empty",
+              "validation_reason": "duplicate_payload"
+            },
+            {
+              "iteration": 2,
+              "ok": true,
+              "ms": 30.81808300339617,
+              "error": null,
+              "stdout_bytes": 198,
+              "approx_tokens": 50,
+              "payload_bytes": 166,
+              "payload_tokens_est": 42,
+              "payload_fingerprint": "c8acc4f31ae599f078696a8ca3a03a04506ca49f147547487b0b1193e66b10f8",
+              "payload_item_count": 1,
+              "validation_status": "ok_empty",
+              "validation_reason": "duplicate_payload"
+            },
+            {
+              "iteration": 3,
+              "ok": true,
+              "ms": 31.273792003048584,
+              "error": null,
+              "stdout_bytes": 198,
+              "approx_tokens": 50,
+              "payload_bytes": 166,
+              "payload_tokens_est": 42,
+              "payload_fingerprint": "c8acc4f31ae599f078696a8ca3a03a04506ca49f147547487b0b1193e66b10f8",
+              "payload_item_count": 1,
+              "validation_status": "ok_empty",
+              "validation_reason": "duplicate_payload"
+            },
+            {
+              "iteration": 4,
+              "ok": true,
+              "ms": 32.08220899978187,
+              "error": null,
+              "stdout_bytes": 198,
+              "approx_tokens": 50,
+              "payload_bytes": 166,
+              "payload_tokens_est": 42,
+              "payload_fingerprint": "c8acc4f31ae599f078696a8ca3a03a04506ca49f147547487b0b1193e66b10f8",
+              "payload_item_count": 1,
+              "validation_status": "ok_empty",
+              "validation_reason": "duplicate_payload"
+            },
+            {
+              "iteration": 5,
+              "ok": true,
+              "ms": 32.069334003608674,
+              "error": null,
+              "stdout_bytes": 198,
+              "approx_tokens": 50,
+              "payload_bytes": 166,
+              "payload_tokens_est": 42,
+              "payload_fingerprint": "c8acc4f31ae599f078696a8ca3a03a04506ca49f147547487b0b1193e66b10f8",
+              "payload_item_count": 1,
+              "validation_status": "ok_empty",
+              "validation_reason": "duplicate_payload"
+            }
+          ],
+          "notes": [
+            "suspicious: identical payload across workloads W0_UNREAD, W3_THREAD"
+          ]
+        },
+        {
+          "workload_id": "W1_RECENT",
+          "tool_name": "photon_get_conversations",
+          "read_only": true,
+          "status": "ok_valid",
+          "summary": {
+            "ok": 5,
+            "total": 5,
+            "mean_ms": 0.3165000001899898,
+            "p95_ms": 0.3555000002961606,
+            "mean_payload_bytes": 218.0,
+            "mean_payload_tokens": 55.0
+          },
+          "valid_summary": {
+            "ok": 5,
+            "total": 5,
+            "mean_ms": 0.3165000001899898,
+            "p95_ms": 0.3555000002961606,
+            "mean_payload_bytes": 218.0,
+            "mean_payload_tokens": 55.0
+          },
+          "validation_summary": {
+            "counts": {
+              "ok_valid": 5
+            },
+            "top_reasons": []
+          },
+          "warmup_results": [
+            {
+              "iteration": 1007,
+              "ok": true,
+              "ms": 1.5626249951310456,
+              "error": null,
+              "stdout_bytes": 250,
+              "approx_tokens": 63,
+              "payload_bytes": 218,
+              "payload_tokens_est": 55,
+              "payload_fingerprint": "1e5f9c4fc42eff9bc9510d112f3c59a3e3d5943f92914f9871fff63320666987",
+              "payload_item_count": 1,
+              "validation_status": "ok_valid",
+              "validation_reason": null
+            }
+          ],
+          "results": [
+            {
+              "iteration": 1,
+              "ok": true,
+              "ms": 0.40745799196884036,
+              "error": null,
+              "stdout_bytes": 250,
+              "approx_tokens": 63,
+              "payload_bytes": 218,
+              "payload_tokens_est": 55,
+              "payload_fingerprint": "1e5f9c4fc42eff9bc9510d112f3c59a3e3d5943f92914f9871fff63320666987",
+              "payload_item_count": 1,
+              "validation_status": "ok_valid",
+              "validation_reason": null
+            },
+            {
+              "iteration": 2,
+              "ok": true,
+              "ms": 0.3555000002961606,
+              "error": null,
+              "stdout_bytes": 250,
+              "approx_tokens": 63,
+              "payload_bytes": 218,
+              "payload_tokens_est": 55,
+              "payload_fingerprint": "1e5f9c4fc42eff9bc9510d112f3c59a3e3d5943f92914f9871fff63320666987",
+              "payload_item_count": 1,
+              "validation_status": "ok_valid",
+              "validation_reason": null
+            },
+            {
+              "iteration": 3,
+              "ok": true,
+              "ms": 0.3150420088786632,
+              "error": null,
+              "stdout_bytes": 250,
+              "approx_tokens": 63,
+              "payload_bytes": 218,
+              "payload_tokens_est": 55,
+              "payload_fingerprint": "1e5f9c4fc42eff9bc9510d112f3c59a3e3d5943f92914f9871fff63320666987",
+              "payload_item_count": 1,
+              "validation_status": "ok_valid",
+              "validation_reason": null
+            },
+            {
+              "iteration": 4,
+              "ok": true,
+              "ms": 0.277458006166853,
+              "error": null,
+              "stdout_bytes": 250,
+              "approx_tokens": 63,
+              "payload_bytes": 218,
+              "payload_tokens_est": 55,
+              "payload_fingerprint": "1e5f9c4fc42eff9bc9510d112f3c59a3e3d5943f92914f9871fff63320666987",
+              "payload_item_count": 1,
+              "validation_status": "ok_valid",
+              "validation_reason": null
+            },
+            {
+              "iteration": 5,
+              "ok": true,
+              "ms": 0.2270419936394319,
+              "error": null,
+              "stdout_bytes": 250,
+              "approx_tokens": 63,
+              "payload_bytes": 218,
+              "payload_tokens_est": 55,
+              "payload_fingerprint": "1e5f9c4fc42eff9bc9510d112f3c59a3e3d5943f92914f9871fff63320666987",
+              "payload_item_count": 1,
+              "validation_status": "ok_valid",
+              "validation_reason": null
+            }
+          ],
+          "notes": []
+        },
+        {
+          "workload_id": "W2_SEARCH",
+          "tool_name": null,
+          "read_only": true,
+          "status": "unsupported",
+          "summary": {
+            "ok": 0,
+            "total": 0,
+            "mean_ms": null,
+            "p95_ms": null,
+            "mean_payload_bytes": null,
+            "mean_payload_tokens": null
+          },
+          "valid_summary": {
+            "ok": 0,
+            "total": 0,
+            "mean_ms": null,
+            "p95_ms": null,
+            "mean_payload_bytes": null,
+            "mean_payload_tokens": null
+          },
+          "validation_summary": {
+            "counts": {},
+            "top_reasons": []
+          },
+          "warmup_results": [],
+          "results": [],
+          "notes": [
+            "unsupported workload (no tool mapping)"
+          ]
+        },
+        {
+          "workload_id": "W3_THREAD",
+          "tool_name": "photon_read_messages",
+          "read_only": true,
+          "status": "ok_empty",
+          "summary": {
+            "ok": 5,
+            "total": 5,
+            "mean_ms": 0.15531659591943026,
+            "p95_ms": 0.17841599765233696,
+            "mean_payload_bytes": 166.0,
+            "mean_payload_tokens": 42.0
+          },
+          "valid_summary": {
+            "ok": 0,
+            "total": 5,
+            "mean_ms": null,
+            "p95_ms": null,
+            "mean_payload_bytes": null,
+            "mean_payload_tokens": null
+          },
+          "validation_summary": {
+            "counts": {
+              "ok_empty": 5
+            },
+            "top_reasons": [
+              "duplicate_payload"
+            ]
+          },
+          "warmup_results": [
+            {
+              "iteration": 1014,
+              "ok": true,
+              "ms": 0.14112499775364995,
+              "error": null,
+              "stdout_bytes": 198,
+              "approx_tokens": 50,
+              "payload_bytes": 166,
+              "payload_tokens_est": 42,
+              "payload_fingerprint": "c8acc4f31ae599f078696a8ca3a03a04506ca49f147547487b0b1193e66b10f8",
+              "payload_item_count": 1,
+              "validation_status": "ok_valid",
+              "validation_reason": null
+            }
+          ],
+          "results": [
+            {
+              "iteration": 1,
+              "ok": true,
+              "ms": 0.2315829915460199,
+              "error": null,
+              "stdout_bytes": 198,
+              "approx_tokens": 50,
+              "payload_bytes": 166,
+              "payload_tokens_est": 42,
+              "payload_fingerprint": "c8acc4f31ae599f078696a8ca3a03a04506ca49f147547487b0b1193e66b10f8",
+              "payload_item_count": 1,
+              "validation_status": "ok_empty",
+              "validation_reason": "duplicate_payload"
+            },
+            {
+              "iteration": 2,
+              "ok": true,
+              "ms": 0.13004199718125165,
+              "error": null,
+              "stdout_bytes": 198,
+              "approx_tokens": 50,
+              "payload_bytes": 166,
+              "payload_tokens_est": 42,
+              "payload_fingerprint": "c8acc4f31ae599f078696a8ca3a03a04506ca49f147547487b0b1193e66b10f8",
+              "payload_item_count": 1,
+              "validation_status": "ok_empty",
+              "validation_reason": "duplicate_payload"
+            },
+            {
+              "iteration": 3,
+              "ok": true,
+              "ms": 0.12358299863990396,
+              "error": null,
+              "stdout_bytes": 198,
+              "approx_tokens": 50,
+              "payload_bytes": 166,
+              "payload_tokens_est": 42,
+              "payload_fingerprint": "c8acc4f31ae599f078696a8ca3a03a04506ca49f147547487b0b1193e66b10f8",
+              "payload_item_count": 1,
+              "validation_status": "ok_empty",
+              "validation_reason": "duplicate_payload"
+            },
+            {
+              "iteration": 4,
+              "ok": true,
+              "ms": 0.17841599765233696,
+              "error": null,
+              "stdout_bytes": 198,
+              "approx_tokens": 50,
+              "payload_bytes": 166,
+              "payload_tokens_est": 42,
+              "payload_fingerprint": "c8acc4f31ae599f078696a8ca3a03a04506ca49f147547487b0b1193e66b10f8",
+              "payload_item_count": 1,
+              "validation_status": "ok_empty",
+              "validation_reason": "duplicate_payload"
+            },
+            {
+              "iteration": 5,
+              "ok": true,
+              "ms": 0.1129589945776388,
+              "error": null,
+              "stdout_bytes": 198,
+              "approx_tokens": 50,
+              "payload_bytes": 166,
+              "payload_tokens_est": 42,
+              "payload_fingerprint": "c8acc4f31ae599f078696a8ca3a03a04506ca49f147547487b0b1193e66b10f8",
+              "payload_item_count": 1,
+              "validation_status": "ok_empty",
+              "validation_reason": "duplicate_payload"
+            }
+          ],
+          "notes": [
+            "suspicious: identical payload across workloads W0_UNREAD, W3_THREAD"
+          ]
+        }
+      ],
+      "notes": []
+    },
+    {
+      "name": "github MCP: sameelarif/imessage-mcp (node tsx)",
+      "command": "/Users/wolfgangschoenberger/LIFE-PLANNER/Texting/benchmarks/vendor/github_mcp/sameelarif-imessage-mcp/node_modules/.bin/tsx",
+      "args": [
+        "src/index.ts"
+      ],
+      "mode": "session",
+      "session_initialize": {
+        "ok": true,
+        "ms": 1053.5466250003083,
+        "error": null,
+        "stdout_bytes": 164,
+        "approx_tokens": 41
+      },
+      "session_list_tools": {
+        "ok": true,
+        "ms": 9.864916995866224,
+        "error": null,
+        "stdout_bytes": 7352,
+        "approx_tokens": 1838
+      },
+      "workloads": [
+        {
+          "workload_id": "W0_UNREAD",
+          "tool_name": "get-unread-messages",
+          "read_only": true,
+          "status": "ok_valid",
+          "summary": {
+            "ok": 5,
+            "total": 5,
+            "mean_ms": 832.1153916011099,
+            "p95_ms": 906.326625001384,
+            "mean_payload_bytes": 119949.0,
+            "mean_payload_tokens": 29988.0
+          },
+          "valid_summary": {
+            "ok": 5,
+            "total": 5,
+            "mean_ms": 832.1153916011099,
+            "p95_ms": 906.326625001384,
+            "mean_payload_bytes": 119949.0,
+            "mean_payload_tokens": 29988.0
+          },
+          "validation_summary": {
+            "counts": {
+              "ok_valid": 5
+            },
+            "top_reasons": []
+          },
+          "warmup_results": [
+            {
+              "iteration": 1001,
+              "ok": true,
+              "ms": 892.7542919991538,
+              "error": null,
+              "stdout_bytes": 119983,
+              "approx_tokens": 29996,
+              "payload_bytes": 119949,
+              "payload_tokens_est": 29988,
+              "payload_fingerprint": "b1c8c79abc49a426567dc9b5a3a6664db84e291440a08d656d2f2b8d3ce51e07",
+              "payload_item_count": 1,
+              "validation_status": "ok_valid",
+              "validation_reason": null
+            }
+          ],
+          "results": [
+            {
+              "iteration": 1,
+              "ok": true,
+              "ms": 939.2246670031454,
+              "error": null,
+              "stdout_bytes": 119983,
+              "approx_tokens": 29996,
+              "payload_bytes": 119949,
+              "payload_tokens_est": 29988,
+              "payload_fingerprint": "b1c8c79abc49a426567dc9b5a3a6664db84e291440a08d656d2f2b8d3ce51e07",
+              "payload_item_count": 1,
+              "validation_status": "ok_valid",
+              "validation_reason": null
+            },
+            {
+              "iteration": 2,
+              "ok": true,
+              "ms": 906.326625001384,
+              "error": null,
+              "stdout_bytes": 119983,
+              "approx_tokens": 29996,
+              "payload_bytes": 119949,
+              "payload_tokens_est": 29988,
+              "payload_fingerprint": "b1c8c79abc49a426567dc9b5a3a6664db84e291440a08d656d2f2b8d3ce51e07",
+              "payload_item_count": 1,
+              "validation_status": "ok_valid",
+              "validation_reason": null
+            },
+            {
+              "iteration": 3,
+              "ok": true,
+              "ms": 834.492207999574,
+              "error": null,
+              "stdout_bytes": 119983,
+              "approx_tokens": 29996,
+              "payload_bytes": 119949,
+              "payload_tokens_est": 29988,
+              "payload_fingerprint": "b1c8c79abc49a426567dc9b5a3a6664db84e291440a08d656d2f2b8d3ce51e07",
+              "payload_item_count": 1,
+              "validation_status": "ok_valid",
+              "validation_reason": null
+            },
+            {
+              "iteration": 4,
+              "ok": true,
+              "ms": 777.4442910013022,
+              "error": null,
+              "stdout_bytes": 119983,
+              "approx_tokens": 29996,
+              "payload_bytes": 119949,
+              "payload_tokens_est": 29988,
+              "payload_fingerprint": "b1c8c79abc49a426567dc9b5a3a6664db84e291440a08d656d2f2b8d3ce51e07",
+              "payload_item_count": 1,
+              "validation_status": "ok_valid",
+              "validation_reason": null
+            },
+            {
+              "iteration": 5,
+              "ok": true,
+              "ms": 703.0891670001438,
+              "error": null,
+              "stdout_bytes": 119983,
+              "approx_tokens": 29996,
+              "payload_bytes": 119949,
+              "payload_tokens_est": 29988,
+              "payload_fingerprint": "b1c8c79abc49a426567dc9b5a3a6664db84e291440a08d656d2f2b8d3ce51e07",
+              "payload_item_count": 1,
+              "validation_status": "ok_valid",
+              "validation_reason": null
+            }
+          ],
+          "notes": []
+        },
+        {
+          "workload_id": "W1_RECENT",
+          "tool_name": "get-messages",
+          "read_only": true,
+          "status": "ok_empty",
+          "summary": {
+            "ok": 5,
+            "total": 5,
+            "mean_ms": 0.27578339795581996,
+            "p95_ms": 0.3496249992167577,
+            "mean_payload_bytes": 189.0,
+            "mean_payload_tokens": 48.0
+          },
+          "valid_summary": {
+            "ok": 0,
+            "total": 5,
+            "mean_ms": null,
+            "p95_ms": null,
+            "mean_payload_bytes": null,
+            "mean_payload_tokens": null
+          },
+          "validation_summary": {
+            "counts": {
+              "ok_empty": 5
+            },
+            "top_reasons": [
+              "payload_bytes_below_min(189<200)"
+            ]
+          },
+          "warmup_results": [
+            {
+              "iteration": 1007,
+              "ok": true,
+              "ms": 1.436375008779578,
+              "error": null,
+              "stdout_bytes": 223,
+              "approx_tokens": 56,
+              "payload_bytes": 189,
+              "payload_tokens_est": 48,
+              "payload_fingerprint": "444b60919e8c61d783243722325b8323970f890ba8d549abfc58e9e473c58133",
+              "payload_item_count": 1,
+              "validation_status": "ok_empty",
+              "validation_reason": "payload_bytes_below_min(189<200)"
+            }
+          ],
+          "results": [
+            {
+              "iteration": 1,
+              "ok": true,
+              "ms": 0.36054200609214604,
+              "error": null,
+              "stdout_bytes": 223,
+              "approx_tokens": 56,
+              "payload_bytes": 189,
+              "payload_tokens_est": 48,
+              "payload_fingerprint": "444b60919e8c61d783243722325b8323970f890ba8d549abfc58e9e473c58133",
+              "payload_item_count": 1,
+              "validation_status": "ok_empty",
+              "validation_reason": "payload_bytes_below_min(189<200)"
+            },
+            {
+              "iteration": 2,
+              "ok": true,
+              "ms": 0.33149999217130244,
+              "error": null,
+              "stdout_bytes": 223,
+              "approx_tokens": 56,
+              "payload_bytes": 189,
+              "payload_tokens_est": 48,
+              "payload_fingerprint": "444b60919e8c61d783243722325b8323970f890ba8d549abfc58e9e473c58133",
+              "payload_item_count": 1,
+              "validation_status": "ok_empty",
+              "validation_reason": "payload_bytes_below_min(189<200)"
+            },
+            {
+              "iteration": 3,
+              "ok": true,
+              "ms": 0.3496249992167577,
+              "error": null,
+              "stdout_bytes": 223,
+              "approx_tokens": 56,
+              "payload_bytes": 189,
+              "payload_tokens_est": 48,
+              "payload_fingerprint": "444b60919e8c61d783243722325b8323970f890ba8d549abfc58e9e473c58133",
+              "payload_item_count": 1,
+              "validation_status": "ok_empty",
+              "validation_reason": "payload_bytes_below_min(189<200)"
+            },
+            {
+              "iteration": 4,
+              "ok": true,
+              "ms": 0.2009169984376058,
+              "error": null,
+              "stdout_bytes": 223,
+              "approx_tokens": 56,
+              "payload_bytes": 189,
+              "payload_tokens_est": 48,
+              "payload_fingerprint": "444b60919e8c61d783243722325b8323970f890ba8d549abfc58e9e473c58133",
+              "payload_item_count": 1,
+              "validation_status": "ok_empty",
+              "validation_reason": "payload_bytes_below_min(189<200)"
+            },
+            {
+              "iteration": 5,
+              "ok": true,
+              "ms": 0.13633299386128783,
+              "error": null,
+              "stdout_bytes": 223,
+              "approx_tokens": 56,
+              "payload_bytes": 189,
+              "payload_tokens_est": 48,
+              "payload_fingerprint": "444b60919e8c61d783243722325b8323970f890ba8d549abfc58e9e473c58133",
+              "payload_item_count": 1,
+              "validation_status": "ok_empty",
+              "validation_reason": "payload_bytes_below_min(189<200)"
+            }
+          ],
+          "notes": []
+        },
+        {
+          "workload_id": "W2_SEARCH",
+          "tool_name": "search-messages",
+          "read_only": true,
+          "status": "ok_empty",
+          "summary": {
+            "ok": 5,
+            "total": 5,
+            "mean_ms": 277.2088249999797,
+            "p95_ms": 283.4826670004986,
+            "mean_payload_bytes": 186.0,
+            "mean_payload_tokens": 47.0
+          },
+          "valid_summary": {
+            "ok": 0,
+            "total": 5,
+            "mean_ms": null,
+            "p95_ms": null,
+            "mean_payload_bytes": null,
+            "mean_payload_tokens": null
+          },
+          "validation_summary": {
+            "counts": {
+              "ok_empty": 5
+            },
+            "top_reasons": [
+              "payload_bytes_below_min(186<200)"
+            ]
+          },
+          "warmup_results": [
+            {
+              "iteration": 1013,
+              "ok": true,
+              "ms": 286.64299999945797,
+              "error": null,
+              "stdout_bytes": 220,
+              "approx_tokens": 55,
+              "payload_bytes": 186,
+              "payload_tokens_est": 47,
+              "payload_fingerprint": "51455f7e301a10e09eb4e39d94d86b695f3e62db5425ceafb9505215be07f4c4",
+              "payload_item_count": 1,
+              "validation_status": "ok_empty",
+              "validation_reason": "payload_bytes_below_min(186<200)"
+            }
+          ],
+          "results": [
+            {
+              "iteration": 1,
+              "ok": true,
+              "ms": 294.6529580076458,
+              "error": null,
+              "stdout_bytes": 220,
+              "approx_tokens": 55,
+              "payload_bytes": 186,
+              "payload_tokens_est": 47,
+              "payload_fingerprint": "51455f7e301a10e09eb4e39d94d86b695f3e62db5425ceafb9505215be07f4c4",
+              "payload_item_count": 1,
+              "validation_status": "ok_empty",
+              "validation_reason": "payload_bytes_below_min(186<200)"
+            },
+            {
+              "iteration": 2,
+              "ok": true,
+              "ms": 283.4826670004986,
+              "error": null,
+              "stdout_bytes": 220,
+              "approx_tokens": 55,
+              "payload_bytes": 186,
+              "payload_tokens_est": 47,
+              "payload_fingerprint": "51455f7e301a10e09eb4e39d94d86b695f3e62db5425ceafb9505215be07f4c4",
+              "payload_item_count": 1,
+              "validation_status": "ok_empty",
+              "validation_reason": "payload_bytes_below_min(186<200)"
+            },
+            {
+              "iteration": 3,
+              "ok": true,
+              "ms": 264.17233400570694,
+              "error": null,
+              "stdout_bytes": 220,
+              "approx_tokens": 55,
+              "payload_bytes": 186,
+              "payload_tokens_est": 47,
+              "payload_fingerprint": "51455f7e301a10e09eb4e39d94d86b695f3e62db5425ceafb9505215be07f4c4",
+              "payload_item_count": 1,
+              "validation_status": "ok_empty",
+              "validation_reason": "payload_bytes_below_min(186<200)"
+            },
+            {
+              "iteration": 4,
+              "ok": true,
+              "ms": 266.2155829893891,
+              "error": null,
+              "stdout_bytes": 220,
+              "approx_tokens": 55,
+              "payload_bytes": 186,
+              "payload_tokens_est": 47,
+              "payload_fingerprint": "51455f7e301a10e09eb4e39d94d86b695f3e62db5425ceafb9505215be07f4c4",
+              "payload_item_count": 1,
+              "validation_status": "ok_empty",
+              "validation_reason": "payload_bytes_below_min(186<200)"
+            },
+            {
+              "iteration": 5,
+              "ok": true,
+              "ms": 277.52058299665805,
+              "error": null,
+              "stdout_bytes": 220,
+              "approx_tokens": 55,
+              "payload_bytes": 186,
+              "payload_tokens_est": 47,
+              "payload_fingerprint": "51455f7e301a10e09eb4e39d94d86b695f3e62db5425ceafb9505215be07f4c4",
+              "payload_item_count": 1,
+              "validation_status": "ok_empty",
+              "validation_reason": "payload_bytes_below_min(186<200)"
+            }
+          ],
+          "notes": []
+        },
+        {
+          "workload_id": "W3_THREAD",
+          "tool_name": "get-conversation",
+          "read_only": true,
+          "status": "fail",
+          "summary": {
+            "ok": 0,
+            "total": 0,
+            "mean_ms": null,
+            "p95_ms": null,
+            "mean_payload_bytes": null,
+            "mean_payload_tokens": null
+          },
+          "valid_summary": {
+            "ok": 0,
+            "total": 0,
+            "mean_ms": null,
+            "p95_ms": null,
+            "mean_payload_bytes": null,
+            "mean_payload_tokens": null
+          },
+          "validation_summary": {
+            "counts": {},
+            "top_reasons": []
+          },
+          "warmup_results": [],
+          "results": [],
+          "notes": [
+            "target selection returned no candidate"
+          ]
+        }
+      ],
+      "notes": []
+    },
+    {
+      "name": "github MCP: imessage-query-fastmcp-mcp-server (uv script)",
+      "command": "uv",
+      "args": [
+        "run",
+        "--script",
+        "imessage-query-server.py"
+      ],
+      "mode": "session",
+      "session_initialize": {
+        "ok": true,
+        "ms": 1053.5882909898646,
+        "error": null,
+        "stdout_bytes": 274,
+        "approx_tokens": 69
+      },
+      "session_list_tools": {
+        "ok": true,
+        "ms": 3.3073329977924004,
+        "error": null,
+        "stdout_bytes": 799,
+        "approx_tokens": 200
+      },
+      "workloads": [
+        {
+          "workload_id": "W0_UNREAD",
+          "tool_name": null,
+          "read_only": true,
+          "status": "unsupported",
+          "summary": {
+            "ok": 0,
+            "total": 0,
+            "mean_ms": null,
+            "p95_ms": null,
+            "mean_payload_bytes": null,
+            "mean_payload_tokens": null
+          },
+          "valid_summary": {
+            "ok": 0,
+            "total": 0,
+            "mean_ms": null,
+            "p95_ms": null,
+            "mean_payload_bytes": null,
+            "mean_payload_tokens": null
+          },
+          "validation_summary": {
+            "counts": {},
+            "top_reasons": []
+          },
+          "warmup_results": [],
+          "results": [],
+          "notes": [
+            "unsupported workload (no tool mapping)"
+          ]
+        },
+        {
+          "workload_id": "W1_RECENT",
+          "tool_name": null,
+          "read_only": true,
+          "status": "unsupported",
+          "summary": {
+            "ok": 0,
+            "total": 0,
+            "mean_ms": null,
+            "p95_ms": null,
+            "mean_payload_bytes": null,
+            "mean_payload_tokens": null
+          },
+          "valid_summary": {
+            "ok": 0,
+            "total": 0,
+            "mean_ms": null,
+            "p95_ms": null,
+            "mean_payload_bytes": null,
+            "mean_payload_tokens": null
+          },
+          "validation_summary": {
+            "counts": {},
+            "top_reasons": []
+          },
+          "warmup_results": [],
+          "results": [],
+          "notes": [
+            "unsupported workload (no tool mapping)"
+          ]
+        },
+        {
+          "workload_id": "W2_SEARCH",
+          "tool_name": null,
+          "read_only": true,
+          "status": "unsupported",
+          "summary": {
+            "ok": 0,
+            "total": 0,
+            "mean_ms": null,
+            "p95_ms": null,
+            "mean_payload_bytes": null,
+            "mean_payload_tokens": null
+          },
+          "valid_summary": {
+            "ok": 0,
+            "total": 0,
+            "mean_ms": null,
+            "p95_ms": null,
+            "mean_payload_bytes": null,
+            "mean_payload_tokens": null
+          },
+          "validation_summary": {
+            "counts": {},
+            "top_reasons": []
+          },
+          "warmup_results": [],
+          "results": [],
+          "notes": [
+            "unsupported workload (no tool mapping)"
+          ]
+        },
+        {
+          "workload_id": "W3_THREAD",
+          "tool_name": "get_chat_transcript",
+          "read_only": true,
+          "status": "fail",
+          "summary": {
+            "ok": 0,
+            "total": 0,
+            "mean_ms": null,
+            "p95_ms": null,
+            "mean_payload_bytes": null,
+            "mean_payload_tokens": null
+          },
+          "valid_summary": {
+            "ok": 0,
+            "total": 0,
+            "mean_ms": null,
+            "p95_ms": null,
+            "mean_payload_bytes": null,
+            "mean_payload_tokens": null
+          },
+          "validation_summary": {
+            "counts": {},
+            "top_reasons": []
+          },
+          "warmup_results": [],
+          "results": [],
+          "notes": [
+            "missing target selector for thread workload"
+          ]
+        }
+      ],
+      "notes": []
+    },
+    {
+      "name": "github MCP: mcp-imessage (node stdio)",
+      "command": "node",
+      "args": [
+        "/Users/wolfgangschoenberger/LIFE-PLANNER/Texting/benchmarks/vendor/github_mcp/mcp-imessage/build/index.js"
+      ],
+      "mode": "session",
+      "session_initialize": {
+        "ok": true,
+        "ms": 1024.605333004729,
+        "error": null,
+        "stdout_bytes": 146,
+        "approx_tokens": 37
+      },
+      "session_list_tools": {
+        "ok": true,
+        "ms": 2.439750009216368,
+        "error": null,
+        "stdout_bytes": 652,
+        "approx_tokens": 163
+      },
+      "workloads": [
+        {
+          "workload_id": "W0_UNREAD",
+          "tool_name": null,
+          "read_only": true,
+          "status": "unsupported",
+          "summary": {
+            "ok": 0,
+            "total": 0,
+            "mean_ms": null,
+            "p95_ms": null,
+            "mean_payload_bytes": null,
+            "mean_payload_tokens": null
+          },
+          "valid_summary": {
+            "ok": 0,
+            "total": 0,
+            "mean_ms": null,
+            "p95_ms": null,
+            "mean_payload_bytes": null,
+            "mean_payload_tokens": null
+          },
+          "validation_summary": {
+            "counts": {},
+            "top_reasons": []
+          },
+          "warmup_results": [],
+          "results": [],
+          "notes": [
+            "unsupported workload (no tool mapping)"
+          ]
+        },
+        {
+          "workload_id": "W1_RECENT",
+          "tool_name": null,
+          "read_only": true,
+          "status": "unsupported",
+          "summary": {
+            "ok": 0,
+            "total": 0,
+            "mean_ms": null,
+            "p95_ms": null,
+            "mean_payload_bytes": null,
+            "mean_payload_tokens": null
+          },
+          "valid_summary": {
+            "ok": 0,
+            "total": 0,
+            "mean_ms": null,
+            "p95_ms": null,
+            "mean_payload_bytes": null,
+            "mean_payload_tokens": null
+          },
+          "validation_summary": {
+            "counts": {},
+            "top_reasons": []
+          },
+          "warmup_results": [],
+          "results": [],
+          "notes": [
+            "unsupported workload (no tool mapping)"
+          ]
+        },
+        {
+          "workload_id": "W2_SEARCH",
+          "tool_name": null,
+          "read_only": true,
+          "status": "unsupported",
+          "summary": {
+            "ok": 0,
+            "total": 0,
+            "mean_ms": null,
+            "p95_ms": null,
+            "mean_payload_bytes": null,
+            "mean_payload_tokens": null
+          },
+          "valid_summary": {
+            "ok": 0,
+            "total": 0,
+            "mean_ms": null,
+            "p95_ms": null,
+            "mean_payload_bytes": null,
+            "mean_payload_tokens": null
+          },
+          "validation_summary": {
+            "counts": {},
+            "top_reasons": []
+          },
+          "warmup_results": [],
+          "results": [],
+          "notes": [
+            "unsupported workload (no tool mapping)"
+          ]
+        },
+        {
+          "workload_id": "W3_THREAD",
+          "tool_name": "get-recent-chat-messages",
+          "read_only": true,
+          "status": "fail",
+          "summary": {
+            "ok": 0,
+            "total": 0,
+            "mean_ms": null,
+            "p95_ms": null,
+            "mean_payload_bytes": null,
+            "mean_payload_tokens": null
+          },
+          "valid_summary": {
+            "ok": 0,
+            "total": 0,
+            "mean_ms": null,
+            "p95_ms": null,
+            "mean_payload_bytes": null,
+            "mean_payload_tokens": null
+          },
+          "validation_summary": {
+            "counts": {},
+            "top_reasons": []
+          },
+          "warmup_results": [],
+          "results": [],
+          "notes": [
+            "missing target selector for thread workload"
+          ]
+        }
+      ],
+      "notes": []
+    },
+    {
+      "name": "github MCP: imessage-mcp-improved (node stdio)",
+      "command": "node",
+      "args": [
+        "/Users/wolfgangschoenberger/LIFE-PLANNER/Texting/benchmarks/vendor/github_mcp/imessage-mcp-improved/server/index.js"
+      ],
+      "mode": "session",
+      "session_initialize": {
+        "ok": true,
+        "ms": 1032.2121670033084,
+        "error": null,
+        "stdout_bytes": 180,
+        "approx_tokens": 45
+      },
+      "session_list_tools": {
+        "ok": true,
+        "ms": 3.4014159900834784,
+        "error": null,
+        "stdout_bytes": 2161,
+        "approx_tokens": 541
+      },
+      "workloads": [
+        {
+          "workload_id": "W0_UNREAD",
+          "tool_name": "get_unread_imessages",
+          "read_only": true,
+          "status": "ok_valid",
+          "summary": {
+            "ok": 5,
+            "total": 5,
+            "mean_ms": 30.085116799455136,
+            "p95_ms": 30.528041999787092,
+            "mean_payload_bytes": 245.0,
+            "mean_payload_tokens": 62.0
+          },
+          "valid_summary": {
+            "ok": 5,
+            "total": 5,
+            "mean_ms": 30.085116799455136,
+            "p95_ms": 30.528041999787092,
+            "mean_payload_bytes": 245.0,
+            "mean_payload_tokens": 62.0
+          },
+          "validation_summary": {
+            "counts": {
+              "ok_valid": 5
+            },
+            "top_reasons": []
+          },
+          "warmup_results": [
+            {
+              "iteration": 1001,
+              "ok": true,
+              "ms": 113.20441699353978,
+              "error": null,
+              "stdout_bytes": 279,
+              "approx_tokens": 70,
+              "payload_bytes": 245,
+              "payload_tokens_est": 62,
+              "payload_fingerprint": "acae96e23025443f61f1d59e94b02a3d8ab56620710d0523c2a0b7b3e888e76c",
+              "payload_item_count": 1,
+              "validation_status": "ok_valid",
+              "validation_reason": null
+            }
+          ],
+          "results": [
+            {
+              "iteration": 1,
+              "ok": true,
+              "ms": 30.528041999787092,
+              "error": null,
+              "stdout_bytes": 279,
+              "approx_tokens": 70,
+              "payload_bytes": 245,
+              "payload_tokens_est": 62,
+              "payload_fingerprint": "acae96e23025443f61f1d59e94b02a3d8ab56620710d0523c2a0b7b3e888e76c",
+              "payload_item_count": 1,
+              "validation_status": "ok_valid",
+              "validation_reason": null
+            },
+            {
+              "iteration": 2,
+              "ok": true,
+              "ms": 30.021375001524575,
+              "error": null,
+              "stdout_bytes": 279,
+              "approx_tokens": 70,
+              "payload_bytes": 245,
+              "payload_tokens_est": 62,
+              "payload_fingerprint": "acae96e23025443f61f1d59e94b02a3d8ab56620710d0523c2a0b7b3e888e76c",
+              "payload_item_count": 1,
+              "validation_status": "ok_valid",
+              "validation_reason": null
+            },
+            {
+              "iteration": 3,
+              "ok": true,
+              "ms": 28.614333001314662,
+              "error": null,
+              "stdout_bytes": 279,
+              "approx_tokens": 70,
+              "payload_bytes": 245,
+              "payload_tokens_est": 62,
+              "payload_fingerprint": "acae96e23025443f61f1d59e94b02a3d8ab56620710d0523c2a0b7b3e888e76c",
+              "payload_item_count": 1,
+              "validation_status": "ok_valid",
+              "validation_reason": null
+            },
+            {
+              "iteration": 4,
+              "ok": true,
+              "ms": 32.78637499897741,
+              "error": null,
+              "stdout_bytes": 279,
+              "approx_tokens": 70,
+              "payload_bytes": 245,
+              "payload_tokens_est": 62,
+              "payload_fingerprint": "acae96e23025443f61f1d59e94b02a3d8ab56620710d0523c2a0b7b3e888e76c",
+              "payload_item_count": 1,
+              "validation_status": "ok_valid",
+              "validation_reason": null
+            },
+            {
+              "iteration": 5,
+              "ok": true,
+              "ms": 28.475458995671943,
+              "error": null,
+              "stdout_bytes": 279,
+              "approx_tokens": 70,
+              "payload_bytes": 245,
+              "payload_tokens_est": 62,
+              "payload_fingerprint": "acae96e23025443f61f1d59e94b02a3d8ab56620710d0523c2a0b7b3e888e76c",
+              "payload_item_count": 1,
+              "validation_status": "ok_valid",
+              "validation_reason": null
+            }
+          ],
+          "notes": []
+        },
+        {
+          "workload_id": "W1_RECENT",
+          "tool_name": null,
+          "read_only": true,
+          "status": "unsupported",
+          "summary": {
+            "ok": 0,
+            "total": 0,
+            "mean_ms": null,
+            "p95_ms": null,
+            "mean_payload_bytes": null,
+            "mean_payload_tokens": null
+          },
+          "valid_summary": {
+            "ok": 0,
+            "total": 0,
+            "mean_ms": null,
+            "p95_ms": null,
+            "mean_payload_bytes": null,
+            "mean_payload_tokens": null
+          },
+          "validation_summary": {
+            "counts": {},
+            "top_reasons": []
+          },
+          "warmup_results": [],
+          "results": [],
+          "notes": [
+            "unsupported workload (no tool mapping)"
+          ]
+        },
+        {
+          "workload_id": "W2_SEARCH",
+          "tool_name": null,
+          "read_only": true,
+          "status": "unsupported",
+          "summary": {
+            "ok": 0,
+            "total": 0,
+            "mean_ms": null,
+            "p95_ms": null,
+            "mean_payload_bytes": null,
+            "mean_payload_tokens": null
+          },
+          "valid_summary": {
+            "ok": 0,
+            "total": 0,
+            "mean_ms": null,
+            "p95_ms": null,
+            "mean_payload_bytes": null,
+            "mean_payload_tokens": null
+          },
+          "validation_summary": {
+            "counts": {},
+            "top_reasons": []
+          },
+          "warmup_results": [],
+          "results": [],
+          "notes": [
+            "unsupported workload (no tool mapping)"
+          ]
+        },
+        {
+          "workload_id": "W3_THREAD",
+          "tool_name": null,
+          "read_only": true,
+          "status": "unsupported",
+          "summary": {
+            "ok": 0,
+            "total": 0,
+            "mean_ms": null,
+            "p95_ms": null,
+            "mean_payload_bytes": null,
+            "mean_payload_tokens": null
+          },
+          "valid_summary": {
+            "ok": 0,
+            "total": 0,
+            "mean_ms": null,
+            "p95_ms": null,
+            "mean_payload_bytes": null,
+            "mean_payload_tokens": null
+          },
+          "validation_summary": {
+            "counts": {},
+            "top_reasons": []
+          },
+          "warmup_results": [],
+          "results": [],
+          "notes": [
+            "unsupported workload (no tool mapping)"
+          ]
+        }
+      ],
+      "notes": []
+    }
+  ]
+}

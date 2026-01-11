@@ -8,16 +8,51 @@ T2: Smart scheduling, analytics, natural language parsing (future)
 
 Usage:
     python mcp_server/server.py
+
+CHANGELOG (recent first, max 5 entries):
+01/08/2026 - Added timing instrumentation for performance profiling (Claude)
 """
 
 import sys
 import json
 import logging
+import time
 from pathlib import Path
-from typing import Optional
+from typing import Optional, Any
 
 # Add parent directory to path for imports
 sys.path.insert(0, str(Path(__file__).parent.parent))
+
+
+# =============================================================================
+# TIMING INSTRUMENTATION (for profiling)
+# =============================================================================
+
+class TimingContext:
+    """
+    Context manager that logs timing to stderr for benchmark capture.
+
+    Timing markers are in format: [TIMING] phase_name=XX.XXms
+    These are parsed by the benchmark runner to capture server-side timing.
+    """
+
+    def __init__(self, phase_name: str):
+        self.phase = phase_name
+        self.start: float = 0
+
+    def __enter__(self) -> "TimingContext":
+        self.start = time.perf_counter()
+        return self
+
+    def __exit__(self, *args: Any) -> None:
+        elapsed_ms = (time.perf_counter() - self.start) * 1000
+        print(f"[TIMING] {self.phase}={elapsed_ms:.2f}ms", file=sys.stderr)
+
+
+def _timing(phase: str) -> TimingContext:
+    """Convenience function to create a timing context."""
+    return TimingContext(phase)
+
 
 from mcp.server import Server
 from mcp.server.stdio import stdio_server
@@ -267,15 +302,16 @@ async def handle_call_tool(name: str, arguments: dict) -> list[types.TextContent
                     )]
 
             # Create reminder with validation
-            result = reminder_manager.create_reminder(
-                title=title,
-                list_name=arguments.get("list_name"),
-                due_date=arguments.get("due_date"),
-                notes=arguments.get("notes"),
-                priority=validated_priority,
-                tags=validated_tags,
-                recurrence=validated_recurrence
-            )
+            with _timing("api_create_reminder"):
+                result = reminder_manager.create_reminder(
+                    title=title,
+                    list_name=arguments.get("list_name"),
+                    due_date=arguments.get("due_date"),
+                    notes=arguments.get("notes"),
+                    priority=validated_priority,
+                    tags=validated_tags,
+                    recurrence=validated_recurrence
+                )
 
             return [types.TextContent(
                 type="text",
@@ -297,12 +333,13 @@ async def handle_call_tool(name: str, arguments: dict) -> list[types.TextContent
                 )]
 
             # List reminders
-            reminders = reminders_interface.list_reminders(
-                list_name=arguments.get("list_name"),
-                completed=arguments.get("completed", False),
-                limit=limit,
-                tag_filter=arguments.get("tag_filter")
-            )
+            with _timing("api_list_reminders"):
+                reminders = reminders_interface.list_reminders(
+                    list_name=arguments.get("list_name"),
+                    completed=arguments.get("completed", False),
+                    limit=limit,
+                    tag_filter=arguments.get("tag_filter")
+                )
 
             return [types.TextContent(
                 type="text",
@@ -324,7 +361,8 @@ async def handle_call_tool(name: str, arguments: dict) -> list[types.TextContent
                 )]
 
             # Complete reminder
-            result = reminder_manager.complete_reminder(reminder_id)
+            with _timing("api_complete_reminder"):
+                result = reminder_manager.complete_reminder(reminder_id)
 
             return [types.TextContent(
                 type="text",
@@ -333,7 +371,8 @@ async def handle_call_tool(name: str, arguments: dict) -> list[types.TextContent
 
         elif name == "list_reminder_lists":
             # List all available reminder lists
-            lists = reminders_interface.list_reminder_lists()
+            with _timing("api_list_lists"):
+                lists = reminders_interface.list_reminder_lists()
 
             return [types.TextContent(
                 type="text",
@@ -355,7 +394,8 @@ async def handle_call_tool(name: str, arguments: dict) -> list[types.TextContent
                 )]
 
             # Delete reminder
-            result = reminder_manager.delete_reminder(reminder_id)
+            with _timing("api_delete_reminder"):
+                result = reminder_manager.delete_reminder(reminder_id)
 
             return [types.TextContent(
                 type="text",

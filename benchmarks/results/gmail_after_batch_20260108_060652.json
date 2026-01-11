@@ -1,0 +1,760 @@
+{
+  "generated_at": "2026-01-08 06:06:53",
+  "metadata": {
+    "iterations": 5,
+    "warmup": 1,
+    "phase_timeout_s": 30,
+    "call_timeout_s": 60
+  },
+  "servers": [
+    {
+      "name": "Gmail MCP",
+      "command": "python3",
+      "args": [
+        "/Users/wolfgangschoenberger/LIFE-PLANNER/src/integrations/gmail/server.py"
+      ],
+      "session_initialize": {
+        "ok": true,
+        "ms": 2814.8926669964567,
+        "error": null,
+        "stdout_bytes": 181
+      },
+      "session_list_tools": {
+        "ok": true,
+        "ms": 0.9055830014403909,
+        "error": null,
+        "stdout_bytes": 2030
+      },
+      "workloads": [
+        {
+          "workload_id": "GMAIL_UNREAD_COUNT",
+          "tool_name": "get_unread_count",
+          "read_only": true,
+          "results": [
+            {
+              "iteration": 1,
+              "ok": true,
+              "ms": 139.48037500085775,
+              "error": null,
+              "payload_bytes": 79,
+              "server_timing": {
+                "oauth_load": 0.42,
+                "api_discovery": 41.88,
+                "api_unread_count": 336.0
+              }
+            },
+            {
+              "iteration": 2,
+              "ok": true,
+              "ms": 131.61195800057612,
+              "error": null,
+              "payload_bytes": 79,
+              "server_timing": {
+                "api_unread_count": 137.75
+              }
+            },
+            {
+              "iteration": 3,
+              "ok": true,
+              "ms": 125.82104100147262,
+              "error": null,
+              "payload_bytes": 79,
+              "server_timing": {
+                "api_unread_count": 130.37
+              }
+            },
+            {
+              "iteration": 4,
+              "ok": true,
+              "ms": 135.8374170085881,
+              "error": null,
+              "payload_bytes": 79,
+              "server_timing": {
+                "api_unread_count": 124.28
+              }
+            },
+            {
+              "iteration": 5,
+              "ok": true,
+              "ms": 125.12058300490025,
+              "error": null,
+              "payload_bytes": 79,
+              "server_timing": {
+                "api_unread_count": 134.43
+              }
+            }
+          ],
+          "warmup_results": [
+            {
+              "iteration": 1001,
+              "ok": true,
+              "ms": 337.59962499607354,
+              "error": null,
+              "payload_bytes": 79,
+              "server_timing": {}
+            }
+          ],
+          "summary": {
+            "total": 5,
+            "ok": 5,
+            "failed": 0,
+            "mean_ms": 131.57427480327897,
+            "p50_ms": 131.61195800057612,
+            "p90_ms": 135.8374170085881,
+            "p95_ms": 135.8374170085881,
+            "p99_ms": 135.8374170085881,
+            "min_ms": 125.12058300490025,
+            "max_ms": 139.48037500085775,
+            "std_dev_ms": 6.233619711429898,
+            "cv_percent": 4.737719224179641,
+            "mean_payload_bytes": 79.0,
+            "server_timing": {
+              "oauth_load": {
+                "mean_ms": 0.42,
+                "p50_ms": 0.42,
+                "min_ms": 0.42,
+                "max_ms": 0.42
+              },
+              "api_discovery": {
+                "mean_ms": 41.88,
+                "p50_ms": 41.88,
+                "min_ms": 41.88,
+                "max_ms": 41.88
+              },
+              "api_unread_count": {
+                "mean_ms": 172.566,
+                "p50_ms": 134.43,
+                "min_ms": 124.28,
+                "max_ms": 336.0
+              }
+            }
+          }
+        },
+        {
+          "workload_id": "GMAIL_LIST_5",
+          "tool_name": "list_emails",
+          "read_only": true,
+          "results": [
+            {
+              "iteration": 1,
+              "ok": true,
+              "ms": 308.16924999817275,
+              "error": null,
+              "payload_bytes": 1703,
+              "server_timing": {
+                "api_list": 118.6,
+                "api_batch_get": 150.48
+              }
+            },
+            {
+              "iteration": 2,
+              "ok": true,
+              "ms": 260.86949999444187,
+              "error": null,
+              "payload_bytes": 1703,
+              "server_timing": {
+                "api_list": 124.12,
+                "api_batch_get": 180.96
+              }
+            },
+            {
+              "iteration": 3,
+              "ok": true,
+              "ms": 303.67887498869095,
+              "error": null,
+              "payload_bytes": 1703,
+              "server_timing": {
+                "api_list": 99.82,
+                "api_batch_get": 155.0
+              }
+            },
+            {
+              "iteration": 4,
+              "ok": true,
+              "ms": 302.0684170041932,
+              "error": null,
+              "payload_bytes": 1703,
+              "server_timing": {
+                "api_list": 152.53,
+                "api_batch_get": 147.83
+              }
+            },
+            {
+              "iteration": 5,
+              "ok": true,
+              "ms": 271.7375000065658,
+              "error": null,
+              "payload_bytes": 1703,
+              "server_timing": {
+                "api_list": 133.72,
+                "api_batch_get": 166.02
+              }
+            }
+          ],
+          "warmup_results": [
+            {
+              "iteration": 1007,
+              "ok": true,
+              "ms": 272.6756249903701,
+              "error": null,
+              "payload_bytes": 1703,
+              "server_timing": {
+                "api_unread_count": 123.65
+              }
+            }
+          ],
+          "summary": {
+            "total": 5,
+            "ok": 5,
+            "failed": 0,
+            "mean_ms": 289.3047083984129,
+            "p50_ms": 302.0684170041932,
+            "p90_ms": 303.67887498869095,
+            "p95_ms": 303.67887498869095,
+            "p99_ms": 303.67887498869095,
+            "min_ms": 260.86949999444187,
+            "max_ms": 308.16924999817275,
+            "std_dev_ms": 21.462570558808025,
+            "cv_percent": 7.418673093025182,
+            "mean_payload_bytes": 1703.0,
+            "server_timing": {
+              "api_list": {
+                "mean_ms": 125.758,
+                "p50_ms": 124.12,
+                "min_ms": 99.82,
+                "max_ms": 152.53
+              },
+              "api_batch_get": {
+                "mean_ms": 160.058,
+                "p50_ms": 155.0,
+                "min_ms": 147.83,
+                "max_ms": 180.96
+              }
+            }
+          }
+        },
+        {
+          "workload_id": "GMAIL_LIST_10",
+          "tool_name": "list_emails",
+          "read_only": true,
+          "results": [
+            {
+              "iteration": 1,
+              "ok": true,
+              "ms": 333.8028339931043,
+              "error": null,
+              "payload_bytes": 3364,
+              "server_timing": {
+                "api_list": 115.16,
+                "api_batch_get": 192.94
+              }
+            },
+            {
+              "iteration": 2,
+              "ok": true,
+              "ms": 307.53745800757315,
+              "error": null,
+              "payload_bytes": 3364,
+              "server_timing": {
+                "api_list": 118.75,
+                "api_batch_get": 212.87
+              }
+            },
+            {
+              "iteration": 3,
+              "ok": true,
+              "ms": 277.65979200194124,
+              "error": null,
+              "payload_bytes": 3364,
+              "server_timing": {
+                "api_list": 124.21,
+                "api_batch_get": 181.27
+              }
+            },
+            {
+              "iteration": 4,
+              "ok": true,
+              "ms": 322.49991699063685,
+              "error": null,
+              "payload_bytes": 3364,
+              "server_timing": {
+                "api_list": 113.64,
+                "api_batch_get": 161.6
+              }
+            },
+            {
+              "iteration": 5,
+              "ok": true,
+              "ms": 282.1149579976918,
+              "error": null,
+              "payload_bytes": 3364,
+              "server_timing": {
+                "api_list": 143.21,
+                "api_batch_get": 176.87
+              }
+            }
+          ],
+          "warmup_results": [
+            {
+              "iteration": 1013,
+              "ok": true,
+              "ms": 311.49212500895374,
+              "error": null,
+              "payload_bytes": 3364,
+              "server_timing": {
+                "api_list": 136.46,
+                "api_batch_get": 132.85
+              }
+            }
+          ],
+          "summary": {
+            "total": 5,
+            "ok": 5,
+            "failed": 0,
+            "mean_ms": 304.72299179818947,
+            "p50_ms": 307.53745800757315,
+            "p90_ms": 322.49991699063685,
+            "p95_ms": 322.49991699063685,
+            "p99_ms": 322.49991699063685,
+            "min_ms": 277.65979200194124,
+            "max_ms": 333.8028339931043,
+            "std_dev_ms": 24.561746105269446,
+            "cv_percent": 8.060352112037574,
+            "mean_payload_bytes": 3364.0,
+            "server_timing": {
+              "api_list": {
+                "mean_ms": 122.994,
+                "p50_ms": 118.75,
+                "min_ms": 113.64,
+                "max_ms": 143.21
+              },
+              "api_batch_get": {
+                "mean_ms": 185.10999999999999,
+                "p50_ms": 181.27,
+                "min_ms": 161.6,
+                "max_ms": 212.87
+              }
+            }
+          }
+        },
+        {
+          "workload_id": "GMAIL_LIST_25",
+          "tool_name": "list_emails",
+          "read_only": true,
+          "results": [
+            {
+              "iteration": 1,
+              "ok": true,
+              "ms": 353.538875002414,
+              "error": null,
+              "payload_bytes": 8890,
+              "server_timing": {
+                "api_list": 116.77,
+                "api_batch_get": 295.15
+              }
+            },
+            {
+              "iteration": 2,
+              "ok": true,
+              "ms": 378.71983301010914,
+              "error": null,
+              "payload_bytes": 8890,
+              "server_timing": {
+                "api_list": 103.7,
+                "api_batch_get": 247.39
+              }
+            },
+            {
+              "iteration": 3,
+              "ok": true,
+              "ms": 384.22766700387,
+              "error": null,
+              "payload_bytes": 8890,
+              "server_timing": {
+                "api_list": 120.8,
+                "api_batch_get": 255.37
+              }
+            },
+            {
+              "iteration": 4,
+              "ok": true,
+              "ms": 400.57729100226425,
+              "error": null,
+              "payload_bytes": 8890,
+              "server_timing": {
+                "api_list": 111.43,
+                "api_batch_get": 270.62
+              }
+            },
+            {
+              "iteration": 5,
+              "ok": true,
+              "ms": 372.57358300848864,
+              "error": null,
+              "payload_bytes": 8890,
+              "server_timing": {
+                "api_list": 114.67,
+                "api_batch_get": 283.35
+              }
+            }
+          ],
+          "warmup_results": [
+            {
+              "iteration": 1019,
+              "ok": true,
+              "ms": 414.37320900149643,
+              "error": null,
+              "payload_bytes": 8890,
+              "server_timing": {
+                "api_list": 108.89,
+                "api_batch_get": 170.68
+              }
+            }
+          ],
+          "summary": {
+            "total": 5,
+            "ok": 5,
+            "failed": 0,
+            "mean_ms": 377.9274498054292,
+            "p50_ms": 378.71983301010914,
+            "p90_ms": 384.22766700387,
+            "p95_ms": 384.22766700387,
+            "p99_ms": 384.22766700387,
+            "min_ms": 353.538875002414,
+            "max_ms": 400.57729100226425,
+            "std_dev_ms": 17.15227670554324,
+            "cv_percent": 4.538510424255728,
+            "mean_payload_bytes": 8890.0,
+            "server_timing": {
+              "api_list": {
+                "mean_ms": 113.474,
+                "p50_ms": 114.67,
+                "min_ms": 103.7,
+                "max_ms": 120.8
+              },
+              "api_batch_get": {
+                "mean_ms": 270.37600000000003,
+                "p50_ms": 270.62,
+                "min_ms": 247.39,
+                "max_ms": 295.15
+              }
+            }
+          }
+        },
+        {
+          "workload_id": "GMAIL_SEARCH_SIMPLE",
+          "tool_name": "search_emails",
+          "read_only": true,
+          "results": [
+            {
+              "iteration": 1,
+              "ok": true,
+              "ms": 233.75091700290795,
+              "error": null,
+              "payload_bytes": 1529,
+              "server_timing": {
+                "api_search": 116.84,
+                "api_batch_get": 167.35
+              }
+            },
+            {
+              "iteration": 2,
+              "ok": true,
+              "ms": 272.76816598896403,
+              "error": null,
+              "payload_bytes": 1529,
+              "server_timing": {
+                "api_search": 109.3,
+                "api_batch_get": 122.6
+              }
+            },
+            {
+              "iteration": 3,
+              "ok": true,
+              "ms": 240.10516700218432,
+              "error": null,
+              "payload_bytes": 1529,
+              "server_timing": {
+                "api_search": 103.45,
+                "api_batch_get": 167.85
+              }
+            },
+            {
+              "iteration": 4,
+              "ok": true,
+              "ms": 302.92487499536946,
+              "error": null,
+              "payload_bytes": 1529,
+              "server_timing": {
+                "api_search": 108.59,
+                "api_batch_get": 129.69
+              }
+            },
+            {
+              "iteration": 5,
+              "ok": true,
+              "ms": 233.64266700809821,
+              "error": null,
+              "payload_bytes": 1529,
+              "server_timing": {
+                "api_search": 103.4,
+                "api_batch_get": 197.82
+              }
+            }
+          ],
+          "warmup_results": [
+            {
+              "iteration": 1025,
+              "ok": true,
+              "ms": 286.1362090043258,
+              "error": null,
+              "payload_bytes": 1529,
+              "server_timing": {
+                "api_list": 102.77,
+                "api_batch_get": 267.34
+              }
+            }
+          ],
+          "summary": {
+            "total": 5,
+            "ok": 5,
+            "failed": 0,
+            "mean_ms": 256.6383583995048,
+            "p50_ms": 240.10516700218432,
+            "p90_ms": 272.76816598896403,
+            "p95_ms": 272.76816598896403,
+            "p99_ms": 272.76816598896403,
+            "min_ms": 233.64266700809821,
+            "max_ms": 302.92487499536946,
+            "std_dev_ms": 30.531113333303658,
+            "cv_percent": 11.89655105484129,
+            "mean_payload_bytes": 1529.0,
+            "server_timing": {
+              "api_search": {
+                "mean_ms": 108.316,
+                "p50_ms": 108.59,
+                "min_ms": 103.4,
+                "max_ms": 116.84
+              },
+              "api_batch_get": {
+                "mean_ms": 157.06199999999998,
+                "p50_ms": 167.35,
+                "min_ms": 122.6,
+                "max_ms": 197.82
+              }
+            }
+          }
+        },
+        {
+          "workload_id": "GMAIL_SEARCH_COMPLEX",
+          "tool_name": "search_emails",
+          "read_only": true,
+          "results": [
+            {
+              "iteration": 1,
+              "ok": true,
+              "ms": 270.1502080017235,
+              "error": null,
+              "payload_bytes": 1691,
+              "server_timing": {
+                "api_search": 126.69,
+                "api_batch_get": 153.48
+              }
+            },
+            {
+              "iteration": 2,
+              "ok": true,
+              "ms": 240.47116699512117,
+              "error": null,
+              "payload_bytes": 1691,
+              "server_timing": {
+                "api_search": 143.78,
+                "api_batch_get": 124.34
+              }
+            },
+            {
+              "iteration": 3,
+              "ok": true,
+              "ms": 277.1829160046764,
+              "error": null,
+              "payload_bytes": 1691,
+              "server_timing": {
+                "api_search": 109.26,
+                "api_batch_get": 129.58
+              }
+            },
+            {
+              "iteration": 4,
+              "ok": true,
+              "ms": 245.45049999142066,
+              "error": null,
+              "payload_bytes": 1691,
+              "server_timing": {
+                "api_search": 103.34,
+                "api_batch_get": 172.39
+              }
+            },
+            {
+              "iteration": 5,
+              "ok": true,
+              "ms": 247.61829199269414,
+              "error": null,
+              "payload_bytes": 1691,
+              "server_timing": {
+                "api_search": 107.03,
+                "api_batch_get": 136.68
+              }
+            }
+          ],
+          "warmup_results": [
+            {
+              "iteration": 1031,
+              "ok": true,
+              "ms": 282.5712920021033,
+              "error": null,
+              "payload_bytes": 1691,
+              "server_timing": {
+                "api_search": 114.44,
+                "api_batch_get": 116.1
+              }
+            }
+          ],
+          "summary": {
+            "total": 5,
+            "ok": 5,
+            "failed": 0,
+            "mean_ms": 256.17461659712717,
+            "p50_ms": 247.61829199269414,
+            "p90_ms": 270.1502080017235,
+            "p95_ms": 270.1502080017235,
+            "p99_ms": 270.1502080017235,
+            "min_ms": 240.47116699512117,
+            "max_ms": 277.1829160046764,
+            "std_dev_ms": 16.36674598245951,
+            "cv_percent": 6.38890230416492,
+            "mean_payload_bytes": 1691.0,
+            "server_timing": {
+              "api_search": {
+                "mean_ms": 118.02000000000001,
+                "p50_ms": 109.26,
+                "min_ms": 103.34,
+                "max_ms": 143.78
+              },
+              "api_batch_get": {
+                "mean_ms": 143.294,
+                "p50_ms": 136.68,
+                "min_ms": 124.34,
+                "max_ms": 172.39
+              }
+            }
+          }
+        },
+        {
+          "workload_id": "GMAIL_LIST_UNREAD",
+          "tool_name": "list_emails",
+          "read_only": true,
+          "results": [
+            {
+              "iteration": 1,
+              "ok": true,
+              "ms": 249.26016700919718,
+              "error": null,
+              "payload_bytes": 1695,
+              "server_timing": {
+                "api_list": 103.12,
+                "api_batch_get": 138.56
+              }
+            },
+            {
+              "iteration": 2,
+              "ok": true,
+              "ms": 251.9345000036992,
+              "error": null,
+              "payload_bytes": 1695,
+              "server_timing": {
+                "api_list": 109.55,
+                "api_batch_get": 137.81
+              }
+            },
+            {
+              "iteration": 3,
+              "ok": true,
+              "ms": 276.47075000277255,
+              "error": null,
+              "payload_bytes": 1695,
+              "server_timing": {
+                "api_list": 120.76,
+                "api_batch_get": 128.77
+              }
+            },
+            {
+              "iteration": 4,
+              "ok": true,
+              "ms": 245.69025001255795,
+              "error": null,
+              "payload_bytes": 1695,
+              "server_timing": {
+                "api_list": 152.8,
+                "api_batch_get": 121.62
+              }
+            },
+            {
+              "iteration": 5,
+              "ok": true,
+              "ms": 244.42958300642204,
+              "error": null,
+              "payload_bytes": 1695,
+              "server_timing": {
+                "api_list": 106.87,
+                "api_batch_get": 136.45
+              }
+            }
+          ],
+          "warmup_results": [
+            {
+              "iteration": 1037,
+              "ok": true,
+              "ms": 243.73808299424127,
+              "error": null,
+              "payload_bytes": 1695,
+              "server_timing": {
+                "api_search": 121.81,
+                "api_batch_get": 123.93
+              }
+            }
+          ],
+          "summary": {
+            "total": 5,
+            "ok": 5,
+            "failed": 0,
+            "mean_ms": 253.55705000692979,
+            "p50_ms": 249.26016700919718,
+            "p90_ms": 251.9345000036992,
+            "p95_ms": 251.9345000036992,
+            "p99_ms": 251.9345000036992,
+            "min_ms": 244.42958300642204,
+            "max_ms": 276.47075000277255,
+            "std_dev_ms": 13.146584304539699,
+            "cv_percent": 5.1848624615960786,
+            "mean_payload_bytes": 1695.0,
+            "server_timing": {
+              "api_list": {
+                "mean_ms": 118.62,
+                "p50_ms": 109.55,
+                "min_ms": 103.12,
+                "max_ms": 152.8
+              },
+              "api_batch_get": {
+                "mean_ms": 132.642,
+                "p50_ms": 136.45,
+                "min_ms": 121.62,
+                "max_ms": 138.56
+              }
+            }
+          }
+        }
+      ],
+      "notes": []
+    }
+  ]
+}

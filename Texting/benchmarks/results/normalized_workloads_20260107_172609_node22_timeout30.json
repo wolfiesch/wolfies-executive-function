@@ -1,0 +1,1663 @@
+{
+  "generated_at": "2026-01-07 17:26:10",
+  "metadata": {
+    "mode": "session",
+    "iterations": 5,
+    "warmup": 1,
+    "phase_timeout_s": 40,
+    "call_timeout_s": 30,
+    "workloads": [
+      "W0_UNREAD",
+      "W1_RECENT",
+      "W2_SEARCH",
+      "W3_THREAD"
+    ]
+  },
+  "servers": [
+    {
+      "name": "brew MCP: cardmagic/messages (messages --mcp)",
+      "command": "messages",
+      "args": [
+        "--mcp"
+      ],
+      "mode": "session",
+      "session_initialize": {
+        "ok": true,
+        "ms": 1021.1889579950366,
+        "error": null,
+        "stdout_bytes": 146,
+        "approx_tokens": 37
+      },
+      "session_list_tools": {
+        "ok": true,
+        "ms": 2.315917008672841,
+        "error": null,
+        "stdout_bytes": 2625,
+        "approx_tokens": 657
+      },
+      "workloads": [
+        {
+          "workload_id": "W0_UNREAD",
+          "tool_name": null,
+          "read_only": true,
+          "warmup_results": [],
+          "results": [],
+          "notes": [
+            "unsupported workload (no tool mapping)"
+          ]
+        },
+        {
+          "workload_id": "W1_RECENT",
+          "tool_name": "recent_messages",
+          "read_only": true,
+          "warmup_results": [
+            {
+              "iteration": 1001,
+              "ok": true,
+              "ms": 26.848624998820014,
+              "error": null,
+              "stdout_bytes": 472,
+              "approx_tokens": 118
+            }
+          ],
+          "results": [
+            {
+              "iteration": 1,
+              "ok": true,
+              "ms": 2.855500002624467,
+              "error": null,
+              "stdout_bytes": 472,
+              "approx_tokens": 118
+            },
+            {
+              "iteration": 2,
+              "ok": true,
+              "ms": 2.121083001838997,
+              "error": null,
+              "stdout_bytes": 472,
+              "approx_tokens": 118
+            },
+            {
+              "iteration": 3,
+              "ok": true,
+              "ms": 1.8631669954629615,
+              "error": null,
+              "stdout_bytes": 472,
+              "approx_tokens": 118
+            },
+            {
+              "iteration": 4,
+              "ok": true,
+              "ms": 2.016915997955948,
+              "error": null,
+              "stdout_bytes": 472,
+              "approx_tokens": 118
+            },
+            {
+              "iteration": 5,
+              "ok": true,
+              "ms": 1.7290419928031042,
+              "error": null,
+              "stdout_bytes": 472,
+              "approx_tokens": 118
+            }
+          ],
+          "notes": []
+        },
+        {
+          "workload_id": "W2_SEARCH",
+          "tool_name": "search_messages",
+          "read_only": true,
+          "warmup_results": [
+            {
+              "iteration": 1007,
+              "ok": true,
+              "ms": 1.872416993137449,
+              "error": null,
+              "stdout_bytes": 472,
+              "approx_tokens": 118
+            }
+          ],
+          "results": [
+            {
+              "iteration": 1,
+              "ok": true,
+              "ms": 1.505584004917182,
+              "error": null,
+              "stdout_bytes": 472,
+              "approx_tokens": 118
+            },
+            {
+              "iteration": 2,
+              "ok": true,
+              "ms": 1.5767500008223578,
+              "error": null,
+              "stdout_bytes": 472,
+              "approx_tokens": 118
+            },
+            {
+              "iteration": 3,
+              "ok": true,
+              "ms": 1.2733749899780378,
+              "error": null,
+              "stdout_bytes": 472,
+              "approx_tokens": 118
+            },
+            {
+              "iteration": 4,
+              "ok": true,
+              "ms": 1.4098329993430525,
+              "error": null,
+              "stdout_bytes": 472,
+              "approx_tokens": 118
+            },
+            {
+              "iteration": 5,
+              "ok": true,
+              "ms": 1.5364999999292195,
+              "error": null,
+              "stdout_bytes": 472,
+              "approx_tokens": 118
+            }
+          ],
+          "notes": []
+        },
+        {
+          "workload_id": "W3_THREAD",
+          "tool_name": "get_thread",
+          "read_only": true,
+          "warmup_results": [
+            {
+              "iteration": 1014,
+              "ok": true,
+              "ms": 1.2648749980144203,
+              "error": null,
+              "stdout_bytes": 472,
+              "approx_tokens": 118
+            }
+          ],
+          "results": [
+            {
+              "iteration": 1,
+              "ok": true,
+              "ms": 1.4423329994315282,
+              "error": null,
+              "stdout_bytes": 472,
+              "approx_tokens": 118
+            },
+            {
+              "iteration": 2,
+              "ok": true,
+              "ms": 1.2497089919634163,
+              "error": null,
+              "stdout_bytes": 472,
+              "approx_tokens": 118
+            },
+            {
+              "iteration": 3,
+              "ok": true,
+              "ms": 1.1291249975329265,
+              "error": null,
+              "stdout_bytes": 472,
+              "approx_tokens": 118
+            },
+            {
+              "iteration": 4,
+              "ok": true,
+              "ms": 1.1488339951029047,
+              "error": null,
+              "stdout_bytes": 472,
+              "approx_tokens": 118
+            },
+            {
+              "iteration": 5,
+              "ok": true,
+              "ms": 1.1085830046795309,
+              "error": null,
+              "stdout_bytes": 472,
+              "approx_tokens": 118
+            }
+          ],
+          "notes": []
+        }
+      ],
+      "notes": []
+    },
+    {
+      "name": "github MCP: wyattjoh/imessage-mcp (deno stdio)",
+      "command": "deno",
+      "args": [
+        "run",
+        "--allow-read",
+        "--allow-env",
+        "--allow-sys",
+        "--allow-run",
+        "--allow-ffi",
+        "packages/imessage-mcp/mod.ts"
+      ],
+      "mode": "session",
+      "session_initialize": {
+        "ok": true,
+        "ms": 1059.1435840033228,
+        "error": null,
+        "stdout_bytes": 207,
+        "approx_tokens": 52
+      },
+      "session_list_tools": {
+        "ok": true,
+        "ms": 2.54062500607688,
+        "error": null,
+        "stdout_bytes": 6134,
+        "approx_tokens": 1534
+      },
+      "workloads": [
+        {
+          "workload_id": "W0_UNREAD",
+          "tool_name": null,
+          "read_only": true,
+          "warmup_results": [],
+          "results": [],
+          "notes": [
+            "unsupported workload (no tool mapping)"
+          ]
+        },
+        {
+          "workload_id": "W1_RECENT",
+          "tool_name": "get_recent_messages",
+          "read_only": true,
+          "warmup_results": [
+            {
+              "iteration": 1001,
+              "ok": true,
+              "ms": 21.653458010405302,
+              "error": null,
+              "stdout_bytes": 923,
+              "approx_tokens": 231
+            }
+          ],
+          "results": [
+            {
+              "iteration": 1,
+              "ok": true,
+              "ms": 12.322958005825058,
+              "error": null,
+              "stdout_bytes": 923,
+              "approx_tokens": 231
+            },
+            {
+              "iteration": 2,
+              "ok": true,
+              "ms": 10.865541000384837,
+              "error": null,
+              "stdout_bytes": 923,
+              "approx_tokens": 231
+            },
+            {
+              "iteration": 3,
+              "ok": true,
+              "ms": 9.84825000341516,
+              "error": null,
+              "stdout_bytes": 923,
+              "approx_tokens": 231
+            },
+            {
+              "iteration": 4,
+              "ok": true,
+              "ms": 9.239292005077004,
+              "error": null,
+              "stdout_bytes": 923,
+              "approx_tokens": 231
+            },
+            {
+              "iteration": 5,
+              "ok": true,
+              "ms": 8.749542001169175,
+              "error": null,
+              "stdout_bytes": 923,
+              "approx_tokens": 231
+            }
+          ],
+          "notes": []
+        },
+        {
+          "workload_id": "W2_SEARCH",
+          "tool_name": "search_messages",
+          "read_only": true,
+          "warmup_results": [
+            {
+              "iteration": 1007,
+              "ok": true,
+              "ms": 224.08887499477714,
+              "error": null,
+              "stdout_bytes": 843,
+              "approx_tokens": 211
+            }
+          ],
+          "results": [
+            {
+              "iteration": 1,
+              "ok": true,
+              "ms": 33.93120899272617,
+              "error": null,
+              "stdout_bytes": 843,
+              "approx_tokens": 211
+            },
+            {
+              "iteration": 2,
+              "ok": true,
+              "ms": 33.06120799970813,
+              "error": null,
+              "stdout_bytes": 843,
+              "approx_tokens": 211
+            },
+            {
+              "iteration": 3,
+              "ok": true,
+              "ms": 32.29033299430739,
+              "error": null,
+              "stdout_bytes": 843,
+              "approx_tokens": 211
+            },
+            {
+              "iteration": 4,
+              "ok": true,
+              "ms": 25.32000000064727,
+              "error": null,
+              "stdout_bytes": 843,
+              "approx_tokens": 211
+            },
+            {
+              "iteration": 5,
+              "ok": true,
+              "ms": 25.68295800301712,
+              "error": null,
+              "stdout_bytes": 843,
+              "approx_tokens": 211
+            }
+          ],
+          "notes": []
+        },
+        {
+          "workload_id": "W3_THREAD",
+          "tool_name": "get_messages_from_chat",
+          "read_only": true,
+          "warmup_results": [
+            {
+              "iteration": 1014,
+              "ok": true,
+              "ms": 0.9453330130781978,
+              "error": null,
+              "stdout_bytes": 877,
+              "approx_tokens": 220
+            }
+          ],
+          "results": [
+            {
+              "iteration": 1,
+              "ok": true,
+              "ms": 0.32379099866375327,
+              "error": null,
+              "stdout_bytes": 877,
+              "approx_tokens": 220
+            },
+            {
+              "iteration": 2,
+              "ok": true,
+              "ms": 0.324500011629425,
+              "error": null,
+              "stdout_bytes": 877,
+              "approx_tokens": 220
+            },
+            {
+              "iteration": 3,
+              "ok": true,
+              "ms": 0.21808399469591677,
+              "error": null,
+              "stdout_bytes": 877,
+              "approx_tokens": 220
+            },
+            {
+              "iteration": 4,
+              "ok": true,
+              "ms": 0.2303749934071675,
+              "error": null,
+              "stdout_bytes": 877,
+              "approx_tokens": 220
+            },
+            {
+              "iteration": 5,
+              "ok": true,
+              "ms": 0.2614580007502809,
+              "error": null,
+              "stdout_bytes": 877,
+              "approx_tokens": 220
+            }
+          ],
+          "notes": []
+        }
+      ],
+      "notes": []
+    },
+    {
+      "name": "github MCP: jonmmease/jons-mcp-imessage (python fastmcp stdio)",
+      "command": "/Users/wolfgangschoenberger/LIFE-PLANNER/Texting/benchmarks/vendor/github_mcp/jons-mcp-imessage/.venv/bin/jons-mcp-imessage",
+      "args": [],
+      "mode": "session",
+      "session_initialize": {
+        "ok": true,
+        "ms": 1029.4796249945648,
+        "error": null,
+        "stdout_bytes": 2411,
+        "approx_tokens": 603
+      },
+      "session_list_tools": {
+        "ok": true,
+        "ms": 1.3333329989109188,
+        "error": null,
+        "stdout_bytes": 11316,
+        "approx_tokens": 2829
+      },
+      "workloads": [
+        {
+          "workload_id": "W0_UNREAD",
+          "tool_name": null,
+          "read_only": true,
+          "warmup_results": [],
+          "results": [],
+          "notes": [
+            "unsupported workload (no tool mapping)"
+          ]
+        },
+        {
+          "workload_id": "W1_RECENT",
+          "tool_name": "get_recent_messages",
+          "read_only": true,
+          "warmup_results": [
+            {
+              "iteration": 1001,
+              "ok": true,
+              "ms": 44.01487500581425,
+              "error": null,
+              "stdout_bytes": 1162,
+              "approx_tokens": 291
+            }
+          ],
+          "results": [
+            {
+              "iteration": 1,
+              "ok": true,
+              "ms": 1.7425839905627072,
+              "error": null,
+              "stdout_bytes": 1162,
+              "approx_tokens": 291
+            },
+            {
+              "iteration": 2,
+              "ok": true,
+              "ms": 1.411334000295028,
+              "error": null,
+              "stdout_bytes": 1162,
+              "approx_tokens": 291
+            },
+            {
+              "iteration": 3,
+              "ok": true,
+              "ms": 1.5607090026605874,
+              "error": null,
+              "stdout_bytes": 1162,
+              "approx_tokens": 291
+            },
+            {
+              "iteration": 4,
+              "ok": true,
+              "ms": 1.5567499940516427,
+              "error": null,
+              "stdout_bytes": 1162,
+              "approx_tokens": 291
+            },
+            {
+              "iteration": 5,
+              "ok": true,
+              "ms": 1.5527089999523014,
+              "error": null,
+              "stdout_bytes": 1162,
+              "approx_tokens": 291
+            }
+          ],
+          "notes": []
+        },
+        {
+          "workload_id": "W2_SEARCH",
+          "tool_name": "search_messages",
+          "read_only": true,
+          "warmup_results": [
+            {
+              "iteration": 1007,
+              "ok": false,
+              "ms": 30087.52454200294,
+              "error": "TIMEOUT",
+              "stdout_bytes": 0,
+              "approx_tokens": 0
+            }
+          ],
+          "results": [
+            {
+              "iteration": 1,
+              "ok": false,
+              "ms": 30029.632416990353,
+              "error": "TIMEOUT",
+              "stdout_bytes": 0,
+              "approx_tokens": 0
+            },
+            {
+              "iteration": 2,
+              "ok": false,
+              "ms": 30086.185916006798,
+              "error": "TIMEOUT",
+              "stdout_bytes": 0,
+              "approx_tokens": 0
+            },
+            {
+              "iteration": 3,
+              "ok": false,
+              "ms": 30042.790958003025,
+              "error": "TIMEOUT",
+              "stdout_bytes": 0,
+              "approx_tokens": 0
+            },
+            {
+              "iteration": 4,
+              "ok": false,
+              "ms": 30040.856834006263,
+              "error": "TIMEOUT",
+              "stdout_bytes": 0,
+              "approx_tokens": 0
+            },
+            {
+              "iteration": 5,
+              "ok": false,
+              "ms": 30039.55462500744,
+              "error": "TIMEOUT",
+              "stdout_bytes": 0,
+              "approx_tokens": 0
+            }
+          ],
+          "notes": []
+        },
+        {
+          "workload_id": "W3_THREAD",
+          "tool_name": "get_conversation_messages",
+          "read_only": true,
+          "warmup_results": [
+            {
+              "iteration": 1014,
+              "ok": false,
+              "ms": 30026.832667004783,
+              "error": "TIMEOUT",
+              "stdout_bytes": 0,
+              "approx_tokens": 0
+            }
+          ],
+          "results": [
+            {
+              "iteration": 1,
+              "ok": false,
+              "ms": 30043.04150000098,
+              "error": "TIMEOUT",
+              "stdout_bytes": 0,
+              "approx_tokens": 0
+            },
+            {
+              "iteration": 2,
+              "ok": false,
+              "ms": 30006.533375009894,
+              "error": "TIMEOUT",
+              "stdout_bytes": 0,
+              "approx_tokens": 0
+            },
+            {
+              "iteration": 3,
+              "ok": false,
+              "ms": 30075.43683401309,
+              "error": "TIMEOUT",
+              "stdout_bytes": 0,
+              "approx_tokens": 0
+            },
+            {
+              "iteration": 4,
+              "ok": false,
+              "ms": 30010.300166002708,
+              "error": "TIMEOUT",
+              "stdout_bytes": 0,
+              "approx_tokens": 0
+            },
+            {
+              "iteration": 5,
+              "ok": false,
+              "ms": 30069.284540993976,
+              "error": "TIMEOUT",
+              "stdout_bytes": 0,
+              "approx_tokens": 0
+            }
+          ],
+          "notes": []
+        }
+      ],
+      "notes": []
+    },
+    {
+      "name": "github MCP: mattt/iMCP (swift stdio proxy)",
+      "command": "/Users/wolfgangschoenberger/LIFE-PLANNER/Texting/benchmarks/vendor/github_mcp/iMCP/.derived/Build/Products/Release/iMCP.app/Contents/MacOS/imcp-server",
+      "args": [],
+      "mode": "session",
+      "session_initialize": {
+        "ok": true,
+        "ms": 1022.4136249889852,
+        "error": null,
+        "stdout_bytes": 160,
+        "approx_tokens": 40
+      },
+      "session_list_tools": {
+        "ok": true,
+        "ms": 22.303333011223003,
+        "error": null,
+        "stdout_bytes": 4468,
+        "approx_tokens": 1117
+      },
+      "workloads": [
+        {
+          "workload_id": "W0_UNREAD",
+          "tool_name": null,
+          "read_only": true,
+          "warmup_results": [],
+          "results": [],
+          "notes": [
+            "unsupported workload (no tool mapping)"
+          ]
+        },
+        {
+          "workload_id": "W1_RECENT",
+          "tool_name": "messages_fetch",
+          "read_only": true,
+          "warmup_results": [
+            {
+              "iteration": 1001,
+              "ok": true,
+              "ms": 43.70174999348819,
+              "error": null,
+              "stdout_bytes": 322,
+              "approx_tokens": 81
+            }
+          ],
+          "results": [
+            {
+              "iteration": 1,
+              "ok": true,
+              "ms": 29.894374994910322,
+              "error": null,
+              "stdout_bytes": 322,
+              "approx_tokens": 81
+            },
+            {
+              "iteration": 2,
+              "ok": true,
+              "ms": 34.84808299981523,
+              "error": null,
+              "stdout_bytes": 322,
+              "approx_tokens": 81
+            },
+            {
+              "iteration": 3,
+              "ok": true,
+              "ms": 33.27087499201298,
+              "error": null,
+              "stdout_bytes": 322,
+              "approx_tokens": 81
+            },
+            {
+              "iteration": 4,
+              "ok": true,
+              "ms": 34.6322080004029,
+              "error": null,
+              "stdout_bytes": 322,
+              "approx_tokens": 81
+            },
+            {
+              "iteration": 5,
+              "ok": true,
+              "ms": 32.45691698975861,
+              "error": null,
+              "stdout_bytes": 322,
+              "approx_tokens": 81
+            }
+          ],
+          "notes": []
+        },
+        {
+          "workload_id": "W2_SEARCH",
+          "tool_name": "messages_fetch",
+          "read_only": true,
+          "warmup_results": [
+            {
+              "iteration": 1007,
+              "ok": true,
+              "ms": 33.928916993318126,
+              "error": null,
+              "stdout_bytes": 353,
+              "approx_tokens": 89
+            }
+          ],
+          "results": [
+            {
+              "iteration": 1,
+              "ok": true,
+              "ms": 33.69691700208932,
+              "error": null,
+              "stdout_bytes": 353,
+              "approx_tokens": 89
+            },
+            {
+              "iteration": 2,
+              "ok": true,
+              "ms": 23.858875007135794,
+              "error": null,
+              "stdout_bytes": 353,
+              "approx_tokens": 89
+            },
+            {
+              "iteration": 3,
+              "ok": true,
+              "ms": 23.652917006984353,
+              "error": null,
+              "stdout_bytes": 353,
+              "approx_tokens": 89
+            },
+            {
+              "iteration": 4,
+              "ok": true,
+              "ms": 34.937417003675364,
+              "error": null,
+              "stdout_bytes": 353,
+              "approx_tokens": 89
+            },
+            {
+              "iteration": 5,
+              "ok": true,
+              "ms": 35.178457997972146,
+              "error": null,
+              "stdout_bytes": 353,
+              "approx_tokens": 89
+            }
+          ],
+          "notes": []
+        },
+        {
+          "workload_id": "W3_THREAD",
+          "tool_name": "messages_fetch",
+          "read_only": true,
+          "warmup_results": [
+            {
+              "iteration": 1014,
+              "ok": true,
+              "ms": 17.720457995892502,
+              "error": null,
+              "stdout_bytes": 326,
+              "approx_tokens": 82
+            }
+          ],
+          "results": [
+            {
+              "iteration": 1,
+              "ok": true,
+              "ms": 8.05958300770726,
+              "error": null,
+              "stdout_bytes": 326,
+              "approx_tokens": 82
+            },
+            {
+              "iteration": 2,
+              "ok": true,
+              "ms": 12.17408299271483,
+              "error": null,
+              "stdout_bytes": 326,
+              "approx_tokens": 82
+            },
+            {
+              "iteration": 3,
+              "ok": true,
+              "ms": 11.345041988533922,
+              "error": null,
+              "stdout_bytes": 326,
+              "approx_tokens": 82
+            },
+            {
+              "iteration": 4,
+              "ok": true,
+              "ms": 10.593790997518227,
+              "error": null,
+              "stdout_bytes": 326,
+              "approx_tokens": 82
+            },
+            {
+              "iteration": 5,
+              "ok": true,
+              "ms": 10.970582996378653,
+              "error": null,
+              "stdout_bytes": 326,
+              "approx_tokens": 82
+            }
+          ],
+          "notes": []
+        }
+      ],
+      "notes": []
+    },
+    {
+      "name": "github MCP: TextFly/photon-imsg-mcp (node stdio)",
+      "command": "node",
+      "args": [
+        "/Users/wolfgangschoenberger/LIFE-PLANNER/Texting/benchmarks/vendor/github_mcp/photon-imsg-mcp/dist/index.js"
+      ],
+      "mode": "session",
+      "session_initialize": {
+        "ok": true,
+        "ms": 1032.3002500081202,
+        "error": null,
+        "stdout_bytes": 153,
+        "approx_tokens": 39
+      },
+      "session_list_tools": {
+        "ok": true,
+        "ms": 1.4965829905122519,
+        "error": null,
+        "stdout_bytes": 2054,
+        "approx_tokens": 514
+      },
+      "workloads": [
+        {
+          "workload_id": "W0_UNREAD",
+          "tool_name": "photon_read_messages",
+          "read_only": true,
+          "warmup_results": [
+            {
+              "iteration": 1001,
+              "ok": true,
+              "ms": 387.3018750018673,
+              "error": null,
+              "stdout_bytes": 171,
+              "approx_tokens": 43
+            }
+          ],
+          "results": [
+            {
+              "iteration": 1,
+              "ok": true,
+              "ms": 32.145333010703325,
+              "error": null,
+              "stdout_bytes": 171,
+              "approx_tokens": 43
+            },
+            {
+              "iteration": 2,
+              "ok": true,
+              "ms": 34.670416003791615,
+              "error": null,
+              "stdout_bytes": 171,
+              "approx_tokens": 43
+            },
+            {
+              "iteration": 3,
+              "ok": true,
+              "ms": 41.09291698841844,
+              "error": null,
+              "stdout_bytes": 171,
+              "approx_tokens": 43
+            },
+            {
+              "iteration": 4,
+              "ok": true,
+              "ms": 33.59162500419188,
+              "error": null,
+              "stdout_bytes": 171,
+              "approx_tokens": 43
+            },
+            {
+              "iteration": 5,
+              "ok": true,
+              "ms": 39.63008400751278,
+              "error": null,
+              "stdout_bytes": 171,
+              "approx_tokens": 43
+            }
+          ],
+          "notes": []
+        },
+        {
+          "workload_id": "W1_RECENT",
+          "tool_name": "photon_get_conversations",
+          "read_only": true,
+          "warmup_results": [
+            {
+              "iteration": 1007,
+              "ok": true,
+              "ms": 1.5081669989740476,
+              "error": null,
+              "stdout_bytes": 223,
+              "approx_tokens": 56
+            }
+          ],
+          "results": [
+            {
+              "iteration": 1,
+              "ok": true,
+              "ms": 0.3698750078910962,
+              "error": null,
+              "stdout_bytes": 223,
+              "approx_tokens": 56
+            },
+            {
+              "iteration": 2,
+              "ok": true,
+              "ms": 0.25258299137931317,
+              "error": null,
+              "stdout_bytes": 223,
+              "approx_tokens": 56
+            },
+            {
+              "iteration": 3,
+              "ok": true,
+              "ms": 0.6295420025708154,
+              "error": null,
+              "stdout_bytes": 223,
+              "approx_tokens": 56
+            },
+            {
+              "iteration": 4,
+              "ok": true,
+              "ms": 0.2965419989777729,
+              "error": null,
+              "stdout_bytes": 223,
+              "approx_tokens": 56
+            },
+            {
+              "iteration": 5,
+              "ok": true,
+              "ms": 0.29966700822114944,
+              "error": null,
+              "stdout_bytes": 223,
+              "approx_tokens": 56
+            }
+          ],
+          "notes": []
+        },
+        {
+          "workload_id": "W2_SEARCH",
+          "tool_name": null,
+          "read_only": true,
+          "warmup_results": [],
+          "results": [],
+          "notes": [
+            "unsupported workload (no tool mapping)"
+          ]
+        },
+        {
+          "workload_id": "W3_THREAD",
+          "tool_name": "photon_read_messages",
+          "read_only": true,
+          "warmup_results": [
+            {
+              "iteration": 1014,
+              "ok": true,
+              "ms": 0.16879200120456517,
+              "error": null,
+              "stdout_bytes": 171,
+              "approx_tokens": 43
+            }
+          ],
+          "results": [
+            {
+              "iteration": 1,
+              "ok": true,
+              "ms": 0.12599999899975955,
+              "error": null,
+              "stdout_bytes": 171,
+              "approx_tokens": 43
+            },
+            {
+              "iteration": 2,
+              "ok": true,
+              "ms": 0.17250000382773578,
+              "error": null,
+              "stdout_bytes": 171,
+              "approx_tokens": 43
+            },
+            {
+              "iteration": 3,
+              "ok": true,
+              "ms": 0.11308399552945048,
+              "error": null,
+              "stdout_bytes": 171,
+              "approx_tokens": 43
+            },
+            {
+              "iteration": 4,
+              "ok": true,
+              "ms": 0.13054200098849833,
+              "error": null,
+              "stdout_bytes": 171,
+              "approx_tokens": 43
+            },
+            {
+              "iteration": 5,
+              "ok": true,
+              "ms": 0.11962499411311,
+              "error": null,
+              "stdout_bytes": 171,
+              "approx_tokens": 43
+            }
+          ],
+          "notes": []
+        }
+      ],
+      "notes": []
+    },
+    {
+      "name": "github MCP: sameelarif/imessage-mcp (node tsx)",
+      "command": "/Users/wolfgangschoenberger/LIFE-PLANNER/Texting/benchmarks/vendor/github_mcp/sameelarif-imessage-mcp/node_modules/.bin/tsx",
+      "args": [
+        "src/index.ts"
+      ],
+      "mode": "session",
+      "session_initialize": {
+        "ok": true,
+        "ms": 1049.974834008026,
+        "error": null,
+        "stdout_bytes": 164,
+        "approx_tokens": 41
+      },
+      "session_list_tools": {
+        "ok": true,
+        "ms": 4.501292001805268,
+        "error": null,
+        "stdout_bytes": 7352,
+        "approx_tokens": 1838
+      },
+      "workloads": [
+        {
+          "workload_id": "W0_UNREAD",
+          "tool_name": "get-unread-messages",
+          "read_only": true,
+          "warmup_results": [
+            {
+              "iteration": 1001,
+              "ok": true,
+              "ms": 693.4983749961248,
+              "error": null,
+              "stdout_bytes": 119323,
+              "approx_tokens": 29831
+            }
+          ],
+          "results": [
+            {
+              "iteration": 1,
+              "ok": true,
+              "ms": 678.2451670005685,
+              "error": null,
+              "stdout_bytes": 119323,
+              "approx_tokens": 29831
+            },
+            {
+              "iteration": 2,
+              "ok": true,
+              "ms": 688.6943749996135,
+              "error": null,
+              "stdout_bytes": 119323,
+              "approx_tokens": 29831
+            },
+            {
+              "iteration": 3,
+              "ok": true,
+              "ms": 678.6299160012277,
+              "error": null,
+              "stdout_bytes": 119323,
+              "approx_tokens": 29831
+            },
+            {
+              "iteration": 4,
+              "ok": true,
+              "ms": 757.4996250041295,
+              "error": null,
+              "stdout_bytes": 119323,
+              "approx_tokens": 29831
+            },
+            {
+              "iteration": 5,
+              "ok": true,
+              "ms": 773.6508329981007,
+              "error": null,
+              "stdout_bytes": 119323,
+              "approx_tokens": 29831
+            }
+          ],
+          "notes": []
+        },
+        {
+          "workload_id": "W1_RECENT",
+          "tool_name": "get-messages",
+          "read_only": true,
+          "warmup_results": [
+            {
+              "iteration": 1007,
+              "ok": true,
+              "ms": 1.5269579889718443,
+              "error": null,
+              "stdout_bytes": 196,
+              "approx_tokens": 49
+            }
+          ],
+          "results": [
+            {
+              "iteration": 1,
+              "ok": true,
+              "ms": 0.3294580092187971,
+              "error": null,
+              "stdout_bytes": 196,
+              "approx_tokens": 49
+            },
+            {
+              "iteration": 2,
+              "ok": true,
+              "ms": 0.40499999886378646,
+              "error": null,
+              "stdout_bytes": 196,
+              "approx_tokens": 49
+            },
+            {
+              "iteration": 3,
+              "ok": true,
+              "ms": 0.3589999978430569,
+              "error": null,
+              "stdout_bytes": 196,
+              "approx_tokens": 49
+            },
+            {
+              "iteration": 4,
+              "ok": true,
+              "ms": 0.1793749979697168,
+              "error": null,
+              "stdout_bytes": 196,
+              "approx_tokens": 49
+            },
+            {
+              "iteration": 5,
+              "ok": true,
+              "ms": 0.16312500520143658,
+              "error": null,
+              "stdout_bytes": 196,
+              "approx_tokens": 49
+            }
+          ],
+          "notes": []
+        },
+        {
+          "workload_id": "W2_SEARCH",
+          "tool_name": "search-messages",
+          "read_only": true,
+          "warmup_results": [
+            {
+              "iteration": 1013,
+              "ok": true,
+              "ms": 270.71116599836387,
+              "error": null,
+              "stdout_bytes": 195,
+              "approx_tokens": 49
+            }
+          ],
+          "results": [
+            {
+              "iteration": 1,
+              "ok": true,
+              "ms": 282.8847499913536,
+              "error": null,
+              "stdout_bytes": 195,
+              "approx_tokens": 49
+            },
+            {
+              "iteration": 2,
+              "ok": true,
+              "ms": 295.14745900814887,
+              "error": null,
+              "stdout_bytes": 195,
+              "approx_tokens": 49
+            },
+            {
+              "iteration": 3,
+              "ok": true,
+              "ms": 284.6405830059666,
+              "error": null,
+              "stdout_bytes": 195,
+              "approx_tokens": 49
+            },
+            {
+              "iteration": 4,
+              "ok": true,
+              "ms": 266.11783300177194,
+              "error": null,
+              "stdout_bytes": 195,
+              "approx_tokens": 49
+            },
+            {
+              "iteration": 5,
+              "ok": true,
+              "ms": 289.9123329989379,
+              "error": null,
+              "stdout_bytes": 195,
+              "approx_tokens": 49
+            }
+          ],
+          "notes": []
+        },
+        {
+          "workload_id": "W3_THREAD",
+          "tool_name": "get-conversation",
+          "read_only": true,
+          "warmup_results": [
+            {
+              "iteration": 1020,
+              "ok": true,
+              "ms": 0.6207500118762255,
+              "error": null,
+              "stdout_bytes": 114,
+              "approx_tokens": 29
+            }
+          ],
+          "results": [
+            {
+              "iteration": 1,
+              "ok": true,
+              "ms": 0.20729198877234012,
+              "error": null,
+              "stdout_bytes": 114,
+              "approx_tokens": 29
+            },
+            {
+              "iteration": 2,
+              "ok": true,
+              "ms": 0.19633299962151796,
+              "error": null,
+              "stdout_bytes": 114,
+              "approx_tokens": 29
+            },
+            {
+              "iteration": 3,
+              "ok": true,
+              "ms": 0.14108300092630088,
+              "error": null,
+              "stdout_bytes": 114,
+              "approx_tokens": 29
+            },
+            {
+              "iteration": 4,
+              "ok": true,
+              "ms": 0.1971660094568506,
+              "error": null,
+              "stdout_bytes": 114,
+              "approx_tokens": 29
+            },
+            {
+              "iteration": 5,
+              "ok": true,
+              "ms": 0.11699998867698014,
+              "error": null,
+              "stdout_bytes": 114,
+              "approx_tokens": 29
+            }
+          ],
+          "notes": []
+        }
+      ],
+      "notes": []
+    },
+    {
+      "name": "github MCP: imessage-query-fastmcp-mcp-server (uv script)",
+      "command": "uv",
+      "args": [
+        "run",
+        "--script",
+        "imessage-query-server.py"
+      ],
+      "mode": "session",
+      "session_initialize": {
+        "ok": true,
+        "ms": 1055.0029580044793,
+        "error": null,
+        "stdout_bytes": 274,
+        "approx_tokens": 69
+      },
+      "session_list_tools": {
+        "ok": true,
+        "ms": 1.9141249940730631,
+        "error": null,
+        "stdout_bytes": 799,
+        "approx_tokens": 200
+      },
+      "workloads": [
+        {
+          "workload_id": "W0_UNREAD",
+          "tool_name": null,
+          "read_only": true,
+          "warmup_results": [],
+          "results": [],
+          "notes": [
+            "unsupported workload (no tool mapping)"
+          ]
+        },
+        {
+          "workload_id": "W1_RECENT",
+          "tool_name": null,
+          "read_only": true,
+          "warmup_results": [],
+          "results": [],
+          "notes": [
+            "unsupported workload (no tool mapping)"
+          ]
+        },
+        {
+          "workload_id": "W2_SEARCH",
+          "tool_name": null,
+          "read_only": true,
+          "warmup_results": [],
+          "results": [],
+          "notes": [
+            "unsupported workload (no tool mapping)"
+          ]
+        },
+        {
+          "workload_id": "W3_THREAD",
+          "tool_name": "get_chat_transcript",
+          "read_only": true,
+          "warmup_results": [
+            {
+              "iteration": 1001,
+              "ok": true,
+              "ms": 1505.9114169998793,
+              "error": null,
+              "stdout_bytes": 6808,
+              "approx_tokens": 1702
+            }
+          ],
+          "results": [
+            {
+              "iteration": 1,
+              "ok": true,
+              "ms": 2.87183299951721,
+              "error": null,
+              "stdout_bytes": 6808,
+              "approx_tokens": 1702
+            },
+            {
+              "iteration": 2,
+              "ok": true,
+              "ms": 2.3863329988671467,
+              "error": null,
+              "stdout_bytes": 6808,
+              "approx_tokens": 1702
+            },
+            {
+              "iteration": 3,
+              "ok": true,
+              "ms": 2.1560409950325266,
+              "error": null,
+              "stdout_bytes": 6808,
+              "approx_tokens": 1702
+            },
+            {
+              "iteration": 4,
+              "ok": true,
+              "ms": 2.593208002508618,
+              "error": null,
+              "stdout_bytes": 6808,
+              "approx_tokens": 1702
+            },
+            {
+              "iteration": 5,
+              "ok": true,
+              "ms": 2.0220830047037452,
+              "error": null,
+              "stdout_bytes": 6808,
+              "approx_tokens": 1702
+            }
+          ],
+          "notes": []
+        }
+      ],
+      "notes": []
+    },
+    {
+      "name": "github MCP: mcp-imessage (node stdio)",
+      "command": "node",
+      "args": [
+        "/Users/wolfgangschoenberger/LIFE-PLANNER/Texting/benchmarks/vendor/github_mcp/mcp-imessage/build/index.js"
+      ],
+      "mode": "session",
+      "session_initialize": {
+        "ok": true,
+        "ms": 1055.0225420010975,
+        "error": null,
+        "stdout_bytes": 146,
+        "approx_tokens": 37
+      },
+      "session_list_tools": {
+        "ok": true,
+        "ms": 0.8824579999782145,
+        "error": null,
+        "stdout_bytes": 652,
+        "approx_tokens": 163
+      },
+      "workloads": [
+        {
+          "workload_id": "W0_UNREAD",
+          "tool_name": null,
+          "read_only": true,
+          "warmup_results": [],
+          "results": [],
+          "notes": [
+            "unsupported workload (no tool mapping)"
+          ]
+        },
+        {
+          "workload_id": "W1_RECENT",
+          "tool_name": null,
+          "read_only": true,
+          "warmup_results": [],
+          "results": [],
+          "notes": [
+            "unsupported workload (no tool mapping)"
+          ]
+        },
+        {
+          "workload_id": "W2_SEARCH",
+          "tool_name": null,
+          "read_only": true,
+          "warmup_results": [],
+          "results": [],
+          "notes": [
+            "unsupported workload (no tool mapping)"
+          ]
+        },
+        {
+          "workload_id": "W3_THREAD",
+          "tool_name": "get-recent-chat-messages",
+          "read_only": true,
+          "warmup_results": [
+            {
+              "iteration": 1001,
+              "ok": true,
+              "ms": 4.744833000586368,
+              "error": null,
+              "stdout_bytes": 79,
+              "approx_tokens": 20
+            }
+          ],
+          "results": [
+            {
+              "iteration": 1,
+              "ok": true,
+              "ms": 0.5173749959794804,
+              "error": null,
+              "stdout_bytes": 79,
+              "approx_tokens": 20
+            },
+            {
+              "iteration": 2,
+              "ok": true,
+              "ms": 0.7203330023912713,
+              "error": null,
+              "stdout_bytes": 79,
+              "approx_tokens": 20
+            },
+            {
+              "iteration": 3,
+              "ok": true,
+              "ms": 0.41645798773970455,
+              "error": null,
+              "stdout_bytes": 79,
+              "approx_tokens": 20
+            },
+            {
+              "iteration": 4,
+              "ok": true,
+              "ms": 0.467833990114741,
+              "error": null,
+              "stdout_bytes": 79,
+              "approx_tokens": 20
+            },
+            {
+              "iteration": 5,
+              "ok": true,
+              "ms": 0.6065420020604506,
+              "error": null,
+              "stdout_bytes": 79,
+              "approx_tokens": 20
+            }
+          ],
+          "notes": []
+        }
+      ],
+      "notes": []
+    },
+    {
+      "name": "github MCP: imessage-mcp-improved (node stdio)",
+      "command": "node",
+      "args": [
+        "/Users/wolfgangschoenberger/LIFE-PLANNER/Texting/benchmarks/vendor/github_mcp/imessage-mcp-improved/server/index.js"
+      ],
+      "mode": "session",
+      "session_initialize": {
+        "ok": true,
+        "ms": 1029.0482080017682,
+        "error": null,
+        "stdout_bytes": 180,
+        "approx_tokens": 45
+      },
+      "session_list_tools": {
+        "ok": true,
+        "ms": 1.8560409953352064,
+        "error": null,
+        "stdout_bytes": 2161,
+        "approx_tokens": 541
+      },
+      "workloads": [
+        {
+          "workload_id": "W0_UNREAD",
+          "tool_name": "get_unread_imessages",
+          "read_only": true,
+          "warmup_results": [
+            {
+              "iteration": 1001,
+              "ok": true,
+              "ms": 83.04374999715947,
+              "error": null,
+              "stdout_bytes": 252,
+              "approx_tokens": 63
+            }
+          ],
+          "results": [
+            {
+              "iteration": 1,
+              "ok": true,
+              "ms": 22.137791995191947,
+              "error": null,
+              "stdout_bytes": 252,
+              "approx_tokens": 63
+            },
+            {
+              "iteration": 2,
+              "ok": true,
+              "ms": 21.04754101310391,
+              "error": null,
+              "stdout_bytes": 252,
+              "approx_tokens": 63
+            },
+            {
+              "iteration": 3,
+              "ok": true,
+              "ms": 22.82495801046025,
+              "error": null,
+              "stdout_bytes": 252,
+              "approx_tokens": 63
+            },
+            {
+              "iteration": 4,
+              "ok": true,
+              "ms": 19.2906669981312,
+              "error": null,
+              "stdout_bytes": 252,
+              "approx_tokens": 63
+            },
+            {
+              "iteration": 5,
+              "ok": true,
+              "ms": 21.868334006285295,
+              "error": null,
+              "stdout_bytes": 252,
+              "approx_tokens": 63
+            }
+          ],
+          "notes": []
+        },
+        {
+          "workload_id": "W1_RECENT",
+          "tool_name": null,
+          "read_only": true,
+          "warmup_results": [],
+          "results": [],
+          "notes": [
+            "unsupported workload (no tool mapping)"
+          ]
+        },
+        {
+          "workload_id": "W2_SEARCH",
+          "tool_name": null,
+          "read_only": true,
+          "warmup_results": [],
+          "results": [],
+          "notes": [
+            "unsupported workload (no tool mapping)"
+          ]
+        },
+        {
+          "workload_id": "W3_THREAD",
+          "tool_name": null,
+          "read_only": true,
+          "warmup_results": [],
+          "results": [],
+          "notes": [
+            "unsupported workload (no tool mapping)"
+          ]
+        }
+      ],
+      "notes": []
+    }
+  ]
+}

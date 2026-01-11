@@ -185,7 +185,19 @@ Default integration paths for this repo:
 - Configure OAuth credentials in `config/google_credentials/`
 - If tools fail but show “Connected,” check logs under `logs/`
 
-**Rube/Composio (optional) usage:**
+**Tool Selection Priority (CRITICAL):**
+When handling requests, ALWAYS check for local MCP tools FIRST:
+1. **Gmail**: Use `mcp__gmail__*` tools (NOT Rube's GMAIL_* tools)
+2. **Calendar**: Use `mcp__google-calendar__*` tools (NOT Rube's GOOGLECALENDAR_* tools)
+3. **Reminders**: Use `mcp__reminders-life-planner__*` tools
+4. **iMessage**: Use `/wolfies-imessage` skill (Gateway CLI)
+
+**Only use Rube/Composio when:**
+- Local MCP is not available for the service (e.g., Slack, Twitter writes)
+- Local MCP explicitly fails and you've confirmed it's not a transient error
+- User explicitly requests Rube integration
+
+**Rube/Composio usage (fallback only):**
 1. `RUBE_SEARCH_TOOLS` to discover tools
 2. `RUBE_MULTI_EXECUTE_TOOL` to execute requests
 

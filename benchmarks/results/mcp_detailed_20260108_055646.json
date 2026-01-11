@@ -1,0 +1,3077 @@
+{
+  "generated_at": "2026-01-08 05:56:46",
+  "metadata": {
+    "iterations": 10,
+    "warmup": 2,
+    "phase_timeout_s": 30,
+    "call_timeout_s": 60
+  },
+  "servers": [
+    {
+      "name": "Gmail MCP",
+      "command": "python3",
+      "args": [
+        "/Users/wolfgangschoenberger/LIFE-PLANNER/src/integrations/gmail/server.py"
+      ],
+      "session_initialize": {
+        "ok": true,
+        "ms": 2474.8007910093293,
+        "error": null,
+        "stdout_bytes": 181
+      },
+      "session_list_tools": {
+        "ok": true,
+        "ms": 1.118374988436699,
+        "error": null,
+        "stdout_bytes": 2030
+      },
+      "workloads": [
+        {
+          "workload_id": "GMAIL_UNREAD_COUNT",
+          "tool_name": "get_unread_count",
+          "read_only": true,
+          "results": [
+            {
+              "iteration": 1,
+              "ok": true,
+              "ms": 126.476042001741,
+              "error": null,
+              "payload_bytes": 79,
+              "server_timing": {
+                "api_unread_count": 144.07
+              }
+            },
+            {
+              "iteration": 2,
+              "ok": true,
+              "ms": 126.5315000055125,
+              "error": null,
+              "payload_bytes": 79,
+              "server_timing": {
+                "api_unread_count": 125.17
+              }
+            },
+            {
+              "iteration": 3,
+              "ok": true,
+              "ms": 138.094583991915,
+              "error": null,
+              "payload_bytes": 79,
+              "server_timing": {
+                "api_unread_count": 125.21
+              }
+            },
+            {
+              "iteration": 4,
+              "ok": true,
+              "ms": 138.37758300360292,
+              "error": null,
+              "payload_bytes": 79,
+              "server_timing": {
+                "api_unread_count": 136.64
+              }
+            },
+            {
+              "iteration": 5,
+              "ok": true,
+              "ms": 118.87045799812768,
+              "error": null,
+              "payload_bytes": 79,
+              "server_timing": {
+                "api_unread_count": 136.83
+              }
+            },
+            {
+              "iteration": 6,
+              "ok": true,
+              "ms": 140.60520801285747,
+              "error": null,
+              "payload_bytes": 79,
+              "server_timing": {
+                "api_unread_count": 117.25
+              }
+            },
+            {
+              "iteration": 7,
+              "ok": true,
+              "ms": 137.0109169947682,
+              "error": null,
+              "payload_bytes": 79,
+              "server_timing": {
+                "api_unread_count": 139.37
+              }
+            },
+            {
+              "iteration": 8,
+              "ok": true,
+              "ms": 121.99529199278913,
+              "error": null,
+              "payload_bytes": 79,
+              "server_timing": {
+                "api_unread_count": 135.5
+              }
+            },
+            {
+              "iteration": 9,
+              "ok": true,
+              "ms": 132.96745899424423,
+              "error": null,
+              "payload_bytes": 79,
+              "server_timing": {
+                "api_unread_count": 120.31
+              }
+            },
+            {
+              "iteration": 10,
+              "ok": true,
+              "ms": 138.7850419996539,
+              "error": null,
+              "payload_bytes": 79,
+              "server_timing": {
+                "api_unread_count": 131.47
+              }
+            }
+          ],
+          "warmup_results": [
+            {
+              "iteration": 1001,
+              "ok": true,
+              "ms": 203.8528330012923,
+              "error": null,
+              "payload_bytes": 79,
+              "server_timing": {}
+            },
+            {
+              "iteration": 1002,
+              "ok": true,
+              "ms": 145.74179200280923,
+              "error": null,
+              "payload_bytes": 79,
+              "server_timing": {
+                "oauth_load": 0.59,
+                "api_discovery": 39.36,
+                "api_unread_count": 201.89
+              }
+            }
+          ],
+          "summary": {
+            "total": 10,
+            "ok": 10,
+            "failed": 0,
+            "mean_ms": 131.9714084995212,
+            "p50_ms": 132.96745899424423,
+            "p90_ms": 138.7850419996539,
+            "p95_ms": 138.7850419996539,
+            "p99_ms": 138.7850419996539,
+            "min_ms": 118.87045799812768,
+            "max_ms": 140.60520801285747,
+            "std_dev_ms": 7.865809768469047,
+            "cv_percent": 5.9602377953688235,
+            "mean_payload_bytes": 79.0,
+            "server_timing": {
+              "api_unread_count": {
+                "mean_ms": 131.182,
+                "p50_ms": 131.47,
+                "min_ms": 117.25,
+                "max_ms": 144.07
+              }
+            }
+          }
+        },
+        {
+          "workload_id": "GMAIL_LIST_5",
+          "tool_name": "list_emails",
+          "read_only": true,
+          "results": [
+            {
+              "iteration": 1,
+              "ok": true,
+              "ms": 714.357958000619,
+              "error": null,
+              "payload_bytes": 1528,
+              "server_timing": {
+                "api_list": 110.11,
+                "api_get_n": 605.12
+              }
+            },
+            {
+              "iteration": 2,
+              "ok": true,
+              "ms": 698.9751250075642,
+              "error": null,
+              "payload_bytes": 1528,
+              "server_timing": {
+                "api_list": 125.76,
+                "api_get_n": 586.47
+              }
+            },
+            {
+              "iteration": 3,
+              "ok": true,
+              "ms": 704.4426670036046,
+              "error": null,
+              "payload_bytes": 1528,
+              "server_timing": {
+                "api_list": 103.85,
+                "api_get_n": 593.15
+              }
+            },
+            {
+              "iteration": 4,
+              "ok": true,
+              "ms": 642.0689999940805,
+              "error": null,
+              "payload_bytes": 1528,
+              "server_timing": {
+                "api_list": 107.83,
+                "api_get_n": 594.61
+              }
+            },
+            {
+              "iteration": 5,
+              "ok": true,
+              "ms": 680.4983750043903,
+              "error": null,
+              "payload_bytes": 1528,
+              "server_timing": {
+                "api_list": 107.07,
+                "api_get_n": 532.37
+              }
+            },
+            {
+              "iteration": 6,
+              "ok": true,
+              "ms": 692.6321250066394,
+              "error": null,
+              "payload_bytes": 1528,
+              "server_timing": {
+                "api_list": 118.79,
+                "api_get_n": 559.43
+              }
+            },
+            {
+              "iteration": 7,
+              "ok": true,
+              "ms": 687.955041998066,
+              "error": null,
+              "payload_bytes": 1528,
+              "server_timing": {
+                "api_list": 109.08,
+                "api_get_n": 579.89
+              }
+            },
+            {
+              "iteration": 8,
+              "ok": true,
+              "ms": 674.3712500028778,
+              "error": null,
+              "payload_bytes": 1528,
+              "server_timing": {
+                "api_list": 116.92,
+                "api_get_n": 568.06
+              }
+            },
+            {
+              "iteration": 9,
+              "ok": true,
+              "ms": 698.3148749859538,
+              "error": null,
+              "payload_bytes": 1528,
+              "server_timing": {
+                "api_list": 112.56,
+                "api_get_n": 559.37
+              }
+            },
+            {
+              "iteration": 10,
+              "ok": true,
+              "ms": 681.423291011015,
+              "error": null,
+              "payload_bytes": 1528,
+              "server_timing": {
+                "api_list": 106.18,
+                "api_get_n": 589.2
+              }
+            }
+          ],
+          "warmup_results": [
+            {
+              "iteration": 1013,
+              "ok": true,
+              "ms": 732.519749988569,
+              "error": null,
+              "payload_bytes": 1528,
+              "server_timing": {
+                "api_unread_count": 137.4
+              }
+            },
+            {
+              "iteration": 1014,
+              "ok": true,
+              "ms": 717.2629160049837,
+              "error": null,
+              "payload_bytes": 1528,
+              "server_timing": {
+                "api_list": 103.36,
+                "api_get_n": 626.85
+              }
+            }
+          ],
+          "summary": {
+            "total": 10,
+            "ok": 10,
+            "failed": 0,
+            "mean_ms": 687.503970801481,
+            "p50_ms": 687.955041998066,
+            "p90_ms": 704.4426670036046,
+            "p95_ms": 704.4426670036046,
+            "p99_ms": 704.4426670036046,
+            "min_ms": 642.0689999940805,
+            "max_ms": 714.357958000619,
+            "std_dev_ms": 20.01632246007399,
+            "cv_percent": 2.911448269417162,
+            "mean_payload_bytes": 1528.0,
+            "server_timing": {
+              "api_list": {
+                "mean_ms": 111.81500000000001,
+                "p50_ms": 109.08,
+                "min_ms": 103.85,
+                "max_ms": 125.76
+              },
+              "api_get_n": {
+                "mean_ms": 576.767,
+                "p50_ms": 579.89,
+                "min_ms": 532.37,
+                "max_ms": 605.12
+              }
+            }
+          }
+        },
+        {
+          "workload_id": "GMAIL_LIST_10",
+          "tool_name": "list_emails",
+          "read_only": true,
+          "results": [
+            {
+              "iteration": 1,
+              "ok": true,
+              "ms": 1252.427583996905,
+              "error": null,
+              "payload_bytes": 3344,
+              "server_timing": {
+                "api_list": 100.5,
+                "api_get_n": 1152.13
+              }
+            },
+            {
+              "iteration": 2,
+              "ok": true,
+              "ms": 1228.3627500000875,
+              "error": null,
+              "payload_bytes": 3344,
+              "server_timing": {
+                "api_list": 110.73,
+                "api_get_n": 1139.32
+              }
+            },
+            {
+              "iteration": 3,
+              "ok": true,
+              "ms": 1226.436625001952,
+              "error": null,
+              "payload_bytes": 3344,
+              "server_timing": {
+                "api_list": 98.76,
+                "api_get_n": 1125.72
+              }
+            },
+            {
+              "iteration": 4,
+              "ok": true,
+              "ms": 1242.7647080039605,
+              "error": null,
+              "payload_bytes": 3344,
+              "server_timing": {
+                "api_list": 113.69,
+                "api_get_n": 1108.65
+              }
+            },
+            {
+              "iteration": 5,
+              "ok": true,
+              "ms": 1221.8496669956949,
+              "error": null,
+              "payload_bytes": 3344,
+              "server_timing": {
+                "api_list": 108.1,
+                "api_get_n": 1132.65
+              }
+            },
+            {
+              "iteration": 6,
+              "ok": true,
+              "ms": 1313.9043749979464,
+              "error": null,
+              "payload_bytes": 3344,
+              "server_timing": {
+                "api_list": 118.04,
+                "api_get_n": 1101.72
+              }
+            },
+            {
+              "iteration": 7,
+              "ok": true,
+              "ms": 1339.6070000017062,
+              "error": null,
+              "payload_bytes": 3344,
+              "server_timing": {
+                "api_list": 135.73,
+                "api_get_n": 1175.92
+              }
+            },
+            {
+              "iteration": 8,
+              "ok": true,
+              "ms": 1307.7382909978041,
+              "error": null,
+              "payload_bytes": 3344,
+              "server_timing": {
+                "api_list": 110.84,
+                "api_get_n": 1226.34
+              }
+            },
+            {
+              "iteration": 9,
+              "ok": true,
+              "ms": 1350.3548750013579,
+              "error": null,
+              "payload_bytes": 3344,
+              "server_timing": {
+                "api_list": 156.88,
+                "api_get_n": 1148.76
+              }
+            },
+            {
+              "iteration": 10,
+              "ok": true,
+              "ms": 1265.386250001029,
+              "error": null,
+              "payload_bytes": 3344,
+              "server_timing": {
+                "api_list": 109.83,
+                "api_get_n": 1237.92
+              }
+            }
+          ],
+          "warmup_results": [
+            {
+              "iteration": 1025,
+              "ok": true,
+              "ms": 1307.0778339897515,
+              "error": null,
+              "payload_bytes": 3344,
+              "server_timing": {
+                "api_list": 110.49,
+                "api_get_n": 568.25
+              }
+            },
+            {
+              "iteration": 1026,
+              "ok": true,
+              "ms": 1255.514917007531,
+              "error": null,
+              "payload_bytes": 3344,
+              "server_timing": {
+                "api_list": 115.65,
+                "api_get_n": 1189.01
+              }
+            }
+          ],
+          "summary": {
+            "total": 10,
+            "ok": 10,
+            "failed": 0,
+            "mean_ms": 1274.8832124998444,
+            "p50_ms": 1252.427583996905,
+            "p90_ms": 1339.6070000017062,
+            "p95_ms": 1339.6070000017062,
+            "p99_ms": 1339.6070000017062,
+            "min_ms": 1221.8496669956949,
+            "max_ms": 1350.3548750013579,
+            "std_dev_ms": 48.804685470056,
+            "cv_percent": 3.8281691210254256,
+            "mean_payload_bytes": 3344.0,
+            "server_timing": {
+              "api_list": {
+                "mean_ms": 116.30999999999999,
+                "p50_ms": 110.73,
+                "min_ms": 98.76,
+                "max_ms": 156.88
+              },
+              "api_get_n": {
+                "mean_ms": 1154.913,
+                "p50_ms": 1139.32,
+                "min_ms": 1101.72,
+                "max_ms": 1237.92
+              }
+            }
+          }
+        },
+        {
+          "workload_id": "GMAIL_LIST_25",
+          "tool_name": "list_emails",
+          "read_only": true,
+          "results": [
+            {
+              "iteration": 1,
+              "ok": true,
+              "ms": 3001.7224170005647,
+              "error": null,
+              "payload_bytes": 8739,
+              "server_timing": {
+                "api_list": 110.28,
+                "api_get_n": 2899.27
+              }
+            },
+            {
+              "iteration": 2,
+              "ok": true,
+              "ms": 2926.1574580013985,
+              "error": null,
+              "payload_bytes": 8739,
+              "server_timing": {
+                "api_list": 108.28,
+                "api_get_n": 2891.32
+              }
+            },
+            {
+              "iteration": 3,
+              "ok": true,
+              "ms": 3099.0815419936553,
+              "error": null,
+              "payload_bytes": 8739,
+              "server_timing": {
+                "api_list": 110.19,
+                "api_get_n": 2812.02
+              }
+            },
+            {
+              "iteration": 4,
+              "ok": true,
+              "ms": 3217.577000003075,
+              "error": null,
+              "payload_bytes": 8739,
+              "server_timing": {
+                "api_list": 103.29,
+                "api_get_n": 2992.65
+              }
+            },
+            {
+              "iteration": 5,
+              "ok": true,
+              "ms": 2915.059332997771,
+              "error": null,
+              "payload_bytes": 8739,
+              "server_timing": {
+                "api_list": 114.09,
+                "api_get_n": 3098.35
+              }
+            },
+            {
+              "iteration": 6,
+              "ok": true,
+              "ms": 2923.846958001377,
+              "error": null,
+              "payload_bytes": 8739,
+              "server_timing": {
+                "api_list": 109.74,
+                "api_get_n": 2802.15
+              }
+            },
+            {
+              "iteration": 7,
+              "ok": true,
+              "ms": 2894.079250007053,
+              "error": null,
+              "payload_bytes": 8739,
+              "server_timing": {
+                "api_list": 101.13,
+                "api_get_n": 2820.32
+              }
+            },
+            {
+              "iteration": 8,
+              "ok": true,
+              "ms": 3035.13175000262,
+              "error": null,
+              "payload_bytes": 8739,
+              "server_timing": {
+                "api_list": 116.38,
+                "api_get_n": 2773.65
+              }
+            },
+            {
+              "iteration": 9,
+              "ok": true,
+              "ms": 2893.085832998622,
+              "error": null,
+              "payload_bytes": 8739,
+              "server_timing": {
+                "api_list": 109.77,
+                "api_get_n": 2922.29
+              }
+            },
+            {
+              "iteration": 10,
+              "ok": true,
+              "ms": 2985.1441250066273,
+              "error": null,
+              "payload_bytes": 8739,
+              "server_timing": {
+                "api_list": 110.27,
+                "api_get_n": 2779.82
+              }
+            }
+          ],
+          "warmup_results": [
+            {
+              "iteration": 1037,
+              "ok": true,
+              "ms": 3157.826959009981,
+              "error": null,
+              "payload_bytes": 8739,
+              "server_timing": {
+                "api_list": 109.58,
+                "api_get_n": 1153.44
+              }
+            },
+            {
+              "iteration": 1038,
+              "ok": true,
+              "ms": 3014.47416600422,
+              "error": null,
+              "payload_bytes": 8739,
+              "server_timing": {
+                "api_list": 122.37,
+                "api_get_n": 3032.74
+              }
+            }
+          ],
+          "summary": {
+            "total": 10,
+            "ok": 10,
+            "failed": 0,
+            "mean_ms": 2989.0885666012764,
+            "p50_ms": 2926.1574580013985,
+            "p90_ms": 3099.0815419936553,
+            "p95_ms": 3099.0815419936553,
+            "p99_ms": 3099.0815419936553,
+            "min_ms": 2893.085832998622,
+            "max_ms": 3217.577000003075,
+            "std_dev_ms": 104.63745920310316,
+            "cv_percent": 3.5006476680642655,
+            "mean_payload_bytes": 8739.0,
+            "server_timing": {
+              "api_list": {
+                "mean_ms": 109.34200000000001,
+                "p50_ms": 109.77,
+                "min_ms": 101.13,
+                "max_ms": 116.38
+              },
+              "api_get_n": {
+                "mean_ms": 2879.184,
+                "p50_ms": 2820.32,
+                "min_ms": 2773.65,
+                "max_ms": 3098.35
+              }
+            }
+          }
+        },
+        {
+          "workload_id": "GMAIL_SEARCH_SIMPLE",
+          "tool_name": "search_emails",
+          "read_only": true,
+          "results": [
+            {
+              "iteration": 1,
+              "ok": true,
+              "ms": 648.612332995981,
+              "error": null,
+              "payload_bytes": 1529,
+              "server_timing": {
+                "api_search": 109.7,
+                "api_get_n": 519.26
+              }
+            },
+            {
+              "iteration": 2,
+              "ok": true,
+              "ms": 635.9415420010919,
+              "error": null,
+              "payload_bytes": 1529,
+              "server_timing": {
+                "api_search": 101.14,
+                "api_get_n": 533.5
+              }
+            },
+            {
+              "iteration": 3,
+              "ok": true,
+              "ms": 667.0859580044635,
+              "error": null,
+              "payload_bytes": 1529,
+              "server_timing": {
+                "api_search": 112.32,
+                "api_get_n": 513.25
+              }
+            },
+            {
+              "iteration": 4,
+              "ok": true,
+              "ms": 644.1080840013456,
+              "error": null,
+              "payload_bytes": 1529,
+              "server_timing": {
+                "api_search": 111.82,
+                "api_get_n": 552.82
+              }
+            },
+            {
+              "iteration": 5,
+              "ok": true,
+              "ms": 669.6755829907488,
+              "error": null,
+              "payload_bytes": 1529,
+              "server_timing": {
+                "api_search": 112.42,
+                "api_get_n": 529.04
+              }
+            },
+            {
+              "iteration": 6,
+              "ok": true,
+              "ms": 610.0934999994934,
+              "error": null,
+              "payload_bytes": 1529,
+              "server_timing": {
+                "api_search": 102.84,
+                "api_get_n": 564.3
+              }
+            },
+            {
+              "iteration": 7,
+              "ok": true,
+              "ms": 689.3763750122162,
+              "error": null,
+              "payload_bytes": 1529,
+              "server_timing": {
+                "api_search": 98.25,
+                "api_get_n": 509.35
+              }
+            },
+            {
+              "iteration": 8,
+              "ok": true,
+              "ms": 647.2921250096988,
+              "error": null,
+              "payload_bytes": 1529,
+              "server_timing": {
+                "api_search": 111.6,
+                "api_get_n": 576.17
+              }
+            },
+            {
+              "iteration": 9,
+              "ok": true,
+              "ms": 639.9876249925001,
+              "error": null,
+              "payload_bytes": 1529,
+              "server_timing": {
+                "api_search": 113.37,
+                "api_get_n": 532.0
+              }
+            },
+            {
+              "iteration": 10,
+              "ok": true,
+              "ms": 619.4742910010973,
+              "error": null,
+              "payload_bytes": 1529,
+              "server_timing": {
+                "api_search": 106.14,
+                "api_get_n": 531.81
+              }
+            }
+          ],
+          "warmup_results": [
+            {
+              "iteration": 1049,
+              "ok": true,
+              "ms": 965.8823339996161,
+              "error": null,
+              "payload_bytes": 1529,
+              "server_timing": {
+                "api_list": 108.88,
+                "api_get_n": 2872.34
+              }
+            },
+            {
+              "iteration": 1050,
+              "ok": true,
+              "ms": 631.0229590017116,
+              "error": null,
+              "payload_bytes": 1529,
+              "server_timing": {
+                "api_search": 107.22,
+                "api_get_n": 855.84
+              }
+            }
+          ],
+          "summary": {
+            "total": 10,
+            "ok": 10,
+            "failed": 0,
+            "mean_ms": 647.1647416008636,
+            "p50_ms": 644.1080840013456,
+            "p90_ms": 669.6755829907488,
+            "p95_ms": 669.6755829907488,
+            "p99_ms": 669.6755829907488,
+            "min_ms": 610.0934999994934,
+            "max_ms": 689.3763750122162,
+            "std_dev_ms": 23.60644676953598,
+            "cv_percent": 3.6476719530705157,
+            "mean_payload_bytes": 1529.0,
+            "server_timing": {
+              "api_search": {
+                "mean_ms": 107.96,
+                "p50_ms": 109.7,
+                "min_ms": 98.25,
+                "max_ms": 113.37
+              },
+              "api_get_n": {
+                "mean_ms": 536.15,
+                "p50_ms": 531.81,
+                "min_ms": 509.35,
+                "max_ms": 576.17
+              }
+            }
+          }
+        },
+        {
+          "workload_id": "GMAIL_SEARCH_COMPLEX",
+          "tool_name": "search_emails",
+          "read_only": true,
+          "results": [
+            {
+              "iteration": 1,
+              "ok": true,
+              "ms": 664.35283300234,
+              "error": null,
+              "payload_bytes": 1516,
+              "server_timing": {
+                "api_search": 136.1,
+                "api_get_n": 596.41
+              }
+            },
+            {
+              "iteration": 2,
+              "ok": true,
+              "ms": 676.3553330092691,
+              "error": null,
+              "payload_bytes": 1516,
+              "server_timing": {
+                "api_search": 99.99,
+                "api_get_n": 562.75
+              }
+            },
+            {
+              "iteration": 3,
+              "ok": true,
+              "ms": 661.3935420027701,
+              "error": null,
+              "payload_bytes": 1516,
+              "server_timing": {
+                "api_search": 110.74,
+                "api_get_n": 562.58
+              }
+            },
+            {
+              "iteration": 4,
+              "ok": true,
+              "ms": 649.7370839933865,
+              "error": null,
+              "payload_bytes": 1516,
+              "server_timing": {
+                "api_search": 139.71,
+                "api_get_n": 519.78
+              }
+            },
+            {
+              "iteration": 5,
+              "ok": true,
+              "ms": 678.7382919865195,
+              "error": null,
+              "payload_bytes": 1516,
+              "server_timing": {
+                "api_search": 118.47,
+                "api_get_n": 529.17
+              }
+            },
+            {
+              "iteration": 6,
+              "ok": true,
+              "ms": 653.5480419988744,
+              "error": null,
+              "payload_bytes": 1516,
+              "server_timing": {
+                "api_search": 119.83,
+                "api_get_n": 557.24
+              }
+            },
+            {
+              "iteration": 7,
+              "ok": true,
+              "ms": 674.403707991587,
+              "error": null,
+              "payload_bytes": 1516,
+              "server_timing": {
+                "api_search": 109.08,
+                "api_get_n": 542.77
+              }
+            },
+            {
+              "iteration": 8,
+              "ok": true,
+              "ms": 676.1658330069622,
+              "error": null,
+              "payload_bytes": 1516,
+              "server_timing": {
+                "api_search": 118.01,
+                "api_get_n": 554.92
+              }
+            },
+            {
+              "iteration": 9,
+              "ok": true,
+              "ms": 681.8172089988366,
+              "error": null,
+              "payload_bytes": 1516,
+              "server_timing": {
+                "api_search": 117.1,
+                "api_get_n": 557.38
+              }
+            },
+            {
+              "iteration": 10,
+              "ok": true,
+              "ms": 673.0669170065084,
+              "error": null,
+              "payload_bytes": 1516,
+              "server_timing": {
+                "api_search": 130.28,
+                "api_get_n": 548.55
+              }
+            }
+          ],
+          "warmup_results": [
+            {
+              "iteration": 1061,
+              "ok": true,
+              "ms": 687.4519999983022,
+              "error": null,
+              "payload_bytes": 1516,
+              "server_timing": {
+                "api_search": 113.8,
+                "api_get_n": 503.88
+              }
+            },
+            {
+              "iteration": 1062,
+              "ok": true,
+              "ms": 734.0458329999819,
+              "error": null,
+              "payload_bytes": 1516,
+              "server_timing": {
+                "api_search": 139.11,
+                "api_get_n": 545.11
+              }
+            }
+          ],
+          "summary": {
+            "total": 10,
+            "ok": 10,
+            "failed": 0,
+            "mean_ms": 668.9578792997054,
+            "p50_ms": 673.0669170065084,
+            "p90_ms": 678.7382919865195,
+            "p95_ms": 678.7382919865195,
+            "p99_ms": 678.7382919865195,
+            "min_ms": 649.7370839933865,
+            "max_ms": 681.8172089988366,
+            "std_dev_ms": 11.053228284944499,
+            "cv_percent": 1.6523055676562932,
+            "mean_payload_bytes": 1516.0,
+            "server_timing": {
+              "api_search": {
+                "mean_ms": 119.931,
+                "p50_ms": 118.01,
+                "min_ms": 99.99,
+                "max_ms": 139.71
+              },
+              "api_get_n": {
+                "mean_ms": 553.155,
+                "p50_ms": 554.92,
+                "min_ms": 519.78,
+                "max_ms": 596.41
+              }
+            }
+          }
+        },
+        {
+          "workload_id": "GMAIL_LIST_UNREAD",
+          "tool_name": "list_emails",
+          "read_only": true,
+          "results": [
+            {
+              "iteration": 1,
+              "ok": true,
+              "ms": 675.6564999959664,
+              "error": null,
+              "payload_bytes": 1493,
+              "server_timing": {
+                "api_list": 105.17,
+                "api_get_n": 545.96
+              }
+            },
+            {
+              "iteration": 2,
+              "ok": true,
+              "ms": 777.6057500013849,
+              "error": null,
+              "payload_bytes": 1493,
+              "server_timing": {
+                "api_list": 105.84,
+                "api_get_n": 566.74
+              }
+            },
+            {
+              "iteration": 3,
+              "ok": true,
+              "ms": 680.7205419900129,
+              "error": null,
+              "payload_bytes": 1493,
+              "server_timing": {
+                "api_list": 103.23,
+                "api_get_n": 669.51
+              }
+            },
+            {
+              "iteration": 4,
+              "ok": true,
+              "ms": 663.9981250045821,
+              "error": null,
+              "payload_bytes": 1493,
+              "server_timing": {
+                "api_list": 102.08,
+                "api_get_n": 574.32
+              }
+            },
+            {
+              "iteration": 5,
+              "ok": true,
+              "ms": 695.5157920019701,
+              "error": null,
+              "payload_bytes": 1493,
+              "server_timing": {
+                "api_list": 107.66,
+                "api_get_n": 554.35
+              }
+            },
+            {
+              "iteration": 6,
+              "ok": true,
+              "ms": 683.6695000092732,
+              "error": null,
+              "payload_bytes": 1493,
+              "server_timing": {
+                "api_list": 122.23,
+                "api_get_n": 570.91
+              }
+            },
+            {
+              "iteration": 7,
+              "ok": true,
+              "ms": 692.1838749985909,
+              "error": null,
+              "payload_bytes": 1493,
+              "server_timing": {
+                "api_list": 102.42,
+                "api_get_n": 577.67
+              }
+            },
+            {
+              "iteration": 8,
+              "ok": true,
+              "ms": 716.9670420116745,
+              "error": null,
+              "payload_bytes": 1493,
+              "server_timing": {
+                "api_list": 109.01,
+                "api_get_n": 577.86
+              }
+            },
+            {
+              "iteration": 9,
+              "ok": true,
+              "ms": 692.0866250002291,
+              "error": null,
+              "payload_bytes": 1493,
+              "server_timing": {
+                "api_list": 122.6,
+                "api_get_n": 591.51
+              }
+            },
+            {
+              "iteration": 10,
+              "ok": true,
+              "ms": 686.8252499989467,
+              "error": null,
+              "payload_bytes": 1493,
+              "server_timing": {
+                "api_list": 98.21,
+                "api_get_n": 591.39
+              }
+            }
+          ],
+          "warmup_results": [
+            {
+              "iteration": 1073,
+              "ok": true,
+              "ms": 663.3454999973765,
+              "error": null,
+              "payload_bytes": 1493,
+              "server_timing": {
+                "api_search": 114.84,
+                "api_get_n": 556.14
+              }
+            },
+            {
+              "iteration": 1074,
+              "ok": true,
+              "ms": 653.6072909948416,
+              "error": null,
+              "payload_bytes": 1493,
+              "server_timing": {
+                "api_list": 106.0,
+                "api_get_n": 552.21
+              }
+            }
+          ],
+          "summary": {
+            "total": 10,
+            "ok": 10,
+            "failed": 0,
+            "mean_ms": 696.5229001012631,
+            "p50_ms": 686.8252499989467,
+            "p90_ms": 716.9670420116745,
+            "p95_ms": 716.9670420116745,
+            "p99_ms": 716.9670420116745,
+            "min_ms": 663.9981250045821,
+            "max_ms": 777.6057500013849,
+            "std_dev_ms": 31.6827150745709,
+            "cv_percent": 4.548696829632558,
+            "mean_payload_bytes": 1493.0,
+            "server_timing": {
+              "api_list": {
+                "mean_ms": 107.845,
+                "p50_ms": 105.17,
+                "min_ms": 98.21,
+                "max_ms": 122.6
+              },
+              "api_get_n": {
+                "mean_ms": 582.022,
+                "p50_ms": 574.32,
+                "min_ms": 545.96,
+                "max_ms": 669.51
+              }
+            }
+          }
+        }
+      ],
+      "notes": []
+    },
+    {
+      "name": "Calendar MCP",
+      "command": "python3",
+      "args": [
+        "/Users/wolfgangschoenberger/LIFE-PLANNER/src/integrations/google_calendar/server.py"
+      ],
+      "session_initialize": {
+        "ok": true,
+        "ms": 2759.5877919957275,
+        "error": null,
+        "stdout_bytes": 191
+      },
+      "session_list_tools": {
+        "ok": true,
+        "ms": 0.8005830022739246,
+        "error": null,
+        "stdout_bytes": 2528
+      },
+      "workloads": [
+        {
+          "workload_id": "CALENDAR_LIST_TODAY",
+          "tool_name": "list_events",
+          "read_only": true,
+          "results": [
+            {
+              "iteration": 1,
+              "ok": true,
+              "ms": 74.15758300339803,
+              "error": null,
+              "payload_bytes": 105,
+              "server_timing": {
+                "api_list_events": 64.94
+              }
+            },
+            {
+              "iteration": 2,
+              "ok": true,
+              "ms": 73.19016600376926,
+              "error": null,
+              "payload_bytes": 105,
+              "server_timing": {
+                "api_list_events": 72.67
+              }
+            },
+            {
+              "iteration": 3,
+              "ok": true,
+              "ms": 82.12370800902136,
+              "error": null,
+              "payload_bytes": 105,
+              "server_timing": {
+                "api_list_events": 71.02
+              }
+            },
+            {
+              "iteration": 4,
+              "ok": true,
+              "ms": 73.85683400207199,
+              "error": null,
+              "payload_bytes": 105,
+              "server_timing": {
+                "api_list_events": 80.49
+              }
+            },
+            {
+              "iteration": 5,
+              "ok": true,
+              "ms": 75.73554199188948,
+              "error": null,
+              "payload_bytes": 105,
+              "server_timing": {
+                "api_list_events": 71.96
+              }
+            },
+            {
+              "iteration": 6,
+              "ok": true,
+              "ms": 80.55900000908878,
+              "error": null,
+              "payload_bytes": 105,
+              "server_timing": {
+                "api_list_events": 73.67
+              }
+            },
+            {
+              "iteration": 7,
+              "ok": true,
+              "ms": 76.24237499840092,
+              "error": null,
+              "payload_bytes": 105,
+              "server_timing": {
+                "api_list_events": 78.57
+              }
+            },
+            {
+              "iteration": 8,
+              "ok": true,
+              "ms": 76.59745898854453,
+              "error": null,
+              "payload_bytes": 105,
+              "server_timing": {
+                "api_list_events": 74.52
+              }
+            },
+            {
+              "iteration": 9,
+              "ok": true,
+              "ms": 71.57924999773968,
+              "error": null,
+              "payload_bytes": 105,
+              "server_timing": {
+                "api_list_events": 74.59
+              }
+            },
+            {
+              "iteration": 10,
+              "ok": true,
+              "ms": 74.19691699033137,
+              "error": null,
+              "payload_bytes": 105,
+              "server_timing": {
+                "api_list_events": 69.7
+              }
+            }
+          ],
+          "warmup_results": [
+            {
+              "iteration": 1001,
+              "ok": true,
+              "ms": 134.92279101046734,
+              "error": null,
+              "payload_bytes": 105,
+              "server_timing": {}
+            },
+            {
+              "iteration": 1002,
+              "ok": true,
+              "ms": 66.82791700586677,
+              "error": null,
+              "payload_bytes": 105,
+              "server_timing": {
+                "oauth_load": 1.07,
+                "api_discovery": 36.89,
+                "api_list_events": 133.56
+              }
+            }
+          ],
+          "summary": {
+            "total": 10,
+            "ok": 10,
+            "failed": 0,
+            "mean_ms": 75.82388339942554,
+            "p50_ms": 74.19691699033137,
+            "p90_ms": 80.55900000908878,
+            "p95_ms": 80.55900000908878,
+            "p99_ms": 80.55900000908878,
+            "min_ms": 71.57924999773968,
+            "max_ms": 82.12370800902136,
+            "std_dev_ms": 3.2852653893508252,
+            "cv_percent": 4.332758020378201,
+            "mean_payload_bytes": 105.0,
+            "server_timing": {
+              "api_list_events": {
+                "mean_ms": 73.213,
+                "p50_ms": 72.67,
+                "min_ms": 64.94,
+                "max_ms": 80.49
+              }
+            }
+          }
+        },
+        {
+          "workload_id": "CALENDAR_LIST_WEEK",
+          "tool_name": "list_events",
+          "read_only": true,
+          "results": [
+            {
+              "iteration": 1,
+              "ok": true,
+              "ms": 78.86249999864958,
+              "error": null,
+              "payload_bytes": 105,
+              "server_timing": {
+                "api_list_events": 74.02
+              }
+            },
+            {
+              "iteration": 2,
+              "ok": true,
+              "ms": 72.77212500048336,
+              "error": null,
+              "payload_bytes": 105,
+              "server_timing": {
+                "api_list_events": 76.35
+              }
+            },
+            {
+              "iteration": 3,
+              "ok": true,
+              "ms": 65.12150001071859,
+              "error": null,
+              "payload_bytes": 105,
+              "server_timing": {
+                "api_list_events": 71.13
+              }
+            },
+            {
+              "iteration": 4,
+              "ok": true,
+              "ms": 70.2405420015566,
+              "error": null,
+              "payload_bytes": 105,
+              "server_timing": {
+                "api_list_events": 63.21
+              }
+            },
+            {
+              "iteration": 5,
+              "ok": true,
+              "ms": 73.20516699110158,
+              "error": null,
+              "payload_bytes": 105,
+              "server_timing": {
+                "api_list_events": 67.99
+              }
+            },
+            {
+              "iteration": 6,
+              "ok": true,
+              "ms": 68.06387500546407,
+              "error": null,
+              "payload_bytes": 105,
+              "server_timing": {
+                "api_list_events": 71.54
+              }
+            },
+            {
+              "iteration": 7,
+              "ok": true,
+              "ms": 74.32204099313822,
+              "error": null,
+              "payload_bytes": 105,
+              "server_timing": {
+                "api_list_events": 66.3
+              }
+            },
+            {
+              "iteration": 8,
+              "ok": true,
+              "ms": 77.83220800047275,
+              "error": null,
+              "payload_bytes": 105,
+              "server_timing": {
+                "api_list_events": 72.73
+              }
+            },
+            {
+              "iteration": 9,
+              "ok": true,
+              "ms": 77.18695899529848,
+              "error": null,
+              "payload_bytes": 105,
+              "server_timing": {
+                "api_list_events": 76.09
+              }
+            },
+            {
+              "iteration": 10,
+              "ok": true,
+              "ms": 69.2909170029452,
+              "error": null,
+              "payload_bytes": 105,
+              "server_timing": {
+                "api_list_events": 75.53
+              }
+            }
+          ],
+          "warmup_results": [
+            {
+              "iteration": 1013,
+              "ok": true,
+              "ms": 77.58154200564604,
+              "error": null,
+              "payload_bytes": 105,
+              "server_timing": {
+                "api_list_events": 72.36
+              }
+            },
+            {
+              "iteration": 1014,
+              "ok": true,
+              "ms": 75.80820799921639,
+              "error": null,
+              "payload_bytes": 105,
+              "server_timing": {
+                "api_list_events": 75.34
+              }
+            }
+          ],
+          "summary": {
+            "total": 10,
+            "ok": 10,
+            "failed": 0,
+            "mean_ms": 72.68978339998284,
+            "p50_ms": 72.77212500048336,
+            "p90_ms": 77.83220800047275,
+            "p95_ms": 77.83220800047275,
+            "p99_ms": 77.83220800047275,
+            "min_ms": 65.12150001071859,
+            "max_ms": 78.86249999864958,
+            "std_dev_ms": 4.520782045143566,
+            "cv_percent": 6.219281216271492,
+            "mean_payload_bytes": 105.0,
+            "server_timing": {
+              "api_list_events": {
+                "mean_ms": 71.489,
+                "p50_ms": 71.54,
+                "min_ms": 63.21,
+                "max_ms": 76.35
+              }
+            }
+          }
+        },
+        {
+          "workload_id": "CALENDAR_LIST_MONTH",
+          "tool_name": "list_events",
+          "read_only": true,
+          "results": [
+            {
+              "iteration": 1,
+              "ok": true,
+              "ms": 70.67479100078344,
+              "error": null,
+              "payload_bytes": 106,
+              "server_timing": {
+                "api_list_events": 69.24
+              }
+            },
+            {
+              "iteration": 2,
+              "ok": true,
+              "ms": 67.77383299777284,
+              "error": null,
+              "payload_bytes": 106,
+              "server_timing": {
+                "api_list_events": 69.04
+              }
+            },
+            {
+              "iteration": 3,
+              "ok": true,
+              "ms": 72.2807500133058,
+              "error": null,
+              "payload_bytes": 106,
+              "server_timing": {
+                "api_list_events": 66.13
+              }
+            },
+            {
+              "iteration": 4,
+              "ok": true,
+              "ms": 72.09704100387171,
+              "error": null,
+              "payload_bytes": 106,
+              "server_timing": {
+                "api_list_events": 69.22
+              }
+            },
+            {
+              "iteration": 5,
+              "ok": true,
+              "ms": 67.76550000358839,
+              "error": null,
+              "payload_bytes": 106,
+              "server_timing": {
+                "api_list_events": 70.12
+              }
+            },
+            {
+              "iteration": 6,
+              "ok": true,
+              "ms": 64.84504199761432,
+              "error": null,
+              "payload_bytes": 106,
+              "server_timing": {
+                "api_list_events": 65.9
+              }
+            },
+            {
+              "iteration": 7,
+              "ok": true,
+              "ms": 65.53195799642708,
+              "error": null,
+              "payload_bytes": 106,
+              "server_timing": {
+                "api_list_events": 62.93
+              }
+            },
+            {
+              "iteration": 8,
+              "ok": true,
+              "ms": 73.78162498935126,
+              "error": null,
+              "payload_bytes": 106,
+              "server_timing": {
+                "api_list_events": 63.9
+              }
+            },
+            {
+              "iteration": 9,
+              "ok": true,
+              "ms": 76.89179100270849,
+              "error": null,
+              "payload_bytes": 106,
+              "server_timing": {
+                "api_list_events": 71.64
+              }
+            },
+            {
+              "iteration": 10,
+              "ok": true,
+              "ms": 71.5992500045104,
+              "error": null,
+              "payload_bytes": 106,
+              "server_timing": {
+                "api_list_events": 75.2
+              }
+            }
+          ],
+          "warmup_results": [
+            {
+              "iteration": 1025,
+              "ok": true,
+              "ms": 69.63070899655577,
+              "error": null,
+              "payload_bytes": 106,
+              "server_timing": {
+                "api_list_events": 66.63
+              }
+            },
+            {
+              "iteration": 1026,
+              "ok": true,
+              "ms": 71.17754200589843,
+              "error": null,
+              "payload_bytes": 106,
+              "server_timing": {
+                "api_list_events": 67.38
+              }
+            }
+          ],
+          "summary": {
+            "total": 10,
+            "ok": 10,
+            "failed": 0,
+            "mean_ms": 70.32415810099337,
+            "p50_ms": 70.67479100078344,
+            "p90_ms": 73.78162498935126,
+            "p95_ms": 73.78162498935126,
+            "p99_ms": 73.78162498935126,
+            "min_ms": 64.84504199761432,
+            "max_ms": 76.89179100270849,
+            "std_dev_ms": 3.798315887268731,
+            "cv_percent": 5.401153728444105,
+            "mean_payload_bytes": 106.0,
+            "server_timing": {
+              "api_list_events": {
+                "mean_ms": 68.33200000000001,
+                "p50_ms": 69.04,
+                "min_ms": 62.93,
+                "max_ms": 75.2
+              }
+            }
+          }
+        },
+        {
+          "workload_id": "CALENDAR_FREE_30MIN",
+          "tool_name": "find_free_time",
+          "read_only": true,
+          "results": [
+            {
+              "iteration": 1,
+              "ok": true,
+              "ms": 72.18787500460166,
+              "error": null,
+              "payload_bytes": 623,
+              "server_timing": {
+                "api_list_events": 79.3,
+                "free_time_fetch_events": 79.39,
+                "free_time_parse_events": 0.0,
+                "free_time_algorithm": 0.05
+              }
+            },
+            {
+              "iteration": 2,
+              "ok": true,
+              "ms": 72.24433400551789,
+              "error": null,
+              "payload_bytes": 623,
+              "server_timing": {
+                "api_list_events": 70.21,
+                "free_time_fetch_events": 70.25,
+                "free_time_parse_events": 0.0,
+                "free_time_algorithm": 0.02
+              }
+            },
+            {
+              "iteration": 3,
+              "ok": true,
+              "ms": 70.1930840004934,
+              "error": null,
+              "payload_bytes": 623,
+              "server_timing": {
+                "api_list_events": 69.99,
+                "free_time_fetch_events": 70.05,
+                "free_time_parse_events": 0.0,
+                "free_time_algorithm": 0.04
+              }
+            },
+            {
+              "iteration": 4,
+              "ok": true,
+              "ms": 72.57458299864084,
+              "error": null,
+              "payload_bytes": 623,
+              "server_timing": {
+                "api_list_events": 67.85,
+                "free_time_fetch_events": 67.9,
+                "free_time_parse_events": 0.0,
+                "free_time_algorithm": 0.03
+              }
+            },
+            {
+              "iteration": 5,
+              "ok": true,
+              "ms": 65.54491599672474,
+              "error": null,
+              "payload_bytes": 623,
+              "server_timing": {
+                "api_list_events": 70.69,
+                "free_time_fetch_events": 70.74,
+                "free_time_parse_events": 0.0,
+                "free_time_algorithm": 0.03
+              }
+            },
+            {
+              "iteration": 6,
+              "ok": true,
+              "ms": 67.78862500505056,
+              "error": null,
+              "payload_bytes": 623,
+              "server_timing": {
+                "api_list_events": 63.04,
+                "free_time_fetch_events": 63.08,
+                "free_time_parse_events": 0.0,
+                "free_time_algorithm": 0.03
+              }
+            },
+            {
+              "iteration": 7,
+              "ok": true,
+              "ms": 71.40341700869612,
+              "error": null,
+              "payload_bytes": 623,
+              "server_timing": {
+                "api_list_events": 64.9,
+                "free_time_fetch_events": 64.95,
+                "free_time_parse_events": 0.0,
+                "free_time_algorithm": 0.03
+              }
+            },
+            {
+              "iteration": 8,
+              "ok": true,
+              "ms": 81.96133299497887,
+              "error": null,
+              "payload_bytes": 623,
+              "server_timing": {
+                "api_list_events": 69.41,
+                "free_time_fetch_events": 69.46,
+                "free_time_parse_events": 0.0,
+                "free_time_algorithm": 0.02
+              }
+            },
+            {
+              "iteration": 9,
+              "ok": true,
+              "ms": 84.6402089955518,
+              "error": null,
+              "payload_bytes": 623,
+              "server_timing": {
+                "api_list_events": 80.04,
+                "free_time_fetch_events": 80.08,
+                "free_time_parse_events": 0.0,
+                "free_time_algorithm": 0.05
+              }
+            },
+            {
+              "iteration": 10,
+              "ok": true,
+              "ms": 72.9653329908615,
+              "error": null,
+              "payload_bytes": 623,
+              "server_timing": {
+                "api_list_events": 82.51,
+                "free_time_fetch_events": 82.55,
+                "free_time_parse_events": 0.0,
+                "free_time_algorithm": 0.03
+              }
+            }
+          ],
+          "warmup_results": [
+            {
+              "iteration": 1037,
+              "ok": true,
+              "ms": 69.49550000717863,
+              "error": null,
+              "payload_bytes": 623,
+              "server_timing": {
+                "api_list_events": 69.84
+              }
+            },
+            {
+              "iteration": 1038,
+              "ok": true,
+              "ms": 81.61024999571964,
+              "error": null,
+              "payload_bytes": 623,
+              "server_timing": {
+                "api_list_events": 66.78,
+                "free_time_fetch_events": 66.83,
+                "free_time_parse_events": 0.0,
+                "free_time_algorithm": 0.04
+              }
+            }
+          ],
+          "summary": {
+            "total": 10,
+            "ok": 10,
+            "failed": 0,
+            "mean_ms": 73.15037090011174,
+            "p50_ms": 72.18787500460166,
+            "p90_ms": 81.96133299497887,
+            "p95_ms": 81.96133299497887,
+            "p99_ms": 81.96133299497887,
+            "min_ms": 65.54491599672474,
+            "max_ms": 84.6402089955518,
+            "std_dev_ms": 5.870369678603775,
+            "cv_percent": 8.025071652226998,
+            "mean_payload_bytes": 623.0,
+            "server_timing": {
+              "api_list_events": {
+                "mean_ms": 71.794,
+                "p50_ms": 69.99,
+                "min_ms": 63.04,
+                "max_ms": 82.51
+              },
+              "free_time_fetch_events": {
+                "mean_ms": 71.845,
+                "p50_ms": 70.05,
+                "min_ms": 63.08,
+                "max_ms": 82.55
+              },
+              "free_time_parse_events": {
+                "mean_ms": 0.0,
+                "p50_ms": 0.0,
+                "min_ms": 0.0,
+                "max_ms": 0.0
+              },
+              "free_time_algorithm": {
+                "mean_ms": 0.033,
+                "p50_ms": 0.03,
+                "min_ms": 0.02,
+                "max_ms": 0.05
+              }
+            }
+          }
+        },
+        {
+          "workload_id": "CALENDAR_FREE_60MIN",
+          "tool_name": "find_free_time",
+          "read_only": true,
+          "results": [
+            {
+              "iteration": 1,
+              "ok": true,
+              "ms": 70.53283300774638,
+              "error": null,
+              "payload_bytes": 621,
+              "server_timing": {
+                "api_list_events": 71.97,
+                "free_time_fetch_events": 72.06,
+                "free_time_parse_events": 0.0,
+                "free_time_algorithm": 0.05
+              }
+            },
+            {
+              "iteration": 2,
+              "ok": true,
+              "ms": 69.26683298661374,
+              "error": null,
+              "payload_bytes": 621,
+              "server_timing": {
+                "api_list_events": 68.38,
+                "free_time_fetch_events": 68.49,
+                "free_time_parse_events": 0.0,
+                "free_time_algorithm": 0.05
+              }
+            },
+            {
+              "iteration": 3,
+              "ok": true,
+              "ms": 78.9903749973746,
+              "error": null,
+              "payload_bytes": 621,
+              "server_timing": {
+                "api_list_events": 66.34,
+                "free_time_fetch_events": 66.4,
+                "free_time_parse_events": 0.0,
+                "free_time_algorithm": 0.03
+              }
+            },
+            {
+              "iteration": 4,
+              "ok": true,
+              "ms": 64.32016599865165,
+              "error": null,
+              "payload_bytes": 621,
+              "server_timing": {
+                "api_list_events": 77.06,
+                "free_time_fetch_events": 77.1,
+                "free_time_parse_events": 0.0,
+                "free_time_algorithm": 0.02
+              }
+            },
+            {
+              "iteration": 5,
+              "ok": true,
+              "ms": 69.26770800782833,
+              "error": null,
+              "payload_bytes": 621,
+              "server_timing": {
+                "api_list_events": 62.33,
+                "free_time_fetch_events": 62.4,
+                "free_time_parse_events": 0.0,
+                "free_time_algorithm": 0.04
+              }
+            },
+            {
+              "iteration": 6,
+              "ok": true,
+              "ms": 77.18787499470636,
+              "error": null,
+              "payload_bytes": 621,
+              "server_timing": {
+                "api_list_events": 66.34,
+                "free_time_fetch_events": 66.41,
+                "free_time_parse_events": 0.0,
+                "free_time_algorithm": 0.04
+              }
+            },
+            {
+              "iteration": 7,
+              "ok": true,
+              "ms": 73.69237499369774,
+              "error": null,
+              "payload_bytes": 621,
+              "server_timing": {
+                "api_list_events": 74.1,
+                "free_time_fetch_events": 74.16,
+                "free_time_parse_events": 0.0,
+                "free_time_algorithm": 0.03
+              }
+            },
+            {
+              "iteration": 8,
+              "ok": true,
+              "ms": 72.8394999896409,
+              "error": null,
+              "payload_bytes": 621,
+              "server_timing": {
+                "api_list_events": 71.68,
+                "free_time_fetch_events": 71.73,
+                "free_time_parse_events": 0.0,
+                "free_time_algorithm": 0.03
+              }
+            },
+            {
+              "iteration": 9,
+              "ok": true,
+              "ms": 68.99533300020266,
+              "error": null,
+              "payload_bytes": 621,
+              "server_timing": {
+                "api_list_events": 69.74,
+                "free_time_fetch_events": 69.79,
+                "free_time_parse_events": 0.0,
+                "free_time_algorithm": 0.03
+              }
+            },
+            {
+              "iteration": 10,
+              "ok": true,
+              "ms": 70.55495798704214,
+              "error": null,
+              "payload_bytes": 621,
+              "server_timing": {
+                "api_list_events": 66.28,
+                "free_time_fetch_events": 66.35,
+                "free_time_parse_events": 0.0,
+                "free_time_algorithm": 0.04
+              }
+            }
+          ],
+          "warmup_results": [
+            {
+              "iteration": 1049,
+              "ok": true,
+              "ms": 80.8216250006808,
+              "error": null,
+              "payload_bytes": 621,
+              "server_timing": {
+                "api_list_events": 70.9,
+                "free_time_fetch_events": 70.96,
+                "free_time_parse_events": 0.0,
+                "free_time_algorithm": 0.03
+              }
+            },
+            {
+              "iteration": 1050,
+              "ok": true,
+              "ms": 74.20862499566283,
+              "error": null,
+              "payload_bytes": 621,
+              "server_timing": {
+                "api_list_events": 78.56,
+                "free_time_fetch_events": 78.63,
+                "free_time_parse_events": 0.0,
+                "free_time_algorithm": 0.04
+              }
+            }
+          ],
+          "summary": {
+            "total": 10,
+            "ok": 10,
+            "failed": 0,
+            "mean_ms": 71.56479559635045,
+            "p50_ms": 70.53283300774638,
+            "p90_ms": 77.18787499470636,
+            "p95_ms": 77.18787499470636,
+            "p99_ms": 77.18787499470636,
+            "min_ms": 64.32016599865165,
+            "max_ms": 78.9903749973746,
+            "std_dev_ms": 4.277050841549815,
+            "cv_percent": 5.976473216906567,
+            "mean_payload_bytes": 621.0,
+            "server_timing": {
+              "api_list_events": {
+                "mean_ms": 69.422,
+                "p50_ms": 68.38,
+                "min_ms": 62.33,
+                "max_ms": 77.06
+              },
+              "free_time_fetch_events": {
+                "mean_ms": 69.489,
+                "p50_ms": 68.49,
+                "min_ms": 62.4,
+                "max_ms": 77.1
+              },
+              "free_time_parse_events": {
+                "mean_ms": 0.0,
+                "p50_ms": 0.0,
+                "min_ms": 0.0,
+                "max_ms": 0.0
+              },
+              "free_time_algorithm": {
+                "mean_ms": 0.036,
+                "p50_ms": 0.03,
+                "min_ms": 0.02,
+                "max_ms": 0.05
+              }
+            }
+          }
+        },
+        {
+          "workload_id": "CALENDAR_FREE_2HOUR",
+          "tool_name": "find_free_time",
+          "read_only": true,
+          "results": [
+            {
+              "iteration": 1,
+              "ok": true,
+              "ms": 72.18195800669491,
+              "error": null,
+              "payload_bytes": 614,
+              "server_timing": {
+                "api_list_events": 71.99,
+                "free_time_fetch_events": 72.08,
+                "free_time_parse_events": 0.0,
+                "free_time_algorithm": 0.06
+              }
+            },
+            {
+              "iteration": 2,
+              "ok": true,
+              "ms": 78.7724160036305,
+              "error": null,
+              "payload_bytes": 614,
+              "server_timing": {
+                "api_list_events": 67.3,
+                "free_time_fetch_events": 67.39,
+                "free_time_parse_events": 0.0,
+                "free_time_algorithm": 0.07
+              }
+            },
+            {
+              "iteration": 3,
+              "ok": true,
+              "ms": 79.51091701397672,
+              "error": null,
+              "payload_bytes": 614,
+              "server_timing": {
+                "api_list_events": 76.74,
+                "free_time_fetch_events": 76.79,
+                "free_time_parse_events": 0.0,
+                "free_time_algorithm": 0.03
+              }
+            },
+            {
+              "iteration": 4,
+              "ok": true,
+              "ms": 78.1490829976974,
+              "error": null,
+              "payload_bytes": 614,
+              "server_timing": {
+                "api_list_events": 77.21,
+                "free_time_fetch_events": 77.28,
+                "free_time_parse_events": 0.0,
+                "free_time_algorithm": 0.05
+              }
+            },
+            {
+              "iteration": 5,
+              "ok": true,
+              "ms": 67.21162500616629,
+              "error": null,
+              "payload_bytes": 614,
+              "server_timing": {
+                "api_list_events": 76.1,
+                "free_time_fetch_events": 76.18,
+                "free_time_parse_events": 0.0,
+                "free_time_algorithm": 0.06
+              }
+            },
+            {
+              "iteration": 6,
+              "ok": true,
+              "ms": 71.98483300453518,
+              "error": null,
+              "payload_bytes": 614,
+              "server_timing": {
+                "api_list_events": 64.63,
+                "free_time_fetch_events": 64.67,
+                "free_time_parse_events": 0.0,
+                "free_time_algorithm": 0.02
+              }
+            },
+            {
+              "iteration": 7,
+              "ok": true,
+              "ms": 73.61437499639578,
+              "error": null,
+              "payload_bytes": 614,
+              "server_timing": {
+                "api_list_events": 69.71,
+                "free_time_fetch_events": 69.75,
+                "free_time_parse_events": 0.0,
+                "free_time_algorithm": 0.07
+              }
+            },
+            {
+              "iteration": 8,
+              "ok": true,
+              "ms": 66.90379099745769,
+              "error": null,
+              "payload_bytes": 614,
+              "server_timing": {
+                "api_list_events": 71.32,
+                "free_time_fetch_events": 71.37,
+                "free_time_parse_events": 0.0,
+                "free_time_algorithm": 0.02
+              }
+            },
+            {
+              "iteration": 9,
+              "ok": true,
+              "ms": 67.33633299882058,
+              "error": null,
+              "payload_bytes": 614,
+              "server_timing": {
+                "api_list_events": 65.01,
+                "free_time_fetch_events": 65.06,
+                "free_time_parse_events": 0.0,
+                "free_time_algorithm": 0.02
+              }
+            },
+            {
+              "iteration": 10,
+              "ok": true,
+              "ms": 65.5941669974709,
+              "error": null,
+              "payload_bytes": 614,
+              "server_timing": {
+                "api_list_events": 65.49,
+                "free_time_fetch_events": 65.54,
+                "free_time_parse_events": 0.0,
+                "free_time_algorithm": 0.02
+              }
+            }
+          ],
+          "warmup_results": [
+            {
+              "iteration": 1061,
+              "ok": true,
+              "ms": 67.65616599295754,
+              "error": null,
+              "payload_bytes": 614,
+              "server_timing": {
+                "api_list_events": 68.74,
+                "free_time_fetch_events": 68.78,
+                "free_time_parse_events": 0.0,
+                "free_time_algorithm": 0.03
+              }
+            },
+            {
+              "iteration": 1062,
+              "ok": true,
+              "ms": 74.52416600426659,
+              "error": null,
+              "payload_bytes": 614,
+              "server_timing": {
+                "api_list_events": 65.31,
+                "free_time_fetch_events": 65.41,
+                "free_time_parse_events": 0.0,
+                "free_time_algorithm": 0.07
+              }
+            }
+          ],
+          "summary": {
+            "total": 10,
+            "ok": 10,
+            "failed": 0,
+            "mean_ms": 72.1259498022846,
+            "p50_ms": 71.98483300453518,
+            "p90_ms": 78.7724160036305,
+            "p95_ms": 78.7724160036305,
+            "p99_ms": 78.7724160036305,
+            "min_ms": 65.5941669974709,
+            "max_ms": 79.51091701397672,
+            "std_dev_ms": 5.315135559251496,
+            "cv_percent": 7.369241685997372,
+            "mean_payload_bytes": 614.0,
+            "server_timing": {
+              "api_list_events": {
+                "mean_ms": 70.55,
+                "p50_ms": 69.71,
+                "min_ms": 64.63,
+                "max_ms": 77.21
+              },
+              "free_time_fetch_events": {
+                "mean_ms": 70.611,
+                "p50_ms": 69.75,
+                "min_ms": 64.67,
+                "max_ms": 77.28
+              },
+              "free_time_parse_events": {
+                "mean_ms": 0.0,
+                "p50_ms": 0.0,
+                "min_ms": 0.0,
+                "max_ms": 0.0
+              },
+              "free_time_algorithm": {
+                "mean_ms": 0.042,
+                "p50_ms": 0.03,
+                "min_ms": 0.02,
+                "max_ms": 0.07
+              }
+            }
+          }
+        }
+      ],
+      "notes": []
+    },
+    {
+      "name": "Reminders MCP",
+      "command": "python3",
+      "args": [
+        "/Users/wolfgangschoenberger/LIFE-PLANNER/Reminders/mcp_server/server.py"
+      ],
+      "session_initialize": {
+        "ok": true,
+        "ms": 1024.7517499956302,
+        "error": null,
+        "stdout_bytes": 198
+      },
+      "session_list_tools": {
+        "ok": true,
+        "ms": 0.9944170014932752,
+        "error": null,
+        "stdout_bytes": 2440
+      },
+      "workloads": [
+        {
+          "workload_id": "REMINDERS_LIST_LISTS",
+          "tool_name": "list_reminder_lists",
+          "read_only": true,
+          "results": [
+            {
+              "iteration": 1,
+              "ok": true,
+              "ms": 1.5150830004131421,
+              "error": null,
+              "payload_bytes": 1622,
+              "server_timing": {
+                "api_list_lists": 0.41
+              }
+            },
+            {
+              "iteration": 2,
+              "ok": true,
+              "ms": 1.7070000030798838,
+              "error": null,
+              "payload_bytes": 1622,
+              "server_timing": {
+                "api_list_lists": 0.34
+              }
+            },
+            {
+              "iteration": 3,
+              "ok": true,
+              "ms": 1.9507499964674935,
+              "error": null,
+              "payload_bytes": 1622,
+              "server_timing": {
+                "api_list_lists": 0.37
+              }
+            },
+            {
+              "iteration": 4,
+              "ok": true,
+              "ms": 5.3782499890076,
+              "error": null,
+              "payload_bytes": 1622,
+              "server_timing": {
+                "api_list_lists": 0.45
+              }
+            },
+            {
+              "iteration": 5,
+              "ok": true,
+              "ms": 1.5538750012638047,
+              "error": null,
+              "payload_bytes": 1622,
+              "server_timing": {
+                "api_list_lists": 0.44
+              }
+            },
+            {
+              "iteration": 6,
+              "ok": true,
+              "ms": 1.6639160021441057,
+              "error": null,
+              "payload_bytes": 1622,
+              "server_timing": {
+                "api_list_lists": 0.3
+              }
+            },
+            {
+              "iteration": 7,
+              "ok": true,
+              "ms": 4.089832989848219,
+              "error": null,
+              "payload_bytes": 1622,
+              "server_timing": {
+                "api_list_lists": 0.45
+              }
+            },
+            {
+              "iteration": 8,
+              "ok": true,
+              "ms": 1.749666000250727,
+              "error": null,
+              "payload_bytes": 1622,
+              "server_timing": {
+                "api_list_lists": 0.35
+              }
+            },
+            {
+              "iteration": 9,
+              "ok": true,
+              "ms": 1.5761249960632995,
+              "error": null,
+              "payload_bytes": 1622,
+              "server_timing": {
+                "api_list_lists": 0.31
+              }
+            },
+            {
+              "iteration": 10,
+              "ok": true,
+              "ms": 1.42079200304579,
+              "error": null,
+              "payload_bytes": 1622,
+              "server_timing": {
+                "api_list_lists": 0.32
+              }
+            }
+          ],
+          "warmup_results": [
+            {
+              "iteration": 1001,
+              "ok": true,
+              "ms": 597.5590839952929,
+              "error": null,
+              "payload_bytes": 1622,
+              "server_timing": {}
+            },
+            {
+              "iteration": 1002,
+              "ok": true,
+              "ms": 1.774541990016587,
+              "error": null,
+              "payload_bytes": 1622,
+              "server_timing": {
+                "api_list_lists": 596.32
+              }
+            }
+          ],
+          "summary": {
+            "total": 10,
+            "ok": 10,
+            "failed": 0,
+            "mean_ms": 2.2605289981584065,
+            "p50_ms": 1.6639160021441057,
+            "p90_ms": 4.089832989848219,
+            "p95_ms": 4.089832989848219,
+            "p99_ms": 4.089832989848219,
+            "min_ms": 1.42079200304579,
+            "max_ms": 5.3782499890076,
+            "std_dev_ms": 1.3463712293356749,
+            "cv_percent": 59.56000699095336,
+            "mean_payload_bytes": 1622.0,
+            "server_timing": {
+              "api_list_lists": {
+                "mean_ms": 0.374,
+                "p50_ms": 0.35,
+                "min_ms": 0.3,
+                "max_ms": 0.45
+              }
+            }
+          }
+        },
+        {
+          "workload_id": "REMINDERS_LIST_10",
+          "tool_name": "list_reminders",
+          "read_only": true,
+          "results": [
+            {
+              "iteration": 1,
+              "ok": true,
+              "ms": 86.211583999102,
+              "error": null,
+              "payload_bytes": 4534,
+              "server_timing": {
+                "api_list_reminders": 87.91
+              }
+            },
+            {
+              "iteration": 2,
+              "ok": true,
+              "ms": 81.32829099486116,
+              "error": null,
+              "payload_bytes": 4534,
+              "server_timing": {
+                "api_list_reminders": 84.36
+              }
+            },
+            {
+              "iteration": 3,
+              "ok": true,
+              "ms": 81.9265829923097,
+              "error": null,
+              "payload_bytes": 4534,
+              "server_timing": {
+                "api_list_reminders": 79.58
+              }
+            },
+            {
+              "iteration": 4,
+              "ok": true,
+              "ms": 85.87570801319089,
+              "error": null,
+              "payload_bytes": 4534,
+              "server_timing": {
+                "api_list_reminders": 80.2
+              }
+            },
+            {
+              "iteration": 5,
+              "ok": true,
+              "ms": 84.25945800263435,
+              "error": null,
+              "payload_bytes": 4534,
+              "server_timing": {
+                "api_list_reminders": 83.74
+              }
+            },
+            {
+              "iteration": 6,
+              "ok": true,
+              "ms": 80.33266699931119,
+              "error": null,
+              "payload_bytes": 4534,
+              "server_timing": {
+                "api_list_reminders": 82.47
+              }
+            },
+            {
+              "iteration": 7,
+              "ok": true,
+              "ms": 81.97391699650325,
+              "error": null,
+              "payload_bytes": 4534,
+              "server_timing": {
+                "api_list_reminders": 78.58
+              }
+            },
+            {
+              "iteration": 8,
+              "ok": true,
+              "ms": 80.73820899880957,
+              "error": null,
+              "payload_bytes": 4534,
+              "server_timing": {
+                "api_list_reminders": 80.44
+              }
+            },
+            {
+              "iteration": 9,
+              "ok": true,
+              "ms": 81.4170420053415,
+              "error": null,
+              "payload_bytes": 4534,
+              "server_timing": {
+                "api_list_reminders": 78.96
+              }
+            },
+            {
+              "iteration": 10,
+              "ok": true,
+              "ms": 80.75275000010151,
+              "error": null,
+              "payload_bytes": 4534,
+              "server_timing": {
+                "api_list_reminders": 79.51
+              }
+            }
+          ],
+          "warmup_results": [
+            {
+              "iteration": 1013,
+              "ok": true,
+              "ms": 154.0404999977909,
+              "error": null,
+              "payload_bytes": 4534,
+              "server_timing": {
+                "api_list_lists": 0.32
+              }
+            },
+            {
+              "iteration": 1014,
+              "ok": true,
+              "ms": 90.00420900702011,
+              "error": null,
+              "payload_bytes": 4534,
+              "server_timing": {
+                "api_list_reminders": 152.32
+              }
+            }
+          ],
+          "summary": {
+            "total": 10,
+            "ok": 10,
+            "failed": 0,
+            "mean_ms": 82.48162090021651,
+            "p50_ms": 81.4170420053415,
+            "p90_ms": 85.87570801319089,
+            "p95_ms": 85.87570801319089,
+            "p99_ms": 85.87570801319089,
+            "min_ms": 80.33266699931119,
+            "max_ms": 86.211583999102,
+            "std_dev_ms": 2.167152964778834,
+            "cv_percent": 2.6274374110574072,
+            "mean_payload_bytes": 4534.0,
+            "server_timing": {
+              "api_list_reminders": {
+                "mean_ms": 81.575,
+                "p50_ms": 80.2,
+                "min_ms": 78.58,
+                "max_ms": 87.91
+              }
+            }
+          }
+        },
+        {
+          "workload_id": "REMINDERS_LIST_50",
+          "tool_name": "list_reminders",
+          "read_only": true,
+          "results": [
+            {
+              "iteration": 1,
+              "ok": true,
+              "ms": 81.05679199798033,
+              "error": null,
+              "payload_bytes": 6155,
+              "server_timing": {
+                "api_list_reminders": 81.79
+              }
+            },
+            {
+              "iteration": 2,
+              "ok": true,
+              "ms": 86.8168340093689,
+              "error": null,
+              "payload_bytes": 6155,
+              "server_timing": {
+                "api_list_reminders": 79.26
+              }
+            },
+            {
+              "iteration": 3,
+              "ok": true,
+              "ms": 84.93033298873343,
+              "error": null,
+              "payload_bytes": 6155,
+              "server_timing": {
+                "api_list_reminders": 84.94
+              }
+            },
+            {
+              "iteration": 4,
+              "ok": true,
+              "ms": 84.57791600085329,
+              "error": null,
+              "payload_bytes": 6155,
+              "server_timing": {
+                "api_list_reminders": 83.22
+              }
+            },
+            {
+              "iteration": 5,
+              "ok": true,
+              "ms": 87.99983300559688,
+              "error": null,
+              "payload_bytes": 6155,
+              "server_timing": {
+                "api_list_reminders": 82.85
+              }
+            },
+            {
+              "iteration": 6,
+              "ok": true,
+              "ms": 87.29933299764525,
+              "error": null,
+              "payload_bytes": 6155,
+              "server_timing": {
+                "api_list_reminders": 86.12
+              }
+            },
+            {
+              "iteration": 7,
+              "ok": true,
+              "ms": 81.783000001451,
+              "error": null,
+              "payload_bytes": 6155,
+              "server_timing": {
+                "api_list_reminders": 85.65
+              }
+            },
+            {
+              "iteration": 8,
+              "ok": true,
+              "ms": 81.62625000113621,
+              "error": null,
+              "payload_bytes": 6155,
+              "server_timing": {
+                "api_list_reminders": 79.94
+              }
+            },
+            {
+              "iteration": 9,
+              "ok": true,
+              "ms": 86.18708299763966,
+              "error": null,
+              "payload_bytes": 6155,
+              "server_timing": {
+                "api_list_reminders": 79.99
+              }
+            },
+            {
+              "iteration": 10,
+              "ok": true,
+              "ms": 84.22895899275318,
+              "error": null,
+              "payload_bytes": 6155,
+              "server_timing": {
+                "api_list_reminders": 84.36
+              }
+            }
+          ],
+          "warmup_results": [
+            {
+              "iteration": 1025,
+              "ok": true,
+              "ms": 80.82391700008884,
+              "error": null,
+              "payload_bytes": 6155,
+              "server_timing": {
+                "api_list_reminders": 79.15
+              }
+            },
+            {
+              "iteration": 1026,
+              "ok": true,
+              "ms": 83.6069169890834,
+              "error": null,
+              "payload_bytes": 6155,
+              "server_timing": {
+                "api_list_reminders": 79.28
+              }
+            }
+          ],
+          "summary": {
+            "total": 10,
+            "ok": 10,
+            "failed": 0,
+            "mean_ms": 84.65063329931581,
+            "p50_ms": 84.57791600085329,
+            "p90_ms": 87.29933299764525,
+            "p95_ms": 87.29933299764525,
+            "p99_ms": 87.29933299764525,
+            "min_ms": 81.05679199798033,
+            "max_ms": 87.99983300559688,
+            "std_dev_ms": 2.490718130787098,
+            "cv_percent": 2.9423502621417823,
+            "mean_payload_bytes": 6155.0,
+            "server_timing": {
+              "api_list_reminders": {
+                "mean_ms": 82.812,
+                "p50_ms": 82.85,
+                "min_ms": 79.26,
+                "max_ms": 86.12
+              }
+            }
+          }
+        },
+        {
+          "workload_id": "REMINDERS_LIST_COMPLETED",
+          "tool_name": "list_reminders",
+          "read_only": true,
+          "results": [
+            {
+              "iteration": 1,
+              "ok": true,
+              "ms": 86.78945800056681,
+              "error": null,
+              "payload_bytes": 8802,
+              "server_timing": {
+                "api_list_reminders": 80.36
+              }
+            },
+            {
+              "iteration": 2,
+              "ok": true,
+              "ms": 90.60495799349155,
+              "error": null,
+              "payload_bytes": 8802,
+              "server_timing": {
+                "api_list_reminders": 85.06
+              }
+            },
+            {
+              "iteration": 3,
+              "ok": true,
+              "ms": 85.16300001065247,
+              "error": null,
+              "payload_bytes": 8802,
+              "server_timing": {
+                "api_list_reminders": 88.88
+              }
+            },
+            {
+              "iteration": 4,
+              "ok": true,
+              "ms": 91.24008301296271,
+              "error": null,
+              "payload_bytes": 8802,
+              "server_timing": {
+                "api_list_reminders": 83.45
+              }
+            },
+            {
+              "iteration": 5,
+              "ok": true,
+              "ms": 87.18479199160356,
+              "error": null,
+              "payload_bytes": 8802,
+              "server_timing": {
+                "api_list_reminders": 89.52
+              }
+            },
+            {
+              "iteration": 6,
+              "ok": true,
+              "ms": 89.38487499835901,
+              "error": null,
+              "payload_bytes": 8802,
+              "server_timing": {
+                "api_list_reminders": 85.21
+              }
+            },
+            {
+              "iteration": 7,
+              "ok": true,
+              "ms": 83.85208300023805,
+              "error": null,
+              "payload_bytes": 8802,
+              "server_timing": {
+                "api_list_reminders": 87.45
+              }
+            },
+            {
+              "iteration": 8,
+              "ok": true,
+              "ms": 85.23445800528862,
+              "error": null,
+              "payload_bytes": 8802,
+              "server_timing": {
+                "api_list_reminders": 81.96
+              }
+            },
+            {
+              "iteration": 9,
+              "ok": true,
+              "ms": 81.69887500116602,
+              "error": null,
+              "payload_bytes": 8802,
+              "server_timing": {
+                "api_list_reminders": 83.37
+              }
+            },
+            {
+              "iteration": 10,
+              "ok": true,
+              "ms": 80.8163330075331,
+              "error": null,
+              "payload_bytes": 8802,
+              "server_timing": {
+                "api_list_reminders": 79.99
+              }
+            }
+          ],
+          "warmup_results": [
+            {
+              "iteration": 1037,
+              "ok": true,
+              "ms": 86.06262499233708,
+              "error": null,
+              "payload_bytes": 8802,
+              "server_timing": {
+                "api_list_reminders": 82.39
+              }
+            },
+            {
+              "iteration": 1038,
+              "ok": true,
+              "ms": 82.07666699308902,
+              "error": null,
+              "payload_bytes": 8802,
+              "server_timing": {
+                "api_list_reminders": 84.16
+              }
+            }
+          ],
+          "summary": {
+            "total": 10,
+            "ok": 10,
+            "failed": 0,
+            "mean_ms": 86.19689150218619,
+            "p50_ms": 85.23445800528862,
+            "p90_ms": 90.60495799349155,
+            "p95_ms": 90.60495799349155,
+            "p99_ms": 90.60495799349155,
+            "min_ms": 80.8163330075331,
+            "max_ms": 91.24008301296271,
+            "std_dev_ms": 3.5438687417826897,
+            "cv_percent": 4.111364899617995,
+            "mean_payload_bytes": 8802.0,
+            "server_timing": {
+              "api_list_reminders": {
+                "mean_ms": 84.525,
+                "p50_ms": 83.45,
+                "min_ms": 79.99,
+                "max_ms": 89.52
+              }
+            }
+          }
+        },
+        {
+          "workload_id": "REMINDERS_LIST_TAGGED",
+          "tool_name": "list_reminders",
+          "read_only": true,
+          "results": [
+            {
+              "iteration": 1,
+              "ok": true,
+              "ms": 81.63025000249036,
+              "error": null,
+              "payload_bytes": 103,
+              "server_timing": {
+                "api_list_reminders": 85.0
+              }
+            },
+            {
+              "iteration": 2,
+              "ok": true,
+              "ms": 82.8121660015313,
+              "error": null,
+              "payload_bytes": 103,
+              "server_timing": {
+                "api_list_reminders": 79.97
+              }
+            },
+            {
+              "iteration": 3,
+              "ok": true,
+              "ms": 85.24733300146181,
+              "error": null,
+              "payload_bytes": 103,
+              "server_timing": {
+                "api_list_reminders": 81.17
+              }
+            },
+            {
+              "iteration": 4,
+              "ok": true,
+              "ms": 80.7935000048019,
+              "error": null,
+              "payload_bytes": 103,
+              "server_timing": {
+                "api_list_reminders": 83.64
+              }
+            },
+            {
+              "iteration": 5,
+              "ok": true,
+              "ms": 81.4257910096785,
+              "error": null,
+              "payload_bytes": 103,
+              "server_timing": {
+                "api_list_reminders": 78.95
+              }
+            },
+            {
+              "iteration": 6,
+              "ok": true,
+              "ms": 88.09670800110325,
+              "error": null,
+              "payload_bytes": 103,
+              "server_timing": {
+                "api_list_reminders": 79.79
+              }
+            },
+            {
+              "iteration": 7,
+              "ok": true,
+              "ms": 85.53979199496098,
+              "error": null,
+              "payload_bytes": 103,
+              "server_timing": {
+                "api_list_reminders": 86.55
+              }
+            },
+            {
+              "iteration": 8,
+              "ok": true,
+              "ms": 79.79408399842214,
+              "error": null,
+              "payload_bytes": 103,
+              "server_timing": {
+                "api_list_reminders": 83.96
+              }
+            },
+            {
+              "iteration": 9,
+              "ok": true,
+              "ms": 139.00870901125018,
+              "error": null,
+              "payload_bytes": 103,
+              "server_timing": {
+                "api_list_reminders": 78.14
+              }
+            },
+            {
+              "iteration": 10,
+              "ok": true,
+              "ms": 88.04270900145639,
+              "error": null,
+              "payload_bytes": 103,
+              "server_timing": {
+                "api_list_reminders": 136.24
+              }
+            }
+          ],
+          "warmup_results": [
+            {
+              "iteration": 1049,
+              "ok": true,
+              "ms": 79.73770900571253,
+              "error": null,
+              "payload_bytes": 103,
+              "server_timing": {
+                "api_list_reminders": 78.99
+              }
+            },
+            {
+              "iteration": 1050,
+              "ok": true,
+              "ms": 86.87445800751448,
+              "error": null,
+              "payload_bytes": 103,
+              "server_timing": {
+                "api_list_reminders": 77.97
+              }
+            }
+          ],
+          "summary": {
+            "total": 10,
+            "ok": 10,
+            "failed": 0,
+            "mean_ms": 89.23910420271568,
+            "p50_ms": 82.8121660015313,
+            "p90_ms": 88.09670800110325,
+            "p95_ms": 88.09670800110325,
+            "p99_ms": 88.09670800110325,
+            "min_ms": 79.79408399842214,
+            "max_ms": 139.00870901125018,
+            "std_dev_ms": 17.733063401304946,
+            "cv_percent": 19.87140453698694,
+            "mean_payload_bytes": 103.0,
+            "server_timing": {
+              "api_list_reminders": {
+                "mean_ms": 87.341,
+                "p50_ms": 81.17,
+                "min_ms": 78.14,
+                "max_ms": 136.24
+              }
+            }
+          }
+        }
+      ],
+      "notes": []
+    }
+  ]
+}

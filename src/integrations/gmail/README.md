@@ -241,6 +241,53 @@ echo "config/google_credentials/*.pickle" >> .gitignore
 - **Body truncation:** Very long emails (>5000 chars) truncated in responses
 - **Rate limits:** Subject to Google's API quotas (default: 1 billion quota units/day)
 
+## High-Performance CLI Alternative
+
+For performance-critical use cases, a CLI gateway with daemon support is available that provides **6.2x faster** access compared to the MCP server.
+
+### Performance Comparison
+
+| Operation | MCP Server | CLI + Daemon | Speedup |
+|-----------|------------|--------------|---------|
+| Unread count | ~1,030ms | ~167ms | **6.2x** |
+| List 10 emails | ~1,180ms | ~318ms | **3.7x** |
+| Search emails | ~1,160ms | ~287ms | **4.1x** |
+
+### CLI Usage
+
+```bash
+# Basic operations
+python3 src/integrations/gmail/gmail_cli.py unread --json
+python3 src/integrations/gmail/gmail_cli.py list 10 --json
+python3 src/integrations/gmail/gmail_cli.py search "from:boss" --json
+
+# With daemon for maximum speed (requires daemon running)
+python3 src/integrations/gmail/gmail_cli.py --use-daemon unread --json
+python3 src/integrations/gmail/gmail_cli.py --use-daemon list 10 --json
+```
+
+### Starting the Daemon
+
+```bash
+# Start shared Google daemon (Gmail + Calendar)
+python3 src/integrations/google_daemon/server.py start
+
+# Check status
+python3 src/integrations/google_daemon/server.py status
+```
+
+### When to Use CLI vs MCP
+
+| Use Case | Recommended |
+|----------|-------------|
+| Integration with Claude Code tools | MCP Server |
+| Quick terminal checks | CLI |
+| High-frequency operations | CLI + Daemon |
+| Scripting/automation | CLI |
+| Complex AI workflows | MCP Server |
+
+See `src/integrations/google_daemon/README.md` for full daemon documentation.
+
 ## Future Enhancements
 
 - [ ] Attachment download and preview

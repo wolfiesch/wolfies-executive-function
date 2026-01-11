@@ -1,0 +1,10 @@
+table,workload,rank,server,run,node,mean_ms,p95_ms,tool
+workload_rankings,W0_UNREAD,1,github MCP: imessage-mcp-improved (node stdio),20260107_202056_node22_validated,v22.21.1,30.085116799455136,30.528041999787092,get_unread_imessages
+workload_rankings,W0_UNREAD,2,github MCP: sameelarif/imessage-mcp (node tsx),20260107_202056_node22_validated,v22.21.1,832.1153916011099,906.326625001384,get-unread-messages
+workload_rankings,W1_RECENT,1,github MCP: TextFly/photon-imsg-mcp (node stdio),20260107_202056_node22_validated,v22.21.1,0.3165000001899898,0.3555000002961606,photon_get_conversations
+workload_rankings,W1_RECENT,2,github MCP: jonmmease/jons-mcp-imessage (python fastmcp stdio),20260107_202056_node22_validated,v22.21.1,1.5942997997626662,1.6483749932376668,get_recent_messages
+workload_rankings,W1_RECENT,3,github MCP: wyattjoh/imessage-mcp (deno stdio),20260107_202056_node22_validated,v22.21.1,10.018591803964227,10.353959005442448,get_recent_messages
+workload_rankings,W1_RECENT,4,github MCP: mattt/iMCP (swift stdio proxy),20260107_202056_node22_validated,v22.21.1,33.32898360094987,35.02604199456982,messages_fetch
+workload_rankings,W2_SEARCH,1,github MCP: wyattjoh/imessage-mcp (deno stdio),20260107_202056_node22_validated,v22.21.1,26.77979160216637,29.756875010207295,search_messages
+workload_rankings,W2_SEARCH,2,github MCP: mattt/iMCP (swift stdio proxy),20260107_202056_node22_validated,v22.21.1,30.771008401643485,32.52249999786727,messages_fetch
+workload_rankings,W3_THREAD,1,github MCP: wyattjoh/imessage-mcp (deno stdio),20260107_202056_node22_validated,v22.21.1,1.725233596516773,1.766291999956593,get_messages_from_chat

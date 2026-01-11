@@ -1,0 +1,227 @@
+{
+  "generated_at": "2026-01-07 17:04:39",
+  "metadata": {
+    "mode": "session",
+    "iterations": 5,
+    "warmup": 1,
+    "phase_timeout_s": 30,
+    "call_timeout_s": 10,
+    "workloads": [
+      "W0_UNREAD",
+      "W1_RECENT",
+      "W2_SEARCH",
+      "W3_THREAD"
+    ]
+  },
+  "servers": [
+    {
+      "name": "github MCP: TextFly/photon-imsg-mcp (node stdio)",
+      "command": "node",
+      "args": [
+        "/Users/wolfgangschoenberger/LIFE-PLANNER/Texting/benchmarks/vendor/github_mcp/photon-imsg-mcp/dist/index.js"
+      ],
+      "mode": "session",
+      "session_initialize": {
+        "ok": true,
+        "ms": 1028.2386659964686,
+        "error": null,
+        "stdout_bytes": 153,
+        "approx_tokens": 39
+      },
+      "session_list_tools": {
+        "ok": true,
+        "ms": 2.2717910032952204,
+        "error": null,
+        "stdout_bytes": 2054,
+        "approx_tokens": 514
+      },
+      "workloads": [
+        {
+          "workload_id": "W0_UNREAD",
+          "tool_name": "photon_read_messages",
+          "read_only": true,
+          "warmup_results": [
+            {
+              "iteration": 1001,
+              "ok": true,
+              "ms": 375.63725000654813,
+              "error": null,
+              "stdout_bytes": 186,
+              "approx_tokens": 47
+            }
+          ],
+          "results": [
+            {
+              "iteration": 1,
+              "ok": true,
+              "ms": 29.608042008476332,
+              "error": null,
+              "stdout_bytes": 186,
+              "approx_tokens": 47
+            },
+            {
+              "iteration": 2,
+              "ok": true,
+              "ms": 29.491082997992635,
+              "error": null,
+              "stdout_bytes": 186,
+              "approx_tokens": 47
+            },
+            {
+              "iteration": 3,
+              "ok": true,
+              "ms": 29.438959012622945,
+              "error": null,
+              "stdout_bytes": 186,
+              "approx_tokens": 47
+            },
+            {
+              "iteration": 4,
+              "ok": true,
+              "ms": 31.760375000885688,
+              "error": null,
+              "stdout_bytes": 186,
+              "approx_tokens": 47
+            },
+            {
+              "iteration": 5,
+              "ok": true,
+              "ms": 32.70245798921678,
+              "error": null,
+              "stdout_bytes": 186,
+              "approx_tokens": 47
+            }
+          ],
+          "notes": []
+        },
+        {
+          "workload_id": "W1_RECENT",
+          "tool_name": "photon_get_conversations",
+          "read_only": true,
+          "warmup_results": [
+            {
+              "iteration": 1007,
+              "ok": true,
+              "ms": 1.3256249949336052,
+              "error": null,
+              "stdout_bytes": 238,
+              "approx_tokens": 60
+            }
+          ],
+          "results": [
+            {
+              "iteration": 1,
+              "ok": true,
+              "ms": 0.41495800542179495,
+              "error": null,
+              "stdout_bytes": 238,
+              "approx_tokens": 60
+            },
+            {
+              "iteration": 2,
+              "ok": true,
+              "ms": 0.3436249971855432,
+              "error": null,
+              "stdout_bytes": 238,
+              "approx_tokens": 60
+            },
+            {
+              "iteration": 3,
+              "ok": true,
+              "ms": 0.4567080031847581,
+              "error": null,
+              "stdout_bytes": 238,
+              "approx_tokens": 60
+            },
+            {
+              "iteration": 4,
+              "ok": true,
+              "ms": 0.2851250028470531,
+              "error": null,
+              "stdout_bytes": 238,
+              "approx_tokens": 60
+            },
+            {
+              "iteration": 5,
+              "ok": true,
+              "ms": 0.3479169972706586,
+              "error": null,
+              "stdout_bytes": 238,
+              "approx_tokens": 60
+            }
+          ],
+          "notes": []
+        },
+        {
+          "workload_id": "W2_SEARCH",
+          "tool_name": null,
+          "read_only": true,
+          "warmup_results": [],
+          "results": [],
+          "notes": [
+            "unsupported workload (no tool mapping)"
+          ]
+        },
+        {
+          "workload_id": "W3_THREAD",
+          "tool_name": "photon_read_messages",
+          "read_only": true,
+          "warmup_results": [
+            {
+              "iteration": 1014,
+              "ok": true,
+              "ms": 0.13187500007916242,
+              "error": null,
+              "stdout_bytes": 186,
+              "approx_tokens": 47
+            }
+          ],
+          "results": [
+            {
+              "iteration": 1,
+              "ok": true,
+              "ms": 0.12591700942721218,
+              "error": null,
+              "stdout_bytes": 186,
+              "approx_tokens": 47
+            },
+            {
+              "iteration": 2,
+              "ok": true,
+              "ms": 0.11891699978150427,
+              "error": null,
+              "stdout_bytes": 186,
+              "approx_tokens": 47
+            },
+            {
+              "iteration": 3,
+              "ok": true,
+              "ms": 0.10945899703074247,
+              "error": null,
+              "stdout_bytes": 186,
+              "approx_tokens": 47
+            },
+            {
+              "iteration": 4,
+              "ok": true,
+              "ms": 0.1422909990651533,
+              "error": null,
+              "stdout_bytes": 186,
+              "approx_tokens": 47
+            },
+            {
+              "iteration": 5,
+              "ok": true,
+              "ms": 0.18625000666361302,
+              "error": null,
+              "stdout_bytes": 186,
+              "approx_tokens": 47
+            }
+          ],
+          "notes": []
+        }
+      ],
+      "notes": []
+    }
+  ]
+}

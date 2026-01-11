@@ -1,0 +1,21 @@
+table,server,run,node,workload,rank,tool,mean_ms,p95_ms
+workload_rankings,github MCP: imessage-mcp-improved (node stdio),full_node22_timeout30,v22.21.1,W0_UNREAD,1,get_unread_imessages,21.43385840463452,22.137791995191947
+workload_rankings,github MCP: TextFly/photon-imsg-mcp (node stdio),full_node22_timeout30,v22.21.1,W0_UNREAD,2,photon_read_messages,36.22607500292361,39.63008400751278
+workload_rankings,github MCP: sameelarif/imessage-mcp (node tsx),full_node22_timeout30,v22.21.1,W0_UNREAD,3,get-unread-messages,715.343983200728,757.4996250041295
+workload_rankings,github MCP: sameelarif/imessage-mcp (node tsx),full_node22_timeout30,v22.21.1,W1_RECENT,1,get-messages,0.28719160181935877,0.3589999978430569
+workload_rankings,github MCP: TextFly/photon-imsg-mcp (node stdio),full_node22_timeout30,v22.21.1,W1_RECENT,2,photon_get_conversations,0.3696418018080294,0.3698750078910962
+workload_rankings,github MCP: jonmmease/jons-mcp-imessage (python fastmcp stdio),full_node22_timeout30,v22.21.1,W1_RECENT,3,get_recent_messages,1.5648171975044534,1.5607090026605874
+workload_rankings,brew MCP: cardmagic/messages (messages --mcp),full_node22_timeout30,v22.21.1,W1_RECENT,4,recent_messages,2.1171415981370956,2.121083001838997
+workload_rankings,github MCP: wyattjoh/imessage-mcp (deno stdio),full_node22_timeout30,v22.21.1,W1_RECENT,5,get_recent_messages,10.205116603174247,10.865541000384837
+workload_rankings,github MCP: mattt/iMCP (swift stdio proxy),full_node22_timeout30,v22.21.1,W1_RECENT,6,messages_fetch,33.02049159538001,34.6322080004029
+workload_rankings,brew MCP: cardmagic/messages (messages --mcp),full_node22_timeout30,v22.21.1,W2_SEARCH,1,search_messages,1.46040839899797,1.5364999999292195
+workload_rankings,github MCP: wyattjoh/imessage-mcp (deno stdio),full_node22_timeout30,v22.21.1,W2_SEARCH,2,search_messages,30.057141598081216,33.06120799970813
+workload_rankings,github MCP: mattt/iMCP (swift stdio proxy),full_node22_timeout30,v22.21.1,W2_SEARCH,3,messages_fetch,30.264916803571396,34.937417003675364
+workload_rankings,github MCP: sameelarif/imessage-mcp (node tsx),full_node22_timeout30,v22.21.1,W2_SEARCH,4,search-messages,283.7405916012358,289.9123329989379
+workload_rankings,github MCP: TextFly/photon-imsg-mcp (node stdio),full_node22_timeout30,v22.21.1,W3_THREAD,1,photon_read_messages,0.13235019869171083,0.13054200098849833
+workload_rankings,github MCP: sameelarif/imessage-mcp (node tsx),full_node22_timeout30,v22.21.1,W3_THREAD,2,get-conversation,0.17177479749079794,0.1971660094568506
+workload_rankings,github MCP: wyattjoh/imessage-mcp (deno stdio),full_node22_timeout30,v22.21.1,W3_THREAD,3,get_messages_from_chat,0.2716415998293087,0.32379099866375327
+workload_rankings,github MCP: mcp-imessage (node stdio),full_node22_timeout30,v22.21.1,W3_THREAD,4,get-recent-chat-messages,0.5457083956571296,0.6065420020604506
+workload_rankings,brew MCP: cardmagic/messages (messages --mcp),full_node22_timeout30,v22.21.1,W3_THREAD,5,get_thread,1.2157167977420613,1.2497089919634163
+workload_rankings,github MCP: imessage-query-fastmcp-mcp-server (uv script),full_node22_timeout30,v22.21.1,W3_THREAD,6,get_chat_transcript,2.4058996001258492,2.593208002508618
+workload_rankings,github MCP: mattt/iMCP (swift stdio proxy),full_node22_timeout30,v22.21.1,W3_THREAD,7,messages_fetch,10.628616396570578,11.345041988533922

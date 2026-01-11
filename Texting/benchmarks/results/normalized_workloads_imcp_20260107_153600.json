@@ -1,0 +1,225 @@
+{
+  "generated_at": "2026-01-07 15:38:02",
+  "metadata": {
+    "mode": "session",
+    "iterations": 5,
+    "warmup": 1,
+    "phase_timeout_s": 30,
+    "call_timeout_s": 10,
+    "workloads": [
+      "W0_UNREAD",
+      "W1_RECENT",
+      "W2_SEARCH",
+      "W3_THREAD"
+    ]
+  },
+  "servers": [
+    {
+      "name": "github MCP: mattt/iMCP (swift stdio proxy)",
+      "command": "/Users/wolfgangschoenberger/LIFE-PLANNER/Texting/benchmarks/vendor/github_mcp/iMCP/.derived/Build/Products/Release/iMCP.app/Contents/MacOS/imcp-server",
+      "args": [],
+      "mode": "session",
+      "session_initialize": {
+        "ok": true,
+        "ms": 1024.7848330036504,
+        "error": null,
+        "stdout_bytes": 160,
+        "approx_tokens": 40
+      },
+      "session_list_tools": {
+        "ok": true,
+        "ms": 17.371999987517484,
+        "error": null,
+        "stdout_bytes": 5683,
+        "approx_tokens": 1421
+      },
+      "workloads": [
+        {
+          "workload_id": "W0_UNREAD",
+          "tool_name": null,
+          "read_only": true,
+          "warmup_results": [],
+          "results": [],
+          "notes": [
+            "unsupported workload (no tool mapping)"
+          ]
+        },
+        {
+          "workload_id": "W1_RECENT",
+          "tool_name": "messages_fetch",
+          "read_only": true,
+          "warmup_results": [
+            {
+              "iteration": 1001,
+              "ok": true,
+              "ms": 59.01508399983868,
+              "error": null,
+              "stdout_bytes": 421,
+              "approx_tokens": 106
+            }
+          ],
+          "results": [
+            {
+              "iteration": 1,
+              "ok": true,
+              "ms": 31.296790999476798,
+              "error": null,
+              "stdout_bytes": 421,
+              "approx_tokens": 106
+            },
+            {
+              "iteration": 2,
+              "ok": true,
+              "ms": 31.774041999597102,
+              "error": null,
+              "stdout_bytes": 421,
+              "approx_tokens": 106
+            },
+            {
+              "iteration": 3,
+              "ok": true,
+              "ms": 30.967457991209812,
+              "error": null,
+              "stdout_bytes": 421,
+              "approx_tokens": 106
+            },
+            {
+              "iteration": 4,
+              "ok": true,
+              "ms": 24.12858299794607,
+              "error": null,
+              "stdout_bytes": 421,
+              "approx_tokens": 106
+            },
+            {
+              "iteration": 5,
+              "ok": true,
+              "ms": 33.546708000358194,
+              "error": null,
+              "stdout_bytes": 421,
+              "approx_tokens": 106
+            }
+          ],
+          "notes": []
+        },
+        {
+          "workload_id": "W2_SEARCH",
+          "tool_name": "messages_fetch",
+          "read_only": true,
+          "warmup_results": [
+            {
+              "iteration": 1007,
+              "ok": true,
+              "ms": 35.15616701042745,
+              "error": null,
+              "stdout_bytes": 357,
+              "approx_tokens": 90
+            }
+          ],
+          "results": [
+            {
+              "iteration": 1,
+              "ok": true,
+              "ms": 32.69999999611173,
+              "error": null,
+              "stdout_bytes": 357,
+              "approx_tokens": 90
+            },
+            {
+              "iteration": 2,
+              "ok": true,
+              "ms": 30.77441599452868,
+              "error": null,
+              "stdout_bytes": 357,
+              "approx_tokens": 90
+            },
+            {
+              "iteration": 3,
+              "ok": true,
+              "ms": 32.136250010808,
+              "error": null,
+              "stdout_bytes": 357,
+              "approx_tokens": 90
+            },
+            {
+              "iteration": 4,
+              "ok": true,
+              "ms": 31.780916993739083,
+              "error": null,
+              "stdout_bytes": 357,
+              "approx_tokens": 90
+            },
+            {
+              "iteration": 5,
+              "ok": true,
+              "ms": 33.71175000211224,
+              "error": null,
+              "stdout_bytes": 357,
+              "approx_tokens": 90
+            }
+          ],
+          "notes": []
+        },
+        {
+          "workload_id": "W3_THREAD",
+          "tool_name": "messages_fetch",
+          "read_only": true,
+          "warmup_results": [
+            {
+              "iteration": 1014,
+              "ok": true,
+              "ms": 31.36254100536462,
+              "error": null,
+              "stdout_bytes": 421,
+              "approx_tokens": 106
+            }
+          ],
+          "results": [
+            {
+              "iteration": 1,
+              "ok": true,
+              "ms": 23.48833299765829,
+              "error": null,
+              "stdout_bytes": 421,
+              "approx_tokens": 106
+            },
+            {
+              "iteration": 2,
+              "ok": true,
+              "ms": 30.995749999419786,
+              "error": null,
+              "stdout_bytes": 421,
+              "approx_tokens": 106
+            },
+            {
+              "iteration": 3,
+              "ok": true,
+              "ms": 20.84699999250006,
+              "error": null,
+              "stdout_bytes": 421,
+              "approx_tokens": 106
+            },
+            {
+              "iteration": 4,
+              "ok": true,
+              "ms": 22.476834012195468,
+              "error": null,
+              "stdout_bytes": 421,
+              "approx_tokens": 106
+            },
+            {
+              "iteration": 5,
+              "ok": true,
+              "ms": 31.596500004525296,
+              "error": null,
+              "stdout_bytes": 421,
+              "approx_tokens": 106
+            }
+          ],
+          "notes": []
+        }
+      ],
+      "notes": []
+    }
+  ]
+}
