@@ -34,6 +34,9 @@ SOCKETS = {
     "gmail": Path.home() / ".fgp" / "services" / "gmail" / "daemon.sock",
     "calendar": Path.home() / ".fgp" / "services" / "calendar" / "daemon.sock",
     "github": Path.home() / ".fgp" / "services" / "github" / "daemon.sock",
+    "fly": Path.home() / ".fgp" / "services" / "fly" / "daemon.sock",
+    "neon": Path.home() / ".fgp" / "services" / "neon" / "daemon.sock",
+    "vercel": Path.home() / ".fgp" / "services" / "vercel" / "daemon.sock",
 }
 RESULTS_DIR = Path(__file__).parent / "results"
 
@@ -325,6 +328,55 @@ def main():
         results.extend(bench_method(github, "github.issues", {"repo": "wolfiesch/fgp-daemon", "limit": 5}, args.iterations, "issues"))
 
     # =========================================================================
+    # FLY BENCHMARKS
+    # =========================================================================
+    if "fly" in clients:
+        fly = clients["fly"]
+        print("\n[Fly.io Daemon]")
+
+        # user
+        print("  fly.user...")
+        results.extend(bench_method(fly, "fly.user", {}, args.iterations, "user"))
+
+        # apps
+        print("  fly.apps...")
+        results.extend(bench_method(fly, "fly.apps", {"limit": 10}, args.iterations, "apps"))
+
+    # =========================================================================
+    # NEON BENCHMARKS
+    # =========================================================================
+    if "neon" in clients:
+        neon = clients["neon"]
+        print("\n[Neon Daemon]")
+
+        # user
+        print("  neon.user...")
+        results.extend(bench_method(neon, "neon.user", {}, args.iterations, "user"))
+
+        # projects
+        print("  neon.projects...")
+        results.extend(bench_method(neon, "neon.projects", {"limit": 10}, args.iterations, "projects"))
+
+    # =========================================================================
+    # VERCEL BENCHMARKS
+    # =========================================================================
+    if "vercel" in clients:
+        vercel = clients["vercel"]
+        print("\n[Vercel Daemon]")
+
+        # user
+        print("  vercel.user...")
+        results.extend(bench_method(vercel, "vercel.user", {}, args.iterations, "user"))
+
+        # projects
+        print("  vercel.projects...")
+        results.extend(bench_method(vercel, "vercel.projects", {"limit": 10}, args.iterations, "projects"))
+
+        # deployments
+        print("  vercel.deployments...")
+        results.extend(bench_method(vercel, "vercel.deployments", {"limit": 5}, args.iterations, "deployments"))
+
+    # =========================================================================
     # COMPUTE SUMMARIES
     # =========================================================================
     summaries = []
@@ -344,7 +396,7 @@ def main():
     print("RESULTS")
     print("=" * 70)
 
-    for daemon in ["gmail", "calendar", "github"]:
+    for daemon in ["gmail", "calendar", "github", "fly", "neon", "vercel"]:
         print_daemon_table(summaries, daemon)
 
     # =========================================================================
@@ -376,7 +428,7 @@ def main():
     print("\n" + "=" * 70)
     print("QUICK SUMMARY")
     print("=" * 70)
-    for daemon in ["gmail", "calendar", "github"]:
+    for daemon in ["gmail", "calendar", "github", "fly", "neon", "vercel"]:
         daemon_summaries = [s for s in summaries if s.daemon == daemon and s.success_rate > 0]
         if daemon_summaries:
             avg = statistics.mean([s.mean_ms for s in daemon_summaries])
