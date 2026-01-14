@@ -1,0 +1,373 @@
+{
+  "generated_at": "2026-01-13T04:13:13.798894",
+  "iterations": 5,
+  "warmup": 2,
+  "results": [
+    {
+      "protocol": "mcp_stdio",
+      "operation": "gmail.unread_count",
+      "iteration": 0,
+      "latency_ms": 2524.7724170039874,
+      "success": true,
+      "payload_size": 19,
+      "error": null
+    },
+    {
+      "protocol": "mcp_stdio",
+      "operation": "gmail.unread_count",
+      "iteration": 1,
+      "latency_ms": 2366.1547920200974,
+      "success": true,
+      "payload_size": 19,
+      "error": null
+    },
+    {
+      "protocol": "mcp_stdio",
+      "operation": "gmail.unread_count",
+      "iteration": 2,
+      "latency_ms": 2407.7891249908134,
+      "success": true,
+      "payload_size": 19,
+      "error": null
+    },
+    {
+      "protocol": "mcp_stdio",
+      "operation": "gmail.unread_count",
+      "iteration": 3,
+      "latency_ms": 2430.0700000021607,
+      "success": true,
+      "payload_size": 19,
+      "error": null
+    },
+    {
+      "protocol": "mcp_stdio",
+      "operation": "gmail.unread_count",
+      "iteration": 4,
+      "latency_ms": 2378.173417004291,
+      "success": true,
+      "payload_size": 19,
+      "error": null
+    },
+    {
+      "protocol": "fgp",
+      "operation": "gmail.unread_count",
+      "iteration": 0,
+      "latency_ms": 1372.7078330121003,
+      "success": true,
+      "payload_size": 2652,
+      "error": null
+    },
+    {
+      "protocol": "fgp",
+      "operation": "gmail.unread_count",
+      "iteration": 1,
+      "latency_ms": 1374.097541993251,
+      "success": true,
+      "payload_size": 2651,
+      "error": null
+    },
+    {
+      "protocol": "fgp",
+      "operation": "gmail.unread_count",
+      "iteration": 2,
+      "latency_ms": 1399.8655419854913,
+      "success": true,
+      "payload_size": 2652,
+      "error": null
+    },
+    {
+      "protocol": "fgp",
+      "operation": "gmail.unread_count",
+      "iteration": 3,
+      "latency_ms": 1322.548916010419,
+      "success": true,
+      "payload_size": 2659,
+      "error": null
+    },
+    {
+      "protocol": "fgp",
+      "operation": "gmail.unread_count",
+      "iteration": 4,
+      "latency_ms": 1317.226249986561,
+      "success": true,
+      "payload_size": 2652,
+      "error": null
+    },
+    {
+      "protocol": "mcp_stdio",
+      "operation": "calendar.today",
+      "iteration": 0,
+      "latency_ms": 2401.381000003312,
+      "success": true,
+      "payload_size": 45,
+      "error": null
+    },
+    {
+      "protocol": "mcp_stdio",
+      "operation": "calendar.today",
+      "iteration": 1,
+      "latency_ms": 2352.773917024024,
+      "success": true,
+      "payload_size": 45,
+      "error": null
+    },
+    {
+      "protocol": "mcp_stdio",
+      "operation": "calendar.today",
+      "iteration": 2,
+      "latency_ms": 2321.6027499875054,
+      "success": true,
+      "payload_size": 45,
+      "error": null
+    },
+    {
+      "protocol": "mcp_stdio",
+      "operation": "calendar.today",
+      "iteration": 3,
+      "latency_ms": 2326.9530000106897,
+      "success": true,
+      "payload_size": 45,
+      "error": null
+    },
+    {
+      "protocol": "mcp_stdio",
+      "operation": "calendar.today",
+      "iteration": 4,
+      "latency_ms": 2329.2152089998126,
+      "success": true,
+      "payload_size": 45,
+      "error": null
+    },
+    {
+      "protocol": "fgp",
+      "operation": "calendar.today",
+      "iteration": 0,
+      "latency_ms": 153.257666999707,
+      "success": true,
+      "payload_size": 156,
+      "error": null
+    },
+    {
+      "protocol": "fgp",
+      "operation": "calendar.today",
+      "iteration": 1,
+      "latency_ms": 123.70962501154281,
+      "success": true,
+      "payload_size": 156,
+      "error": null
+    },
+    {
+      "protocol": "fgp",
+      "operation": "calendar.today",
+      "iteration": 2,
+      "latency_ms": 195.03104200703092,
+      "success": true,
+      "payload_size": 156,
+      "error": null
+    },
+    {
+      "protocol": "fgp",
+      "operation": "calendar.today",
+      "iteration": 3,
+      "latency_ms": 136.2579170090612,
+      "success": true,
+      "payload_size": 155,
+      "error": null
+    },
+    {
+      "protocol": "fgp",
+      "operation": "calendar.today",
+      "iteration": 4,
+      "latency_ms": 116.70554100419395,
+      "success": true,
+      "payload_size": 156,
+      "error": null
+    },
+    {
+      "protocol": "fgp",
+      "operation": "calendar.free_slots",
+      "iteration": 0,
+      "latency_ms": 150.18258299096487,
+      "success": true,
+      "payload_size": 1863,
+      "error": null
+    },
+    {
+      "protocol": "fgp",
+      "operation": "calendar.free_slots",
+      "iteration": 1,
+      "latency_ms": 142.14670800720342,
+      "success": true,
+      "payload_size": 1863,
+      "error": null
+    },
+    {
+      "protocol": "fgp",
+      "operation": "calendar.free_slots",
+      "iteration": 2,
+      "latency_ms": 145.05445898976177,
+      "success": true,
+      "payload_size": 1871,
+      "error": null
+    },
+    {
+      "protocol": "fgp",
+      "operation": "calendar.free_slots",
+      "iteration": 3,
+      "latency_ms": 127.93879199307412,
+      "success": true,
+      "payload_size": 1863,
+      "error": null
+    },
+    {
+      "protocol": "fgp",
+      "operation": "calendar.free_slots",
+      "iteration": 4,
+      "latency_ms": 154.60470801917836,
+      "success": true,
+      "payload_size": 1861,
+      "error": null
+    },
+    {
+      "protocol": "fgp",
+      "operation": "gmail.inbox",
+      "iteration": 0,
+      "latency_ms": 873.2079160108697,
+      "success": true,
+      "payload_size": 1787,
+      "error": null
+    },
+    {
+      "protocol": "fgp",
+      "operation": "gmail.inbox",
+      "iteration": 1,
+      "latency_ms": 717.9904160147998,
+      "success": true,
+      "payload_size": 1780,
+      "error": null
+    },
+    {
+      "protocol": "fgp",
+      "operation": "gmail.inbox",
+      "iteration": 2,
+      "latency_ms": 639.2722080054227,
+      "success": true,
+      "payload_size": 1779,
+      "error": null
+    },
+    {
+      "protocol": "fgp",
+      "operation": "gmail.inbox",
+      "iteration": 3,
+      "latency_ms": 637.5222499773372,
+      "success": true,
+      "payload_size": 1780,
+      "error": null
+    },
+    {
+      "protocol": "fgp",
+      "operation": "gmail.inbox",
+      "iteration": 4,
+      "latency_ms": 664.9607080034912,
+      "success": true,
+      "payload_size": 1787,
+      "error": null
+    }
+  ],
+  "summaries": [
+    {
+      "operation": "calendar.free_slots",
+      "protocol": "fgp",
+      "count": 5,
+      "success_rate": 100.0,
+      "mean_ms": 143.9854500000365,
+      "median_ms": 145.05445898976177,
+      "p95_ms": 153.72028301353566,
+      "p99_ms": 154.42782301804982,
+      "min_ms": 127.93879199307412,
+      "max_ms": 154.60470801917836,
+      "std_dev_ms": 10.163563397168986
+    },
+    {
+      "operation": "gmail.unread_count",
+      "protocol": "mcp_stdio",
+      "count": 5,
+      "success_rate": 100.0,
+      "mean_ms": 2421.39195020427,
+      "median_ms": 2407.7891249908134,
+      "p95_ms": 2505.831933603622,
+      "p99_ms": 2520.9843203239143,
+      "min_ms": 2366.1547920200974,
+      "max_ms": 2524.7724170039874,
+      "std_dev_ms": 62.981845745482445
+    },
+    {
+      "operation": "gmail.unread_count",
+      "protocol": "fgp",
+      "count": 5,
+      "success_rate": 100.0,
+      "mean_ms": 1357.2892165975645,
+      "median_ms": 1372.7078330121003,
+      "p95_ms": 1394.7119419870432,
+      "p99_ms": 1398.8348219858017,
+      "min_ms": 1317.226249986561,
+      "max_ms": 1399.8655419854913,
+      "std_dev_ms": 35.8640725407897
+    },
+    {
+      "operation": "calendar.today",
+      "protocol": "mcp_stdio",
+      "count": 5,
+      "success_rate": 100.0,
+      "mean_ms": 2346.3851752050687,
+      "median_ms": 2329.2152089998126,
+      "p95_ms": 2391.659583407454,
+      "p99_ms": 2399.4367166841403,
+      "min_ms": 2321.6027499875054,
+      "max_ms": 2401.381000003312,
+      "std_dev_ms": 32.984627249701894
+    },
+    {
+      "operation": "calendar.today",
+      "protocol": "fgp",
+      "count": 5,
+      "success_rate": 100.0,
+      "mean_ms": 144.99235840630718,
+      "median_ms": 136.2579170090612,
+      "p95_ms": 186.67636700556614,
+      "p99_ms": 193.36010700673796,
+      "min_ms": 116.70554100419395,
+      "max_ms": 195.03104200703092,
+      "std_dev_ms": 31.231292114850557
+    },
+    {
+      "operation": "gmail.inbox",
+      "protocol": "fgp",
+      "count": 5,
+      "success_rate": 100.0,
+      "mean_ms": 706.5906996023841,
+      "median_ms": 664.9607080034912,
+      "p95_ms": 842.1644160116557,
+      "p99_ms": 866.9992160110269,
+      "min_ms": 637.5222499773372,
+      "max_ms": 873.2079160108697,
+      "std_dev_ms": 98.64904533625416
+    }
+  ],
+  "comparison": {
+    "gmail.unread_count": {
+      "mcp_stdio_mean_ms": 2421.39,
+      "fgp_mean_ms": 1357.29,
+      "speedup": 1.8,
+      "mcp_p95_ms": 2505.83,
+      "fgp_p95_ms": 1394.71
+    },
+    "calendar.today": {
+      "mcp_stdio_mean_ms": 2346.39,
+      "fgp_mean_ms": 144.99,
+      "speedup": 16.2,
+      "mcp_p95_ms": 2391.66,
+      "fgp_p95_ms": 186.68
+    }
+  }
+}

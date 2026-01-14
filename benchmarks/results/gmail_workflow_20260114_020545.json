@@ -1,0 +1,187 @@
+{
+  "generated_at": "2026-01-14T02:05:45.528294",
+  "iterations": 3,
+  "results": [
+    {
+      "tool": "fgp_gmail",
+      "method": "api",
+      "iteration": 1,
+      "steps": [
+        {
+          "step_name": "list_inbox",
+          "latency_ms": 1250.0858749845065,
+          "success": true,
+          "payload_size": 3473,
+          "error": null
+        },
+        {
+          "step_name": "read_email",
+          "latency_ms": 0,
+          "success": false,
+          "payload_size": 0,
+          "error": "FGP call failed: Python dispatch failed for method: gmail.read"
+        }
+      ],
+      "total_latency_ms": 1251.2613749713637,
+      "step_count": 2,
+      "success": false,
+      "error": null
+    },
+    {
+      "tool": "fgp_gmail",
+      "method": "api",
+      "iteration": 2,
+      "steps": [
+        {
+          "step_name": "list_inbox",
+          "latency_ms": 1226.6900419490412,
+          "success": true,
+          "payload_size": 3473,
+          "error": null
+        },
+        {
+          "step_name": "read_email",
+          "latency_ms": 0,
+          "success": false,
+          "payload_size": 0,
+          "error": "FGP call failed: Python dispatch failed for method: gmail.read"
+        }
+      ],
+      "total_latency_ms": 1226.9718329771422,
+      "step_count": 2,
+      "success": false,
+      "error": null
+    },
+    {
+      "tool": "fgp_gmail",
+      "method": "api",
+      "iteration": 3,
+      "steps": [
+        {
+          "step_name": "list_inbox",
+          "latency_ms": 1187.100667040795,
+          "success": true,
+          "payload_size": 3473,
+          "error": null
+        },
+        {
+          "step_name": "read_email",
+          "latency_ms": 0,
+          "success": false,
+          "payload_size": 0,
+          "error": "FGP call failed: Python dispatch failed for method: gmail.read"
+        }
+      ],
+      "total_latency_ms": 1187.4309169943444,
+      "step_count": 2,
+      "success": false,
+      "error": null
+    },
+    {
+      "tool": "fgp_browser",
+      "method": "browser",
+      "iteration": 1,
+      "steps": [
+        {
+          "step_name": "list_inbox_equiv",
+          "latency_ms": 122.55812500370666,
+          "success": true,
+          "payload_size": 0,
+          "error": null
+        },
+        {
+          "step_name": "read_email_equiv",
+          "latency_ms": 195.22433303063735,
+          "success": true,
+          "payload_size": 334027,
+          "error": null
+        }
+      ],
+      "total_latency_ms": 626.9175409688614,
+      "step_count": 2,
+      "success": true,
+      "error": null
+    },
+    {
+      "tool": "fgp_browser",
+      "method": "browser",
+      "iteration": 2,
+      "steps": [
+        {
+          "step_name": "list_inbox_equiv",
+          "latency_ms": 34.28824996808544,
+          "success": true,
+          "payload_size": 0,
+          "error": null
+        },
+        {
+          "step_name": "read_email_equiv",
+          "latency_ms": 183.0748749198392,
+          "success": true,
+          "payload_size": 334027,
+          "error": null
+        }
+      ],
+      "total_latency_ms": 525.1771659823135,
+      "step_count": 2,
+      "success": true,
+      "error": null
+    },
+    {
+      "tool": "fgp_browser",
+      "method": "browser",
+      "iteration": 3,
+      "steps": [
+        {
+          "step_name": "list_inbox_equiv",
+          "latency_ms": 32.627625041641295,
+          "success": true,
+          "payload_size": 0,
+          "error": null
+        },
+        {
+          "step_name": "read_email_equiv",
+          "latency_ms": 177.8420410118997,
+          "success": true,
+          "payload_size": 334027,
+          "error": null
+        }
+      ],
+      "total_latency_ms": 517.6877500489354,
+      "step_count": 2,
+      "success": true,
+      "error": null
+    }
+  ],
+  "summaries": [
+    {
+      "tool": "fgp_gmail",
+      "method": "api",
+      "iterations": 3,
+      "step_count": 0,
+      "success_rate": 0.0,
+      "mean_total_ms": 0.0,
+      "median_total_ms": 0.0,
+      "min_total_ms": 0.0,
+      "max_total_ms": 0.0,
+      "mean_per_step_ms": 0.0,
+      "step_breakdown": {}
+    },
+    {
+      "tool": "fgp_browser",
+      "method": "browser",
+      "iterations": 3,
+      "step_count": 2,
+      "success_rate": 1.0,
+      "mean_total_ms": 556.5941523333701,
+      "median_total_ms": 525.1771659823135,
+      "min_total_ms": 517.6877500489354,
+      "max_total_ms": 626.9175409688614,
+      "mean_per_step_ms": 278.29707616668503,
+      "step_breakdown": {
+        "list_inbox_equiv": 63.1580000044778,
+        "read_email_equiv": 185.38041632079208
+      }
+    }
+  ]
+}

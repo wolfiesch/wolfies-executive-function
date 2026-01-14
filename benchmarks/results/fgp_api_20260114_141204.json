@@ -1,0 +1,476 @@
+{
+  "generated_at": "2026-01-14T14:12:04.694227",
+  "iterations": 3,
+  "results": [
+    {
+      "daemon": "gmail",
+      "method": "inbox",
+      "iteration": 1,
+      "latency_ms": 1092.364208016079,
+      "success": true,
+      "payload_size": 2358,
+      "error": null
+    },
+    {
+      "daemon": "gmail",
+      "method": "inbox",
+      "iteration": 2,
+      "latency_ms": 742.8005840047263,
+      "success": true,
+      "payload_size": 2358,
+      "error": null
+    },
+    {
+      "daemon": "gmail",
+      "method": "inbox",
+      "iteration": 3,
+      "latency_ms": 808.8581250049174,
+      "success": true,
+      "payload_size": 2358,
+      "error": null
+    },
+    {
+      "daemon": "gmail",
+      "method": "search",
+      "iteration": 1,
+      "latency_ms": 874.1689579910599,
+      "success": true,
+      "payload_size": 2377,
+      "error": null
+    },
+    {
+      "daemon": "gmail",
+      "method": "search",
+      "iteration": 2,
+      "latency_ms": 679.6542500378564,
+      "success": true,
+      "payload_size": 2377,
+      "error": null
+    },
+    {
+      "daemon": "gmail",
+      "method": "search",
+      "iteration": 3,
+      "latency_ms": 690.4794579604641,
+      "success": true,
+      "payload_size": 2377,
+      "error": null
+    },
+    {
+      "daemon": "gmail",
+      "method": "thread",
+      "iteration": 1,
+      "latency_ms": 116.70320900157094,
+      "success": true,
+      "payload_size": 795,
+      "error": null
+    },
+    {
+      "daemon": "gmail",
+      "method": "thread",
+      "iteration": 2,
+      "latency_ms": 104.67087500728667,
+      "success": true,
+      "payload_size": 795,
+      "error": null
+    },
+    {
+      "daemon": "gmail",
+      "method": "thread",
+      "iteration": 3,
+      "latency_ms": 126.29662500694394,
+      "success": true,
+      "payload_size": 795,
+      "error": null
+    },
+    {
+      "daemon": "gmail",
+      "method": "unread",
+      "iteration": 1,
+      "latency_ms": 1046.7832499998622,
+      "success": true,
+      "payload_size": 1677,
+      "error": null
+    },
+    {
+      "daemon": "gmail",
+      "method": "unread",
+      "iteration": 2,
+      "latency_ms": 993.2742079836316,
+      "success": true,
+      "payload_size": 1677,
+      "error": null
+    },
+    {
+      "daemon": "gmail",
+      "method": "unread",
+      "iteration": 3,
+      "latency_ms": 916.1147080012597,
+      "success": true,
+      "payload_size": 1677,
+      "error": null
+    },
+    {
+      "daemon": "calendar",
+      "method": "today",
+      "iteration": 1,
+      "latency_ms": 612.1382089913823,
+      "success": true,
+      "payload_size": 48,
+      "error": null
+    },
+    {
+      "daemon": "calendar",
+      "method": "today",
+      "iteration": 2,
+      "latency_ms": 145.23562497925013,
+      "success": true,
+      "payload_size": 48,
+      "error": null
+    },
+    {
+      "daemon": "calendar",
+      "method": "today",
+      "iteration": 3,
+      "latency_ms": 186.59674999071285,
+      "success": true,
+      "payload_size": 48,
+      "error": null
+    },
+    {
+      "daemon": "calendar",
+      "method": "upcoming",
+      "iteration": 1,
+      "latency_ms": 228.8559169974178,
+      "success": true,
+      "payload_size": 444,
+      "error": null
+    },
+    {
+      "daemon": "calendar",
+      "method": "upcoming",
+      "iteration": 2,
+      "latency_ms": 223.2860410003923,
+      "success": true,
+      "payload_size": 444,
+      "error": null
+    },
+    {
+      "daemon": "calendar",
+      "method": "upcoming",
+      "iteration": 3,
+      "latency_ms": 272.1754580270499,
+      "success": true,
+      "payload_size": 444,
+      "error": null
+    },
+    {
+      "daemon": "calendar",
+      "method": "search",
+      "iteration": 1,
+      "latency_ms": 136.45995798287913,
+      "success": true,
+      "payload_size": 46,
+      "error": null
+    },
+    {
+      "daemon": "calendar",
+      "method": "search",
+      "iteration": 2,
+      "latency_ms": 206.0612910427153,
+      "success": true,
+      "payload_size": 46,
+      "error": null
+    },
+    {
+      "daemon": "calendar",
+      "method": "search",
+      "iteration": 3,
+      "latency_ms": 189.45983302546665,
+      "success": true,
+      "payload_size": 46,
+      "error": null
+    },
+    {
+      "daemon": "calendar",
+      "method": "free_slots",
+      "iteration": 1,
+      "latency_ms": 191.64450000971556,
+      "success": true,
+      "payload_size": 65,
+      "error": null
+    },
+    {
+      "daemon": "calendar",
+      "method": "free_slots",
+      "iteration": 2,
+      "latency_ms": 257.78345903381705,
+      "success": true,
+      "payload_size": 65,
+      "error": null
+    },
+    {
+      "daemon": "calendar",
+      "method": "free_slots",
+      "iteration": 3,
+      "latency_ms": 144.8416250059381,
+      "success": true,
+      "payload_size": 65,
+      "error": null
+    },
+    {
+      "daemon": "github",
+      "method": "user",
+      "iteration": 1,
+      "latency_ms": 575.3555410192348,
+      "success": true,
+      "payload_size": 199,
+      "error": null
+    },
+    {
+      "daemon": "github",
+      "method": "user",
+      "iteration": 2,
+      "latency_ms": 372.23595898831263,
+      "success": true,
+      "payload_size": 199,
+      "error": null
+    },
+    {
+      "daemon": "github",
+      "method": "user",
+      "iteration": 3,
+      "latency_ms": 306.9145830231719,
+      "success": true,
+      "payload_size": 199,
+      "error": null
+    },
+    {
+      "daemon": "github",
+      "method": "repos",
+      "iteration": 1,
+      "latency_ms": 566.4866660372354,
+      "success": true,
+      "payload_size": 2821,
+      "error": null
+    },
+    {
+      "daemon": "github",
+      "method": "repos",
+      "iteration": 2,
+      "latency_ms": 476.4112500124611,
+      "success": true,
+      "payload_size": 2821,
+      "error": null
+    },
+    {
+      "daemon": "github",
+      "method": "repos",
+      "iteration": 3,
+      "latency_ms": 664.829625049606,
+      "success": true,
+      "payload_size": 2821,
+      "error": null
+    },
+    {
+      "daemon": "github",
+      "method": "notifications",
+      "iteration": 1,
+      "latency_ms": 515.4277909896336,
+      "success": true,
+      "payload_size": 9769,
+      "error": null
+    },
+    {
+      "daemon": "github",
+      "method": "notifications",
+      "iteration": 2,
+      "latency_ms": 535.404667025432,
+      "success": true,
+      "payload_size": 9769,
+      "error": null
+    },
+    {
+      "daemon": "github",
+      "method": "notifications",
+      "iteration": 3,
+      "latency_ms": 511.8067499715835,
+      "success": true,
+      "payload_size": 9769,
+      "error": null
+    },
+    {
+      "daemon": "github",
+      "method": "issues",
+      "iteration": 1,
+      "latency_ms": 459.8381249816157,
+      "success": true,
+      "payload_size": 75,
+      "error": null
+    },
+    {
+      "daemon": "github",
+      "method": "issues",
+      "iteration": 2,
+      "latency_ms": 366.52170901652426,
+      "success": true,
+      "payload_size": 75,
+      "error": null
+    },
+    {
+      "daemon": "github",
+      "method": "issues",
+      "iteration": 3,
+      "latency_ms": 342.6910419948399,
+      "success": true,
+      "payload_size": 75,
+      "error": null
+    }
+  ],
+  "summaries": [
+    {
+      "daemon": "gmail",
+      "method": "inbox",
+      "iterations": 3,
+      "success_rate": 1.0,
+      "mean_ms": 881.3409723419076,
+      "median_ms": 808.8581250049174,
+      "min_ms": 742.8005840047263,
+      "max_ms": 1092.364208016079,
+      "std_dev_ms": 185.71215408945545,
+      "mean_payload": 2358
+    },
+    {
+      "daemon": "gmail",
+      "method": "search",
+      "iterations": 3,
+      "success_rate": 1.0,
+      "mean_ms": 748.1008886631267,
+      "median_ms": 690.4794579604641,
+      "min_ms": 679.6542500378564,
+      "max_ms": 874.1689579910599,
+      "std_dev_ms": 109.31223563579847,
+      "mean_payload": 2377
+    },
+    {
+      "daemon": "gmail",
+      "method": "thread",
+      "iterations": 3,
+      "success_rate": 1.0,
+      "mean_ms": 115.89023633860052,
+      "median_ms": 116.70320900157094,
+      "min_ms": 104.67087500728667,
+      "max_ms": 126.29662500694394,
+      "std_dev_ms": 10.835772200215915,
+      "mean_payload": 795
+    },
+    {
+      "daemon": "gmail",
+      "method": "unread",
+      "iterations": 3,
+      "success_rate": 1.0,
+      "mean_ms": 985.3907219949178,
+      "median_ms": 993.2742079836316,
+      "min_ms": 916.1147080012597,
+      "max_ms": 1046.7832499998622,
+      "std_dev_ms": 65.69002192502921,
+      "mean_payload": 1677
+    },
+    {
+      "daemon": "calendar",
+      "method": "today",
+      "iterations": 3,
+      "success_rate": 1.0,
+      "mean_ms": 314.6568613204484,
+      "median_ms": 186.59674999071285,
+      "min_ms": 145.23562497925013,
+      "max_ms": 612.1382089913823,
+      "std_dev_ms": 258.45512149044316,
+      "mean_payload": 48
+    },
+    {
+      "daemon": "calendar",
+      "method": "upcoming",
+      "iterations": 3,
+      "success_rate": 1.0,
+      "mean_ms": 241.43913867495334,
+      "median_ms": 228.8559169974178,
+      "min_ms": 223.2860410003923,
+      "max_ms": 272.1754580270499,
+      "std_dev_ms": 26.763723118077383,
+      "mean_payload": 444
+    },
+    {
+      "daemon": "calendar",
+      "method": "search",
+      "iterations": 3,
+      "success_rate": 1.0,
+      "mean_ms": 177.3270273503537,
+      "median_ms": 189.45983302546665,
+      "min_ms": 136.45995798287913,
+      "max_ms": 206.0612910427153,
+      "std_dev_ms": 36.35230558147723,
+      "mean_payload": 46
+    },
+    {
+      "daemon": "calendar",
+      "method": "free_slots",
+      "iterations": 3,
+      "success_rate": 1.0,
+      "mean_ms": 198.08986134982356,
+      "median_ms": 191.64450000971556,
+      "min_ms": 144.8416250059381,
+      "max_ms": 257.78345903381705,
+      "std_dev_ms": 56.746114232594444,
+      "mean_payload": 65
+    },
+    {
+      "daemon": "github",
+      "method": "user",
+      "iterations": 3,
+      "success_rate": 1.0,
+      "mean_ms": 418.1686943435731,
+      "median_ms": 372.23595898831263,
+      "min_ms": 306.9145830231719,
+      "max_ms": 575.3555410192348,
+      "std_dev_ms": 139.99106798425856,
+      "mean_payload": 199
+    },
+    {
+      "daemon": "github",
+      "method": "repos",
+      "iterations": 3,
+      "success_rate": 1.0,
+      "mean_ms": 569.2425136997675,
+      "median_ms": 566.4866660372354,
+      "min_ms": 476.4112500124611,
+      "max_ms": 664.829625049606,
+      "std_dev_ms": 94.23941338507926,
+      "mean_payload": 2821
+    },
+    {
+      "daemon": "github",
+      "method": "notifications",
+      "iterations": 3,
+      "success_rate": 1.0,
+      "mean_ms": 520.8797359955497,
+      "median_ms": 515.4277909896336,
+      "min_ms": 511.8067499715835,
+      "max_ms": 535.404667025432,
+      "std_dev_ms": 12.708587670576472,
+      "mean_payload": 9769
+    },
+    {
+      "daemon": "github",
+      "method": "issues",
+      "iterations": 3,
+      "success_rate": 1.0,
+      "mean_ms": 389.68362533099327,
+      "median_ms": 366.52170901652426,
+      "min_ms": 342.6910419948399,
+      "max_ms": 459.8381249816157,
+      "std_dev_ms": 61.91296745106378,
+      "mean_payload": 75
+    }
+  ]
+}

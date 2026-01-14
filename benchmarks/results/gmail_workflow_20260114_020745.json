@@ -1,0 +1,281 @@
+{
+  "generated_at": "2026-01-14T02:07:45.122655",
+  "iterations": 3,
+  "results": [
+    {
+      "tool": "fgp_gmail",
+      "method": "api",
+      "iteration": 1,
+      "steps": [
+        {
+          "step_name": "list_inbox",
+          "latency_ms": 1236.5654589957558,
+          "success": true,
+          "payload_size": 3473,
+          "error": null
+        },
+        {
+          "step_name": "read_email",
+          "latency_ms": 118.74079098924994,
+          "success": true,
+          "payload_size": 492,
+          "error": null
+        }
+      ],
+      "total_latency_ms": 1355.5231249774806,
+      "step_count": 2,
+      "success": true,
+      "error": null
+    },
+    {
+      "tool": "fgp_gmail",
+      "method": "api",
+      "iteration": 2,
+      "steps": [
+        {
+          "step_name": "list_inbox",
+          "latency_ms": 1254.0172499720939,
+          "success": true,
+          "payload_size": 3473,
+          "error": null
+        },
+        {
+          "step_name": "read_email",
+          "latency_ms": 102.7383339824155,
+          "success": true,
+          "payload_size": 492,
+          "error": null
+        }
+      ],
+      "total_latency_ms": 1356.8784169619903,
+      "step_count": 2,
+      "success": true,
+      "error": null
+    },
+    {
+      "tool": "fgp_gmail",
+      "method": "api",
+      "iteration": 3,
+      "steps": [
+        {
+          "step_name": "list_inbox",
+          "latency_ms": 1185.7731659547426,
+          "success": true,
+          "payload_size": 3473,
+          "error": null
+        },
+        {
+          "step_name": "read_email",
+          "latency_ms": 111.56799999298528,
+          "success": true,
+          "payload_size": 492,
+          "error": null
+        }
+      ],
+      "total_latency_ms": 1297.4543329910375,
+      "step_count": 2,
+      "success": true,
+      "error": null
+    },
+    {
+      "tool": "fgp_browser",
+      "method": "browser",
+      "iteration": 1,
+      "steps": [
+        {
+          "step_name": "list_inbox_equiv",
+          "latency_ms": 113.2753340061754,
+          "success": true,
+          "payload_size": 0,
+          "error": null
+        },
+        {
+          "step_name": "read_email_equiv",
+          "latency_ms": 179.0027089882642,
+          "success": true,
+          "payload_size": 336302,
+          "error": null
+        }
+      ],
+      "total_latency_ms": 601.6367499832995,
+      "step_count": 2,
+      "success": true,
+      "error": null
+    },
+    {
+      "tool": "fgp_browser",
+      "method": "browser",
+      "iteration": 2,
+      "steps": [
+        {
+          "step_name": "list_inbox_equiv",
+          "latency_ms": 37.17658296227455,
+          "success": true,
+          "payload_size": 0,
+          "error": null
+        },
+        {
+          "step_name": "read_email_equiv",
+          "latency_ms": 179.48954203166068,
+          "success": true,
+          "payload_size": 336302,
+          "error": null
+        }
+      ],
+      "total_latency_ms": 524.3892080034129,
+      "step_count": 2,
+      "success": true,
+      "error": null
+    },
+    {
+      "tool": "fgp_browser",
+      "method": "browser",
+      "iteration": 3,
+      "steps": [
+        {
+          "step_name": "list_inbox_equiv",
+          "latency_ms": 40.13408301398158,
+          "success": true,
+          "payload_size": 0,
+          "error": null
+        },
+        {
+          "step_name": "read_email_equiv",
+          "latency_ms": 175.2668329863809,
+          "success": true,
+          "payload_size": 336302,
+          "error": null
+        }
+      ],
+      "total_latency_ms": 523.1232920195907,
+      "step_count": 2,
+      "success": true,
+      "error": null
+    },
+    {
+      "tool": "agent_browser",
+      "method": "browser",
+      "iteration": 1,
+      "steps": [
+        {
+          "step_name": "list_inbox_equiv",
+          "latency_ms": 122.69304197980091,
+          "success": true,
+          "payload_size": 0,
+          "error": null
+        },
+        {
+          "step_name": "read_email_equiv",
+          "latency_ms": 305.0854160101153,
+          "success": true,
+          "payload_size": 704619,
+          "error": null
+        }
+      ],
+      "total_latency_ms": 728.705459041521,
+      "step_count": 2,
+      "success": true,
+      "error": null
+    },
+    {
+      "tool": "agent_browser",
+      "method": "browser",
+      "iteration": 2,
+      "steps": [
+        {
+          "step_name": "list_inbox_equiv",
+          "latency_ms": 53.78183297580108,
+          "success": true,
+          "payload_size": 0,
+          "error": null
+        },
+        {
+          "step_name": "read_email_equiv",
+          "latency_ms": 290.1736669591628,
+          "success": true,
+          "payload_size": 704619,
+          "error": null
+        }
+      ],
+      "total_latency_ms": 649.2590000270866,
+      "step_count": 2,
+      "success": true,
+      "error": null
+    },
+    {
+      "tool": "agent_browser",
+      "method": "browser",
+      "iteration": 3,
+      "steps": [
+        {
+          "step_name": "list_inbox_equiv",
+          "latency_ms": 53.196124965325,
+          "success": true,
+          "payload_size": 0,
+          "error": null
+        },
+        {
+          "step_name": "read_email_equiv",
+          "latency_ms": 298.31345804268494,
+          "success": true,
+          "payload_size": 704619,
+          "error": null
+        }
+      ],
+      "total_latency_ms": 656.7759170429781,
+      "step_count": 2,
+      "success": true,
+      "error": null
+    }
+  ],
+  "summaries": [
+    {
+      "tool": "fgp_gmail",
+      "method": "api",
+      "iterations": 3,
+      "step_count": 2,
+      "success_rate": 1.0,
+      "mean_total_ms": 1336.6186249768361,
+      "median_total_ms": 1355.5231249774806,
+      "min_total_ms": 1297.4543329910375,
+      "max_total_ms": 1356.8784169619903,
+      "mean_per_step_ms": 668.3093124884181,
+      "step_breakdown": {
+        "list_inbox": 1225.4519583075307,
+        "read_email": 111.01570832155024
+      }
+    },
+    {
+      "tool": "fgp_browser",
+      "method": "browser",
+      "iterations": 3,
+      "step_count": 2,
+      "success_rate": 1.0,
+      "mean_total_ms": 549.7164166687677,
+      "median_total_ms": 524.3892080034129,
+      "min_total_ms": 523.1232920195907,
+      "max_total_ms": 601.6367499832995,
+      "mean_per_step_ms": 274.85820833438385,
+      "step_breakdown": {
+        "list_inbox_equiv": 63.52866666081051,
+        "read_email_equiv": 177.91969466876859
+      }
+    },
+    {
+      "tool": "agent_browser",
+      "method": "browser",
+      "iterations": 3,
+      "step_count": 2,
+      "success_rate": 1.0,
+      "mean_total_ms": 678.2467920371952,
+      "median_total_ms": 656.7759170429781,
+      "min_total_ms": 649.2590000270866,
+      "max_total_ms": 728.705459041521,
+      "mean_per_step_ms": 339.1233960185976,
+      "step_breakdown": {
+        "list_inbox_equiv": 76.55699997364233,
+        "read_email_equiv": 297.8575136706543
+      }
+    }
+  ]
+}

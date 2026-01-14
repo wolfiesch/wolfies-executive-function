@@ -1,0 +1,296 @@
+{
+  "generated_at": "2026-01-13T23:19:24.454132",
+  "iterations": 5,
+  "warmup": 1,
+  "tools_tested": [
+    "playwright_mcp"
+  ],
+  "test_urls": {
+    "simple": "https://example.com",
+    "quotes": "https://quotes.toscrape.com/",
+    "form": "https://the-internet.herokuapp.com/login"
+  },
+  "results": [
+    {
+      "tool": "playwright_mcp",
+      "operation": "navigate",
+      "test_case": "navigation_simple",
+      "iteration": 0,
+      "latency_ms": 2358.0321249901317,
+      "success": true,
+      "is_cold_start": false,
+      "payload_size": 539,
+      "token_estimate": 146,
+      "extracted_data": null,
+      "error": null
+    },
+    {
+      "tool": "playwright_mcp",
+      "operation": "navigate",
+      "test_case": "navigation_simple",
+      "iteration": 1,
+      "latency_ms": 2420.862916042097,
+      "success": true,
+      "is_cold_start": false,
+      "payload_size": 539,
+      "token_estimate": 146,
+      "extracted_data": null,
+      "error": null
+    },
+    {
+      "tool": "playwright_mcp",
+      "operation": "navigate",
+      "test_case": "navigation_simple",
+      "iteration": 2,
+      "latency_ms": 2299.9377920059487,
+      "success": true,
+      "is_cold_start": false,
+      "payload_size": 539,
+      "token_estimate": 146,
+      "extracted_data": null,
+      "error": null
+    },
+    {
+      "tool": "playwright_mcp",
+      "operation": "navigate",
+      "test_case": "navigation_simple",
+      "iteration": 3,
+      "latency_ms": 2364.129083987791,
+      "success": true,
+      "is_cold_start": false,
+      "payload_size": 539,
+      "token_estimate": 146,
+      "extracted_data": null,
+      "error": null
+    },
+    {
+      "tool": "playwright_mcp",
+      "operation": "navigate",
+      "test_case": "navigation_simple",
+      "iteration": 4,
+      "latency_ms": 2263.571083021816,
+      "success": true,
+      "is_cold_start": false,
+      "payload_size": 539,
+      "token_estimate": 146,
+      "extracted_data": null,
+      "error": null
+    },
+    {
+      "tool": "playwright_mcp",
+      "operation": "extract",
+      "test_case": "extraction_quotes",
+      "iteration": 0,
+      "latency_ms": 2529.140125028789,
+      "success": true,
+      "is_cold_start": false,
+      "payload_size": 124,
+      "token_estimate": 35,
+      "extracted_data": null,
+      "error": null
+    },
+    {
+      "tool": "playwright_mcp",
+      "operation": "extract",
+      "test_case": "extraction_quotes",
+      "iteration": 1,
+      "latency_ms": 2612.0253750123084,
+      "success": true,
+      "is_cold_start": false,
+      "payload_size": 124,
+      "token_estimate": 35,
+      "extracted_data": null,
+      "error": null
+    },
+    {
+      "tool": "playwright_mcp",
+      "operation": "extract",
+      "test_case": "extraction_quotes",
+      "iteration": 2,
+      "latency_ms": 2346.8752500484698,
+      "success": true,
+      "is_cold_start": false,
+      "payload_size": 124,
+      "token_estimate": 35,
+      "extracted_data": null,
+      "error": null
+    },
+    {
+      "tool": "playwright_mcp",
+      "operation": "extract",
+      "test_case": "extraction_quotes",
+      "iteration": 3,
+      "latency_ms": 2326.5596670098603,
+      "success": true,
+      "is_cold_start": false,
+      "payload_size": 124,
+      "token_estimate": 35,
+      "extracted_data": null,
+      "error": null
+    },
+    {
+      "tool": "playwright_mcp",
+      "operation": "extract",
+      "test_case": "extraction_quotes",
+      "iteration": 4,
+      "latency_ms": 2383.94570897799,
+      "success": true,
+      "is_cold_start": false,
+      "payload_size": 124,
+      "token_estimate": 35,
+      "extracted_data": null,
+      "error": null
+    },
+    {
+      "tool": "playwright_mcp",
+      "operation": "screenshot",
+      "test_case": "screenshot_simple",
+      "iteration": 0,
+      "latency_ms": 1554.0692909853533,
+      "success": true,
+      "is_cold_start": false,
+      "payload_size": 89,
+      "token_estimate": 27,
+      "extracted_data": null,
+      "error": null
+    },
+    {
+      "tool": "playwright_mcp",
+      "operation": "screenshot",
+      "test_case": "screenshot_simple",
+      "iteration": 1,
+      "latency_ms": 1663.4254160453565,
+      "success": true,
+      "is_cold_start": false,
+      "payload_size": 89,
+      "token_estimate": 27,
+      "extracted_data": null,
+      "error": null
+    },
+    {
+      "tool": "playwright_mcp",
+      "operation": "screenshot",
+      "test_case": "screenshot_simple",
+      "iteration": 2,
+      "latency_ms": 1622.7586250170134,
+      "success": true,
+      "is_cold_start": false,
+      "payload_size": 89,
+      "token_estimate": 27,
+      "extracted_data": null,
+      "error": null
+    },
+    {
+      "tool": "playwright_mcp",
+      "operation": "screenshot",
+      "test_case": "screenshot_simple",
+      "iteration": 3,
+      "latency_ms": 1628.82687500678,
+      "success": true,
+      "is_cold_start": false,
+      "payload_size": 89,
+      "token_estimate": 27,
+      "extracted_data": null,
+      "error": null
+    },
+    {
+      "tool": "playwright_mcp",
+      "operation": "screenshot",
+      "test_case": "screenshot_simple",
+      "iteration": 4,
+      "latency_ms": 1601.6818339703605,
+      "success": true,
+      "is_cold_start": false,
+      "payload_size": 89,
+      "token_estimate": 27,
+      "extracted_data": null,
+      "error": null
+    }
+  ],
+  "summaries": [
+    {
+      "tool": "playwright_mcp",
+      "operation": "navigate",
+      "test_case": "navigation_simple",
+      "count": 5,
+      "success_rate": 1.0,
+      "cold_start_mean_ms": 0,
+      "warm_mean_ms": 2341.306600009557,
+      "mean_ms": 2341.306600009557,
+      "median_ms": 2358.0321249901317,
+      "p95_ms": 2409.5161496312357,
+      "p99_ms": 2418.5935627599247,
+      "min_ms": 2263.571083021816,
+      "max_ms": 2420.862916042097,
+      "std_dev_ms": 61.000010775557946,
+      "avg_tokens": 146,
+      "avg_response_size": 539
+    },
+    {
+      "tool": "playwright_mcp",
+      "operation": "extract",
+      "test_case": "extraction_quotes",
+      "count": 5,
+      "success_rate": 1.0,
+      "cold_start_mean_ms": 0,
+      "warm_mean_ms": 2439.7092252154835,
+      "mean_ms": 2439.7092252154835,
+      "median_ms": 2383.94570897799,
+      "p95_ms": 2595.4483250156045,
+      "p99_ms": 2608.7099650129676,
+      "min_ms": 2326.5596670098603,
+      "max_ms": 2612.0253750123084,
+      "std_dev_ms": 124.720969099853,
+      "avg_tokens": 35,
+      "avg_response_size": 124
+    },
+    {
+      "tool": "playwright_mcp",
+      "operation": "screenshot",
+      "test_case": "screenshot_simple",
+      "count": 5,
+      "success_rate": 1.0,
+      "cold_start_mean_ms": 0,
+      "warm_mean_ms": 1614.1524082049727,
+      "mean_ms": 1614.1524082049727,
+      "median_ms": 1622.7586250170134,
+      "p95_ms": 1656.5057078376412,
+      "p99_ms": 1662.0414744038135,
+      "min_ms": 1554.0692909853533,
+      "max_ms": 1663.4254160453565,
+      "std_dev_ms": 40.257708708827515,
+      "avg_tokens": 27,
+      "avg_response_size": 89
+    }
+  ],
+  "comparison": {
+    "navigate_navigation_simple": {
+      "playwright_mcp": {
+        "mean_ms": 2341.3,
+        "warm_ms": 2341.3,
+        "tokens": 146,
+        "success_rate": 100.0
+      }
+    },
+    "extract_extraction_quotes": {
+      "playwright_mcp": {
+        "mean_ms": 2439.7,
+        "warm_ms": 2439.7,
+        "tokens": 35,
+        "success_rate": 100.0
+      }
+    },
+    "screenshot_screenshot_simple": {
+      "playwright_mcp": {
+        "mean_ms": 1614.2,
+        "warm_ms": 1614.2,
+        "tokens": 27,
+        "success_rate": 100.0
+      }
+    }
+  },
+  "notes": [
+    "claude-in-chrome MCP can only be tested within Claude Code session",
+    "browser-gateway requires installation of the skill daemon"
+  ]
+}

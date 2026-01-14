@@ -1,0 +1,350 @@
+{
+  "generated_at": "2026-01-14T01:42:09.931231",
+  "iterations": 3,
+  "workflow": "HN: navigate -> snapshot -> click comments -> snapshot",
+  "results": [
+    {
+      "tool": "fgp",
+      "iteration": 1,
+      "steps": [
+        {
+          "step_name": "navigate_hn",
+          "latency_ms": 196.20024994947016,
+          "success": true,
+          "payload_size": 0,
+          "error": null
+        },
+        {
+          "step_name": "snapshot_list",
+          "latency_ms": 21.048332971986383,
+          "success": true,
+          "payload_size": 29818,
+          "error": null
+        },
+        {
+          "step_name": "click_comments",
+          "latency_ms": 0,
+          "success": false,
+          "payload_size": 0,
+          "error": "FGP call failed: Element not found"
+        }
+      ],
+      "total_latency_ms": 219.2052910104394,
+      "step_count": 3,
+      "success": false,
+      "error": null
+    },
+    {
+      "tool": "fgp",
+      "iteration": 2,
+      "steps": [
+        {
+          "step_name": "navigate_hn",
+          "latency_ms": 34.232541045639664,
+          "success": true,
+          "payload_size": 0,
+          "error": null
+        },
+        {
+          "step_name": "snapshot_list",
+          "latency_ms": 16.525582992471755,
+          "success": true,
+          "payload_size": 29818,
+          "error": null
+        },
+        {
+          "step_name": "click_comments",
+          "latency_ms": 0,
+          "success": false,
+          "payload_size": 0,
+          "error": "FGP call failed: Element not found"
+        }
+      ],
+      "total_latency_ms": 52.147582988254726,
+      "step_count": 3,
+      "success": false,
+      "error": null
+    },
+    {
+      "tool": "fgp",
+      "iteration": 3,
+      "steps": [
+        {
+          "step_name": "navigate_hn",
+          "latency_ms": 56.88724998617545,
+          "success": true,
+          "payload_size": 0,
+          "error": null
+        },
+        {
+          "step_name": "snapshot_list",
+          "latency_ms": 17.377709038555622,
+          "success": true,
+          "payload_size": 29818,
+          "error": null
+        },
+        {
+          "step_name": "click_comments",
+          "latency_ms": 0,
+          "success": false,
+          "payload_size": 0,
+          "error": "FGP call failed: Element not found"
+        }
+      ],
+      "total_latency_ms": 75.40579099440947,
+      "step_count": 3,
+      "success": false,
+      "error": null
+    },
+    {
+      "tool": "agent_browser",
+      "iteration": 1,
+      "steps": [
+        {
+          "step_name": "navigate_hn",
+          "latency_ms": 145.0124160037376,
+          "success": true,
+          "payload_size": 0,
+          "error": null
+        },
+        {
+          "step_name": "snapshot_list",
+          "latency_ms": 53.170832979958504,
+          "success": true,
+          "payload_size": 45235,
+          "error": null
+        },
+        {
+          "step_name": "click_comments",
+          "latency_ms": 10030.955167021602,
+          "success": false,
+          "payload_size": 0,
+          "error": "\u001b[31m\u2717\u001b[0m Element \".itemlist tr:nth-child(2) td.subtext a[href^='item']\" not found or not visible. Run 'snapshot' to see current page elements.\n"
+        }
+      ],
+      "total_latency_ms": 10231.538916006684,
+      "step_count": 3,
+      "success": false,
+      "error": null
+    },
+    {
+      "tool": "agent_browser",
+      "iteration": 2,
+      "steps": [
+        {
+          "step_name": "navigate_hn",
+          "latency_ms": 68.80108296172693,
+          "success": true,
+          "payload_size": 0,
+          "error": null
+        },
+        {
+          "step_name": "snapshot_list",
+          "latency_ms": 58.967582997865975,
+          "success": true,
+          "payload_size": 45235,
+          "error": null
+        },
+        {
+          "step_name": "click_comments",
+          "latency_ms": 10030.08358302759,
+          "success": false,
+          "payload_size": 0,
+          "error": "\u001b[31m\u2717\u001b[0m Element \".itemlist tr:nth-child(2) td.subtext a[href^='item']\" not found or not visible. Run 'snapshot' to see current page elements.\n"
+        }
+      ],
+      "total_latency_ms": 10158.286582969595,
+      "step_count": 3,
+      "success": false,
+      "error": null
+    },
+    {
+      "tool": "agent_browser",
+      "iteration": 3,
+      "steps": [
+        {
+          "step_name": "navigate_hn",
+          "latency_ms": 89.17250001104549,
+          "success": true,
+          "payload_size": 0,
+          "error": null
+        },
+        {
+          "step_name": "snapshot_list",
+          "latency_ms": 73.07800004491583,
+          "success": true,
+          "payload_size": 45235,
+          "error": null
+        },
+        {
+          "step_name": "click_comments",
+          "latency_ms": 10034.839708998334,
+          "success": false,
+          "payload_size": 0,
+          "error": "\u001b[31m\u2717\u001b[0m Element \".itemlist tr:nth-child(2) td.subtext a[href^='item']\" not found or not visible. Run 'snapshot' to see current page elements.\n"
+        }
+      ],
+      "total_latency_ms": 10198.965666000731,
+      "step_count": 3,
+      "success": false,
+      "error": null
+    },
+    {
+      "tool": "playwright_mcp",
+      "iteration": 1,
+      "steps": [
+        {
+          "step_name": "navigate_hn",
+          "latency_ms": 4053.4862499916926,
+          "success": true,
+          "payload_size": 0,
+          "error": null
+        },
+        {
+          "step_name": "snapshot_list",
+          "latency_ms": 3291.6061670402996,
+          "success": true,
+          "payload_size": 84,
+          "error": null
+        },
+        {
+          "step_name": "click_comments",
+          "latency_ms": 2131.0541669954546,
+          "success": true,
+          "payload_size": 0,
+          "error": null
+        },
+        {
+          "step_name": "snapshot_comments",
+          "latency_ms": 2950.044416997116,
+          "success": true,
+          "payload_size": 84,
+          "error": null
+        }
+      ],
+      "total_latency_ms": 12731.711375003215,
+      "step_count": 4,
+      "success": true,
+      "error": null
+    },
+    {
+      "tool": "playwright_mcp",
+      "iteration": 2,
+      "steps": [
+        {
+          "step_name": "navigate_hn",
+          "latency_ms": 3256.9212919916026,
+          "success": true,
+          "payload_size": 0,
+          "error": null
+        },
+        {
+          "step_name": "snapshot_list",
+          "latency_ms": 4016.2321670213714,
+          "success": true,
+          "payload_size": 84,
+          "error": null
+        },
+        {
+          "step_name": "click_comments",
+          "latency_ms": 2415.8768340130337,
+          "success": true,
+          "payload_size": 0,
+          "error": null
+        },
+        {
+          "step_name": "snapshot_comments",
+          "latency_ms": 3235.5470420443453,
+          "success": true,
+          "payload_size": 84,
+          "error": null
+        }
+      ],
+      "total_latency_ms": 13226.65374999633,
+      "step_count": 4,
+      "success": true,
+      "error": null
+    },
+    {
+      "tool": "playwright_mcp",
+      "iteration": 3,
+      "steps": [
+        {
+          "step_name": "navigate_hn",
+          "latency_ms": 3284.264500020072,
+          "success": true,
+          "payload_size": 0,
+          "error": null
+        },
+        {
+          "step_name": "snapshot_list",
+          "latency_ms": 3317.3379579675384,
+          "success": true,
+          "payload_size": 84,
+          "error": null
+        },
+        {
+          "step_name": "click_comments",
+          "latency_ms": 2240.6319160363637,
+          "success": true,
+          "payload_size": 0,
+          "error": null
+        },
+        {
+          "step_name": "snapshot_comments",
+          "latency_ms": 3328.2619579695165,
+          "success": true,
+          "payload_size": 84,
+          "error": null
+        }
+      ],
+      "total_latency_ms": 12476.011790975463,
+      "step_count": 4,
+      "success": true,
+      "error": null
+    }
+  ],
+  "summaries": [
+    {
+      "tool": "fgp",
+      "iterations": 3,
+      "step_count": 0,
+      "success_rate": 0.0,
+      "mean_total_ms": 0.0,
+      "median_total_ms": 0.0,
+      "min_total_ms": 0.0,
+      "max_total_ms": 0.0,
+      "mean_per_step_ms": 0.0,
+      "step_breakdown": {}
+    },
+    {
+      "tool": "agent_browser",
+      "iterations": 3,
+      "step_count": 0,
+      "success_rate": 0.0,
+      "mean_total_ms": 0.0,
+      "median_total_ms": 0.0,
+      "min_total_ms": 0.0,
+      "max_total_ms": 0.0,
+      "mean_per_step_ms": 0.0,
+      "step_breakdown": {}
+    },
+    {
+      "tool": "playwright_mcp",
+      "iterations": 3,
+      "step_count": 4,
+      "success_rate": 1.0,
+      "mean_total_ms": 12811.45897199167,
+      "median_total_ms": 12731.711375003215,
+      "min_total_ms": 12476.011790975463,
+      "max_total_ms": 13226.65374999633,
+      "mean_per_step_ms": 3202.8647429979173,
+      "step_breakdown": {
+        "navigate_hn": 3531.5573473344557,
+        "snapshot_list": 3541.725430676403,
+        "click_comments": 2262.520972348284,
+        "snapshot_comments": 3171.2844723369926
+      }
+    }
+  ]
+}

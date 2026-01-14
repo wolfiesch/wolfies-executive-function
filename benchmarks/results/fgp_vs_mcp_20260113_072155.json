@@ -1,0 +1,627 @@
+{
+  "generated_at": "2026-01-13T07:21:55.748424",
+  "iterations": 5,
+  "warmup": 2,
+  "results": [
+    {
+      "protocol": "mcp_stdio",
+      "operation": "gmail.unread_count",
+      "iteration": 0,
+      "latency_ms": 2412.723042012658,
+      "success": true,
+      "payload_size": 19,
+      "error": null
+    },
+    {
+      "protocol": "mcp_stdio",
+      "operation": "gmail.unread_count",
+      "iteration": 1,
+      "latency_ms": 2371.1105410184246,
+      "success": true,
+      "payload_size": 19,
+      "error": null
+    },
+    {
+      "protocol": "mcp_stdio",
+      "operation": "gmail.unread_count",
+      "iteration": 2,
+      "latency_ms": 2530.068374995608,
+      "success": true,
+      "payload_size": 19,
+      "error": null
+    },
+    {
+      "protocol": "mcp_stdio",
+      "operation": "gmail.unread_count",
+      "iteration": 3,
+      "latency_ms": 2363.6130829981994,
+      "success": true,
+      "payload_size": 19,
+      "error": null
+    },
+    {
+      "protocol": "mcp_stdio",
+      "operation": "gmail.unread_count",
+      "iteration": 4,
+      "latency_ms": 2374.6484169969335,
+      "success": true,
+      "payload_size": 19,
+      "error": null
+    },
+    {
+      "protocol": "fgp",
+      "operation": "gmail.unread_count",
+      "iteration": 0,
+      "latency_ms": 1298.868541023694,
+      "success": true,
+      "payload_size": 2493,
+      "error": null
+    },
+    {
+      "protocol": "fgp",
+      "operation": "gmail.unread_count",
+      "iteration": 1,
+      "latency_ms": 1337.2582499869168,
+      "success": true,
+      "payload_size": 2493,
+      "error": null
+    },
+    {
+      "protocol": "fgp",
+      "operation": "gmail.unread_count",
+      "iteration": 2,
+      "latency_ms": 1419.3089169857558,
+      "success": true,
+      "payload_size": 2500,
+      "error": null
+    },
+    {
+      "protocol": "fgp",
+      "operation": "gmail.unread_count",
+      "iteration": 3,
+      "latency_ms": 1323.5420409764629,
+      "success": true,
+      "payload_size": 2500,
+      "error": null
+    },
+    {
+      "protocol": "fgp",
+      "operation": "gmail.unread_count",
+      "iteration": 4,
+      "latency_ms": 1378.1025000207592,
+      "success": true,
+      "payload_size": 2500,
+      "error": null
+    },
+    {
+      "protocol": "mcp_stdio",
+      "operation": "calendar.today",
+      "iteration": 0,
+      "latency_ms": 2334.129208000377,
+      "success": true,
+      "payload_size": 45,
+      "error": null
+    },
+    {
+      "protocol": "mcp_stdio",
+      "operation": "calendar.today",
+      "iteration": 1,
+      "latency_ms": 2374.8147090082057,
+      "success": true,
+      "payload_size": 45,
+      "error": null
+    },
+    {
+      "protocol": "mcp_stdio",
+      "operation": "calendar.today",
+      "iteration": 2,
+      "latency_ms": 2520.440457999939,
+      "success": true,
+      "payload_size": 45,
+      "error": null
+    },
+    {
+      "protocol": "mcp_stdio",
+      "operation": "calendar.today",
+      "iteration": 3,
+      "latency_ms": 2370.571084000403,
+      "success": true,
+      "payload_size": 45,
+      "error": null
+    },
+    {
+      "protocol": "mcp_stdio",
+      "operation": "calendar.today",
+      "iteration": 4,
+      "latency_ms": 2326.846749987453,
+      "success": true,
+      "payload_size": 45,
+      "error": null
+    },
+    {
+      "protocol": "fgp",
+      "operation": "calendar.today",
+      "iteration": 0,
+      "latency_ms": 148.11083298991434,
+      "success": true,
+      "payload_size": 156,
+      "error": null
+    },
+    {
+      "protocol": "fgp",
+      "operation": "calendar.today",
+      "iteration": 1,
+      "latency_ms": 187.45808300445788,
+      "success": true,
+      "payload_size": 164,
+      "error": null
+    },
+    {
+      "protocol": "fgp",
+      "operation": "calendar.today",
+      "iteration": 2,
+      "latency_ms": 137.39083299878985,
+      "success": true,
+      "payload_size": 156,
+      "error": null
+    },
+    {
+      "protocol": "fgp",
+      "operation": "calendar.today",
+      "iteration": 3,
+      "latency_ms": 131.026541988831,
+      "success": true,
+      "payload_size": 164,
+      "error": null
+    },
+    {
+      "protocol": "fgp",
+      "operation": "calendar.today",
+      "iteration": 4,
+      "latency_ms": 150.66304098581895,
+      "success": true,
+      "payload_size": 153,
+      "error": null
+    },
+    {
+      "protocol": "fgp",
+      "operation": "calendar.free_slots",
+      "iteration": 0,
+      "latency_ms": 127.13920799433254,
+      "success": true,
+      "payload_size": 1681,
+      "error": null
+    },
+    {
+      "protocol": "fgp",
+      "operation": "calendar.free_slots",
+      "iteration": 1,
+      "latency_ms": 204.84820799902081,
+      "success": true,
+      "payload_size": 1681,
+      "error": null
+    },
+    {
+      "protocol": "fgp",
+      "operation": "calendar.free_slots",
+      "iteration": 2,
+      "latency_ms": 166.3413339992985,
+      "success": true,
+      "payload_size": 1681,
+      "error": null
+    },
+    {
+      "protocol": "fgp",
+      "operation": "calendar.free_slots",
+      "iteration": 3,
+      "latency_ms": 147.44562498526648,
+      "success": true,
+      "payload_size": 1689,
+      "error": null
+    },
+    {
+      "protocol": "fgp",
+      "operation": "calendar.free_slots",
+      "iteration": 4,
+      "latency_ms": 146.17499997257255,
+      "success": true,
+      "payload_size": 1681,
+      "error": null
+    },
+    {
+      "protocol": "fgp",
+      "operation": "gmail.inbox",
+      "iteration": 0,
+      "latency_ms": 650.6047500006389,
+      "success": true,
+      "payload_size": 1815,
+      "error": null
+    },
+    {
+      "protocol": "fgp",
+      "operation": "gmail.inbox",
+      "iteration": 1,
+      "latency_ms": 689.0120409952942,
+      "success": true,
+      "payload_size": 1808,
+      "error": null
+    },
+    {
+      "protocol": "fgp",
+      "operation": "gmail.inbox",
+      "iteration": 2,
+      "latency_ms": 759.1064169828314,
+      "success": true,
+      "payload_size": 1808,
+      "error": null
+    },
+    {
+      "protocol": "fgp",
+      "operation": "gmail.inbox",
+      "iteration": 3,
+      "latency_ms": 681.8175830121618,
+      "success": true,
+      "payload_size": 1808,
+      "error": null
+    },
+    {
+      "protocol": "fgp",
+      "operation": "gmail.inbox",
+      "iteration": 4,
+      "latency_ms": 672.3413329746109,
+      "success": true,
+      "payload_size": 1808,
+      "error": null
+    },
+    {
+      "protocol": "vercel_cli",
+      "operation": "vercel.projects",
+      "iteration": 0,
+      "latency_ms": 754.9231660086662,
+      "success": true,
+      "payload_size": 4994,
+      "error": null
+    },
+    {
+      "protocol": "vercel_cli",
+      "operation": "vercel.projects",
+      "iteration": 1,
+      "latency_ms": 612.6974999788217,
+      "success": true,
+      "payload_size": 4994,
+      "error": null
+    },
+    {
+      "protocol": "vercel_cli",
+      "operation": "vercel.projects",
+      "iteration": 2,
+      "latency_ms": 1801.2701669940725,
+      "success": true,
+      "payload_size": 4991,
+      "error": null
+    },
+    {
+      "protocol": "vercel_cli",
+      "operation": "vercel.projects",
+      "iteration": 3,
+      "latency_ms": 636.4976250042673,
+      "success": true,
+      "payload_size": 4994,
+      "error": null
+    },
+    {
+      "protocol": "vercel_cli",
+      "operation": "vercel.projects",
+      "iteration": 4,
+      "latency_ms": 537.6434579957277,
+      "success": true,
+      "payload_size": 4994,
+      "error": null
+    },
+    {
+      "protocol": "fgp",
+      "operation": "vercel.projects",
+      "iteration": 0,
+      "latency_ms": 148.39766701334156,
+      "success": true,
+      "payload_size": 10528,
+      "error": null
+    },
+    {
+      "protocol": "fgp",
+      "operation": "vercel.projects",
+      "iteration": 1,
+      "latency_ms": 153.54045800631866,
+      "success": true,
+      "payload_size": 10528,
+      "error": null
+    },
+    {
+      "protocol": "fgp",
+      "operation": "vercel.projects",
+      "iteration": 2,
+      "latency_ms": 137.66383301117457,
+      "success": true,
+      "payload_size": 10528,
+      "error": null
+    },
+    {
+      "protocol": "fgp",
+      "operation": "vercel.projects",
+      "iteration": 3,
+      "latency_ms": 178.96966700209305,
+      "success": true,
+      "payload_size": 10528,
+      "error": null
+    },
+    {
+      "protocol": "fgp",
+      "operation": "vercel.projects",
+      "iteration": 4,
+      "latency_ms": 136.94887500605546,
+      "success": true,
+      "payload_size": 10528,
+      "error": null
+    },
+    {
+      "protocol": "vercel_cli",
+      "operation": "vercel.deployments",
+      "iteration": 0,
+      "latency_ms": 28344.36749998713,
+      "success": true,
+      "payload_size": 1360,
+      "error": null
+    },
+    {
+      "protocol": "vercel_cli",
+      "operation": "vercel.deployments",
+      "iteration": 1,
+      "latency_ms": 5310.193791985512,
+      "success": true,
+      "payload_size": 1360,
+      "error": null
+    },
+    {
+      "protocol": "vercel_cli",
+      "operation": "vercel.deployments",
+      "iteration": 2,
+      "latency_ms": 27933.04312499822,
+      "success": true,
+      "payload_size": 1360,
+      "error": null
+    },
+    {
+      "protocol": "vercel_cli",
+      "operation": "vercel.deployments",
+      "iteration": 3,
+      "latency_ms": 615.276458003791,
+      "success": true,
+      "payload_size": 1360,
+      "error": null
+    },
+    {
+      "protocol": "vercel_cli",
+      "operation": "vercel.deployments",
+      "iteration": 4,
+      "latency_ms": 576.9566670060158,
+      "success": true,
+      "payload_size": 1360,
+      "error": null
+    },
+    {
+      "protocol": "fgp",
+      "operation": "vercel.deployments",
+      "iteration": 0,
+      "latency_ms": 52.04474998754449,
+      "success": true,
+      "payload_size": 32555,
+      "error": null
+    },
+    {
+      "protocol": "fgp",
+      "operation": "vercel.deployments",
+      "iteration": 1,
+      "latency_ms": 44.8878750030417,
+      "success": true,
+      "payload_size": 32546,
+      "error": null
+    },
+    {
+      "protocol": "fgp",
+      "operation": "vercel.deployments",
+      "iteration": 2,
+      "latency_ms": 69.35408301069401,
+      "success": true,
+      "payload_size": 32546,
+      "error": null
+    },
+    {
+      "protocol": "fgp",
+      "operation": "vercel.deployments",
+      "iteration": 3,
+      "latency_ms": 78.66858298075385,
+      "success": true,
+      "payload_size": 32544,
+      "error": null
+    },
+    {
+      "protocol": "fgp",
+      "operation": "vercel.deployments",
+      "iteration": 4,
+      "latency_ms": 29.00116698583588,
+      "success": true,
+      "payload_size": 32546,
+      "error": null
+    }
+  ],
+  "summaries": [
+    {
+      "operation": "gmail.unread_count",
+      "protocol": "fgp",
+      "count": 5,
+      "success_rate": 100.0,
+      "mean_ms": 1351.4160497987177,
+      "median_ms": 1337.2582499869168,
+      "p95_ms": 1411.0676335927565,
+      "p99_ms": 1417.660660307156,
+      "min_ms": 1298.868541023694,
+      "max_ms": 1419.3089169857558,
+      "std_dev_ms": 47.59267901191751
+    },
+    {
+      "operation": "gmail.unread_count",
+      "protocol": "mcp_stdio",
+      "count": 5,
+      "success_rate": 100.0,
+      "mean_ms": 2410.4326916043647,
+      "median_ms": 2374.6484169969335,
+      "p95_ms": 2506.599308399018,
+      "p99_ms": 2525.37456167629,
+      "min_ms": 2363.6130829981994,
+      "max_ms": 2530.068374995608,
+      "std_dev_ms": 69.52834679359286
+    },
+    {
+      "operation": "vercel.projects",
+      "protocol": "vercel_cli",
+      "count": 5,
+      "success_rate": 100.0,
+      "mean_ms": 868.6063831963111,
+      "median_ms": 636.4976250042673,
+      "p95_ms": 1592.000766796991,
+      "p99_ms": 1759.4162869546562,
+      "min_ms": 537.6434579957277,
+      "max_ms": 1801.2701669940725,
+      "std_dev_ms": 527.1825816248326
+    },
+    {
+      "operation": "vercel.projects",
+      "protocol": "fgp",
+      "count": 5,
+      "success_rate": 100.0,
+      "mean_ms": 151.10410000779666,
+      "median_ms": 148.39766701334156,
+      "p95_ms": 173.88382520293817,
+      "p99_ms": 177.95249864226207,
+      "min_ms": 136.94887500605546,
+      "max_ms": 178.96966700209305,
+      "std_dev_ms": 17.10819697947789
+    },
+    {
+      "operation": "gmail.inbox",
+      "protocol": "fgp",
+      "count": 5,
+      "success_rate": 100.0,
+      "mean_ms": 690.5764247931074,
+      "median_ms": 681.8175830121618,
+      "p95_ms": 745.087541785324,
+      "p99_ms": 756.30264194333,
+      "min_ms": 650.6047500006389,
+      "max_ms": 759.1064169828314,
+      "std_dev_ms": 40.944406806296506
+    },
+    {
+      "operation": "calendar.free_slots",
+      "protocol": "fgp",
+      "count": 5,
+      "success_rate": 100.0,
+      "mean_ms": 158.38987499009818,
+      "median_ms": 147.44562498526648,
+      "p95_ms": 197.14683319907635,
+      "p99_ms": 203.30793303903192,
+      "min_ms": 127.13920799433254,
+      "max_ms": 204.84820799902081,
+      "std_dev_ms": 29.441409502116276
+    },
+    {
+      "operation": "calendar.today",
+      "protocol": "fgp",
+      "count": 5,
+      "success_rate": 100.0,
+      "mean_ms": 150.9298663935624,
+      "median_ms": 148.11083298991434,
+      "p95_ms": 180.0990746007301,
+      "p99_ms": 185.98628132371232,
+      "min_ms": 131.026541988831,
+      "max_ms": 187.45808300445788,
+      "std_dev_ms": 21.91903568548548
+    },
+    {
+      "operation": "calendar.today",
+      "protocol": "mcp_stdio",
+      "count": 5,
+      "success_rate": 100.0,
+      "mean_ms": 2385.3604417992756,
+      "median_ms": 2370.571084000403,
+      "p95_ms": 2491.3153082015924,
+      "p99_ms": 2514.6154280402698,
+      "min_ms": 2326.846749987453,
+      "max_ms": 2520.440457999939,
+      "std_dev_ms": 78.46183755014535
+    },
+    {
+      "operation": "vercel.deployments",
+      "protocol": "vercel_cli",
+      "count": 5,
+      "success_rate": 100.0,
+      "mean_ms": 12555.967508396134,
+      "median_ms": 5310.193791985512,
+      "p95_ms": 28262.102624989348,
+      "p99_ms": 28327.914524987573,
+      "min_ms": 576.9566670060158,
+      "max_ms": 28344.36749998713,
+      "std_dev_ms": 14355.365452172036
+    },
+    {
+      "operation": "vercel.deployments",
+      "protocol": "fgp",
+      "count": 5,
+      "success_rate": 100.0,
+      "mean_ms": 54.79129159357399,
+      "median_ms": 52.04474998754449,
+      "p95_ms": 76.80568298674189,
+      "p99_ms": 78.29600298195146,
+      "min_ms": 29.00116698583588,
+      "max_ms": 78.66858298075385,
+      "std_dev_ms": 19.703753551600126
+    }
+  ],
+  "comparison": {
+    "gmail.unread_count": {
+      "baseline_protocol": "mcp_stdio",
+      "baseline_mean_ms": 2410.43,
+      "fgp_mean_ms": 1351.42,
+      "speedup": 1.8,
+      "baseline_p95_ms": 2506.6,
+      "fgp_p95_ms": 1411.07,
+      "mcp_stdio_mean_ms": 2410.43,
+      "mcp_p95_ms": 2506.6
+    },
+    "vercel.projects": {
+      "baseline_protocol": "vercel_cli",
+      "baseline_mean_ms": 868.61,
+      "fgp_mean_ms": 151.1,
+      "speedup": 5.7,
+      "baseline_p95_ms": 1592.0,
+      "fgp_p95_ms": 173.88
+    },
+    "calendar.today": {
+      "baseline_protocol": "mcp_stdio",
+      "baseline_mean_ms": 2385.36,
+      "fgp_mean_ms": 150.93,
+      "speedup": 15.8,
+      "baseline_p95_ms": 2491.32,
+      "fgp_p95_ms": 180.1,
+      "mcp_stdio_mean_ms": 2385.36,
+      "mcp_p95_ms": 2491.32
+    },
+    "vercel.deployments": {
+      "baseline_protocol": "vercel_cli",
+      "baseline_mean_ms": 12555.97,
+      "fgp_mean_ms": 54.79,
+      "speedup": 229.2,
+      "baseline_p95_ms": 28262.1,
+      "fgp_p95_ms": 76.81
+    }
+  }
+}

@@ -1,0 +1,427 @@
+{
+  "generated_at": "2026-01-13T04:43:48.530026",
+  "iterations": 2,
+  "warmup": 1,
+  "results": [
+    {
+      "protocol": "mcp_stdio",
+      "operation": "gmail.unread_count",
+      "iteration": 0,
+      "latency_ms": 2695.1388329907786,
+      "success": true,
+      "payload_size": 19,
+      "error": null
+    },
+    {
+      "protocol": "mcp_stdio",
+      "operation": "gmail.unread_count",
+      "iteration": 1,
+      "latency_ms": 2637.437958008377,
+      "success": true,
+      "payload_size": 19,
+      "error": null
+    },
+    {
+      "protocol": "fgp",
+      "operation": "gmail.unread_count",
+      "iteration": 0,
+      "latency_ms": 1414.6632079791743,
+      "success": true,
+      "payload_size": 2650,
+      "error": null
+    },
+    {
+      "protocol": "fgp",
+      "operation": "gmail.unread_count",
+      "iteration": 1,
+      "latency_ms": 1373.3773340063635,
+      "success": true,
+      "payload_size": 2652,
+      "error": null
+    },
+    {
+      "protocol": "mcp_stdio",
+      "operation": "calendar.today",
+      "iteration": 0,
+      "latency_ms": 2986.9197919906583,
+      "success": true,
+      "payload_size": 45,
+      "error": null
+    },
+    {
+      "protocol": "mcp_stdio",
+      "operation": "calendar.today",
+      "iteration": 1,
+      "latency_ms": 2860.2486250165384,
+      "success": true,
+      "payload_size": 45,
+      "error": null
+    },
+    {
+      "protocol": "fgp",
+      "operation": "calendar.today",
+      "iteration": 0,
+      "latency_ms": 136.66916600777768,
+      "success": true,
+      "payload_size": 164,
+      "error": null
+    },
+    {
+      "protocol": "fgp",
+      "operation": "calendar.today",
+      "iteration": 1,
+      "latency_ms": 140.68337497883476,
+      "success": true,
+      "payload_size": 156,
+      "error": null
+    },
+    {
+      "protocol": "fgp",
+      "operation": "calendar.free_slots",
+      "iteration": 0,
+      "latency_ms": 156.16120799677446,
+      "success": true,
+      "payload_size": 1843,
+      "error": null
+    },
+    {
+      "protocol": "fgp",
+      "operation": "calendar.free_slots",
+      "iteration": 1,
+      "latency_ms": 165.67474999465048,
+      "success": true,
+      "payload_size": 1843,
+      "error": null
+    },
+    {
+      "protocol": "fgp",
+      "operation": "gmail.inbox",
+      "iteration": 0,
+      "latency_ms": 662.8236249962356,
+      "success": true,
+      "payload_size": 1780,
+      "error": null
+    },
+    {
+      "protocol": "fgp",
+      "operation": "gmail.inbox",
+      "iteration": 1,
+      "latency_ms": 703.4172499843407,
+      "success": true,
+      "payload_size": 1780,
+      "error": null
+    },
+    {
+      "protocol": "gh_cli",
+      "operation": "github.repos",
+      "iteration": 0,
+      "latency_ms": 467.5771249749232,
+      "success": true,
+      "payload_size": 386,
+      "error": null
+    },
+    {
+      "protocol": "gh_cli",
+      "operation": "github.repos",
+      "iteration": 1,
+      "latency_ms": 525.631083000917,
+      "success": true,
+      "payload_size": 386,
+      "error": null
+    },
+    {
+      "protocol": "fgp",
+      "operation": "github.repos",
+      "iteration": 0,
+      "latency_ms": 438.6170000070706,
+      "success": true,
+      "payload_size": 1423,
+      "error": null
+    },
+    {
+      "protocol": "fgp",
+      "operation": "github.repos",
+      "iteration": 1,
+      "latency_ms": 459.137166995788,
+      "success": true,
+      "payload_size": 1423,
+      "error": null
+    },
+    {
+      "protocol": "gh_cli",
+      "operation": "github.notifications",
+      "iteration": 0,
+      "latency_ms": 461.89487498486415,
+      "success": true,
+      "payload_size": 23879,
+      "error": null
+    },
+    {
+      "protocol": "gh_cli",
+      "operation": "github.notifications",
+      "iteration": 1,
+      "latency_ms": 579.4223750126548,
+      "success": true,
+      "payload_size": 23879,
+      "error": null
+    },
+    {
+      "protocol": "fgp",
+      "operation": "github.notifications",
+      "iteration": 0,
+      "latency_ms": 503.53129202267155,
+      "success": true,
+      "payload_size": 9268,
+      "error": null
+    },
+    {
+      "protocol": "fgp",
+      "operation": "github.notifications",
+      "iteration": 1,
+      "latency_ms": 396.8927079986315,
+      "success": true,
+      "payload_size": 9276,
+      "error": null
+    },
+    {
+      "protocol": "gh_cli",
+      "operation": "github.user",
+      "iteration": 0,
+      "latency_ms": 297.38249999354593,
+      "success": true,
+      "payload_size": 1411,
+      "error": null
+    },
+    {
+      "protocol": "gh_cli",
+      "operation": "github.user",
+      "iteration": 1,
+      "latency_ms": 280.57537498534657,
+      "success": true,
+      "payload_size": 1411,
+      "error": null
+    },
+    {
+      "protocol": "fgp",
+      "operation": "github.user",
+      "iteration": 0,
+      "latency_ms": 311.37287500314415,
+      "success": true,
+      "payload_size": 299,
+      "error": null
+    },
+    {
+      "protocol": "fgp",
+      "operation": "github.user",
+      "iteration": 1,
+      "latency_ms": 321.38608300010674,
+      "success": true,
+      "payload_size": 297,
+      "error": null
+    }
+  ],
+  "summaries": [
+    {
+      "operation": "github.repos",
+      "protocol": "gh_cli",
+      "count": 2,
+      "success_rate": 100.0,
+      "mean_ms": 496.6041039879201,
+      "median_ms": 496.6041039879201,
+      "p95_ms": 522.7283850996173,
+      "p99_ms": 525.050543420657,
+      "min_ms": 467.5771249749232,
+      "max_ms": 525.631083000917,
+      "std_dev_ms": 41.0503473948994
+    },
+    {
+      "operation": "github.repos",
+      "protocol": "fgp",
+      "count": 2,
+      "success_rate": 100.0,
+      "mean_ms": 448.8770835014293,
+      "median_ms": 448.8770835014293,
+      "p95_ms": 458.1111586463521,
+      "p99_ms": 458.9319653259008,
+      "min_ms": 438.6170000070706,
+      "max_ms": 459.137166995788,
+      "std_dev_ms": 14.509949228802405
+    },
+    {
+      "operation": "github.notifications",
+      "protocol": "gh_cli",
+      "count": 2,
+      "success_rate": 100.0,
+      "mean_ms": 520.6586249987595,
+      "median_ms": 520.6586249987595,
+      "p95_ms": 573.5460000112653,
+      "p99_ms": 578.2471000123769,
+      "min_ms": 461.89487498486415,
+      "max_ms": 579.4223750126548,
+      "std_dev_ms": 83.10449224555293
+    },
+    {
+      "operation": "github.notifications",
+      "protocol": "fgp",
+      "count": 2,
+      "success_rate": 100.0,
+      "mean_ms": 450.21200001065154,
+      "median_ms": 450.21200001065154,
+      "p95_ms": 498.19936282146955,
+      "p99_ms": 502.46490618243115,
+      "min_ms": 396.8927079986315,
+      "max_ms": 503.53129202267155,
+      "std_dev_ms": 75.40486589953014
+    },
+    {
+      "operation": "calendar.today",
+      "protocol": "mcp_stdio",
+      "count": 2,
+      "success_rate": 100.0,
+      "mean_ms": 2923.5842085035983,
+      "median_ms": 2923.5842085035983,
+      "p95_ms": 2980.5862336419523,
+      "p99_ms": 2985.653080320917,
+      "min_ms": 2860.2486250165384,
+      "max_ms": 2986.9197919906583,
+      "std_dev_ms": 89.57004114821359
+    },
+    {
+      "operation": "calendar.today",
+      "protocol": "fgp",
+      "count": 2,
+      "success_rate": 100.0,
+      "mean_ms": 138.67627049330622,
+      "median_ms": 138.67627049330622,
+      "p95_ms": 140.4826645302819,
+      "p99_ms": 140.6432328891242,
+      "min_ms": 136.66916600777768,
+      "max_ms": 140.68337497883476,
+      "std_dev_ms": 2.8384743845343396
+    },
+    {
+      "operation": "calendar.free_slots",
+      "protocol": "fgp",
+      "count": 2,
+      "success_rate": 100.0,
+      "mean_ms": 160.91797899571247,
+      "median_ms": 160.91797899571247,
+      "p95_ms": 165.19907289475668,
+      "p99_ms": 165.57961457467172,
+      "min_ms": 156.16120799677446,
+      "max_ms": 165.67474999465048,
+      "std_dev_ms": 6.727090059801148
+    },
+    {
+      "operation": "gmail.inbox",
+      "protocol": "fgp",
+      "count": 2,
+      "success_rate": 100.0,
+      "mean_ms": 683.1204374902882,
+      "median_ms": 683.1204374902882,
+      "p95_ms": 701.3875687349355,
+      "p99_ms": 703.0113137344597,
+      "min_ms": 662.8236249962356,
+      "max_ms": 703.4172499843407,
+      "std_dev_ms": 28.704027502032833
+    },
+    {
+      "operation": "github.user",
+      "protocol": "gh_cli",
+      "count": 2,
+      "success_rate": 100.0,
+      "mean_ms": 288.97893748944625,
+      "median_ms": 288.97893748944625,
+      "p95_ms": 296.54214374313597,
+      "p99_ms": 297.21442874346394,
+      "min_ms": 280.57537498534657,
+      "max_ms": 297.38249999354593,
+      "std_dev_ms": 11.884432065547779
+    },
+    {
+      "operation": "github.user",
+      "protocol": "fgp",
+      "count": 2,
+      "success_rate": 100.0,
+      "mean_ms": 316.37947900162544,
+      "median_ms": 316.37947900162544,
+      "p95_ms": 320.8854226002586,
+      "p99_ms": 321.2859509201371,
+      "min_ms": 311.37287500314415,
+      "max_ms": 321.38608300010674,
+      "std_dev_ms": 7.080407276083616
+    },
+    {
+      "operation": "gmail.unread_count",
+      "protocol": "mcp_stdio",
+      "count": 2,
+      "success_rate": 100.0,
+      "mean_ms": 2666.2883954995777,
+      "median_ms": 2666.2883954995777,
+      "p95_ms": 2692.2537892416585,
+      "p99_ms": 2694.5618242409546,
+      "min_ms": 2637.437958008377,
+      "max_ms": 2695.1388329907786,
+      "std_dev_ms": 40.800679980453474
+    },
+    {
+      "operation": "gmail.unread_count",
+      "protocol": "fgp",
+      "count": 2,
+      "success_rate": 100.0,
+      "mean_ms": 1394.020270992769,
+      "median_ms": 1394.020270992769,
+      "p95_ms": 1412.5989142805338,
+      "p99_ms": 1414.2503492394462,
+      "min_ms": 1373.3773340063635,
+      "max_ms": 1414.6632079791743,
+      "std_dev_ms": 29.193521453387707
+    }
+  ],
+  "comparison": {
+    "github.repos": {
+      "baseline_protocol": "gh_cli",
+      "baseline_mean_ms": 496.6,
+      "fgp_mean_ms": 448.88,
+      "speedup": 1.1,
+      "baseline_p95_ms": 522.73,
+      "fgp_p95_ms": 458.11
+    },
+    "github.notifications": {
+      "baseline_protocol": "gh_cli",
+      "baseline_mean_ms": 520.66,
+      "fgp_mean_ms": 450.21,
+      "speedup": 1.2,
+      "baseline_p95_ms": 573.55,
+      "fgp_p95_ms": 498.2
+    },
+    "calendar.today": {
+      "baseline_protocol": "mcp_stdio",
+      "baseline_mean_ms": 2923.58,
+      "fgp_mean_ms": 138.68,
+      "speedup": 21.1,
+      "baseline_p95_ms": 2980.59,
+      "fgp_p95_ms": 140.48,
+      "mcp_stdio_mean_ms": 2923.58,
+      "mcp_p95_ms": 2980.59
+    },
+    "github.user": {
+      "baseline_protocol": "gh_cli",
+      "baseline_mean_ms": 288.98,
+      "fgp_mean_ms": 316.38,
+      "speedup": 0.9,
+      "baseline_p95_ms": 296.54,
+      "fgp_p95_ms": 320.89
+    },
+    "gmail.unread_count": {
+      "baseline_protocol": "mcp_stdio",
+      "baseline_mean_ms": 2666.29,
+      "fgp_mean_ms": 1394.02,
+      "speedup": 1.9,
+      "baseline_p95_ms": 2692.25,
+      "fgp_p95_ms": 1412.6,
+      "mcp_stdio_mean_ms": 2666.29,
+      "mcp_p95_ms": 2692.25
+    }
+  }
+}

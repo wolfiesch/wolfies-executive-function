@@ -1,0 +1,867 @@
+{
+  "generated_at": "2026-01-13T06:24:46.318048",
+  "iterations": 5,
+  "warmup": 2,
+  "results": [
+    {
+      "protocol": "mcp_stdio",
+      "operation": "gmail.unread_count",
+      "iteration": 0,
+      "latency_ms": 2758.7115000060294,
+      "success": true,
+      "payload_size": 19,
+      "error": null
+    },
+    {
+      "protocol": "mcp_stdio",
+      "operation": "gmail.unread_count",
+      "iteration": 1,
+      "latency_ms": 2752.620291983476,
+      "success": true,
+      "payload_size": 19,
+      "error": null
+    },
+    {
+      "protocol": "mcp_stdio",
+      "operation": "gmail.unread_count",
+      "iteration": 2,
+      "latency_ms": 2755.180207983358,
+      "success": true,
+      "payload_size": 19,
+      "error": null
+    },
+    {
+      "protocol": "mcp_stdio",
+      "operation": "gmail.unread_count",
+      "iteration": 3,
+      "latency_ms": 2724.881500005722,
+      "success": true,
+      "payload_size": 19,
+      "error": null
+    },
+    {
+      "protocol": "mcp_stdio",
+      "operation": "gmail.unread_count",
+      "iteration": 4,
+      "latency_ms": 2749.080958979903,
+      "success": true,
+      "payload_size": 19,
+      "error": null
+    },
+    {
+      "protocol": "fgp",
+      "operation": "gmail.unread_count",
+      "iteration": 0,
+      "latency_ms": 1508.9106250088662,
+      "success": true,
+      "payload_size": 2593,
+      "error": null
+    },
+    {
+      "protocol": "fgp",
+      "operation": "gmail.unread_count",
+      "iteration": 1,
+      "latency_ms": 1389.0569589857478,
+      "success": true,
+      "payload_size": 2586,
+      "error": null
+    },
+    {
+      "protocol": "fgp",
+      "operation": "gmail.unread_count",
+      "iteration": 2,
+      "latency_ms": 1447.5295839947648,
+      "success": true,
+      "payload_size": 2584,
+      "error": null
+    },
+    {
+      "protocol": "fgp",
+      "operation": "gmail.unread_count",
+      "iteration": 3,
+      "latency_ms": 1490.9217919921502,
+      "success": true,
+      "payload_size": 2586,
+      "error": null
+    },
+    {
+      "protocol": "fgp",
+      "operation": "gmail.unread_count",
+      "iteration": 4,
+      "latency_ms": 1489.5496249955613,
+      "success": true,
+      "payload_size": 2586,
+      "error": null
+    },
+    {
+      "protocol": "mcp_stdio",
+      "operation": "calendar.today",
+      "iteration": 0,
+      "latency_ms": 2646.791832987219,
+      "success": true,
+      "payload_size": 45,
+      "error": null
+    },
+    {
+      "protocol": "mcp_stdio",
+      "operation": "calendar.today",
+      "iteration": 1,
+      "latency_ms": 2668.6412080016453,
+      "success": true,
+      "payload_size": 45,
+      "error": null
+    },
+    {
+      "protocol": "mcp_stdio",
+      "operation": "calendar.today",
+      "iteration": 2,
+      "latency_ms": 2678.178250003839,
+      "success": true,
+      "payload_size": 45,
+      "error": null
+    },
+    {
+      "protocol": "mcp_stdio",
+      "operation": "calendar.today",
+      "iteration": 3,
+      "latency_ms": 2675.02029199386,
+      "success": true,
+      "payload_size": 45,
+      "error": null
+    },
+    {
+      "protocol": "mcp_stdio",
+      "operation": "calendar.today",
+      "iteration": 4,
+      "latency_ms": 2636.541624990059,
+      "success": true,
+      "payload_size": 45,
+      "error": null
+    },
+    {
+      "protocol": "fgp",
+      "operation": "calendar.today",
+      "iteration": 0,
+      "latency_ms": 184.24383297679015,
+      "success": true,
+      "payload_size": 164,
+      "error": null
+    },
+    {
+      "protocol": "fgp",
+      "operation": "calendar.today",
+      "iteration": 1,
+      "latency_ms": 142.98962499015033,
+      "success": true,
+      "payload_size": 164,
+      "error": null
+    },
+    {
+      "protocol": "fgp",
+      "operation": "calendar.today",
+      "iteration": 2,
+      "latency_ms": 135.09741600137204,
+      "success": true,
+      "payload_size": 164,
+      "error": null
+    },
+    {
+      "protocol": "fgp",
+      "operation": "calendar.today",
+      "iteration": 3,
+      "latency_ms": 141.5911249932833,
+      "success": true,
+      "payload_size": 156,
+      "error": null
+    },
+    {
+      "protocol": "fgp",
+      "operation": "calendar.today",
+      "iteration": 4,
+      "latency_ms": 130.35770901478827,
+      "success": true,
+      "payload_size": 156,
+      "error": null
+    },
+    {
+      "protocol": "fgp",
+      "operation": "calendar.free_slots",
+      "iteration": 0,
+      "latency_ms": 146.49400001508184,
+      "success": true,
+      "payload_size": 1745,
+      "error": null
+    },
+    {
+      "protocol": "fgp",
+      "operation": "calendar.free_slots",
+      "iteration": 1,
+      "latency_ms": 147.9955420072656,
+      "success": true,
+      "payload_size": 1737,
+      "error": null
+    },
+    {
+      "protocol": "fgp",
+      "operation": "calendar.free_slots",
+      "iteration": 2,
+      "latency_ms": 143.14775000093505,
+      "success": true,
+      "payload_size": 1737,
+      "error": null
+    },
+    {
+      "protocol": "fgp",
+      "operation": "calendar.free_slots",
+      "iteration": 3,
+      "latency_ms": 173.731457995018,
+      "success": true,
+      "payload_size": 1737,
+      "error": null
+    },
+    {
+      "protocol": "fgp",
+      "operation": "calendar.free_slots",
+      "iteration": 4,
+      "latency_ms": 127.51637498149648,
+      "success": true,
+      "payload_size": 1733,
+      "error": null
+    },
+    {
+      "protocol": "fgp",
+      "operation": "gmail.inbox",
+      "iteration": 0,
+      "latency_ms": 660.1417910133023,
+      "success": true,
+      "payload_size": 1713,
+      "error": null
+    },
+    {
+      "protocol": "fgp",
+      "operation": "gmail.inbox",
+      "iteration": 1,
+      "latency_ms": 722.8626670257654,
+      "success": true,
+      "payload_size": 1713,
+      "error": null
+    },
+    {
+      "protocol": "fgp",
+      "operation": "gmail.inbox",
+      "iteration": 2,
+      "latency_ms": 663.7004170042928,
+      "success": true,
+      "payload_size": 1710,
+      "error": null
+    },
+    {
+      "protocol": "fgp",
+      "operation": "gmail.inbox",
+      "iteration": 3,
+      "latency_ms": 654.7819580009673,
+      "success": true,
+      "payload_size": 1712,
+      "error": null
+    },
+    {
+      "protocol": "fgp",
+      "operation": "gmail.inbox",
+      "iteration": 4,
+      "latency_ms": 631.2891249835957,
+      "success": true,
+      "payload_size": 1713,
+      "error": null
+    },
+    {
+      "protocol": "flyctl_cli",
+      "operation": "fly.apps",
+      "iteration": 0,
+      "latency_ms": 1773.9852080121636,
+      "success": true,
+      "payload_size": 52187,
+      "error": null
+    },
+    {
+      "protocol": "flyctl_cli",
+      "operation": "fly.apps",
+      "iteration": 1,
+      "latency_ms": 772.2642089938745,
+      "success": true,
+      "payload_size": 52187,
+      "error": null
+    },
+    {
+      "protocol": "flyctl_cli",
+      "operation": "fly.apps",
+      "iteration": 2,
+      "latency_ms": 563.5886249947362,
+      "success": true,
+      "payload_size": 52187,
+      "error": null
+    },
+    {
+      "protocol": "flyctl_cli",
+      "operation": "fly.apps",
+      "iteration": 3,
+      "latency_ms": 759.76333298604,
+      "success": true,
+      "payload_size": 52187,
+      "error": null
+    },
+    {
+      "protocol": "flyctl_cli",
+      "operation": "fly.apps",
+      "iteration": 4,
+      "latency_ms": 730.4941250185948,
+      "success": true,
+      "payload_size": 52187,
+      "error": null
+    },
+    {
+      "protocol": "fgp",
+      "operation": "fly.apps",
+      "iteration": 0,
+      "latency_ms": 322.8766249958426,
+      "success": true,
+      "payload_size": 4212,
+      "error": null
+    },
+    {
+      "protocol": "fgp",
+      "operation": "fly.apps",
+      "iteration": 1,
+      "latency_ms": 470.25674997712485,
+      "success": true,
+      "payload_size": 4212,
+      "error": null
+    },
+    {
+      "protocol": "fgp",
+      "operation": "fly.apps",
+      "iteration": 2,
+      "latency_ms": 266.3054589938838,
+      "success": true,
+      "payload_size": 4212,
+      "error": null
+    },
+    {
+      "protocol": "fgp",
+      "operation": "fly.apps",
+      "iteration": 3,
+      "latency_ms": 238.08308300795034,
+      "success": true,
+      "payload_size": 4212,
+      "error": null
+    },
+    {
+      "protocol": "fgp",
+      "operation": "fly.apps",
+      "iteration": 4,
+      "latency_ms": 474.77570798946545,
+      "success": true,
+      "payload_size": 4211,
+      "error": null
+    },
+    {
+      "protocol": "flyctl_cli",
+      "operation": "fly.status",
+      "iteration": 0,
+      "latency_ms": 688.9239160227589,
+      "success": true,
+      "payload_size": 3159,
+      "error": null
+    },
+    {
+      "protocol": "flyctl_cli",
+      "operation": "fly.status",
+      "iteration": 1,
+      "latency_ms": 5939.7379999863915,
+      "success": true,
+      "payload_size": 3159,
+      "error": null
+    },
+    {
+      "protocol": "flyctl_cli",
+      "operation": "fly.status",
+      "iteration": 2,
+      "latency_ms": 753.0275410099421,
+      "success": true,
+      "payload_size": 3159,
+      "error": null
+    },
+    {
+      "protocol": "flyctl_cli",
+      "operation": "fly.status",
+      "iteration": 3,
+      "latency_ms": 680.5811249942053,
+      "success": true,
+      "payload_size": 3159,
+      "error": null
+    },
+    {
+      "protocol": "flyctl_cli",
+      "operation": "fly.status",
+      "iteration": 4,
+      "latency_ms": 720.2324999962002,
+      "success": true,
+      "payload_size": 3159,
+      "error": null
+    },
+    {
+      "protocol": "fgp",
+      "operation": "fly.status",
+      "iteration": 0,
+      "latency_ms": 105.02129199448973,
+      "success": false,
+      "payload_size": 216,
+      "error": "{'code': 'INTERNAL_ERROR', 'message': \"GraphQL errors: Field 'privateIp' doesn't exist on type 'Machine'\"}"
+    },
+    {
+      "protocol": "fgp",
+      "operation": "fly.status",
+      "iteration": 1,
+      "latency_ms": 110.38987501524389,
+      "success": false,
+      "payload_size": 215,
+      "error": "{'code': 'INTERNAL_ERROR', 'message': \"GraphQL errors: Field 'privateIp' doesn't exist on type 'Machine'\"}"
+    },
+    {
+      "protocol": "fgp",
+      "operation": "fly.status",
+      "iteration": 2,
+      "latency_ms": 101.85808397363871,
+      "success": false,
+      "payload_size": 216,
+      "error": "{'code': 'INTERNAL_ERROR', 'message': \"GraphQL errors: Field 'privateIp' doesn't exist on type 'Machine'\"}"
+    },
+    {
+      "protocol": "fgp",
+      "operation": "fly.status",
+      "iteration": 3,
+      "latency_ms": 107.22362500382587,
+      "success": false,
+      "payload_size": 224,
+      "error": "{'code': 'INTERNAL_ERROR', 'message': \"GraphQL errors: Field 'privateIp' doesn't exist on type 'Machine'\"}"
+    },
+    {
+      "protocol": "fgp",
+      "operation": "fly.status",
+      "iteration": 4,
+      "latency_ms": 159.70137499971315,
+      "success": false,
+      "payload_size": 216,
+      "error": "{'code': 'INTERNAL_ERROR', 'message': \"GraphQL errors: Field 'privateIp' doesn't exist on type 'Machine'\"}"
+    },
+    {
+      "protocol": "neonctl_cli",
+      "operation": "neon.projects",
+      "iteration": 0,
+      "latency_ms": 10299.3098750012,
+      "success": true,
+      "payload_size": 204,
+      "error": null
+    },
+    {
+      "protocol": "neonctl_cli",
+      "operation": "neon.projects",
+      "iteration": 1,
+      "latency_ms": 10277.615208993666,
+      "success": true,
+      "payload_size": 204,
+      "error": null
+    },
+    {
+      "protocol": "neonctl_cli",
+      "operation": "neon.projects",
+      "iteration": 2,
+      "latency_ms": 10287.057708977954,
+      "success": true,
+      "payload_size": 204,
+      "error": null
+    },
+    {
+      "protocol": "neonctl_cli",
+      "operation": "neon.projects",
+      "iteration": 3,
+      "latency_ms": 10296.42645799322,
+      "success": true,
+      "payload_size": 204,
+      "error": null
+    },
+    {
+      "protocol": "neonctl_cli",
+      "operation": "neon.projects",
+      "iteration": 4,
+      "latency_ms": 10294.33475001133,
+      "success": true,
+      "payload_size": 204,
+      "error": null
+    },
+    {
+      "protocol": "fgp",
+      "operation": "neon.projects",
+      "iteration": 0,
+      "latency_ms": 154.7495419799816,
+      "success": true,
+      "payload_size": 2022,
+      "error": null
+    },
+    {
+      "protocol": "fgp",
+      "operation": "neon.projects",
+      "iteration": 1,
+      "latency_ms": 174.43408400868066,
+      "success": true,
+      "payload_size": 2022,
+      "error": null
+    },
+    {
+      "protocol": "fgp",
+      "operation": "neon.projects",
+      "iteration": 2,
+      "latency_ms": 153.2698340015486,
+      "success": true,
+      "payload_size": 2014,
+      "error": null
+    },
+    {
+      "protocol": "fgp",
+      "operation": "neon.projects",
+      "iteration": 3,
+      "latency_ms": 158.3792919991538,
+      "success": true,
+      "payload_size": 2014,
+      "error": null
+    },
+    {
+      "protocol": "fgp",
+      "operation": "neon.projects",
+      "iteration": 4,
+      "latency_ms": 160.28058298979886,
+      "success": true,
+      "payload_size": 2014,
+      "error": null
+    },
+    {
+      "protocol": "neonctl_cli",
+      "operation": "neon.branches",
+      "iteration": 0,
+      "latency_ms": 411.26845800317824,
+      "success": true,
+      "payload_size": 17249,
+      "error": null
+    },
+    {
+      "protocol": "neonctl_cli",
+      "operation": "neon.branches",
+      "iteration": 1,
+      "latency_ms": 400.9765420050826,
+      "success": true,
+      "payload_size": 17249,
+      "error": null
+    },
+    {
+      "protocol": "neonctl_cli",
+      "operation": "neon.branches",
+      "iteration": 2,
+      "latency_ms": 417.7038750203792,
+      "success": true,
+      "payload_size": 17249,
+      "error": null
+    },
+    {
+      "protocol": "neonctl_cli",
+      "operation": "neon.branches",
+      "iteration": 3,
+      "latency_ms": 383.4678329876624,
+      "success": true,
+      "payload_size": 17249,
+      "error": null
+    },
+    {
+      "protocol": "neonctl_cli",
+      "operation": "neon.branches",
+      "iteration": 4,
+      "latency_ms": 409.0412500081584,
+      "success": true,
+      "payload_size": 17249,
+      "error": null
+    },
+    {
+      "protocol": "fgp",
+      "operation": "neon.branches",
+      "iteration": 0,
+      "latency_ms": 119.62649997440167,
+      "success": true,
+      "payload_size": 6409,
+      "error": null
+    },
+    {
+      "protocol": "fgp",
+      "operation": "neon.branches",
+      "iteration": 1,
+      "latency_ms": 120.52604201016948,
+      "success": true,
+      "payload_size": 6417,
+      "error": null
+    },
+    {
+      "protocol": "fgp",
+      "operation": "neon.branches",
+      "iteration": 2,
+      "latency_ms": 119.93445799453184,
+      "success": true,
+      "payload_size": 6409,
+      "error": null
+    },
+    {
+      "protocol": "fgp",
+      "operation": "neon.branches",
+      "iteration": 3,
+      "latency_ms": 115.46854101470672,
+      "success": true,
+      "payload_size": 6409,
+      "error": null
+    },
+    {
+      "protocol": "fgp",
+      "operation": "neon.branches",
+      "iteration": 4,
+      "latency_ms": 109.95545799960382,
+      "success": true,
+      "payload_size": 6408,
+      "error": null
+    }
+  ],
+  "summaries": [
+    {
+      "operation": "gmail.inbox",
+      "protocol": "fgp",
+      "count": 5,
+      "success_rate": 100.0,
+      "mean_ms": 666.5551916055847,
+      "median_ms": 660.1417910133023,
+      "p95_ms": 711.0302170214709,
+      "p99_ms": 720.4961770249065,
+      "min_ms": 631.2891249835957,
+      "max_ms": 722.8626670257654,
+      "std_dev_ms": 33.91945502905001
+    },
+    {
+      "operation": "fly.status",
+      "protocol": "fgp",
+      "count": 5,
+      "success_rate": 0.0,
+      "mean_ms": 0,
+      "median_ms": 0,
+      "p95_ms": 0,
+      "p99_ms": 0,
+      "min_ms": 0,
+      "max_ms": 0,
+      "std_dev_ms": 0
+    },
+    {
+      "operation": "fly.status",
+      "protocol": "flyctl_cli",
+      "count": 5,
+      "success_rate": 100.0,
+      "mean_ms": 1756.5006164018996,
+      "median_ms": 720.2324999962002,
+      "p95_ms": 4902.395908191101,
+      "p99_ms": 5732.2695816273335,
+      "min_ms": 680.5811249942053,
+      "max_ms": 5939.7379999863915,
+      "std_dev_ms": 2338.675244273873
+    },
+    {
+      "operation": "fly.apps",
+      "protocol": "fgp",
+      "count": 5,
+      "success_rate": 100.0,
+      "mean_ms": 354.4595249928534,
+      "median_ms": 322.8766249958426,
+      "p95_ms": 473.8719163869973,
+      "p99_ms": 474.5949496689718,
+      "min_ms": 238.08308300795034,
+      "max_ms": 474.77570798946545,
+      "std_dev_ms": 112.02352027405853
+    },
+    {
+      "operation": "fly.apps",
+      "protocol": "flyctl_cli",
+      "count": 5,
+      "success_rate": 100.0,
+      "mean_ms": 920.0191000010818,
+      "median_ms": 759.76333298604,
+      "p95_ms": 1573.6410082085056,
+      "p99_ms": 1733.916368051432,
+      "min_ms": 563.5886249947362,
+      "max_ms": 1773.9852080121636,
+      "std_dev_ms": 484.69937383008016
+    },
+    {
+      "operation": "gmail.unread_count",
+      "protocol": "mcp_stdio",
+      "count": 5,
+      "success_rate": 100.0,
+      "mean_ms": 2748.0948917916976,
+      "median_ms": 2752.620291983476,
+      "p95_ms": 2758.005241601495,
+      "p99_ms": 2758.5702483251225,
+      "min_ms": 2724.881500005722,
+      "max_ms": 2758.7115000060294,
+      "std_dev_ms": 13.446441993302718
+    },
+    {
+      "operation": "gmail.unread_count",
+      "protocol": "fgp",
+      "count": 5,
+      "success_rate": 100.0,
+      "mean_ms": 1465.193716995418,
+      "median_ms": 1489.5496249955613,
+      "p95_ms": 1505.312858405523,
+      "p99_ms": 1508.1910716881976,
+      "min_ms": 1389.0569589857478,
+      "max_ms": 1508.9106250088662,
+      "std_dev_ms": 48.15376324518434
+    },
+    {
+      "operation": "calendar.today",
+      "protocol": "mcp_stdio",
+      "count": 5,
+      "success_rate": 100.0,
+      "mean_ms": 2661.0346415953245,
+      "median_ms": 2668.6412080016453,
+      "p95_ms": 2677.546658401843,
+      "p99_ms": 2678.0519316834398,
+      "min_ms": 2636.541624990059,
+      "max_ms": 2678.178250003839,
+      "std_dev_ms": 18.372037436694686
+    },
+    {
+      "operation": "calendar.today",
+      "protocol": "fgp",
+      "count": 5,
+      "success_rate": 100.0,
+      "mean_ms": 146.85594159527682,
+      "median_ms": 141.5911249932833,
+      "p95_ms": 175.99299137946218,
+      "p99_ms": 182.59366465732455,
+      "min_ms": 130.35770901478827,
+      "max_ms": 184.24383297679015,
+      "std_dev_ms": 21.511483690821684
+    },
+    {
+      "operation": "neon.projects",
+      "protocol": "neonctl_cli",
+      "count": 5,
+      "success_rate": 100.0,
+      "mean_ms": 10290.948800195474,
+      "median_ms": 10294.33475001133,
+      "p95_ms": 10298.733191599604,
+      "p99_ms": 10299.19453832088,
+      "min_ms": 10277.615208993666,
+      "max_ms": 10299.3098750012,
+      "std_dev_ms": 8.72213001811546
+    },
+    {
+      "operation": "neon.projects",
+      "protocol": "fgp",
+      "count": 5,
+      "success_rate": 100.0,
+      "mean_ms": 160.2226669958327,
+      "median_ms": 158.3792919991538,
+      "p95_ms": 171.6033838049043,
+      "p99_ms": 173.86794396792538,
+      "min_ms": 153.2698340015486,
+      "max_ms": 174.43408400868066,
+      "std_dev_ms": 8.421145160240135
+    },
+    {
+      "operation": "neon.branches",
+      "protocol": "neonctl_cli",
+      "count": 5,
+      "success_rate": 100.0,
+      "mean_ms": 404.49159160489216,
+      "median_ms": 409.0412500081584,
+      "p95_ms": 416.416791616939,
+      "p99_ms": 417.44645833969116,
+      "min_ms": 383.4678329876624,
+      "max_ms": 417.7038750203792,
+      "std_dev_ms": 13.186581654303435
+    },
+    {
+      "operation": "neon.branches",
+      "protocol": "fgp",
+      "count": 5,
+      "success_rate": 100.0,
+      "mean_ms": 117.1021997986827,
+      "median_ms": 119.62649997440167,
+      "p95_ms": 120.40772520704195,
+      "p99_ms": 120.50237864954397,
+      "min_ms": 109.95545799960382,
+      "max_ms": 120.52604201016948,
+      "std_dev_ms": 4.468255608159944
+    },
+    {
+      "operation": "calendar.free_slots",
+      "protocol": "fgp",
+      "count": 5,
+      "success_rate": 100.0,
+      "mean_ms": 147.7770249999594,
+      "median_ms": 146.49400001508184,
+      "p95_ms": 168.58427479746751,
+      "p99_ms": 172.7020213555079,
+      "min_ms": 127.51637498149648,
+      "max_ms": 173.731457995018,
+      "std_dev_ms": 16.637687798162652
+    }
+  ],
+  "comparison": {
+    "fly.apps": {
+      "baseline_protocol": "flyctl_cli",
+      "baseline_mean_ms": 920.02,
+      "fgp_mean_ms": 354.46,
+      "speedup": 2.6,
+      "baseline_p95_ms": 1573.64,
+      "fgp_p95_ms": 473.87
+    },
+    "gmail.unread_count": {
+      "baseline_protocol": "mcp_stdio",
+      "baseline_mean_ms": 2748.09,
+      "fgp_mean_ms": 1465.19,
+      "speedup": 1.9,
+      "baseline_p95_ms": 2758.01,
+      "fgp_p95_ms": 1505.31,
+      "mcp_stdio_mean_ms": 2748.09,
+      "mcp_p95_ms": 2758.01
+    },
+    "calendar.today": {
+      "baseline_protocol": "mcp_stdio",
+      "baseline_mean_ms": 2661.03,
+      "fgp_mean_ms": 146.86,
+      "speedup": 18.1,
+      "baseline_p95_ms": 2677.55,
+      "fgp_p95_ms": 175.99,
+      "mcp_stdio_mean_ms": 2661.03,
+      "mcp_p95_ms": 2677.55
+    },
+    "neon.projects": {
+      "baseline_protocol": "neonctl_cli",
+      "baseline_mean_ms": 10290.95,
+      "fgp_mean_ms": 160.22,
+      "speedup": 64.2,
+      "baseline_p95_ms": 10298.73,
+      "fgp_p95_ms": 171.6
+    },
+    "neon.branches": {
+      "baseline_protocol": "neonctl_cli",
+      "baseline_mean_ms": 404.49,
+      "fgp_mean_ms": 117.1,
+      "speedup": 3.5,
+      "baseline_p95_ms": 416.42,
+      "fgp_p95_ms": 120.41
+    }
+  }
+}

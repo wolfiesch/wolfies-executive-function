@@ -1,0 +1,376 @@
+{
+  "generated_at": "2026-01-14T01:44:04.972831",
+  "iterations": 3,
+  "workflow": "HN: navigate -> snapshot -> click comments -> snapshot",
+  "results": [
+    {
+      "tool": "fgp",
+      "iteration": 1,
+      "steps": [
+        {
+          "step_name": "navigate_hn",
+          "latency_ms": 115.55087502347305,
+          "success": true,
+          "payload_size": 0,
+          "error": null
+        },
+        {
+          "step_name": "snapshot_list",
+          "latency_ms": 23.191708023659885,
+          "success": true,
+          "payload_size": 29758,
+          "error": null
+        },
+        {
+          "step_name": "click_comments",
+          "latency_ms": 16.56233298126608,
+          "success": true,
+          "payload_size": 0,
+          "error": null
+        },
+        {
+          "step_name": "snapshot_comments",
+          "latency_ms": 179.97199995443225,
+          "success": true,
+          "payload_size": 320017,
+          "error": null
+        }
+      ],
+      "total_latency_ms": 645.6160419620574,
+      "step_count": 4,
+      "success": true,
+      "error": null
+    },
+    {
+      "tool": "fgp",
+      "iteration": 2,
+      "steps": [
+        {
+          "step_name": "navigate_hn",
+          "latency_ms": 38.01379195647314,
+          "success": true,
+          "payload_size": 0,
+          "error": null
+        },
+        {
+          "step_name": "snapshot_list",
+          "latency_ms": 16.187416040338576,
+          "success": true,
+          "payload_size": 29758,
+          "error": null
+        },
+        {
+          "step_name": "click_comments",
+          "latency_ms": 10.248750040773302,
+          "success": true,
+          "payload_size": 0,
+          "error": null
+        },
+        {
+          "step_name": "snapshot_comments",
+          "latency_ms": 166.01058398373425,
+          "success": true,
+          "payload_size": 320017,
+          "error": null
+        }
+      ],
+      "total_latency_ms": 538.6456249980256,
+      "step_count": 4,
+      "success": true,
+      "error": null
+    },
+    {
+      "tool": "fgp",
+      "iteration": 3,
+      "steps": [
+        {
+          "step_name": "navigate_hn",
+          "latency_ms": 50.52245798287913,
+          "success": true,
+          "payload_size": 0,
+          "error": null
+        },
+        {
+          "step_name": "snapshot_list",
+          "latency_ms": 16.386833041906357,
+          "success": true,
+          "payload_size": 29758,
+          "error": null
+        },
+        {
+          "step_name": "click_comments",
+          "latency_ms": 11.986207973677665,
+          "success": true,
+          "payload_size": 0,
+          "error": null
+        },
+        {
+          "step_name": "snapshot_comments",
+          "latency_ms": 162.3332499875687,
+          "success": true,
+          "payload_size": 320017,
+          "error": null
+        }
+      ],
+      "total_latency_ms": 549.308999965433,
+      "step_count": 4,
+      "success": true,
+      "error": null
+    },
+    {
+      "tool": "agent_browser",
+      "iteration": 1,
+      "steps": [
+        {
+          "step_name": "navigate_hn",
+          "latency_ms": 121.85033300193027,
+          "success": true,
+          "payload_size": 0,
+          "error": null
+        },
+        {
+          "step_name": "snapshot_list",
+          "latency_ms": 53.24962502345443,
+          "success": true,
+          "payload_size": 45075,
+          "error": null
+        },
+        {
+          "step_name": "click_comments",
+          "latency_ms": 23.619000043254346,
+          "success": false,
+          "payload_size": 0,
+          "error": "\u001b[31m\u2717\u001b[0m Validation error: value: Expected string, received null\n"
+        }
+      ],
+      "total_latency_ms": 198.94924998516217,
+      "step_count": 3,
+      "success": false,
+      "error": null
+    },
+    {
+      "tool": "agent_browser",
+      "iteration": 2,
+      "steps": [
+        {
+          "step_name": "navigate_hn",
+          "latency_ms": 60.83183299051598,
+          "success": true,
+          "payload_size": 0,
+          "error": null
+        },
+        {
+          "step_name": "snapshot_list",
+          "latency_ms": 51.34170799283311,
+          "success": true,
+          "payload_size": 45075,
+          "error": null
+        },
+        {
+          "step_name": "click_comments",
+          "latency_ms": 22.909166989848018,
+          "success": false,
+          "payload_size": 0,
+          "error": "\u001b[31m\u2717\u001b[0m Validation error: value: Expected string, received null\n"
+        }
+      ],
+      "total_latency_ms": 135.3347499971278,
+      "step_count": 3,
+      "success": false,
+      "error": null
+    },
+    {
+      "tool": "agent_browser",
+      "iteration": 3,
+      "steps": [
+        {
+          "step_name": "navigate_hn",
+          "latency_ms": 64.77387499762699,
+          "success": true,
+          "payload_size": 0,
+          "error": null
+        },
+        {
+          "step_name": "snapshot_list",
+          "latency_ms": 54.262125049717724,
+          "success": true,
+          "payload_size": 45075,
+          "error": null
+        },
+        {
+          "step_name": "click_comments",
+          "latency_ms": 22.64679200015962,
+          "success": false,
+          "payload_size": 0,
+          "error": "\u001b[31m\u2717\u001b[0m Validation error: value: Expected string, received null\n"
+        }
+      ],
+      "total_latency_ms": 141.9672080082819,
+      "step_count": 3,
+      "success": false,
+      "error": null
+    },
+    {
+      "tool": "playwright_mcp",
+      "iteration": 1,
+      "steps": [
+        {
+          "step_name": "navigate_hn",
+          "latency_ms": 4157.937874959316,
+          "success": true,
+          "payload_size": 0,
+          "error": null
+        },
+        {
+          "step_name": "snapshot_list",
+          "latency_ms": 3491.538458969444,
+          "success": true,
+          "payload_size": 84,
+          "error": null
+        },
+        {
+          "step_name": "click_comments",
+          "latency_ms": 2063.140458019916,
+          "success": true,
+          "payload_size": 0,
+          "error": null
+        },
+        {
+          "step_name": "snapshot_comments",
+          "latency_ms": 3063.2647910388187,
+          "success": true,
+          "payload_size": 84,
+          "error": null
+        }
+      ],
+      "total_latency_ms": 13081.452374986839,
+      "step_count": 4,
+      "success": true,
+      "error": null
+    },
+    {
+      "tool": "playwright_mcp",
+      "iteration": 2,
+      "steps": [
+        {
+          "step_name": "navigate_hn",
+          "latency_ms": 3446.877999987919,
+          "success": true,
+          "payload_size": 0,
+          "error": null
+        },
+        {
+          "step_name": "snapshot_list",
+          "latency_ms": 3165.967625041958,
+          "success": true,
+          "payload_size": 84,
+          "error": null
+        },
+        {
+          "step_name": "click_comments",
+          "latency_ms": 1953.8657499942929,
+          "success": true,
+          "payload_size": 0,
+          "error": null
+        },
+        {
+          "step_name": "snapshot_comments",
+          "latency_ms": 2982.3749579954892,
+          "success": true,
+          "payload_size": 84,
+          "error": null
+        }
+      ],
+      "total_latency_ms": 11851.214541995432,
+      "step_count": 4,
+      "success": true,
+      "error": null
+    },
+    {
+      "tool": "playwright_mcp",
+      "iteration": 3,
+      "steps": [
+        {
+          "step_name": "navigate_hn",
+          "latency_ms": 3534.3001669971272,
+          "success": true,
+          "payload_size": 0,
+          "error": null
+        },
+        {
+          "step_name": "snapshot_list",
+          "latency_ms": 3295.5177500261925,
+          "success": true,
+          "payload_size": 84,
+          "error": null
+        },
+        {
+          "step_name": "click_comments",
+          "latency_ms": 2113.8754159910604,
+          "success": true,
+          "payload_size": 0,
+          "error": null
+        },
+        {
+          "step_name": "snapshot_comments",
+          "latency_ms": 2999.899084039498,
+          "success": true,
+          "payload_size": 84,
+          "error": null
+        }
+      ],
+      "total_latency_ms": 12249.0921249846,
+      "step_count": 4,
+      "success": true,
+      "error": null
+    }
+  ],
+  "summaries": [
+    {
+      "tool": "fgp",
+      "iterations": 3,
+      "step_count": 4,
+      "success_rate": 1.0,
+      "mean_total_ms": 577.856888975172,
+      "median_total_ms": 549.308999965433,
+      "min_total_ms": 538.6456249980256,
+      "max_total_ms": 645.6160419620574,
+      "mean_per_step_ms": 144.464222243793,
+      "step_breakdown": {
+        "navigate_hn": 68.0290416542751,
+        "snapshot_list": 18.58865236863494,
+        "click_comments": 12.932430331905683,
+        "snapshot_comments": 169.4386113085784
+      }
+    },
+    {
+      "tool": "agent_browser",
+      "iterations": 3,
+      "step_count": 0,
+      "success_rate": 0.0,
+      "mean_total_ms": 0.0,
+      "median_total_ms": 0.0,
+      "min_total_ms": 0.0,
+      "max_total_ms": 0.0,
+      "mean_per_step_ms": 0.0,
+      "step_breakdown": {}
+    },
+    {
+      "tool": "playwright_mcp",
+      "iterations": 3,
+      "step_count": 4,
+      "success_rate": 1.0,
+      "mean_total_ms": 12393.919680655623,
+      "median_total_ms": 12249.0921249846,
+      "min_total_ms": 11851.214541995432,
+      "max_total_ms": 13081.452374986839,
+      "mean_per_step_ms": 3098.4799201639057,
+      "step_breakdown": {
+        "navigate_hn": 3713.0386806481206,
+        "snapshot_list": 3317.674611345865,
+        "click_comments": 2043.6272080017563,
+        "snapshot_comments": 3015.179611024602
+      }
+    }
+  ]
+}

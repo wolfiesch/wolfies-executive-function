@@ -1,0 +1,695 @@
+{
+  "generated_at": "2026-01-13T04:45:48.844454",
+  "iterations": 3,
+  "warmup": 1,
+  "results": [
+    {
+      "protocol": "mcp_stdio",
+      "operation": "gmail.unread_count",
+      "iteration": 0,
+      "latency_ms": 3286.5897089941427,
+      "success": true,
+      "payload_size": 19,
+      "error": null
+    },
+    {
+      "protocol": "mcp_stdio",
+      "operation": "gmail.unread_count",
+      "iteration": 1,
+      "latency_ms": 3168.1494579825085,
+      "success": true,
+      "payload_size": 19,
+      "error": null
+    },
+    {
+      "protocol": "mcp_stdio",
+      "operation": "gmail.unread_count",
+      "iteration": 2,
+      "latency_ms": 3224.964541004738,
+      "success": true,
+      "payload_size": 19,
+      "error": null
+    },
+    {
+      "protocol": "fgp",
+      "operation": "gmail.unread_count",
+      "iteration": 0,
+      "latency_ms": 1517.460333998315,
+      "success": true,
+      "payload_size": 2651,
+      "error": null
+    },
+    {
+      "protocol": "fgp",
+      "operation": "gmail.unread_count",
+      "iteration": 1,
+      "latency_ms": 1327.221624989761,
+      "success": true,
+      "payload_size": 2659,
+      "error": null
+    },
+    {
+      "protocol": "fgp",
+      "operation": "gmail.unread_count",
+      "iteration": 2,
+      "latency_ms": 1372.1037499781232,
+      "success": true,
+      "payload_size": 2651,
+      "error": null
+    },
+    {
+      "protocol": "mcp_stdio",
+      "operation": "calendar.today",
+      "iteration": 0,
+      "latency_ms": 3122.7963749843184,
+      "success": true,
+      "payload_size": 45,
+      "error": null
+    },
+    {
+      "protocol": "mcp_stdio",
+      "operation": "calendar.today",
+      "iteration": 1,
+      "latency_ms": 2879.5292090217117,
+      "success": true,
+      "payload_size": 45,
+      "error": null
+    },
+    {
+      "protocol": "mcp_stdio",
+      "operation": "calendar.today",
+      "iteration": 2,
+      "latency_ms": 2866.770374996122,
+      "success": true,
+      "payload_size": 45,
+      "error": null
+    },
+    {
+      "protocol": "fgp",
+      "operation": "calendar.today",
+      "iteration": 0,
+      "latency_ms": 143.32437500706874,
+      "success": true,
+      "payload_size": 155,
+      "error": null
+    },
+    {
+      "protocol": "fgp",
+      "operation": "calendar.today",
+      "iteration": 1,
+      "latency_ms": 136.543000000529,
+      "success": true,
+      "payload_size": 155,
+      "error": null
+    },
+    {
+      "protocol": "fgp",
+      "operation": "calendar.today",
+      "iteration": 2,
+      "latency_ms": 122.96891698497348,
+      "success": true,
+      "payload_size": 156,
+      "error": null
+    },
+    {
+      "protocol": "fgp",
+      "operation": "calendar.free_slots",
+      "iteration": 0,
+      "latency_ms": 152.47512498172,
+      "success": true,
+      "payload_size": 1835,
+      "error": null
+    },
+    {
+      "protocol": "fgp",
+      "operation": "calendar.free_slots",
+      "iteration": 1,
+      "latency_ms": 536.1813749768771,
+      "success": true,
+      "payload_size": 1835,
+      "error": null
+    },
+    {
+      "protocol": "fgp",
+      "operation": "calendar.free_slots",
+      "iteration": 2,
+      "latency_ms": 132.69404199672863,
+      "success": true,
+      "payload_size": 1835,
+      "error": null
+    },
+    {
+      "protocol": "fgp",
+      "operation": "gmail.inbox",
+      "iteration": 0,
+      "latency_ms": 669.1857499827165,
+      "success": true,
+      "payload_size": 1780,
+      "error": null
+    },
+    {
+      "protocol": "fgp",
+      "operation": "gmail.inbox",
+      "iteration": 1,
+      "latency_ms": 638.2144999806769,
+      "success": true,
+      "payload_size": 1780,
+      "error": null
+    },
+    {
+      "protocol": "fgp",
+      "operation": "gmail.inbox",
+      "iteration": 2,
+      "latency_ms": 650.8542080118787,
+      "success": true,
+      "payload_size": 1787,
+      "error": null
+    },
+    {
+      "protocol": "gh_cli",
+      "operation": "github.repos",
+      "iteration": 0,
+      "latency_ms": 492.8834169986658,
+      "success": true,
+      "payload_size": 386,
+      "error": null
+    },
+    {
+      "protocol": "gh_cli",
+      "operation": "github.repos",
+      "iteration": 1,
+      "latency_ms": 401.94250000058673,
+      "success": true,
+      "payload_size": 386,
+      "error": null
+    },
+    {
+      "protocol": "gh_cli",
+      "operation": "github.repos",
+      "iteration": 2,
+      "latency_ms": 483.257040992612,
+      "success": true,
+      "payload_size": 386,
+      "error": null
+    },
+    {
+      "protocol": "fgp",
+      "operation": "github.repos",
+      "iteration": 0,
+      "latency_ms": 431.86533299740404,
+      "success": true,
+      "payload_size": 1431,
+      "error": null
+    },
+    {
+      "protocol": "fgp",
+      "operation": "github.repos",
+      "iteration": 1,
+      "latency_ms": 490.6962079985533,
+      "success": true,
+      "payload_size": 1423,
+      "error": null
+    },
+    {
+      "protocol": "fgp",
+      "operation": "github.repos",
+      "iteration": 2,
+      "latency_ms": 452.60429100017063,
+      "success": true,
+      "payload_size": 1423,
+      "error": null
+    },
+    {
+      "protocol": "gh_cli",
+      "operation": "github.notifications",
+      "iteration": 0,
+      "latency_ms": 534.3870000215247,
+      "success": true,
+      "payload_size": 23879,
+      "error": null
+    },
+    {
+      "protocol": "gh_cli",
+      "operation": "github.notifications",
+      "iteration": 1,
+      "latency_ms": 441.5973750001285,
+      "success": true,
+      "payload_size": 23879,
+      "error": null
+    },
+    {
+      "protocol": "gh_cli",
+      "operation": "github.notifications",
+      "iteration": 2,
+      "latency_ms": 484.2374169966206,
+      "success": true,
+      "payload_size": 23879,
+      "error": null
+    },
+    {
+      "protocol": "fgp",
+      "operation": "github.notifications",
+      "iteration": 0,
+      "latency_ms": 374.8003750224598,
+      "success": true,
+      "payload_size": 9276,
+      "error": null
+    },
+    {
+      "protocol": "fgp",
+      "operation": "github.notifications",
+      "iteration": 1,
+      "latency_ms": 527.3429999942891,
+      "success": true,
+      "payload_size": 9268,
+      "error": null
+    },
+    {
+      "protocol": "fgp",
+      "operation": "github.notifications",
+      "iteration": 2,
+      "latency_ms": 423.8959999929648,
+      "success": true,
+      "payload_size": 9276,
+      "error": null
+    },
+    {
+      "protocol": "gh_cli",
+      "operation": "github.user",
+      "iteration": 0,
+      "latency_ms": 325.2067090070341,
+      "success": true,
+      "payload_size": 1411,
+      "error": null
+    },
+    {
+      "protocol": "gh_cli",
+      "operation": "github.user",
+      "iteration": 1,
+      "latency_ms": 275.445540988585,
+      "success": true,
+      "payload_size": 1411,
+      "error": null
+    },
+    {
+      "protocol": "gh_cli",
+      "operation": "github.user",
+      "iteration": 2,
+      "latency_ms": 272.4815830006264,
+      "success": true,
+      "payload_size": 1411,
+      "error": null
+    },
+    {
+      "protocol": "fgp",
+      "operation": "github.user",
+      "iteration": 0,
+      "latency_ms": 370.87154100299813,
+      "success": true,
+      "payload_size": 307,
+      "error": null
+    },
+    {
+      "protocol": "fgp",
+      "operation": "github.user",
+      "iteration": 1,
+      "latency_ms": 289.2016250116285,
+      "success": true,
+      "payload_size": 297,
+      "error": null
+    },
+    {
+      "protocol": "fgp",
+      "operation": "github.user",
+      "iteration": 2,
+      "latency_ms": 272.70025000325404,
+      "success": true,
+      "payload_size": 299,
+      "error": null
+    },
+    {
+      "protocol": "imessage_cli",
+      "operation": "imessage.recent",
+      "iteration": 0,
+      "latency_ms": 60.360540985129774,
+      "success": true,
+      "payload_size": 12834,
+      "error": null
+    },
+    {
+      "protocol": "imessage_cli",
+      "operation": "imessage.recent",
+      "iteration": 1,
+      "latency_ms": 61.298375017941,
+      "success": true,
+      "payload_size": 12834,
+      "error": null
+    },
+    {
+      "protocol": "imessage_cli",
+      "operation": "imessage.recent",
+      "iteration": 2,
+      "latency_ms": 64.23316698055714,
+      "success": true,
+      "payload_size": 12834,
+      "error": null
+    },
+    {
+      "protocol": "fgp",
+      "operation": "imessage.recent",
+      "iteration": 0,
+      "latency_ms": 0.0439999857917428,
+      "success": false,
+      "payload_size": null,
+      "error": "[Errno 61] Connection refused"
+    },
+    {
+      "protocol": "fgp",
+      "operation": "imessage.recent",
+      "iteration": 1,
+      "latency_ms": 0.0118750031106174,
+      "success": false,
+      "payload_size": null,
+      "error": "[Errno 61] Connection refused"
+    },
+    {
+      "protocol": "fgp",
+      "operation": "imessage.recent",
+      "iteration": 2,
+      "latency_ms": 0.00733401975594461,
+      "success": false,
+      "payload_size": null,
+      "error": "[Errno 61] Connection refused"
+    },
+    {
+      "protocol": "imessage_cli",
+      "operation": "imessage.unread",
+      "iteration": 0,
+      "latency_ms": 58.324749988969415,
+      "success": true,
+      "payload_size": 8303,
+      "error": null
+    },
+    {
+      "protocol": "imessage_cli",
+      "operation": "imessage.unread",
+      "iteration": 1,
+      "latency_ms": 61.80275001679547,
+      "success": true,
+      "payload_size": 8303,
+      "error": null
+    },
+    {
+      "protocol": "imessage_cli",
+      "operation": "imessage.unread",
+      "iteration": 2,
+      "latency_ms": 59.758624993264675,
+      "success": true,
+      "payload_size": 8303,
+      "error": null
+    },
+    {
+      "protocol": "fgp",
+      "operation": "imessage.unread",
+      "iteration": 0,
+      "latency_ms": 0.045666005462408066,
+      "success": false,
+      "payload_size": null,
+      "error": "[Errno 61] Connection refused"
+    },
+    {
+      "protocol": "fgp",
+      "operation": "imessage.unread",
+      "iteration": 1,
+      "latency_ms": 0.009958981536328793,
+      "success": false,
+      "payload_size": null,
+      "error": "[Errno 61] Connection refused"
+    },
+    {
+      "protocol": "fgp",
+      "operation": "imessage.unread",
+      "iteration": 2,
+      "latency_ms": 0.006707996362820268,
+      "success": false,
+      "payload_size": null,
+      "error": "[Errno 61] Connection refused"
+    }
+  ],
+  "summaries": [
+    {
+      "operation": "calendar.free_slots",
+      "protocol": "fgp",
+      "count": 3,
+      "success_rate": 100.0,
+      "mean_ms": 273.7835139851086,
+      "median_ms": 152.47512498172,
+      "p95_ms": 497.81074997736135,
+      "p99_ms": 528.507249976974,
+      "min_ms": 132.69404199672863,
+      "max_ms": 536.1813749768771,
+      "std_dev_ms": 227.45834981553523
+    },
+    {
+      "operation": "imessage.unread",
+      "protocol": "fgp",
+      "count": 3,
+      "success_rate": 0.0,
+      "mean_ms": 0,
+      "median_ms": 0,
+      "p95_ms": 0,
+      "p99_ms": 0,
+      "min_ms": 0,
+      "max_ms": 0,
+      "std_dev_ms": 0
+    },
+    {
+      "operation": "imessage.unread",
+      "protocol": "imessage_cli",
+      "count": 3,
+      "success_rate": 100.0,
+      "mean_ms": 59.96204166634319,
+      "median_ms": 59.758624993264675,
+      "p95_ms": 61.59833751444239,
+      "p99_ms": 61.761867516324855,
+      "min_ms": 58.324749988969415,
+      "max_ms": 61.80275001679547,
+      "std_dev_ms": 1.7479001131512806
+    },
+    {
+      "operation": "github.repos",
+      "protocol": "fgp",
+      "count": 3,
+      "success_rate": 100.0,
+      "mean_ms": 458.388610665376,
+      "median_ms": 452.60429100017063,
+      "p95_ms": 486.887016298715,
+      "p99_ms": 489.93436965858564,
+      "min_ms": 431.86533299740404,
+      "max_ms": 490.6962079985533,
+      "std_dev_ms": 29.8389297536318
+    },
+    {
+      "operation": "github.repos",
+      "protocol": "gh_cli",
+      "count": 3,
+      "success_rate": 100.0,
+      "mean_ms": 459.3609859972882,
+      "median_ms": 483.257040992612,
+      "p95_ms": 491.9207793980604,
+      "p99_ms": 492.6908894785447,
+      "min_ms": 401.94250000058673,
+      "max_ms": 492.8834169986658,
+      "std_dev_ms": 49.95826937922822
+    },
+    {
+      "operation": "gmail.unread_count",
+      "protocol": "fgp",
+      "count": 3,
+      "success_rate": 100.0,
+      "mean_ms": 1405.5952363220665,
+      "median_ms": 1372.1037499781232,
+      "p95_ms": 1502.9246755962959,
+      "p99_ms": 1514.5532023179112,
+      "min_ms": 1327.221624989761,
+      "max_ms": 1517.460333998315,
+      "std_dev_ms": 99.44320662798049
+    },
+    {
+      "operation": "gmail.unread_count",
+      "protocol": "mcp_stdio",
+      "count": 3,
+      "success_rate": 100.0,
+      "mean_ms": 3226.567902660463,
+      "median_ms": 3224.964541004738,
+      "p95_ms": 3280.427192195202,
+      "p99_ms": 3285.3572056343546,
+      "min_ms": 3168.1494579825085,
+      "max_ms": 3286.5897089941427,
+      "std_dev_ms": 59.23640216432813
+    },
+    {
+      "operation": "github.notifications",
+      "protocol": "fgp",
+      "count": 3,
+      "success_rate": 100.0,
+      "mean_ms": 442.0131250032379,
+      "median_ms": 423.8959999929648,
+      "p95_ms": 516.9982999941567,
+      "p99_ms": 525.2740599942626,
+      "min_ms": 374.8003750224598,
+      "max_ms": 527.3429999942891,
+      "std_dev_ms": 77.86838750290417
+    },
+    {
+      "operation": "github.notifications",
+      "protocol": "gh_cli",
+      "count": 3,
+      "success_rate": 100.0,
+      "mean_ms": 486.7405973394246,
+      "median_ms": 484.2374169966206,
+      "p95_ms": 529.3720417190343,
+      "p99_ms": 533.3840083610266,
+      "min_ms": 441.5973750001285,
+      "max_ms": 534.3870000215247,
+      "std_dev_ms": 46.445431010749374
+    },
+    {
+      "operation": "imessage.recent",
+      "protocol": "fgp",
+      "count": 3,
+      "success_rate": 0.0,
+      "mean_ms": 0,
+      "median_ms": 0,
+      "p95_ms": 0,
+      "p99_ms": 0,
+      "min_ms": 0,
+      "max_ms": 0,
+      "std_dev_ms": 0
+    },
+    {
+      "operation": "imessage.recent",
+      "protocol": "imessage_cli",
+      "count": 3,
+      "success_rate": 100.0,
+      "mean_ms": 61.96402766120931,
+      "median_ms": 61.298375017941,
+      "p95_ms": 63.93968778429553,
+      "p99_ms": 64.17447114130482,
+      "min_ms": 60.360540985129774,
+      "max_ms": 64.23316698055714,
+      "std_dev_ms": 2.020303963821415
+    },
+    {
+      "operation": "github.user",
+      "protocol": "fgp",
+      "count": 3,
+      "success_rate": 100.0,
+      "mean_ms": 310.92447200596024,
+      "median_ms": 289.2016250116285,
+      "p95_ms": 362.70454940386117,
+      "p99_ms": 369.23814268317074,
+      "min_ms": 272.70025000325404,
+      "max_ms": 370.87154100299813,
+      "std_dev_ms": 52.56721559388008
+    },
+    {
+      "operation": "github.user",
+      "protocol": "gh_cli",
+      "count": 3,
+      "success_rate": 100.0,
+      "mean_ms": 291.0446109987485,
+      "median_ms": 275.445540988585,
+      "p95_ms": 320.23059220518917,
+      "p99_ms": 324.2114856466651,
+      "min_ms": 272.4815830006264,
+      "max_ms": 325.2067090070341,
+      "std_dev_ms": 29.622338985711078
+    },
+    {
+      "operation": "calendar.today",
+      "protocol": "fgp",
+      "count": 3,
+      "success_rate": 100.0,
+      "mean_ms": 134.27876399752373,
+      "median_ms": 136.543000000529,
+      "p95_ms": 142.64623750641476,
+      "p99_ms": 143.18874750693794,
+      "min_ms": 122.96891698497348,
+      "max_ms": 143.32437500706874,
+      "std_dev_ms": 10.36490430878643
+    },
+    {
+      "operation": "calendar.today",
+      "protocol": "mcp_stdio",
+      "count": 3,
+      "success_rate": 100.0,
+      "mean_ms": 2956.365319667384,
+      "median_ms": 2879.5292090217117,
+      "p95_ms": 3098.4696583880577,
+      "p99_ms": 3117.9310316650663,
+      "min_ms": 2866.770374996122,
+      "max_ms": 3122.7963749843184,
+      "std_dev_ms": 144.274630797845
+    },
+    {
+      "operation": "gmail.inbox",
+      "protocol": "fgp",
+      "count": 3,
+      "success_rate": 100.0,
+      "mean_ms": 652.7514859917574,
+      "median_ms": 650.8542080118787,
+      "p95_ms": 667.3525957856327,
+      "p99_ms": 668.8191191432998,
+      "min_ms": 638.2144999806769,
+      "max_ms": 669.1857499827165,
+      "std_dev_ms": 15.57255051274225
+    }
+  ],
+  "comparison": {
+    "github.repos": {
+      "baseline_protocol": "gh_cli",
+      "baseline_mean_ms": 459.36,
+      "fgp_mean_ms": 458.39,
+      "speedup": 1.0,
+      "baseline_p95_ms": 491.92,
+      "fgp_p95_ms": 486.89
+    },
+    "gmail.unread_count": {
+      "baseline_protocol": "mcp_stdio",
+      "baseline_mean_ms": 3226.57,
+      "fgp_mean_ms": 1405.6,
+      "speedup": 2.3,
+      "baseline_p95_ms": 3280.43,
+      "fgp_p95_ms": 1502.92,
+      "mcp_stdio_mean_ms": 3226.57,
+      "mcp_p95_ms": 3280.43
+    },
+    "github.notifications": {
+      "baseline_protocol": "gh_cli",
+      "baseline_mean_ms": 486.74,
+      "fgp_mean_ms": 442.01,
+      "speedup": 1.1,
+      "baseline_p95_ms": 529.37,
+      "fgp_p95_ms": 517.0
+    },
+    "github.user": {
+      "baseline_protocol": "gh_cli",
+      "baseline_mean_ms": 291.04,
+      "fgp_mean_ms": 310.92,
+      "speedup": 0.9,
+      "baseline_p95_ms": 320.23,
+      "fgp_p95_ms": 362.7
+    },
+    "calendar.today": {
+      "baseline_protocol": "mcp_stdio",
+      "baseline_mean_ms": 2956.37,
+      "fgp_mean_ms": 134.28,
+      "speedup": 22.0,
+      "baseline_p95_ms": 3098.47,
+      "fgp_p95_ms": 142.65,
+      "mcp_stdio_mean_ms": 2956.37,
+      "mcp_p95_ms": 3098.47
+    }
+  }
+}
