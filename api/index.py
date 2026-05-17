@@ -20,6 +20,7 @@ if 'DATABASE_URL' in os.environ and 'USE_SQLITE' not in os.environ:
 
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from backend.security import install_mutation_auth_middleware
 
 # Import routers
 from backend.routers import (
@@ -52,6 +53,8 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+install_mutation_auth_middleware(app)
 
 # Register routers
 app.include_router(tasks_router)

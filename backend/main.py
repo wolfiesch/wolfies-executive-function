@@ -38,6 +38,7 @@ from backend.routers import (
     nlp_router,
 )
 from backend.dependencies import get_database, get_config
+from backend.security import install_mutation_auth_middleware
 from backend.websocket import websocket_endpoint, ws_manager
 
 
@@ -110,6 +111,8 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+install_mutation_auth_middleware(app)
 
 # Include routers
 app.include_router(tasks_router)
