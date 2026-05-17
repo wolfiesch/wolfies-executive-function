@@ -94,6 +94,8 @@ app = FastAPI(
     lifespan=lifespan,
 )
 
+install_mutation_auth_middleware(app)
+
 # Configure CORS for frontend access
 # In production, replace with specific origins
 app.add_middleware(
@@ -111,8 +113,6 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
-
-install_mutation_auth_middleware(app)
 
 # Include routers
 app.include_router(tasks_router)

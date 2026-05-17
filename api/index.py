@@ -39,6 +39,8 @@ app = FastAPI(
     version="1.0.0",
 )
 
+install_mutation_auth_middleware(app)
+
 # CORS for frontend
 app.add_middleware(
     CORSMiddleware,
@@ -53,8 +55,6 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
-
-install_mutation_auth_middleware(app)
 
 # Register routers
 app.include_router(tasks_router)

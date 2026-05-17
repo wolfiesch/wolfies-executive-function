@@ -2,8 +2,8 @@
 HTTP security controls for the planner API.
 
 The app is local-first, but the public Vercel entrypoint exposes personal
-planner mutation routes. In deployed runtimes, require either an app API key
-or a trusted identity header before allowing writes.
+planner mutation routes. In deployed runtimes, require an app API key before
+allowing writes.
 """
 
 from __future__ import annotations
@@ -17,14 +17,13 @@ from starlette.responses import JSONResponse
 
 
 MUTATING_METHODS = {"POST", "PUT", "PATCH", "DELETE"}
-LOCAL_ENV_NAMES = {"", "dev", "development", "local", "test", "testing"}
+LOCAL_ENV_NAMES = {"dev", "development", "local", "test", "testing"}
 DEPLOYED_ENV_NAMES = {"production", "prod", "preview", "staging", "stage"}
 API_KEY_ENV_VARS = (
     "LIFE_PLANNER_API_KEY",
     "APP_API_KEY",
     "API_KEY",
 )
-IDENTITY_HEADER_ENV_VAR = "LIFE_PLANNER_TRUSTED_IDENTITY_HEADER"
 
 
 def _first_configured_env(names: Iterable[str]) -> str | None:
@@ -64,7 +63,7 @@ def is_local_or_test_runtime() -> bool:
     if os.getenv("PYTEST_CURRENT_TEST"):
         return True
 
-    return True
+    return False
 
 
 def _configured_api_key() -> str | None:
@@ -77,26 +76,14 @@ def _request_api_key(request: Request) -> str | None:
         return api_key
 
     auth_header = request.headers.get("authorization", "")
-    scheme, _, token = auth_header.partition(" ")
-    if scheme.lower() == "bearer" and token:
-        return token
+    parts = auth_header.split()
+    if len(parts) == 2 and parts[0].lower() == "bearer":
+        return parts[1]
 
     return None
 
 
-def _has_trusted_identity(request: Request) -> bool:
-    header_name = os.getenv(IDENTITY_HEADER_ENV_VAR, "").strip()
-    if not header_name:
-        return False
-
-    value = request.headers.get(header_name)
-    return bool(value and value.strip())
-
-
 def _is_authorized_mutation(request: Request, api_key: str | None) -> bool:
-    if _has_trusted_identity(request):
-        return True
-
     request_key = _request_api_key(request)
     if not api_key or not request_key:
         return False
@@ -122,15 +109,13 @@ def install_mutation_auth_middleware(app: FastAPI) -> None:
             return await call_next(request)
 
         api_key = _configured_api_key()
-        identity_header = os.getenv(IDENTITY_HEADER_ENV_VAR, "").strip()
-        if not api_key and not identity_header:
+        if not api_key:
             return JSONResponse(
                 status_code=503,
                 content={
                     "detail": (
                         "Mutation authentication is not configured. "
-                        "Set LIFE_PLANNER_API_KEY or "
-                        "LIFE_PLANNER_TRUSTED_IDENTITY_HEADER."
+                        "Set LIFE_PLANNER_API_KEY."
                     )
                 },
             )
@@ -138,7 +123,7 @@ def install_mutation_auth_middleware(app: FastAPI) -> None:
         if not _is_authorized_mutation(request, api_key):
             return JSONResponse(
                 status_code=401,
-                content={"detail": "Valid API key or trusted identity is required."},
+                content={"detail": "Valid API key is required."},
                 headers={"WWW-Authenticate": "Bearer"},
             )
 

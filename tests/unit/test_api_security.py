@@ -3,6 +3,7 @@ import sys
 from pathlib import Path
 
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 from fastapi.testclient import TestClient
 
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
@@ -26,7 +27,6 @@ AUTH_ENV_VARS = [
     "LIFE_PLANNER_API_KEY",
     "APP_API_KEY",
     "API_KEY",
-    "LIFE_PLANNER_TRUSTED_IDENTITY_HEADER",
 ]
 
 
@@ -47,6 +47,18 @@ def _test_app() -> FastAPI:
     async def create_task():
         return {"created": True}
 
+    return app
+
+
+def _test_app_with_cors() -> FastAPI:
+    app = _test_app()
+    app.add_middleware(
+        CORSMiddleware,
+        allow_origins=["https://frontend.example"],
+        allow_credentials=True,
+        allow_methods=["*"],
+        allow_headers=["*"],
+    )
     return app
 
 
@@ -78,6 +90,19 @@ def test_deployed_runtime_fails_closed_without_auth_config(monkeypatch):
 
     assert response.status_code == 503
     assert "Mutation authentication is not configured" in response.json()["detail"]
+
+
+def test_deployed_auth_errors_keep_cors_headers(monkeypatch):
+    _clear_auth_env(monkeypatch)
+    monkeypatch.setenv("VERCEL_ENV", "production")
+
+    response = TestClient(_test_app_with_cors()).post(
+        "/tasks/",
+        headers={"origin": "https://frontend.example"},
+    )
+
+    assert response.status_code == 503
+    assert response.headers["access-control-allow-origin"] == "https://frontend.example"
 
 
 def test_deployed_runtime_rejects_missing_or_wrong_api_key(monkeypatch):
@@ -122,18 +147,28 @@ def test_deployed_runtime_accepts_bearer_api_key(monkeypatch):
     assert response.json() == {"created": True}
 
 
-def test_deployed_runtime_accepts_trusted_identity_header(monkeypatch):
+def test_deployed_runtime_accepts_bearer_api_key_with_extra_spacing(monkeypatch):
     _clear_auth_env(monkeypatch)
     monkeypatch.setenv("VERCEL_ENV", "production")
-    monkeypatch.setenv("LIFE_PLANNER_TRUSTED_IDENTITY_HEADER", "x-authenticated-user")
+    monkeypatch.setenv("LIFE_PLANNER_API_KEY", "correct-key")
 
     response = TestClient(_test_app()).post(
         "/tasks/",
-        headers={"x-authenticated-user": "wolfie"},
+        headers={"authorization": "Bearer   correct-key"},
     )
 
     assert response.status_code == 200
     assert response.json() == {"created": True}
+
+
+def test_unknown_runtime_fails_closed_without_explicit_local_signal(monkeypatch):
+    _clear_auth_env(monkeypatch)
+    monkeypatch.delenv("PYTEST_CURRENT_TEST", raising=False)
+
+    response = TestClient(_test_app()).post("/tasks/")
+
+    assert response.status_code == 503
+    assert "Mutation authentication is not configured" in response.json()["detail"]
 
 
 def test_vercel_api_entrypoint_blocks_task_mutation_before_router(monkeypatch):
