@@ -59,14 +59,8 @@ def calculate_urgency_score(task: Task, now: Optional[datetime] = None) -> float
     if task.due_date is None:
         return 0.1
 
-    # Calculate days until due
-    due_date = task.due_date
-    # Normalize to date comparison (ignore time component for day-level comparison)
-    now_date = now.replace(hour=0, minute=0, second=0, microsecond=0)
-    due_date_normalized = due_date.replace(hour=23, minute=59, second=59, microsecond=0)
-
-    delta = due_date_normalized - now_date
-    days_until_due = delta.days
+    # Compare dates only so naive and timezone-aware datetimes score consistently.
+    days_until_due = (task.due_date.date() - now.date()).days
 
     if days_until_due < 0:
         # Overdue

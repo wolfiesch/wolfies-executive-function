@@ -38,6 +38,7 @@ from backend.routers import (
     nlp_router,
 )
 from backend.dependencies import get_database, get_config
+from backend.security import install_mutation_auth_middleware
 from backend.websocket import websocket_endpoint, ws_manager
 
 
@@ -92,6 +93,8 @@ app = FastAPI(
     version="1.0.0",
     lifespan=lifespan,
 )
+
+install_mutation_auth_middleware(app)
 
 # Configure CORS for frontend access
 # In production, replace with specific origins

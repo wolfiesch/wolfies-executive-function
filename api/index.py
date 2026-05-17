@@ -20,6 +20,7 @@ if 'DATABASE_URL' in os.environ and 'USE_SQLITE' not in os.environ:
 
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from backend.security import install_mutation_auth_middleware
 
 # Import routers
 from backend.routers import (
@@ -37,6 +38,8 @@ app = FastAPI(
     description="AI-powered life planning API",
     version="1.0.0",
 )
+
+install_mutation_auth_middleware(app)
 
 # CORS for frontend
 app.add_middleware(
