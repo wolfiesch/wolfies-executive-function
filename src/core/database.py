@@ -91,15 +91,13 @@ class SQLiteDatabase(DatabaseBase):
         with self.get_connection() as conn:
             cursor = conn.cursor()
             cursor.execute(query, params)
-            rows = cursor.fetchall()
-            return [dict(row) for row in rows]
+            return cursor.fetchall()
 
     def execute_one(self, query: str, params: Tuple = ()) -> Optional[Dict[str, Any]]:
         with self.get_connection() as conn:
             cursor = conn.cursor()
             cursor.execute(query, params)
-            row = cursor.fetchone()
-            return dict(row) if row else None
+            return cursor.fetchone()
 
     def execute_write(self, query: str, params: Tuple = ()) -> int:
         with self.get_connection() as conn:
@@ -287,11 +285,10 @@ class PostgreSQLDatabase(DatabaseBase):
                 raise
 
 
-# Type alias for backwards compatibility
-Database = Union[SQLiteDatabase, PostgreSQLDatabase]
+DatabaseBackend = Union[SQLiteDatabase, PostgreSQLDatabase]
 
 
-def get_database() -> Union[SQLiteDatabase, PostgreSQLDatabase]:
+def get_database() -> DatabaseBackend:
     """
     Factory function to get the appropriate database instance.
 
@@ -307,8 +304,7 @@ def get_database() -> Union[SQLiteDatabase, PostgreSQLDatabase]:
         return SQLiteDatabase()
 
 
-# Backwards compatibility - Database class that auto-detects
-class AutoDatabase:
+class Database:
     """Backwards-compatible Database class that auto-detects the backend"""
 
     def __new__(cls, db_path: Optional[Path] = None):

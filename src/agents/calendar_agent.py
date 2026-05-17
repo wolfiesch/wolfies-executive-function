@@ -238,7 +238,7 @@ class CalendarAgent(BaseAgent):
         if "start_date" in context:
             start_date = self._parse_datetime(context["start_date"])
         else:
-            start_date = now
+            start_date = now.replace(hour=0, minute=0, second=0, microsecond=0)
 
         if "end_date" in context:
             end_date = self._parse_datetime(context["end_date"])
@@ -260,7 +260,14 @@ class CalendarAgent(BaseAgent):
         if not events:
             return AgentResponse.ok(
                 message="No events found in the specified time range",
-                data={"events": [], "count": 0}
+                data={
+                    "events": [],
+                    "count": 0,
+                    "date_range": {
+                        "start": start_date.isoformat() if start_date else None,
+                        "end": end_date.isoformat() if end_date else None
+                    }
+                }
             )
 
         return AgentResponse.ok(
